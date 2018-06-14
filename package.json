@@ -1,0 +1,39 @@
+{
+  "name": "@clr/angular",
+  "version": "0.12.0-rc.2",
+  "description": "Angular components for Clarity",
+  "es2015": "esm2015/clr-angular.js",
+  "homepage": "https://vmware.github.io/clarity/",
+  "main": "bundles/clr-angular.umd.js",
+  "module": "esm5/clr-angular.js",
+  "keywords": [
+    "ng-add",
+    "clarity",
+    "angular",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vmware/clarity.git"
+  },
+  "peerDependencies": {
+    "@angular/common": "^6.0.0",
+    "@angular/compiler": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/forms": "^6.0.0",
+    "@angular/platform-browser": "^6.0.0",
+    "@angular/platform-browser-dynamic": "^6.0.0",
+    "@clr/ui": "0.12.0-rc.2"
+  },
+  "author": "clarity",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmware/clarity/issues"
+  },
+  "schematics": "./schematics/collection.json",
+  "typings": "clr-angular.d.ts",
+  "metadata": "clr-angular.metadata.json",
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}

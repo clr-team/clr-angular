@@ -1,0 +1,32 @@
+import { LocaleHelperService } from './locale-helper.service';
+export declare class DateIOService {
+    private _localeHelperService;
+    cldrLocaleDateFormat: string;
+    private localeDisplayFormat;
+    private delimiters;
+    constructor(_localeHelperService: LocaleHelperService);
+    private initializeLocaleDisplayFormat();
+    private extractDelimiters();
+    toLocaleDisplayFormatString(date: Date): string;
+    readonly placeholderText: string;
+    /**
+     * Checks if the month entered by the user is valid or not.
+     * Note: Month is 0 based.
+     */
+    private isValidMonth(month);
+    /**
+     * Checks if the date is valid depending on the year and month provided.
+     */
+    private isValidDate(year, month, date);
+    /**
+     * Validates the parameters provided and returns the date.
+     * If the parameters are not
+     * valid then return null.
+     * NOTE: (Month here is 1 based since the user has provided that as an input)
+     */
+    private validateAndGetDate(year, month, date);
+    /**
+     * Checks if the input provided by the user is valid.
+     */
+    isValidInput(date: string): Date;
+}
