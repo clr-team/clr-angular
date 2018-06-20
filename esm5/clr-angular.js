@@ -405,16 +405,11 @@ var ClrLoading = /** @class */ (function () {
             return this._loadingState;
         },
         set: function (value) {
-            if (value === null) {
-                value = ClrLoadingState.DEFAULT;
+            if (value === true) {
+                value = ClrLoadingState.LOADING;
             }
-            if (typeof value === 'boolean') {
-                if (value) {
-                    value = ClrLoadingState.LOADING;
-                }
-                else {
-                    value = ClrLoadingState.DEFAULT;
-                }
+            else if (!value) {
+                value = ClrLoadingState.DEFAULT;
             }
             if (value === this._loadingState) {
                 return;
@@ -4847,7 +4842,7 @@ var Selection = /** @class */ (function () {
         var _this = this;
         this._items = _items;
         this._filters = _filters;
-        this.selected = [];
+        this.prevSelectionRefs = [];
         this._selectionType = SelectionType.None;
         this.rowSelectionMode = false;
         this.debounce = false;
@@ -4861,35 +4856,60 @@ var Selection = /** @class */ (function () {
             _this.clearSelection();
         }));
         this.subscriptions.push(this._items.allChanges.subscribe(function (updatedItems) {
-            if (!_this._selectable) {
-                return;
-            }
-            var leftOver = _this.current.slice();
-            var newSingle;
-            var trackBy = _this._items.trackBy;
-            var matched = [];
-            updatedItems.forEach(function (item, index) {
-                var ref = trackBy(index, item);
-                if (_this.selectedSingle === ref) {
-                    newSingle = item;
+            switch (_this.selectionType) {
+                case SelectionType.None: {
+                    break;
                 }
-                else if (_this.selected.length) {
-                    var selectedIndex = _this.selected.indexOf(ref);
-                    if (selectedIndex > -1) {
-                        matched.push(selectedIndex);
-                        leftOver[selectedIndex] = item;
+                case SelectionType.Single: {
+                    var newSingle_1;
+                    var trackBy_1 = _this._items.trackBy;
+                    var selectionUpdated_1 = false;
+                    updatedItems.forEach(function (item, index) {
+                        var ref = trackBy_1(index, item);
+                        if (_this.prevSingleSelectionRef === ref) {
+                            newSingle_1 = item;
+                            selectionUpdated_1 = true;
+                        }
+                    });
+                    if (_this._items.smart && !newSingle_1) {
+                        selectionUpdated_1 = true;
                     }
+                    setTimeout(function () {
+                        if (selectionUpdated_1) {
+                            _this.currentSingle = newSingle_1;
+                        }
+                    }, 0);
+                    break;
                 }
-            });
-            if (_this._items.smart) {
-                leftOver = leftOver.filter(function (selected) { return updatedItems.indexOf(selected) > -1; });
+                case SelectionType.Multi: {
+                    var leftOver_1 = _this.current.slice();
+                    var trackBy_2 = _this._items.trackBy;
+                    var selectionUpdated_2 = false;
+                    updatedItems.forEach(function (item, index) {
+                        var ref = trackBy_2(index, item);
+                        var selectedIndex = _this.prevSelectionRefs.indexOf(ref);
+                        if (selectedIndex > -1) {
+                            leftOver_1[selectedIndex] = item;
+                            selectionUpdated_2 = true;
+                        }
+                    });
+                    if (_this._items.smart) {
+                        leftOver_1 = leftOver_1.filter(function (selected) { return updatedItems.indexOf(selected) > -1; });
+                        if (_this.current.length !== leftOver_1.length) {
+                            selectionUpdated_2 = true;
+                        }
+                    }
+                    setTimeout(function () {
+                        if (selectionUpdated_2) {
+                            _this.current = leftOver_1;
+                        }
+                    }, 0);
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
-            setTimeout(function () {
-                if (typeof newSingle !== 'undefined') {
-                    _this.currentSingle = newSingle;
-                }
-                _this.current = leftOver;
-            }, 0);
         }));
     }
     Selection.prototype.clearSelection = function () {
@@ -4937,7 +4957,7 @@ var Selection = /** @class */ (function () {
             this._currentSingle = value;
             if (this._items.all && this._items.trackBy && value) {
                 var lookup = this._items.all.findIndex(function (maybe) { return maybe === value; });
-                this.selectedSingle = this._items.trackBy(lookup, value);
+                this.prevSingleSelectionRef = this._items.trackBy(lookup, value);
             }
             this.emitChange();
             this.debounce = true;
@@ -4988,13 +5008,13 @@ var Selection = /** @class */ (function () {
         this.current.push(item);
         if (this._items.trackBy) {
             var lookup = this._items.all.findIndex(function (maybe) { return maybe === item; });
-            this.selected.push(this._items.trackBy(lookup, item));
+            this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
         }
     };
     Selection.prototype.deselectItem = function (indexOfItem) {
         this.current.splice(indexOfItem, 1);
-        if (this._items.trackBy && indexOfItem < this.selected.length) {
-            this.selected.splice(indexOfItem, 1);
+        if (this._items.trackBy && indexOfItem < this.prevSelectionRefs.length) {
+            this.prevSelectionRefs.splice(indexOfItem, 1);
         }
     };
     Selection.prototype.setSelected = function (item, selected) {
@@ -5037,7 +5057,7 @@ var Selection = /** @class */ (function () {
             return;
         }
         if (this.isAllSelected()) {
-            this._items.displayed.forEach(function (item, displayIndex) {
+            this._items.displayed.forEach(function (item) {
                 var currentIndex = _this.current.indexOf(item);
                 if (currentIndex > -1) {
                     _this.deselectItem(currentIndex);
@@ -5323,6 +5343,7 @@ var ClrDatagrid = /** @class */ (function () {
         this.stateProvider = stateProvider;
         this.SELECTION_TYPE = SelectionType;
         this.refresh = new EventEmitter(false);
+        this.test = true;
         this.selectedChanged = new EventEmitter(false);
         this.singleSelectedChanged = new EventEmitter(false);
         this._subscriptions = [];
@@ -5359,7 +5380,7 @@ var ClrDatagrid = /** @class */ (function () {
             if (value) {
                 this.selection.currentSingle = value;
             }
-            else {
+            else if (this.selection.currentSingle) {
                 this.selection.currentSingle = null;
             }
         },
@@ -5461,6 +5482,7 @@ ClrDatagrid.propDecorators = {
     "refresh": [{ type: Output, args: ['clrDgRefresh',] },],
     "iterator": [{ type: ContentChild, args: [ClrDatagridItems,] },],
     "selected": [{ type: Input, args: ['clrDgSelected',] },],
+    "test": [{ type: Input, args: ['test',] },],
     "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
     "singleSelected": [{ type: Input, args: ['clrDgSingleSelected',] },],
     "singleSelectedChanged": [{ type: Output, args: ['clrDgSingleSelectedChange',] },],
@@ -5560,7 +5582,7 @@ ClrDatagridColumnToggleButton.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-column-toggle-button',
                 template: "\n        <button\n            (click)=\"click()\"\n            [disabled]=\"toggleButtons.selectAllDisabled && !isOk()\"\n            [ngClass]=\"getClasses()\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    ",
-                host: { '[class.action-right]': 'isOk()', '[style.display]': 'block' },
+                host: { '[class.action-right]': 'isOk()' },
             },] },
 ];
 ClrDatagridColumnToggleButton.ctorParameters = function () { return [

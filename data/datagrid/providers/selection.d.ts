@@ -10,8 +10,8 @@ export declare class Selection {
     private _items;
     private _filters;
     id: string;
-    private selected;
-    private selectedSingle;
+    private prevSelectionRefs;
+    private prevSingleSelectionRef;
     constructor(_items: Items, _filters: FiltersProvider);
     clearSelection(): void;
     private _selectionType;

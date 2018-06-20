@@ -524,16 +524,11 @@ class ClrLoading {
      * @return {?}
      */
     set loadingState(value) {
-        if (value === null) {
-            value = ClrLoadingState.DEFAULT;
+        if (value === true) {
+            value = ClrLoadingState.LOADING;
         }
-        if (typeof value === 'boolean') {
-            if (value) {
-                value = ClrLoadingState.LOADING;
-            }
-            else {
-                value = ClrLoadingState.DEFAULT;
-            }
+        else if (!value) {
+            value = ClrLoadingState.DEFAULT;
         }
         if (value === this._loadingState) {
             return;
@@ -7617,7 +7612,7 @@ class Selection {
     constructor(_items, _filters) {
         this._items = _items;
         this._filters = _filters;
-        this.selected = [];
+        this.prevSelectionRefs = [];
         this._selectionType = SelectionType.None;
         this.rowSelectionMode = false;
         /**
@@ -7640,42 +7635,76 @@ class Selection {
             this.clearSelection();
         }));
         this.subscriptions.push(this._items.allChanges.subscribe(updatedItems => {
-            if (!this._selectable) {
-                return;
-            }
-            let /** @type {?} */ leftOver = this.current.slice();
-            let /** @type {?} */ newSingle;
-            // Calculate the references for each item
-            const /** @type {?} */ trackBy = this._items.trackBy;
-            const /** @type {?} */ matched = [];
-            updatedItems.forEach((item, index) => {
-                const /** @type {?} */ ref = trackBy(index, item);
-                // Look in current selected refs array if item is selected, and update actual value
-                if (this.selectedSingle === ref) {
-                    newSingle = item;
+            switch (this.selectionType) {
+                case SelectionType.None: {
+                    break;
                 }
-                else if (this.selected.length) {
-                    const /** @type {?} */ selectedIndex = this.selected.indexOf(ref);
-                    if (selectedIndex > -1) {
-                        matched.push(selectedIndex);
-                        leftOver[selectedIndex] = item;
+                case SelectionType.Single: {
+                    let /** @type {?} */ newSingle;
+                    const /** @type {?} */ trackBy = this._items.trackBy;
+                    let /** @type {?} */ selectionUpdated = false;
+                    updatedItems.forEach((item, index) => {
+                        const /** @type {?} */ ref = trackBy(index, item);
+                        // If one of the updated items is the previously selectedSingle, set it as the new one
+                        if (this.prevSingleSelectionRef === ref) {
+                            newSingle = item;
+                            selectionUpdated = true;
+                        }
+                    });
+                    // Delete the currentSingle if it doesn't exist anymore if we're using smart datagrids
+                    // where we expect all items to be present.
+                    // No explicit "delete" is required, since it would still be undefined at this point.
+                    // Marking it as selectionUpdated will emit the change when the currentSingle is updated below.
+                    if (this._items.smart && !newSingle) {
+                        selectionUpdated = true;
                     }
+                    // TODO: Discussed this with Eudes and this is fine for now.
+                    // But we need to figure out a different pattern for the
+                    // child triggering the parent change detection problem.
+                    // Using setTimeout for now to fix this.
+                    setTimeout(() => {
+                        if (selectionUpdated) {
+                            this.currentSingle = newSingle;
+                        }
+                    }, 0);
+                    break;
                 }
-            });
-            // Filter out any unmatched items if we're using smart datagrids where we expect all items to be present
-            if (this._items.smart) {
-                leftOver = leftOver.filter(selected => updatedItems.indexOf(selected) > -1);
+                case SelectionType.Multi: {
+                    let /** @type {?} */ leftOver = this.current.slice();
+                    const /** @type {?} */ trackBy = this._items.trackBy;
+                    let /** @type {?} */ selectionUpdated = false;
+                    updatedItems.forEach((item, index) => {
+                        const /** @type {?} */ ref = trackBy(index, item);
+                        // Look in current selected refs array if item is selected, and update actual value
+                        const /** @type {?} */ selectedIndex = this.prevSelectionRefs.indexOf(ref);
+                        if (selectedIndex > -1) {
+                            leftOver[selectedIndex] = item;
+                            selectionUpdated = true;
+                        }
+                    });
+                    // Filter out any unmatched items if we're using smart datagrids where we expect all items to be
+                    // present
+                    if (this._items.smart) {
+                        leftOver = leftOver.filter(selected => updatedItems.indexOf(selected) > -1);
+                        if (this.current.length !== leftOver.length) {
+                            selectionUpdated = true;
+                        }
+                    }
+                    // TODO: Discussed this with Eudes and this is fine for now.
+                    // But we need to figure out a different pattern for the
+                    // child triggering the parent change detection problem.
+                    // Using setTimeout for now to fix this.
+                    setTimeout(() => {
+                        if (selectionUpdated) {
+                            this.current = leftOver;
+                        }
+                    }, 0);
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
-            // TODO: Discussed this with Eudes and this is fine for now.
-            // But we need to figure out a different pattern for the
-            // child triggering the parent change detection problem.
-            // Using setTimeout for now to fix this.
-            setTimeout(() => {
-                if (typeof newSingle !== 'undefined') {
-                    this.currentSingle = newSingle;
-                }
-                this.current = leftOver;
-            }, 0);
         }));
     }
     /**
@@ -7737,7 +7766,7 @@ class Selection {
         this._currentSingle = value;
         if (this._items.all && this._items.trackBy && value) {
             const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === value);
-            this.selectedSingle = this._items.trackBy(lookup, value);
+            this.prevSingleSelectionRef = this._items.trackBy(lookup, value);
         }
         this.emitChange();
         // Ignore items changes in the same change detection cycle.
@@ -7804,7 +7833,7 @@ class Selection {
         if (this._items.trackBy) {
             // Push selected ref onto array
             const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === item);
-            this.selected.push(this._items.trackBy(lookup, item));
+            this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
         }
     }
     /**
@@ -7814,9 +7843,9 @@ class Selection {
      */
     deselectItem(indexOfItem) {
         this.current.splice(indexOfItem, 1);
-        if (this._items.trackBy && indexOfItem < this.selected.length) {
+        if (this._items.trackBy && indexOfItem < this.prevSelectionRefs.length) {
             // Keep selected refs array in sync
-            this.selected.splice(indexOfItem, 1);
+            this.prevSelectionRefs.splice(indexOfItem, 1);
         }
     }
     /**
@@ -7876,7 +7905,7 @@ class Selection {
                  * If at least one item isn't selected, we select every currently displayed item.
                  */
         if (this.isAllSelected()) {
-            this._items.displayed.forEach((item, displayIndex) => {
+            this._items.displayed.forEach(item => {
                 const /** @type {?} */ currentIndex = this.current.indexOf(item);
                 if (currentIndex > -1) {
                     this.deselectItem(currentIndex);
@@ -8295,6 +8324,7 @@ class ClrDatagrid {
          * Output emitted whenever the data needs to be refreshed, based on user action or external ones
          */
         this.refresh = new EventEmitter(false);
+        this.test = true;
         this.selectedChanged = new EventEmitter(false);
         this.singleSelectedChanged = new EventEmitter(false);
         /**
@@ -8344,10 +8374,13 @@ class ClrDatagrid {
      */
     set singleSelected(value) {
         this.selection.selectionType = SelectionType.Single;
+        // the clrDgSingleSelected is updated in one of two cases:
+        // 1. an explicit value is passed
+        // 2. is being set to null or undefined, where previously it had a value
         if (value) {
             this.selection.currentSingle = value;
         }
-        else {
+        else if (this.selection.currentSingle) {
             this.selection.currentSingle = null;
         }
     }
@@ -8533,6 +8566,7 @@ ClrDatagrid.propDecorators = {
     "refresh": [{ type: Output, args: ['clrDgRefresh',] },],
     "iterator": [{ type: ContentChild, args: [ClrDatagridItems,] },],
     "selected": [{ type: Input, args: ['clrDgSelected',] },],
+    "test": [{ type: Input, args: ['test',] },],
     "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
     "singleSelected": [{ type: Input, args: ['clrDgSingleSelected',] },],
     "singleSelectedChanged": [{ type: Output, args: ['clrDgSingleSelectedChange',] },],
@@ -8701,7 +8735,7 @@ ClrDatagridColumnToggleButton.decorators = [
             <ng-content></ng-content>
         </button>
     `,
-                host: { '[class.action-right]': 'isOk()', '[style.display]': 'block' },
+                host: { '[class.action-right]': 'isOk()' },
             },] },
 ];
 /** @nocollapse */

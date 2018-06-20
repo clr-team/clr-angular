@@ -41,6 +41,7 @@ export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnD
      * Array of all selected items
      */
     selected: any[];
+    test: boolean;
     selectedChanged: EventEmitter<any[]>;
     /**
      * Selected item in single-select mode
