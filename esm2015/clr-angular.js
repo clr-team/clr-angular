@@ -8414,10 +8414,10 @@ class ClrDatagrid {
      */
     set allSelected(value) {
         /*
-                     * This is a setter but we ignore the value.
-                     * It's strange, but it lets us have an indeterminate state where only
-                     * some of the items are selected.
-                     */
+                 * This is a setter but we ignore the value.
+                 * It's strange, but it lets us have an indeterminate state where only
+                 * some of the items are selected.
+                 */
         this.selection.toggleAll();
     }
     /**
@@ -8532,10 +8532,6 @@ ClrDatagrid.decorators = [
         <div class="spinner">Loading...</div>
     </div>
 </div>
-
-<div #dummyContainer2345>
-    <!-- content added to test PR publishing scripts -->
-</div>
 `,
                 providers: [
                     Selection,
@@ -8577,7 +8573,6 @@ ClrDatagrid.propDecorators = {
     "placeholder": [{ type: ContentChild, args: [ClrDatagridPlaceholder,] },],
     "columns": [{ type: ContentChildren, args: [ClrDatagridColumn,] },],
     "rows": [{ type: ContentChildren, args: [ClrDatagridRow,] },],
-    "dummyContainer": [{ type: ViewChild, args: ["dummyContainer2345",] },],
 };
 
 /**

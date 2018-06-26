@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, EventEmitter, OnDestroy, QueryList, TemplateRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, EventEmitter, OnDestroy, QueryList } from '@angular/core';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
@@ -89,5 +89,4 @@ export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnD
     private _subscriptions;
     ngOnDestroy(): void;
     resize(): void;
-    dummyContainer: TemplateRef<any>;
 }
