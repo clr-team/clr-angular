@@ -9,7 +9,8 @@ import { ControlIdService } from './providers/control-id.service';
 export declare class WrappedFormControl<W extends DynamicWrapper> implements OnInit {
     protected wrapperType: Type<W>;
     protected vcr: ViewContainerRef;
-    constructor(wrapperType: Type<W>, vcr: ViewContainerRef);
+    protected index: number;
+    constructor(wrapperType: Type<W>, vcr: ViewContainerRef, index?: number);
     protected controlIdService: ControlIdService;
     _id: string;
     id: string;

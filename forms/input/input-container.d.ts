@@ -6,10 +6,20 @@
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IfErrorService } from '../common/if-error/if-error.service';
-export declare class ClrInputContainer implements OnDestroy {
+import { LayoutService } from '../common/providers/layout.service';
+import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
+import { ClrLabel } from '../common/label';
+import { ControlClassService } from '../common/providers/control-class.service';
+export declare class ClrInputContainer implements DynamicWrapper, OnDestroy {
     private ifErrorService;
+    private layoutService;
+    private controlClassService;
     subscription: Subscription;
     invalid: boolean;
-    constructor(ifErrorService: IfErrorService);
+    _dynamic: boolean;
+    label: ClrLabel;
+    constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService);
+    controlClass(): string;
+    addGrid(): boolean;
     ngOnDestroy(): void;
 }
