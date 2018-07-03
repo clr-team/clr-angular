@@ -14679,7 +14679,7 @@ class ClrTooltipTrigger {
     }
 }
 ClrTooltipTrigger.decorators = [
-    { type: Directive, args: [{ selector: '[clrTooltipTrigger]', host: { '[attr.tabindex]': '0' } },] },
+    { type: Directive, args: [{ selector: '[clrTooltipTrigger]', host: { '[attr.tabindex]': '0', '[class.tooltip-trigger]': 'true' } },] },
 ];
 /** @nocollapse */
 ClrTooltipTrigger.ctorParameters = () => [

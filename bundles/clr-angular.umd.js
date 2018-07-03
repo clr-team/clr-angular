@@ -9395,7 +9395,7 @@ var ClrTooltipTrigger = /** @class */ (function () {
     return ClrTooltipTrigger;
 }());
 ClrTooltipTrigger.decorators = [
-    { type: core.Directive, args: [{ selector: '[clrTooltipTrigger]', host: { '[attr.tabindex]': '0' } },] },
+    { type: core.Directive, args: [{ selector: '[clrTooltipTrigger]', host: { '[attr.tabindex]': '0', '[class.tooltip-trigger]': 'true' } },] },
 ];
 ClrTooltipTrigger.ctorParameters = function () { return [
     { type: IfOpenService, },
