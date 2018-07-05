@@ -59,6 +59,7 @@ export { DatepickerEnabledService as ɵbd } from './forms/datepicker/providers/d
 export { DatepickerFocusService as ɵbg } from './forms/datepicker/providers/datepicker-focus.service';
 export { LocaleHelperService as ɵbb } from './forms/datepicker/providers/locale-helper.service';
 export { ViewManagerService as ɵbf } from './forms/datepicker/providers/view-manager.service';
+export { ClrTextareaModule as ɵek } from './forms/textarea';
 export { ResponsiveNavigationProvider as ɵdi } from './layout/nav/providers/responsive-navigation.provider';
 export { ResponsiveNavigationService as ɵdh } from './layout/nav/providers/responsive-navigation.service';
 export { ActiveOompaLoompa as ɵds } from './layout/tabs/chocolate/active-oompa-loompa';

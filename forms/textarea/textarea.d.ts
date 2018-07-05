@@ -7,12 +7,11 @@ import { ViewContainerRef, Renderer2, ElementRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrInputContainer } from './input-container';
+import { ClrTextareaContainer } from './textarea-container';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ControlClassService } from '../common/providers/control-class.service';
-export declare class ClrInput extends WrappedFormControl<ClrInputContainer> {
+export declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     private ifErrorService;
-    type: string;
-    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, type: string, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, renderer: Renderer2, el: ElementRef);
     onBlur(): void;
 }
