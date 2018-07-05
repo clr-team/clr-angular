@@ -11410,18 +11410,6 @@ var ControlClassService = /** @class */ (function () {
     function ControlClassService() {
         this.className = '';
     }
-    ControlClassService.prototype.controlClass = function (invalid, grid) {
-        if (invalid === void 0) { invalid = false; }
-        if (grid === void 0) { grid = false; }
-        var controlClasses = [];
-        if (invalid) {
-            controlClasses.push('clr-error');
-        }
-        if (grid && this.className.indexOf('clr-col') === -1) {
-            controlClasses.push('clr-col-md-10 clr-col-xs-12');
-        }
-        return controlClasses.join(' ');
-    };
     return ControlClassService;
 }());
 ControlClassService.decorators = [
@@ -11440,7 +11428,14 @@ var ClrInputContainer = /** @class */ (function () {
         });
     }
     ClrInputContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+        var controlClasses = [];
+        if (this.invalid) {
+            controlClasses.push('clr-error');
+        }
+        if (this.addGrid() && this.controlClassService.className.indexOf('clr-col') === -1) {
+            controlClasses.push('clr-col-md-10 clr-col-xs-12');
+        }
+        return controlClasses.join(' ');
     };
     ClrInputContainer.prototype.addGrid = function () {
         if (this.layoutService && !this.layoutService.isVertical()) {
@@ -11478,9 +11473,11 @@ var ClrInput = /** @class */ (function (_super) {
     __extends(ClrInput, _super);
     function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
         var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
+        _this.control = control;
         _this.type = type;
-        if (!control) {
+        if (!_this.control) {
             throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
         }
         if (!_this.type) {
@@ -11489,11 +11486,13 @@ var ClrInput = /** @class */ (function (_super) {
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
         return _this;
     }
+    ClrInput.prototype.ngAfterContentInit = function () {
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
     ClrInput.prototype.onBlur = function () {
         if (this.ifErrorService) {
             this.ifErrorService.triggerStatusChange();
@@ -11570,104 +11569,6 @@ ClrRadioModule.decorators = [
                 entryComponents: [ClrRadioContainer],
             },] },
 ];
-var ClrTextareaContainer = /** @class */ (function () {
-    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscription = this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        });
-    }
-    ClrTextareaContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrTextareaContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrTextareaContainer.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return ClrTextareaContainer;
-}());
-ClrTextareaContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-textarea-container',
-                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-textarea-wrapper\">\n                <ng-content select=\"[clrTextarea]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-ClrTextareaContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-]; };
-ClrTextareaContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-var ClrTextarea = /** @class */ (function (_super) {
-    __extends(ClrTextarea, _super);
-    function ClrTextarea(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
-        var _this = _super.call(this, ClrTextareaContainer, vcr, 1) || this;
-        _this.ifErrorService = ifErrorService;
-        if (!control) {
-            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
-        return _this;
-    }
-    ClrTextarea.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrTextarea;
-}(WrappedFormControl));
-ClrTextarea.decorators = [
-    { type: Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
-];
-ClrTextarea.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-]; };
-ClrTextarea.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrTextareaModule = /** @class */ (function () {
-    function ClrTextareaModule() {
-    }
-    return ClrTextareaModule;
-}());
-ClrTextareaModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrTextarea, ClrTextareaContainer],
-                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
-                entryComponents: [ClrTextareaContainer],
-            },] },
-];
 var ClrFormsNextModule = /** @class */ (function () {
     function ClrFormsNextModule() {
     }
@@ -11676,14 +11577,7 @@ var ClrFormsNextModule = /** @class */ (function () {
 ClrFormsNextModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule],
-                exports: [
-                    ClrCommonFormsModule,
-                    ClrCheckboxNextModule,
-                    ClrInputModule,
-                    ClrTextareaModule,
-                    ClrRadioModule,
-                    ClrDatepickerModule,
-                ],
+                exports: [ClrCommonFormsModule, ClrCheckboxNextModule, ClrInputModule, ClrRadioModule, ClrDatepickerModule],
             },] },
 ];
 function collapse() {
@@ -11745,5 +11639,5 @@ function slide(direction) {
     ];
 }
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, Button, ButtonGroup, BUTTON_GROUP_DIRECTIVES, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, LoadingButton, LOADING_BUTTON_DIRECTIVES, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, CodeHighlight, CODE_HIGHLIGHT_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, Datagrid, DatagridActionBar, DatagridActionOverflow, DatagridColumn, DatagridColumnToggle, DatagridHideableColumnDirective, DatagridFilter, DatagridItems, DatagridRow, DatagridRowDetail, DatagridCell, DatagridFooter, DatagridPagination, DatagridPlaceholder, SortOrder, DATAGRID_DIRECTIVES, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, TreeNode, TREE_VIEW_DIRECTIVES, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, StackView, StackHeader, StackBlock, StackViewCustomTags, StackInput, StackSelect, STACK_VIEW_DIRECTIVES, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, Alert, AlertItem, Alerts, AlertsPager, ALERT_DIRECTIVES, ClrLabel, ClrCommonFormsModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrInput, ClrInputContainer, ClrInputModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, Checkbox, ClrCheckbox, CHECKBOX_DIRECTIVES, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, IconCustomTag, ICON_DIRECTIVES, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainer, LAYOUT_DIRECTIVES, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, Header, NavLevelDirective, NAVIGATION_DIRECTIVES, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, Tab, Tabs, TabContent, TabOverflowContent, TabLinkDirective, TABS_DIRECTIVES, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, VerticalNav, VerticalNavGroup, VerticalNavGroupChildren, VerticalNavIcon, VerticalNavLink, VERTICAL_NAV_DIRECTIVES, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, Modal, MODAL_DIRECTIVES, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, menuPositions, DROPDOWN_DIRECTIVES, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, Signpost, SignpostContent, SignpostTrigger, SIGNPOST_DIRECTIVES, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, Tooltip, TooltipContent, TooltipTrigger, TOOLTIP_DIRECTIVES, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, Loading, LOADING_DIRECTIVES, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, Wizard, WizardPage, WizardStepnav, WizardStepnavItem, WizardButton, WizardHeaderAction, WizardCustomTags, WizardPageTitleDirective, WizardPageNavTitleDirective, WizardPageButtonsDirective, WizardPageHeaderActionsDirective, WIZARD_DIRECTIVES, ButtonInGroupService as ɵdg, DatagridRowExpandAnimation as ɵct, ActionableOompaLoompa as ɵcq, DatagridWillyWonka as ɵco, ExpandableOompaLoompa as ɵcs, ClrDatagridColumnToggleButton as ɵcb, ClrDatagridColumnToggleTitle as ɵca, DatagridDetailRegisterer as ɵcd, ClrDatagridItemsTrackBy as ɵcc, ColumnToggleButtonsService as ɵbv, CustomFilter as ɵby, DragDispatcher as ɵbx, FiltersProvider as ɵbm, ExpandableRowsCount as ɵbs, HideableColumnService as ɵbt, Items as ɵbl, Page as ɵbn, RowActionService as ɵbr, Selection as ɵbk, Sort as ɵbp, StateDebouncer as ɵbo, StateProvider as ɵbu, DatagridBodyRenderer as ɵcl, DatagridCellRenderer as ɵcn, DatagridColumnResizer as ɵci, DomAdapter as ɵcg, DatagridHeadRenderer as ɵck, DatagridHeaderRenderer as ɵch, DatagridMainRenderer as ɵcf, domAdapterFactory as ɵce, DatagridRenderOrganizer as ɵbq, DatagridRowRenderer as ɵcm, DatagridTableRenderer as ɵcj, DatagridFilterRegistrar as ɵbw, StackControl as ɵcx, AbstractTreeSelection as ɵcy, clrTreeSelectionProviderFactory as ɵda, TreeSelectionService as ɵcz, AlertIconAndTypesService as ɵr, MultiAlertService as ɵs, ClrControlError as ɵee, ClrForm as ɵeh, ClrControlHelper as ɵef, ClrIfError as ɵeg, IfErrorService as ɵeb, ClrLayout as ɵei, ControlClassService as ɵej, ControlIdService as ɵba, LayoutService as ɵed, NgControlService as ɵec, WrappedFormControl as ɵbe, DateFormControlService as ɵz, DateIOService as ɵbc, DateNavigationService as ɵy, DatepickerEnabledService as ɵbd, DatepickerFocusService as ɵbg, LocaleHelperService as ɵbb, ViewManagerService as ɵbf, ClrTextareaModule as ɵek, ResponsiveNavigationProvider as ɵdi, ResponsiveNavigationService as ɵdh, ActiveOompaLoompa as ɵds, TabsWillyWonka as ɵdr, AriaService as ɵdm, TabsService as ɵdq, TABS_ID as ɵdn, TABS_ID_PROVIDER as ɵdp, tokenFactory$1 as ɵdo, VerticalNavGroupRegistrationService as ɵdv, VerticalNavGroupService as ɵdw, VerticalNavIconService as ɵdu, VerticalNavService as ɵdt, GHOST_PAGE_ANIMATION as ɵdf, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcr, WillyWonka as ɵcp, ClrConditionalModule as ɵj, IfActiveDirective as ɵl, IF_ACTIVE_ID as ɵn, IF_ACTIVE_ID_PROVIDER as ɵp, IfActiveService as ɵq, tokenFactory as ɵo, IfOpenDirective as ɵm, IfOpenService as ɵd, CONDITIONAL_DIRECTIVES as ɵk, ClrIfExpandModule as ɵcu, IfExpanded as ɵcw, EXPAND_DIRECTIVES as ɵcv, Expand as ɵbz, FocusTrapDirective as ɵx, ClrFocusTrapModule as ɵv, FOCUS_TRAP_DIRECTIVES as ɵw, EmptyAnchor as ɵu, ClrHostWrappingModule as ɵt, UNIQUE_ID as ɵdb, UNIQUE_ID_PROVIDER as ɵdd, uniqueIdFactory as ɵdc, OUSTIDE_CLICK_DIRECTIVES as ɵbi, OutsideClick as ɵbj, ClrOutsideClickModule as ɵbh, ScrollingService as ɵde, TEMPLATE_REF_DIRECTIVES as ɵdk, TemplateRefContainer as ɵdl, ClrTemplateRefModule as ɵdj, ButtonHubService as ɵdz, HeaderActionService as ɵea, PageCollectionService as ɵdy, WizardNavigationService as ɵdx };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, Button, ButtonGroup, BUTTON_GROUP_DIRECTIVES, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, LoadingButton, LOADING_BUTTON_DIRECTIVES, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, CodeHighlight, CODE_HIGHLIGHT_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, Datagrid, DatagridActionBar, DatagridActionOverflow, DatagridColumn, DatagridColumnToggle, DatagridHideableColumnDirective, DatagridFilter, DatagridItems, DatagridRow, DatagridRowDetail, DatagridCell, DatagridFooter, DatagridPagination, DatagridPlaceholder, SortOrder, DATAGRID_DIRECTIVES, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, TreeNode, TREE_VIEW_DIRECTIVES, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, StackView, StackHeader, StackBlock, StackViewCustomTags, StackInput, StackSelect, STACK_VIEW_DIRECTIVES, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, Alert, AlertItem, Alerts, AlertsPager, ALERT_DIRECTIVES, ClrLabel, ClrCommonFormsModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrInput, ClrInputContainer, ClrInputModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, Checkbox, ClrCheckbox, CHECKBOX_DIRECTIVES, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, IconCustomTag, ICON_DIRECTIVES, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainer, LAYOUT_DIRECTIVES, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, Header, NavLevelDirective, NAVIGATION_DIRECTIVES, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, Tab, Tabs, TabContent, TabOverflowContent, TabLinkDirective, TABS_DIRECTIVES, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, VerticalNav, VerticalNavGroup, VerticalNavGroupChildren, VerticalNavIcon, VerticalNavLink, VERTICAL_NAV_DIRECTIVES, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, Modal, MODAL_DIRECTIVES, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, menuPositions, DROPDOWN_DIRECTIVES, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, Signpost, SignpostContent, SignpostTrigger, SIGNPOST_DIRECTIVES, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, Tooltip, TooltipContent, TooltipTrigger, TOOLTIP_DIRECTIVES, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, Loading, LOADING_DIRECTIVES, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, Wizard, WizardPage, WizardStepnav, WizardStepnavItem, WizardButton, WizardHeaderAction, WizardCustomTags, WizardPageTitleDirective, WizardPageNavTitleDirective, WizardPageButtonsDirective, WizardPageHeaderActionsDirective, WIZARD_DIRECTIVES, ButtonInGroupService as ɵdg, DatagridRowExpandAnimation as ɵct, ActionableOompaLoompa as ɵcq, DatagridWillyWonka as ɵco, ExpandableOompaLoompa as ɵcs, ClrDatagridColumnToggleButton as ɵcb, ClrDatagridColumnToggleTitle as ɵca, DatagridDetailRegisterer as ɵcd, ClrDatagridItemsTrackBy as ɵcc, ColumnToggleButtonsService as ɵbv, CustomFilter as ɵby, DragDispatcher as ɵbx, FiltersProvider as ɵbm, ExpandableRowsCount as ɵbs, HideableColumnService as ɵbt, Items as ɵbl, Page as ɵbn, RowActionService as ɵbr, Selection as ɵbk, Sort as ɵbp, StateDebouncer as ɵbo, StateProvider as ɵbu, DatagridBodyRenderer as ɵcl, DatagridCellRenderer as ɵcn, DatagridColumnResizer as ɵci, DomAdapter as ɵcg, DatagridHeadRenderer as ɵck, DatagridHeaderRenderer as ɵch, DatagridMainRenderer as ɵcf, domAdapterFactory as ɵce, DatagridRenderOrganizer as ɵbq, DatagridRowRenderer as ɵcm, DatagridTableRenderer as ɵcj, DatagridFilterRegistrar as ɵbw, StackControl as ɵcx, AbstractTreeSelection as ɵcy, clrTreeSelectionProviderFactory as ɵda, TreeSelectionService as ɵcz, AlertIconAndTypesService as ɵr, MultiAlertService as ɵs, ClrControlError as ɵee, ClrForm as ɵeh, ClrControlHelper as ɵef, ClrIfError as ɵeg, IfErrorService as ɵeb, ClrLayout as ɵei, ControlClassService as ɵej, ControlIdService as ɵba, LayoutService as ɵed, NgControlService as ɵec, WrappedFormControl as ɵbe, DateFormControlService as ɵz, DateIOService as ɵbc, DateNavigationService as ɵy, DatepickerEnabledService as ɵbd, DatepickerFocusService as ɵbg, LocaleHelperService as ɵbb, ViewManagerService as ɵbf, ResponsiveNavigationProvider as ɵdi, ResponsiveNavigationService as ɵdh, ActiveOompaLoompa as ɵds, TabsWillyWonka as ɵdr, AriaService as ɵdm, TabsService as ɵdq, TABS_ID as ɵdn, TABS_ID_PROVIDER as ɵdp, tokenFactory$1 as ɵdo, VerticalNavGroupRegistrationService as ɵdv, VerticalNavGroupService as ɵdw, VerticalNavIconService as ɵdu, VerticalNavService as ɵdt, GHOST_PAGE_ANIMATION as ɵdf, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcr, WillyWonka as ɵcp, ClrConditionalModule as ɵj, IfActiveDirective as ɵl, IF_ACTIVE_ID as ɵn, IF_ACTIVE_ID_PROVIDER as ɵp, IfActiveService as ɵq, tokenFactory as ɵo, IfOpenDirective as ɵm, IfOpenService as ɵd, CONDITIONAL_DIRECTIVES as ɵk, ClrIfExpandModule as ɵcu, IfExpanded as ɵcw, EXPAND_DIRECTIVES as ɵcv, Expand as ɵbz, FocusTrapDirective as ɵx, ClrFocusTrapModule as ɵv, FOCUS_TRAP_DIRECTIVES as ɵw, EmptyAnchor as ɵu, ClrHostWrappingModule as ɵt, UNIQUE_ID as ɵdb, UNIQUE_ID_PROVIDER as ɵdd, uniqueIdFactory as ɵdc, OUSTIDE_CLICK_DIRECTIVES as ɵbi, OutsideClick as ɵbj, ClrOutsideClickModule as ɵbh, ScrollingService as ɵde, TEMPLATE_REF_DIRECTIVES as ɵdk, TemplateRefContainer as ɵdl, ClrTemplateRefModule as ɵdj, ButtonHubService as ɵdz, HeaderActionService as ɵea, PageCollectionService as ɵdy, WizardNavigationService as ɵdx };
 //# sourceMappingURL=clr-angular.js.map

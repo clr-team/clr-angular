@@ -11469,18 +11469,6 @@ var ControlClassService = /** @class */ (function () {
     function ControlClassService() {
         this.className = '';
     }
-    ControlClassService.prototype.controlClass = function (invalid, grid) {
-        if (invalid === void 0) { invalid = false; }
-        if (grid === void 0) { grid = false; }
-        var controlClasses = [];
-        if (invalid) {
-            controlClasses.push('clr-error');
-        }
-        if (grid && this.className.indexOf('clr-col') === -1) {
-            controlClasses.push('clr-col-md-10 clr-col-xs-12');
-        }
-        return controlClasses.join(' ');
-    };
     return ControlClassService;
 }());
 ControlClassService.decorators = [
@@ -11499,7 +11487,14 @@ var ClrInputContainer = /** @class */ (function () {
         });
     }
     ClrInputContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+        var controlClasses = [];
+        if (this.invalid) {
+            controlClasses.push('clr-error');
+        }
+        if (this.addGrid() && this.controlClassService.className.indexOf('clr-col') === -1) {
+            controlClasses.push('clr-col-md-10 clr-col-xs-12');
+        }
+        return controlClasses.join(' ');
     };
     ClrInputContainer.prototype.addGrid = function () {
         if (this.layoutService && !this.layoutService.isVertical()) {
@@ -11537,9 +11532,11 @@ var ClrInput = /** @class */ (function (_super) {
     __extends(ClrInput, _super);
     function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
         var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
+        _this.control = control;
         _this.type = type;
-        if (!control) {
+        if (!_this.control) {
             throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
         }
         if (!_this.type) {
@@ -11548,11 +11545,13 @@ var ClrInput = /** @class */ (function (_super) {
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
         return _this;
     }
+    ClrInput.prototype.ngAfterContentInit = function () {
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
     ClrInput.prototype.onBlur = function () {
         if (this.ifErrorService) {
             this.ifErrorService.triggerStatusChange();
@@ -11629,104 +11628,6 @@ ClrRadioModule.decorators = [
                 entryComponents: [ClrRadioContainer],
             },] },
 ];
-var ClrTextareaContainer = /** @class */ (function () {
-    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscription = this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        });
-    }
-    ClrTextareaContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrTextareaContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrTextareaContainer.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return ClrTextareaContainer;
-}());
-ClrTextareaContainer.decorators = [
-    { type: core.Component, args: [{
-                selector: 'clr-textarea-container',
-                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-textarea-wrapper\">\n                <ng-content select=\"[clrTextarea]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-ClrTextareaContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: core.Optional },] },
-    { type: ControlClassService, },
-]; };
-ClrTextareaContainer.propDecorators = {
-    "label": [{ type: core.ContentChild, args: [ClrLabel,] },],
-};
-var ClrTextarea = /** @class */ (function (_super) {
-    __extends(ClrTextarea, _super);
-    function ClrTextarea(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
-        var _this = _super.call(this, ClrTextareaContainer, vcr, 1) || this;
-        _this.ifErrorService = ifErrorService;
-        if (!control) {
-            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
-        return _this;
-    }
-    ClrTextarea.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrTextarea;
-}(WrappedFormControl));
-ClrTextarea.decorators = [
-    { type: core.Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
-];
-ClrTextarea.ctorParameters = function () { return [
-    { type: core.ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: core.Optional },] },
-    { type: IfErrorService, decorators: [{ type: core.Optional },] },
-    { type: forms.NgControl, decorators: [{ type: core.Optional },] },
-    { type: ControlClassService, decorators: [{ type: core.Optional },] },
-    { type: core.Renderer2, },
-    { type: core.ElementRef, },
-]; };
-ClrTextarea.propDecorators = {
-    "onBlur": [{ type: core.HostListener, args: ['blur',] },],
-};
-var ClrTextareaModule = /** @class */ (function () {
-    function ClrTextareaModule() {
-    }
-    return ClrTextareaModule;
-}());
-ClrTextareaModule.decorators = [
-    { type: core.NgModule, args: [{
-                imports: [common.CommonModule, forms.FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrTextarea, ClrTextareaContainer],
-                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
-                entryComponents: [ClrTextareaContainer],
-            },] },
-];
 var ClrFormsNextModule = /** @class */ (function () {
     function ClrFormsNextModule() {
     }
@@ -11735,14 +11636,7 @@ var ClrFormsNextModule = /** @class */ (function () {
 ClrFormsNextModule.decorators = [
     { type: core.NgModule, args: [{
                 imports: [common.CommonModule],
-                exports: [
-                    ClrCommonFormsModule,
-                    ClrCheckboxNextModule,
-                    ClrInputModule,
-                    ClrTextareaModule,
-                    ClrRadioModule,
-                    ClrDatepickerModule,
-                ],
+                exports: [ClrCommonFormsModule, ClrCheckboxNextModule, ClrInputModule, ClrRadioModule, ClrDatepickerModule],
             },] },
 ];
 function collapse() {
@@ -12102,7 +11996,6 @@ exports.ɵbd = DatepickerEnabledService;
 exports.ɵbg = DatepickerFocusService;
 exports.ɵbb = LocaleHelperService;
 exports.ɵbf = ViewManagerService;
-exports.ɵek = ClrTextareaModule;
 exports.ɵdi = ResponsiveNavigationProvider;
 exports.ɵdh = ResponsiveNavigationService;
 exports.ɵds = ActiveOompaLoompa;

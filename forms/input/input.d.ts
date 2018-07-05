@@ -11,8 +11,11 @@ import { ClrInputContainer } from './input-container';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ControlClassService } from '../common/providers/control-class.service';
 export declare class ClrInput extends WrappedFormControl<ClrInputContainer> {
+    private ngControlService;
     private ifErrorService;
+    private control;
     type: string;
     constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, type: string, renderer: Renderer2, el: ElementRef);
+    ngAfterContentInit(): void;
     onBlur(): void;
 }
