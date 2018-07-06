@@ -41,13 +41,8 @@ export { clrTreeSelectionProviderFactory as ɵda } from './data/tree-view/provid
 export { TreeSelectionService as ɵcz } from './data/tree-view/providers/tree-selection.service';
 export { AlertIconAndTypesService as ɵr } from './emphasis/alert/providers/icon-and-types.service';
 export { MultiAlertService as ɵs } from './emphasis/alert/providers/multi-alert.service';
-export { ClrControlError as ɵee } from './forms/common/error';
-export { ClrForm as ɵeh } from './forms/common/form';
-export { ClrControlHelper as ɵef } from './forms/common/helper';
-export { ClrIfError as ɵeg } from './forms/common/if-error/if-error';
 export { IfErrorService as ɵeb } from './forms/common/if-error/if-error.service';
-export { ClrLayout as ɵei } from './forms/common/layout';
-export { ControlClassService as ɵej } from './forms/common/providers/control-class.service';
+export { ControlClassService as ɵee } from './forms/common/providers/control-class.service';
 export { ControlIdService as ɵba } from './forms/common/providers/control-id.service';
 export { LayoutService as ɵed } from './forms/common/providers/layout.service';
 export { NgControlService as ɵec } from './forms/common/providers/ng-control.service';
@@ -59,6 +54,7 @@ export { DatepickerEnabledService as ɵbd } from './forms/datepicker/providers/d
 export { DatepickerFocusService as ɵbg } from './forms/datepicker/providers/datepicker-focus.service';
 export { LocaleHelperService as ɵbb } from './forms/datepicker/providers/locale-helper.service';
 export { ViewManagerService as ɵbf } from './forms/datepicker/providers/view-manager.service';
+export { ClrTextareaModule as ɵef } from './forms/textarea';
 export { ResponsiveNavigationProvider as ɵdi } from './layout/nav/providers/responsive-navigation.provider';
 export { ResponsiveNavigationService as ɵdh } from './layout/nav/providers/responsive-navigation.service';
 export { ActiveOompaLoompa as ɵds } from './layout/tabs/chocolate/active-oompa-loompa';
