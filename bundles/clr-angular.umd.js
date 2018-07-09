@@ -6691,9 +6691,6 @@ var ClrStackBlock = /** @class */ (function () {
             this.expandedChange.emit(this.expanded);
         }
     };
-    ClrStackBlock.prototype.onStackBlockFocus = function (focusState) {
-        this.focused = focusState;
-    };
     Object.defineProperty(ClrStackBlock.prototype, "caretDirection", {
         get: function () {
             return this.expanded ? 'down' : 'right';
@@ -6722,12 +6719,24 @@ var ClrStackBlock = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrStackBlock.prototype, "ariaExpanded", {
+        get: function () {
+            if (!this.expandable) {
+                return null;
+            }
+            else {
+                return this.expanded ? 'true' : 'false';
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ClrStackBlock;
 }());
 ClrStackBlock.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-stack-block',
-                template: "\n    <dt class=\"stack-block-label\"\n        (click)=\"toggleExpand()\"\n        (keyup.enter)=\"toggleExpand()\"\n        (keyup.space)=\"toggleExpand()\"\n        (focus)=\"onStackBlockFocus(true)\"\n        (blur)=\"onStackBlockFocus(false)\"\n        [attr.role]=\"role\"\n        [attr.tabindex]=\"tabIndex\">\n      <clr-icon shape=\"caret\"\n                class=\"stack-block-caret\"\n                *ngIf=\"expandable\"\n                [attr.dir]=\"caretDirection\"></clr-icon>\n      <ng-content select=\"clr-stack-label\"></ng-content>\n    </dt>\n    <dd class=\"stack-block-content\">\n      <ng-content></ng-content>\n    </dd>\n    <!-- FIXME: remove this string concatenation when boolean states are supported -->\n    <div [@collapse]=\"''+!expanded\" class=\"stack-children\">\n      <ng-content select=\"clr-stack-block\"></ng-content>\n    </div>\n  ",
+                template: "\n    <dt class=\"stack-block-label\"\n        (click)=\"toggleExpand()\"\n        (keyup.enter)=\"toggleExpand()\"\n        (keyup.space)=\"toggleExpand()\"\n        (focus)=\"focused = true\"\n        (blur)=\"focused = false\"\n        [attr.role]=\"role\"\n        [attr.tabindex]=\"tabIndex\"\n        [attr.aria-expanded]=\"ariaExpanded\">\n      <clr-icon shape=\"caret\"\n                class=\"stack-block-caret\"\n                *ngIf=\"expandable\"\n                [attr.dir]=\"caretDirection\"></clr-icon>\n      <ng-content select=\"clr-stack-label\"></ng-content>\n    </dt>\n    <dd class=\"stack-block-content\">\n      <ng-content></ng-content>\n    </dd>\n    <!-- FIXME: remove this string concatenation when boolean states are supported -->\n    <div [@collapse]=\"''+!expanded\" class=\"stack-children\" >\n      <ng-content select=\"clr-stack-block\"></ng-content>\n    </div>\n  ",
                 styles: [
                     "\n        :host { display: block; }\n    ",
                 ],

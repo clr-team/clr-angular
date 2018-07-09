@@ -10536,13 +10536,6 @@ class ClrStackBlock {
         }
     }
     /**
-     * @param {?} focusState
-     * @return {?}
-     */
-    onStackBlockFocus(focusState) {
-        this.focused = focusState;
-    }
-    /**
      * @return {?}
      */
     get caretDirection() {
@@ -10566,6 +10559,17 @@ class ClrStackBlock {
     get onStackLabelFocus() {
         return this.expandable && !this.expanded && this.focused;
     }
+    /**
+     * @return {?}
+     */
+    get ariaExpanded() {
+        if (!this.expandable) {
+            return null;
+        }
+        else {
+            return this.expanded ? 'true' : 'false';
+        }
+    }
 }
 ClrStackBlock.decorators = [
     { type: Component, args: [{
@@ -10575,10 +10579,11 @@ ClrStackBlock.decorators = [
         (click)="toggleExpand()"
         (keyup.enter)="toggleExpand()"
         (keyup.space)="toggleExpand()"
-        (focus)="onStackBlockFocus(true)"
-        (blur)="onStackBlockFocus(false)"
+        (focus)="focused = true"
+        (blur)="focused = false"
         [attr.role]="role"
-        [attr.tabindex]="tabIndex">
+        [attr.tabindex]="tabIndex"
+        [attr.aria-expanded]="ariaExpanded">
       <clr-icon shape="caret"
                 class="stack-block-caret"
                 *ngIf="expandable"
@@ -10589,7 +10594,7 @@ ClrStackBlock.decorators = [
       <ng-content></ng-content>
     </dd>
     <!-- FIXME: remove this string concatenation when boolean states are supported -->
-    <div [@collapse]="''+!expanded" class="stack-children">
+    <div [@collapse]="''+!expanded" class="stack-children" >
       <ng-content select="clr-stack-block"></ng-content>
     </div>
   `,

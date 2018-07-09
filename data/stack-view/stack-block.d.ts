@@ -14,9 +14,9 @@ export declare class ClrStackBlock implements OnInit {
     ngOnInit(): void;
     addChild(): void;
     toggleExpand(): void;
-    onStackBlockFocus(focusState: boolean): void;
     readonly caretDirection: string;
     readonly role: string;
     readonly tabIndex: string;
     readonly onStackLabelFocus: boolean;
+    readonly ariaExpanded: string;
 }
