@@ -4,6 +4,7 @@ export declare class ClrStackBlock implements OnInit {
     expanded: boolean;
     expandedChange: EventEmitter<boolean>;
     expandable: boolean;
+    private focused;
     private _changedChildren;
     private _fullyInitialized;
     private _changed;
@@ -13,4 +14,9 @@ export declare class ClrStackBlock implements OnInit {
     ngOnInit(): void;
     addChild(): void;
     toggleExpand(): void;
+    onStackBlockFocus(focusState: boolean): void;
+    readonly caretDirection: string;
+    readonly role: string;
+    readonly tabIndex: string;
+    readonly onStackLabelFocus: boolean;
 }

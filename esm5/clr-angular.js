@@ -6590,6 +6590,7 @@ var ClrStackBlock = /** @class */ (function () {
         this.expanded = false;
         this.expandedChange = new EventEmitter(false);
         this.expandable = false;
+        this.focused = false;
         this._changedChildren = 0;
         this._fullyInitialized = false;
         this._changed = false;
@@ -6631,12 +6632,43 @@ var ClrStackBlock = /** @class */ (function () {
             this.expandedChange.emit(this.expanded);
         }
     };
+    ClrStackBlock.prototype.onStackBlockFocus = function (focusState) {
+        this.focused = focusState;
+    };
+    Object.defineProperty(ClrStackBlock.prototype, "caretDirection", {
+        get: function () {
+            return this.expanded ? 'down' : 'right';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrStackBlock.prototype, "role", {
+        get: function () {
+            return this.expandable ? 'button' : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrStackBlock.prototype, "tabIndex", {
+        get: function () {
+            return this.expandable ? '0' : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrStackBlock.prototype, "onStackLabelFocus", {
+        get: function () {
+            return this.expandable && !this.expanded && this.focused;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ClrStackBlock;
 }());
 ClrStackBlock.decorators = [
     { type: Component, args: [{
                 selector: 'clr-stack-block',
-                template: "\n        <dt class=\"stack-block-label\" (click)=\"toggleExpand()\">\n            <ng-content select=\"clr-stack-label\"></ng-content>\n        </dt>\n        <dd class=\"stack-block-content\">\n            <ng-content></ng-content>\n        </dd>\n        <!-- FIXME: remove this string concatenation when boolean states are supported -->\n        <div [@collapse]=\"''+!expanded\" class=\"stack-children\">\n            <ng-content select=\"clr-stack-block\"></ng-content>\n        </div>\n    ",
+                template: "\n    <dt class=\"stack-block-label\"\n        (click)=\"toggleExpand()\"\n        (keyup.enter)=\"toggleExpand()\"\n        (keyup.space)=\"toggleExpand()\"\n        (focus)=\"onStackBlockFocus(true)\"\n        (blur)=\"onStackBlockFocus(false)\"\n        [attr.role]=\"role\"\n        [attr.tabindex]=\"tabIndex\">\n      <clr-icon shape=\"caret\"\n                class=\"stack-block-caret\"\n                *ngIf=\"expandable\"\n                [attr.dir]=\"caretDirection\"></clr-icon>\n      <ng-content select=\"clr-stack-label\"></ng-content>\n    </dt>\n    <dd class=\"stack-block-content\">\n      <ng-content></ng-content>\n    </dd>\n    <!-- FIXME: remove this string concatenation when boolean states are supported -->\n    <div [@collapse]=\"''+!expanded\" class=\"stack-children\">\n      <ng-content select=\"clr-stack-block\"></ng-content>\n    </div>\n  ",
                 styles: [
                     "\n        :host { display: block; }\n    ",
                 ],
@@ -6659,6 +6691,7 @@ ClrStackBlock.propDecorators = {
     "expandable": [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] },],
     "getChangedValue": [{ type: HostBinding, args: ['class.stack-block-changed',] },],
     "setChangedValue": [{ type: Input, args: ['clrSbNotifyChange',] },],
+    "onStackLabelFocus": [{ type: HostBinding, args: ['class.on-focus',] },],
 };
 var ClrStackView = /** @class */ (function () {
     function ClrStackView() {
@@ -6793,7 +6826,7 @@ var ClrStackViewModule = /** @class */ (function () {
 }());
 ClrStackViewModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule],
+                imports: [CommonModule, FormsModule, ClrIconModule],
                 declarations: [CLR_STACK_VIEW_DIRECTIVES],
                 exports: [CLR_STACK_VIEW_DIRECTIVES],
             },] },

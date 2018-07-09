@@ -10483,6 +10483,7 @@ class ClrStackBlock {
         this.expanded = false;
         this.expandedChange = new EventEmitter(false);
         this.expandable = false;
+        this.focused = false;
         this._changedChildren = 0;
         this._fullyInitialized = false;
         this._changed = false;
@@ -10534,22 +10535,64 @@ class ClrStackBlock {
             this.expandedChange.emit(this.expanded);
         }
     }
+    /**
+     * @param {?} focusState
+     * @return {?}
+     */
+    onStackBlockFocus(focusState) {
+        this.focused = focusState;
+    }
+    /**
+     * @return {?}
+     */
+    get caretDirection() {
+        return this.expanded ? 'down' : 'right';
+    }
+    /**
+     * @return {?}
+     */
+    get role() {
+        return this.expandable ? 'button' : null;
+    }
+    /**
+     * @return {?}
+     */
+    get tabIndex() {
+        return this.expandable ? '0' : null;
+    }
+    /**
+     * @return {?}
+     */
+    get onStackLabelFocus() {
+        return this.expandable && !this.expanded && this.focused;
+    }
 }
 ClrStackBlock.decorators = [
     { type: Component, args: [{
                 selector: 'clr-stack-block',
                 template: `
-        <dt class="stack-block-label" (click)="toggleExpand()">
-            <ng-content select="clr-stack-label"></ng-content>
-        </dt>
-        <dd class="stack-block-content">
-            <ng-content></ng-content>
-        </dd>
-        <!-- FIXME: remove this string concatenation when boolean states are supported -->
-        <div [@collapse]="''+!expanded" class="stack-children">
-            <ng-content select="clr-stack-block"></ng-content>
-        </div>
-    `,
+    <dt class="stack-block-label"
+        (click)="toggleExpand()"
+        (keyup.enter)="toggleExpand()"
+        (keyup.space)="toggleExpand()"
+        (focus)="onStackBlockFocus(true)"
+        (blur)="onStackBlockFocus(false)"
+        [attr.role]="role"
+        [attr.tabindex]="tabIndex">
+      <clr-icon shape="caret"
+                class="stack-block-caret"
+                *ngIf="expandable"
+                [attr.dir]="caretDirection"></clr-icon>
+      <ng-content select="clr-stack-label"></ng-content>
+    </dt>
+    <dd class="stack-block-content">
+      <ng-content></ng-content>
+    </dd>
+    <!-- FIXME: remove this string concatenation when boolean states are supported -->
+    <div [@collapse]="''+!expanded" class="stack-children">
+      <ng-content select="clr-stack-block"></ng-content>
+    </div>
+  `,
                 // Custom elements are inline by default
                 styles: [
                     `
@@ -10577,6 +10620,7 @@ ClrStackBlock.propDecorators = {
     "expandable": [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] },],
     "getChangedValue": [{ type: HostBinding, args: ['class.stack-block-changed',] },],
     "setChangedValue": [{ type: Input, args: ['clrSbNotifyChange',] },],
+    "onStackLabelFocus": [{ type: HostBinding, args: ['class.on-focus',] },],
 };
 
 /**
@@ -10824,7 +10868,7 @@ class ClrStackViewModule {
 }
 ClrStackViewModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule],
+                imports: [CommonModule, FormsModule, ClrIconModule],
                 declarations: [CLR_STACK_VIEW_DIRECTIVES],
                 exports: [CLR_STACK_VIEW_DIRECTIVES],
             },] },
