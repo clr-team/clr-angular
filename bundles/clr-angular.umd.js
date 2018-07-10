@@ -835,12 +835,16 @@ var ClrLoadingButton = /** @class */ (function () {
         this.clrLoadingChange = new core.EventEmitter(false);
     }
     ClrLoadingButton.prototype.loadingStateChange = function (state$$1) {
-        var _this = this;
+        if (state$$1 == this.state) {
+            return;
+        }
         this.state = state$$1;
         switch (state$$1) {
             case ClrLoadingState.DEFAULT:
                 this.renderer.removeStyle(this.el.nativeElement, 'width');
-                this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
+                if (!this.disabled) {
+                    this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
+                }
                 break;
             case ClrLoadingState.LOADING:
                 this.setExplicitButtonWidth();
@@ -848,9 +852,6 @@ var ClrLoadingButton = /** @class */ (function () {
                 break;
             case ClrLoadingState.SUCCESS:
                 this.setExplicitButtonWidth();
-                setTimeout(function () {
-                    _this.loadingStateChange(ClrLoadingState.DEFAULT);
-                }, 1000);
                 break;
             case ClrLoadingState.ERROR:
                 this.loadingStateChange(ClrLoadingState.DEFAULT);
@@ -861,9 +862,9 @@ var ClrLoadingButton = /** @class */ (function () {
         this.clrLoadingChange.emit(state$$1);
     };
     ClrLoadingButton.prototype.setExplicitButtonWidth = function () {
-        if (getComputedStyle) {
-            var width = getComputedStyle(this.el.nativeElement).getPropertyValue('width');
-            this.renderer.setStyle(this.el.nativeElement, 'width', width);
+        if (this.el.nativeElement && this.el.nativeElement.getBoundingClientRect) {
+            var boundingClientRect = this.el.nativeElement.getBoundingClientRect();
+            this.renderer.setStyle(this.el.nativeElement, 'width', boundingClientRect.width + "px");
         }
     };
     return ClrLoadingButton;
@@ -871,7 +872,7 @@ var ClrLoadingButton = /** @class */ (function () {
 ClrLoadingButton.decorators = [
     { type: core.Component, args: [{
                 selector: 'button[clrLoading]',
-                template: "\n        <ng-container [ngSwitch]=\"state\">\n            <span *ngSwitchCase=\"buttonState.LOADING\">\n                <span @spinner class=\"spinner spinner-inline\"></span>\n            </span>\n            <span *ngSwitchCase=\"buttonState.SUCCESS\">\n                <span @validated class=\"spinner spinner-inline spinner-check\"></span>\n            </span>\n            <span *ngSwitchCase=\"buttonState.DEFAULT\" @defaultButton>\n                <ng-content></ng-content>\n            </span>\n        </ng-container>\n    ",
+                template: "\n        <ng-container [ngSwitch]=\"state\">\n            <span *ngSwitchCase=\"buttonState.LOADING\">\n                <span @spinner class=\"spinner spinner-inline\"></span>\n            </span>\n            <span *ngSwitchCase=\"buttonState.SUCCESS\">\n                <span @validated (@validated.done)=\"this.loadingStateChange(this.buttonState.DEFAULT)\" class=\"spinner spinner-inline spinner-check\"></span>\n            </span>\n            <span *ngSwitchCase=\"buttonState.DEFAULT\" @defaultButton>\n                <ng-content></ng-content>\n            </span>\n        </ng-container>\n    ",
                 providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
                 animations: [
                     animations.trigger('defaultButton', [
@@ -884,17 +885,18 @@ ClrLoadingButton.decorators = [
                     ]),
                     animations.trigger('validated', [
                         animations.transition(':enter', [
-                            animations.animate('300ms', animations.keyframes([
-                                animations.style({ transform: 'scale(0,0)' }),
-                                animations.style({ opacity: 1 }),
-                                animations.style({ transform: 'scale(1.2,1.2)' }),
-                                animations.style({ transform: 'scale(.9,.9)' }),
-                                animations.style({ transform: 'scale(1,1)' }),
+                            animations.animate('600ms', animations.keyframes([
+                                animations.style({ transform: 'scale(0,0)', offset: 0 }),
+                                animations.style({ opacity: 1, offset: 0.2 }),
+                                animations.style({ transform: 'scale(1.2,1.2)', offset: 0.4 }),
+                                animations.style({ transform: 'scale(.9,.9)', offset: 0.6 }),
+                                animations.style({ transform: 'scale(1,1)', offset: 1 }),
                             ])),
                         ]),
                         animations.transition(':leave', [animations.style({ opacity: 1 }), animations.animate('100ms ease-out', animations.style({ opacity: 0 }))]),
                     ]),
                 ],
+                host: { '[attr.disabled]': "disabled? '' : null" },
             },] },
 ];
 ClrLoadingButton.ctorParameters = function () { return [
@@ -902,6 +904,7 @@ ClrLoadingButton.ctorParameters = function () { return [
     { type: core.Renderer2, },
 ]; };
 ClrLoadingButton.propDecorators = {
+    "disabled": [{ type: core.Input, args: ['disabled',] },],
     "clrLoadingChange": [{ type: core.Output, args: ['clrLoadingChange',] },],
 };
 var CLR_LOADING_BUTTON_DIRECTIVES = [ClrLoadingButton];

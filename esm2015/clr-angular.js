@@ -1118,11 +1118,16 @@ class ClrLoadingButton {
      * @return {?}
      */
     loadingStateChange(state$$1) {
+        if (state$$1 == this.state) {
+            return;
+        }
         this.state = state$$1;
         switch (state$$1) {
             case ClrLoadingState.DEFAULT:
                 this.renderer.removeStyle(this.el.nativeElement, 'width');
-                this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
+                if (!this.disabled) {
+                    this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
+                }
                 break;
             case ClrLoadingState.LOADING:
                 this.setExplicitButtonWidth();
@@ -1130,9 +1135,6 @@ class ClrLoadingButton {
                 break;
             case ClrLoadingState.SUCCESS:
                 this.setExplicitButtonWidth();
-                setTimeout(() => {
-                    this.loadingStateChange(ClrLoadingState.DEFAULT);
-                }, 1000);
                 break;
             case ClrLoadingState.ERROR:
                 this.loadingStateChange(ClrLoadingState.DEFAULT);
@@ -1146,9 +1148,9 @@ class ClrLoadingButton {
      * @return {?}
      */
     setExplicitButtonWidth() {
-        if (getComputedStyle) {
-            const /** @type {?} */ width = getComputedStyle(this.el.nativeElement).getPropertyValue('width');
-            this.renderer.setStyle(this.el.nativeElement, 'width', width);
+        if (this.el.nativeElement && this.el.nativeElement.getBoundingClientRect) {
+            const /** @type {?} */ boundingClientRect = this.el.nativeElement.getBoundingClientRect();
+            this.renderer.setStyle(this.el.nativeElement, 'width', `${boundingClientRect.width}px`);
         }
     }
 }
@@ -1161,7 +1163,7 @@ ClrLoadingButton.decorators = [
                 <span @spinner class="spinner spinner-inline"></span>
             </span>
             <span *ngSwitchCase="buttonState.SUCCESS">
-                <span @validated class="spinner spinner-inline spinner-check"></span>
+                <span @validated (@validated.done)="this.loadingStateChange(this.buttonState.DEFAULT)" class="spinner spinner-inline spinner-check"></span>
             </span>
             <span *ngSwitchCase="buttonState.DEFAULT" @defaultButton>
                 <ng-content></ng-content>
@@ -1181,17 +1183,18 @@ ClrLoadingButton.decorators = [
                     ]),
                     trigger('validated', [
                         transition(':enter', [
-                            animate('300ms', keyframes([
-                                style({ transform: 'scale(0,0)' }),
-                                style({ opacity: 1 }),
-                                style({ transform: 'scale(1.2,1.2)' }),
-                                style({ transform: 'scale(.9,.9)' }),
-                                style({ transform: 'scale(1,1)' }),
+                            animate('600ms', keyframes([
+                                style({ transform: 'scale(0,0)', offset: 0 }),
+                                style({ opacity: 1, offset: 0.2 }),
+                                style({ transform: 'scale(1.2,1.2)', offset: 0.4 }),
+                                style({ transform: 'scale(.9,.9)', offset: 0.6 }),
+                                style({ transform: 'scale(1,1)', offset: 1 }),
                             ])),
                         ]),
                         transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
                     ]),
                 ],
+                host: { '[attr.disabled]': "disabled? '' : null" },
             },] },
 ];
 /** @nocollapse */
@@ -1200,6 +1203,7 @@ ClrLoadingButton.ctorParameters = () => [
     { type: Renderer2, },
 ];
 ClrLoadingButton.propDecorators = {
+    "disabled": [{ type: Input, args: ['disabled',] },],
     "clrLoadingChange": [{ type: Output, args: ['clrLoadingChange',] },],
 };
 
