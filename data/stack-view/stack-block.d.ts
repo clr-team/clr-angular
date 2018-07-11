@@ -4,7 +4,7 @@ export declare class ClrStackBlock implements OnInit {
     expanded: boolean;
     expandedChange: EventEmitter<boolean>;
     expandable: boolean;
-    private focused;
+    focused: boolean;
     private _changedChildren;
     private _fullyInitialized;
     private _changed;
