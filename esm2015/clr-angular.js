@@ -18903,7 +18903,9 @@ class ClrInput extends WrappedFormControl {
      */
     constructor(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
         super(ClrInputContainer, vcr, 1);
+        this.ngControlService = ngControlService;
         this.ifErrorService = ifErrorService;
+        this.control = control;
         this.type = type;
         if (!control) {
             throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
@@ -18915,8 +18917,14 @@ class ClrInput extends WrappedFormControl {
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
         }
     }
     /**
@@ -19162,15 +19170,23 @@ class ClrTextarea extends WrappedFormControl {
      */
     constructor(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
         super(ClrTextareaContainer, vcr, 1);
+        this.ngControlService = ngControlService;
         this.ifErrorService = ifErrorService;
+        this.control = control;
         if (!control) {
             throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
         }
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
         }
     }
     /**

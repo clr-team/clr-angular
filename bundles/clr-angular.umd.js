@@ -11582,7 +11582,9 @@ var ClrInput = /** @class */ (function (_super) {
     __extends(ClrInput, _super);
     function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
         var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
+        _this.control = control;
         _this.type = type;
         if (!control) {
             throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
@@ -11593,11 +11595,14 @@ var ClrInput = /** @class */ (function (_super) {
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
         return _this;
     }
+    ClrInput.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
     ClrInput.prototype.onBlur = function () {
         if (this.ifErrorService) {
             this.ifErrorService.triggerStatusChange();
@@ -11725,18 +11730,23 @@ var ClrTextarea = /** @class */ (function (_super) {
     __extends(ClrTextarea, _super);
     function ClrTextarea(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
         var _this = _super.call(this, ClrTextareaContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
+        _this.control = control;
         if (!control) {
             throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
         }
         if (controlClassService) {
             controlClassService.className = el.nativeElement.className;
         }
-        if (ngControlService) {
-            ngControlService.setControl(control);
-        }
         return _this;
     }
+    ClrTextarea.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
     ClrTextarea.prototype.onBlur = function () {
         if (this.ifErrorService) {
             this.ifErrorService.triggerStatusChange();
