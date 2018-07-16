@@ -3,7 +3,7 @@ import { Expand } from './providers/expand';
 /**
  * TODO: make this a reusable directive outside of Datagrid, like [clrLoading].
  */
-export declare class IfExpanded implements OnInit, OnDestroy {
+export declare class ClrIfExpanded implements OnInit, OnDestroy {
     private template;
     private container;
     private expand;

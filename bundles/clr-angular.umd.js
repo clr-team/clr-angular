@@ -1034,8 +1034,8 @@ var IfActiveService = /** @class */ (function () {
 IfActiveService.decorators = [
     { type: core.Injectable },
 ];
-var IfActiveDirective = /** @class */ (function () {
-    function IfActiveDirective(ifActiveService, id, template, container) {
+var ClrIfActive = /** @class */ (function () {
+    function ClrIfActive(ifActiveService, id, template, container) {
         var _this = this;
         this.ifActiveService = ifActiveService;
         this.id = id;
@@ -1048,7 +1048,7 @@ var IfActiveDirective = /** @class */ (function () {
             _this.checkAndUpdateView(newCurrentId);
         });
     }
-    IfActiveDirective.prototype.checkAndUpdateView = function (currentId) {
+    ClrIfActive.prototype.checkAndUpdateView = function (currentId) {
         var isNowActive = currentId === this.id;
         if (isNowActive !== this.wasActive) {
             this.updateView(isNowActive);
@@ -1056,7 +1056,7 @@ var IfActiveDirective = /** @class */ (function () {
             this.wasActive = isNowActive;
         }
     };
-    Object.defineProperty(IfActiveDirective.prototype, "active", {
+    Object.defineProperty(ClrIfActive.prototype, "active", {
         get: function () {
             return this.ifActiveService.current === this.id;
         },
@@ -1068,7 +1068,7 @@ var IfActiveDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    IfActiveDirective.prototype.updateView = function (value) {
+    ClrIfActive.prototype.updateView = function (value) {
         if (value) {
             this.container.createEmbeddedView(this.template);
         }
@@ -1076,21 +1076,21 @@ var IfActiveDirective = /** @class */ (function () {
             this.container.clear();
         }
     };
-    IfActiveDirective.prototype.ngOnDestroy = function () {
+    ClrIfActive.prototype.ngOnDestroy = function () {
         this.subscription.unsubscribe();
     };
-    return IfActiveDirective;
+    return ClrIfActive;
 }());
-IfActiveDirective.decorators = [
+ClrIfActive.decorators = [
     { type: core.Directive, args: [{ selector: '[clrIfActive]' },] },
 ];
-IfActiveDirective.ctorParameters = function () { return [
+ClrIfActive.ctorParameters = function () { return [
     { type: IfActiveService, },
     { type: undefined, decorators: [{ type: core.Inject, args: [IF_ACTIVE_ID,] },] },
     { type: core.TemplateRef, },
     { type: core.ViewContainerRef, },
 ]; };
-IfActiveDirective.propDecorators = {
+ClrIfActive.propDecorators = {
     "active": [{ type: core.Input, args: ['clrIfActive',] },],
     "activeChange": [{ type: core.Output, args: ['clrIfActiveChange',] },],
 };
@@ -1129,8 +1129,8 @@ var IfOpenService = /** @class */ (function () {
 IfOpenService.decorators = [
     { type: core.Injectable },
 ];
-var IfOpenDirective = /** @class */ (function () {
-    function IfOpenDirective(ifOpenService, template, container) {
+var ClrIfOpen = /** @class */ (function () {
+    function ClrIfOpen(ifOpenService, template, container) {
         var _this = this;
         this.ifOpenService = ifOpenService;
         this.template = template;
@@ -1141,7 +1141,7 @@ var IfOpenDirective = /** @class */ (function () {
             _this.openChange.emit(change);
         });
     }
-    Object.defineProperty(IfOpenDirective.prototype, "open", {
+    Object.defineProperty(ClrIfOpen.prototype, "open", {
         get: function () {
             return this.ifOpenService.open;
         },
@@ -1151,7 +1151,7 @@ var IfOpenDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    IfOpenDirective.prototype.updateView = function (value) {
+    ClrIfOpen.prototype.updateView = function (value) {
         if (value) {
             this.container.createEmbeddedView(this.template);
         }
@@ -1159,24 +1159,24 @@ var IfOpenDirective = /** @class */ (function () {
             this.container.clear();
         }
     };
-    IfOpenDirective.prototype.ngOnDestroy = function () {
+    ClrIfOpen.prototype.ngOnDestroy = function () {
         this.subscription.unsubscribe();
     };
-    return IfOpenDirective;
+    return ClrIfOpen;
 }());
-IfOpenDirective.decorators = [
+ClrIfOpen.decorators = [
     { type: core.Directive, args: [{ selector: '[clrIfOpen]' },] },
 ];
-IfOpenDirective.ctorParameters = function () { return [
+ClrIfOpen.ctorParameters = function () { return [
     { type: IfOpenService, },
     { type: core.TemplateRef, },
     { type: core.ViewContainerRef, },
 ]; };
-IfOpenDirective.propDecorators = {
+ClrIfOpen.propDecorators = {
     "open": [{ type: core.Input, args: ['clrIfOpen',] },],
     "openChange": [{ type: core.Output, args: ['clrIfOpenChange',] },],
 };
-var CONDITIONAL_DIRECTIVES = [IfActiveDirective, IfOpenDirective];
+var CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen];
 var ClrConditionalModule = /** @class */ (function () {
     function ClrConditionalModule() {
     }
@@ -3072,8 +3072,8 @@ var Expand = /** @class */ (function () {
 Expand.decorators = [
     { type: core.Injectable },
 ];
-var IfExpanded = /** @class */ (function () {
-    function IfExpanded(template, container, expand) {
+var ClrIfExpanded = /** @class */ (function () {
+    function ClrIfExpanded(template, container, expand) {
         var _this = this;
         this.template = template;
         this.container = container;
@@ -3087,7 +3087,7 @@ var IfExpanded = /** @class */ (function () {
             _this.expandedChange.emit(_this.expand.expanded);
         }));
     }
-    Object.defineProperty(IfExpanded.prototype, "expanded", {
+    Object.defineProperty(ClrIfExpanded.prototype, "expanded", {
         get: function () {
             return this._expanded;
         },
@@ -3100,7 +3100,7 @@ var IfExpanded = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    IfExpanded.prototype.updateView = function () {
+    ClrIfExpanded.prototype.updateView = function () {
         if (this.expand.expanded && this.container.length !== 0) {
             return;
         }
@@ -3111,28 +3111,28 @@ var IfExpanded = /** @class */ (function () {
             this.container.clear();
         }
     };
-    IfExpanded.prototype.ngOnInit = function () {
+    ClrIfExpanded.prototype.ngOnInit = function () {
         this.updateView();
     };
-    IfExpanded.prototype.ngOnDestroy = function () {
+    ClrIfExpanded.prototype.ngOnDestroy = function () {
         this.expand.expandable--;
         this._subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
     };
-    return IfExpanded;
+    return ClrIfExpanded;
 }());
-IfExpanded.decorators = [
+ClrIfExpanded.decorators = [
     { type: core.Directive, args: [{ selector: '[clrIfExpanded]' },] },
 ];
-IfExpanded.ctorParameters = function () { return [
+ClrIfExpanded.ctorParameters = function () { return [
     { type: core.TemplateRef, },
     { type: core.ViewContainerRef, },
     { type: Expand, },
 ]; };
-IfExpanded.propDecorators = {
+ClrIfExpanded.propDecorators = {
     "expanded": [{ type: core.Input, args: ['clrIfExpanded',] },],
     "expandedChange": [{ type: core.Output, args: ['clrIfExpandedChange',] },],
 };
-var EXPAND_DIRECTIVES = [IfExpanded];
+var EXPAND_DIRECTIVES = [ClrIfExpanded];
 var ClrIfExpandModule = /** @class */ (function () {
     function ClrIfExpandModule() {
     }
@@ -12080,6 +12080,11 @@ exports.CLR_LOADING_DIRECTIVES = CLR_LOADING_DIRECTIVES;
 exports.ClrLoadingModule = ClrLoadingModule;
 exports.Loading = Loading;
 exports.LOADING_DIRECTIVES = LOADING_DIRECTIVES;
+exports.CONDITIONAL_DIRECTIVES = CONDITIONAL_DIRECTIVES;
+exports.ClrIfActive = ClrIfActive;
+exports.ClrIfOpen = ClrIfOpen;
+exports.EXPAND_DIRECTIVES = EXPAND_DIRECTIVES;
+exports.ClrIfExpanded = ClrIfExpanded;
 exports.ClrWizard = ClrWizard;
 exports.ClrWizardPage = ClrWizardPage;
 exports.ClrWizardStepnav = ClrWizardStepnav;
@@ -12107,73 +12112,73 @@ exports.WizardPageNavTitleDirective = WizardPageNavTitleDirective;
 exports.WizardPageButtonsDirective = WizardPageButtonsDirective;
 exports.WizardPageHeaderActionsDirective = WizardPageHeaderActionsDirective;
 exports.WIZARD_DIRECTIVES = WIZARD_DIRECTIVES;
-exports.ɵdg = ButtonInGroupService;
-exports.ɵct = DatagridRowExpandAnimation;
-exports.ɵcq = ActionableOompaLoompa;
-exports.ɵco = DatagridWillyWonka;
-exports.ɵcs = ExpandableOompaLoompa;
-exports.ɵcb = ClrDatagridColumnToggleButton;
-exports.ɵca = ClrDatagridColumnToggleTitle;
-exports.ɵcd = DatagridDetailRegisterer;
-exports.ɵcc = ClrDatagridItemsTrackBy;
-exports.ɵbv = ColumnToggleButtonsService;
-exports.ɵby = CustomFilter;
-exports.ɵbx = DragDispatcher;
-exports.ɵbm = FiltersProvider;
-exports.ɵbs = ExpandableRowsCount;
-exports.ɵbt = HideableColumnService;
-exports.ɵbl = Items;
-exports.ɵbn = Page;
-exports.ɵbr = RowActionService;
-exports.ɵbk = Selection;
-exports.ɵbp = Sort;
-exports.ɵbo = StateDebouncer;
-exports.ɵbu = StateProvider;
-exports.ɵcl = DatagridBodyRenderer;
-exports.ɵcn = DatagridCellRenderer;
-exports.ɵci = DatagridColumnResizer;
-exports.ɵcg = DomAdapter;
-exports.ɵck = DatagridHeadRenderer;
-exports.ɵch = DatagridHeaderRenderer;
-exports.ɵcf = DatagridMainRenderer;
-exports.ɵce = domAdapterFactory;
-exports.ɵbq = DatagridRenderOrganizer;
-exports.ɵcm = DatagridRowRenderer;
-exports.ɵcj = DatagridTableRenderer;
-exports.ɵbw = DatagridFilterRegistrar;
-exports.ɵcx = StackControl;
-exports.ɵcy = AbstractTreeSelection;
-exports.ɵda = clrTreeSelectionProviderFactory;
-exports.ɵcz = TreeSelectionService;
-exports.ɵr = AlertIconAndTypesService;
-exports.ɵs = MultiAlertService;
-exports.ɵeb = IfErrorService;
-exports.ɵee = ControlClassService;
-exports.ɵba = ControlIdService;
-exports.ɵed = LayoutService;
-exports.ɵec = NgControlService;
-exports.ɵbe = WrappedFormControl;
-exports.ɵz = DateFormControlService;
-exports.ɵbc = DateIOService;
-exports.ɵy = DateNavigationService;
-exports.ɵbd = DatepickerEnabledService;
-exports.ɵbg = DatepickerFocusService;
-exports.ɵbb = LocaleHelperService;
-exports.ɵbf = ViewManagerService;
-exports.ɵdi = ResponsiveNavigationProvider;
-exports.ɵdh = ResponsiveNavigationService;
-exports.ɵds = ActiveOompaLoompa;
-exports.ɵdr = TabsWillyWonka;
-exports.ɵdm = AriaService;
-exports.ɵdq = TabsService;
-exports.ɵdn = TABS_ID;
-exports.ɵdp = TABS_ID_PROVIDER;
-exports.ɵdo = tokenFactory$1;
-exports.ɵdv = VerticalNavGroupRegistrationService;
-exports.ɵdw = VerticalNavGroupService;
-exports.ɵdu = VerticalNavIconService;
-exports.ɵdt = VerticalNavService;
-exports.ɵdf = GHOST_PAGE_ANIMATION;
+exports.ɵdb = ButtonInGroupService;
+exports.ɵcq = DatagridRowExpandAnimation;
+exports.ɵcn = ActionableOompaLoompa;
+exports.ɵcl = DatagridWillyWonka;
+exports.ɵcp = ExpandableOompaLoompa;
+exports.ɵby = ClrDatagridColumnToggleButton;
+exports.ɵbx = ClrDatagridColumnToggleTitle;
+exports.ɵca = DatagridDetailRegisterer;
+exports.ɵbz = ClrDatagridItemsTrackBy;
+exports.ɵbs = ColumnToggleButtonsService;
+exports.ɵbv = CustomFilter;
+exports.ɵbu = DragDispatcher;
+exports.ɵbj = FiltersProvider;
+exports.ɵbp = ExpandableRowsCount;
+exports.ɵbq = HideableColumnService;
+exports.ɵbi = Items;
+exports.ɵbk = Page;
+exports.ɵbo = RowActionService;
+exports.ɵbh = Selection;
+exports.ɵbm = Sort;
+exports.ɵbl = StateDebouncer;
+exports.ɵbr = StateProvider;
+exports.ɵci = DatagridBodyRenderer;
+exports.ɵck = DatagridCellRenderer;
+exports.ɵcf = DatagridColumnResizer;
+exports.ɵcd = DomAdapter;
+exports.ɵch = DatagridHeadRenderer;
+exports.ɵce = DatagridHeaderRenderer;
+exports.ɵcc = DatagridMainRenderer;
+exports.ɵcb = domAdapterFactory;
+exports.ɵbn = DatagridRenderOrganizer;
+exports.ɵcj = DatagridRowRenderer;
+exports.ɵcg = DatagridTableRenderer;
+exports.ɵbt = DatagridFilterRegistrar;
+exports.ɵcs = StackControl;
+exports.ɵct = AbstractTreeSelection;
+exports.ɵcv = clrTreeSelectionProviderFactory;
+exports.ɵcu = TreeSelectionService;
+exports.ɵo = AlertIconAndTypesService;
+exports.ɵp = MultiAlertService;
+exports.ɵdw = IfErrorService;
+exports.ɵdz = ControlClassService;
+exports.ɵx = ControlIdService;
+exports.ɵdy = LayoutService;
+exports.ɵdx = NgControlService;
+exports.ɵbb = WrappedFormControl;
+exports.ɵw = DateFormControlService;
+exports.ɵz = DateIOService;
+exports.ɵv = DateNavigationService;
+exports.ɵba = DatepickerEnabledService;
+exports.ɵbd = DatepickerFocusService;
+exports.ɵy = LocaleHelperService;
+exports.ɵbc = ViewManagerService;
+exports.ɵdd = ResponsiveNavigationProvider;
+exports.ɵdc = ResponsiveNavigationService;
+exports.ɵdn = ActiveOompaLoompa;
+exports.ɵdm = TabsWillyWonka;
+exports.ɵdh = AriaService;
+exports.ɵdl = TabsService;
+exports.ɵdi = TABS_ID;
+exports.ɵdk = TABS_ID_PROVIDER;
+exports.ɵdj = tokenFactory$1;
+exports.ɵdq = VerticalNavGroupRegistrationService;
+exports.ɵdr = VerticalNavGroupService;
+exports.ɵdp = VerticalNavIconService;
+exports.ɵdo = VerticalNavService;
+exports.ɵda = GHOST_PAGE_ANIMATION;
 exports.ɵi = AbstractPopover;
 exports.ɵb = POPOVER_DIRECTIVES;
 exports.ɵh = POPOVER_HOST_ANCHOR;
@@ -12182,40 +12187,35 @@ exports.ɵa = ClrCommonPopoverModule;
 exports.ɵg = ROOT_DROPDOWN_PROVIDER;
 exports.ɵe = RootDropdownService;
 exports.ɵf = clrRootDropdownFactory;
-exports.ɵcr = OompaLoompa;
-exports.ɵcp = WillyWonka;
+exports.ɵco = OompaLoompa;
+exports.ɵcm = WillyWonka;
 exports.ɵj = ClrConditionalModule;
-exports.ɵl = IfActiveDirective;
-exports.ɵn = IF_ACTIVE_ID;
-exports.ɵp = IF_ACTIVE_ID_PROVIDER;
-exports.ɵq = IfActiveService;
-exports.ɵo = tokenFactory;
-exports.ɵm = IfOpenDirective;
+exports.ɵk = IF_ACTIVE_ID;
+exports.ɵm = IF_ACTIVE_ID_PROVIDER;
+exports.ɵn = IfActiveService;
+exports.ɵl = tokenFactory;
 exports.ɵd = IfOpenService;
-exports.ɵk = CONDITIONAL_DIRECTIVES;
-exports.ɵcu = ClrIfExpandModule;
-exports.ɵcw = IfExpanded;
-exports.ɵcv = EXPAND_DIRECTIVES;
-exports.ɵbz = Expand;
-exports.ɵx = FocusTrapDirective;
-exports.ɵv = ClrFocusTrapModule;
-exports.ɵw = FOCUS_TRAP_DIRECTIVES;
-exports.ɵu = EmptyAnchor;
-exports.ɵt = ClrHostWrappingModule;
-exports.ɵdb = UNIQUE_ID;
-exports.ɵdd = UNIQUE_ID_PROVIDER;
-exports.ɵdc = uniqueIdFactory;
-exports.ɵbi = OUSTIDE_CLICK_DIRECTIVES;
-exports.ɵbj = OutsideClick;
-exports.ɵbh = ClrOutsideClickModule;
-exports.ɵde = ScrollingService;
-exports.ɵdk = TEMPLATE_REF_DIRECTIVES;
-exports.ɵdl = TemplateRefContainer;
-exports.ɵdj = ClrTemplateRefModule;
-exports.ɵdz = ButtonHubService;
-exports.ɵea = HeaderActionService;
-exports.ɵdy = PageCollectionService;
-exports.ɵdx = WizardNavigationService;
+exports.ɵcr = ClrIfExpandModule;
+exports.ɵbw = Expand;
+exports.ɵu = FocusTrapDirective;
+exports.ɵs = ClrFocusTrapModule;
+exports.ɵt = FOCUS_TRAP_DIRECTIVES;
+exports.ɵr = EmptyAnchor;
+exports.ɵq = ClrHostWrappingModule;
+exports.ɵcw = UNIQUE_ID;
+exports.ɵcy = UNIQUE_ID_PROVIDER;
+exports.ɵcx = uniqueIdFactory;
+exports.ɵbf = OUSTIDE_CLICK_DIRECTIVES;
+exports.ɵbg = OutsideClick;
+exports.ɵbe = ClrOutsideClickModule;
+exports.ɵcz = ScrollingService;
+exports.ɵdf = TEMPLATE_REF_DIRECTIVES;
+exports.ɵdg = TemplateRefContainer;
+exports.ɵde = ClrTemplateRefModule;
+exports.ɵdu = ButtonHubService;
+exports.ɵdv = HeaderActionService;
+exports.ɵdt = PageCollectionService;
+exports.ɵds = WizardNavigationService;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

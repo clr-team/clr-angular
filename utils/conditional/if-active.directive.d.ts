@@ -1,6 +1,6 @@
 import { EventEmitter, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { IfActiveService } from './if-active.service';
-export declare class IfActiveDirective implements OnDestroy {
+export declare class ClrIfActive implements OnDestroy {
     private ifActiveService;
     private id;
     private template;

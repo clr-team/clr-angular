@@ -1,6 +1,6 @@
 import { EventEmitter, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { IfOpenService } from './if-open.service';
-export declare class IfOpenDirective implements OnDestroy {
+export declare class ClrIfOpen implements OnDestroy {
     private ifOpenService;
     private template;
     private container;
