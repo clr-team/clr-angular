@@ -835,7 +835,7 @@ var ClrLoadingButton = /** @class */ (function () {
         this.clrLoadingChange = new core.EventEmitter(false);
     }
     ClrLoadingButton.prototype.loadingStateChange = function (state$$1) {
-        if (state$$1 == this.state) {
+        if (state$$1 === this.state) {
             return;
         }
         this.state = state$$1;
