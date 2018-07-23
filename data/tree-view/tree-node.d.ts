@@ -25,5 +25,9 @@ export declare class ClrTreeNode extends AbstractTreeSelection implements OnDest
     readonly caretDirection: string;
     expanded: boolean;
     readonly state: string;
+    readonly treeNodeRole: string;
+    readonly rootAriaMultiSelectable: boolean;
+    readonly ariaSelected: boolean;
+    readonly ariaTreeNodeChildrenRole: string;
     ngOnDestroy(): void;
 }

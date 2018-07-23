@@ -11236,6 +11236,35 @@ class ClrTreeNode extends AbstractTreeSelection {
     /**
      * @return {?}
      */
+    get treeNodeRole() {
+        return this.parent ? 'treeitem' : 'tree';
+    }
+    /**
+     * @return {?}
+     */
+    get rootAriaMultiSelectable() {
+        if (this.parent || !this.selectable) {
+            return null;
+        }
+        else {
+            return true;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    get ariaSelected() {
+        return this.selectable ? this.selected : null;
+    }
+    /**
+     * @return {?}
+     */
+    get ariaTreeNodeChildrenRole() {
+        return this.children.length > 0 ? 'group' : null;
+    }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         if (this.parent) {
             this.parent.unregister(this);
@@ -11256,7 +11285,8 @@ ClrTreeNode.decorators = [
         type="button"
         class="clr-treenode-caret"
         (click)="toggleExpand()"
-        *ngIf="nodeExpand.expandable && !nodeExpand.loading">
+        *ngIf="nodeExpand.expandable && !nodeExpand.loading"
+        [attr.aria-expanded]="nodeExpand.expanded">
         <clr-icon
             class="clr-treenode-caret-icon"
             shape="caret"
@@ -11280,7 +11310,8 @@ ClrTreeNode.decorators = [
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
 <div
     class="clr-treenode-children"
-    [@childNodesState]="state">
+    [@childNodesState]="state"
+    [attr.role]="ariaTreeNodeChildrenRole">
     <ng-content select="clr-tree-node"></ng-content>
     <ng-content select="[clrIfExpanded]"></ng-content>
 </div>
@@ -11302,7 +11333,7 @@ ClrTreeNode.decorators = [
                         transition('expanded <=> collapsed', animate('0.2s ease-in-out')),
                     ]),
                 ],
-                host: { class: 'clr-tree-node' },
+                host: { '[class.clr-tree-node]': 'true' },
             },] },
 ];
 /** @nocollapse */
@@ -11317,6 +11348,9 @@ ClrTreeNode.propDecorators = {
     "nodeSelectedChange": [{ type: Output, args: ['clrSelectedChange',] },],
     "nodeIndeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
     "nodeIndeterminateChanged": [{ type: Output, args: ['clrIndeterminateChange',] },],
+    "treeNodeRole": [{ type: HostBinding, args: ['attr.role',] },],
+    "rootAriaMultiSelectable": [{ type: HostBinding, args: ['attr.aria-multiselectable',] },],
+    "ariaSelected": [{ type: HostBinding, args: ['attr.aria-selected',] },],
 };
 
 /**

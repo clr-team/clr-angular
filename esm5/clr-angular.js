@@ -7087,6 +7087,39 @@ var ClrTreeNode = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrTreeNode.prototype, "treeNodeRole", {
+        get: function () {
+            return this.parent ? 'treeitem' : 'tree';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrTreeNode.prototype, "rootAriaMultiSelectable", {
+        get: function () {
+            if (this.parent || !this.selectable) {
+                return null;
+            }
+            else {
+                return true;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrTreeNode.prototype, "ariaSelected", {
+        get: function () {
+            return this.selectable ? this.selected : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrTreeNode.prototype, "ariaTreeNodeChildrenRole", {
+        get: function () {
+            return this.children.length > 0 ? 'group' : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     ClrTreeNode.prototype.ngOnDestroy = function () {
         if (this.parent) {
             this.parent.unregister(this);
@@ -7097,7 +7130,7 @@ var ClrTreeNode = /** @class */ (function (_super) {
 ClrTreeNode.decorators = [
     { type: Component, args: [{
                 selector: 'clr-tree-node',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"clr-tree-node-content-container\">\n    <button\n        type=\"button\"\n        class=\"clr-treenode-caret\"\n        (click)=\"toggleExpand()\"\n        *ngIf=\"nodeExpand.expandable && !nodeExpand.loading\">\n        <clr-icon\n            class=\"clr-treenode-caret-icon\"\n            shape=\"caret\"\n            [attr.dir]=\"caretDirection\"></clr-icon>\n    </button>\n    <div class=\"clr-treenode-spinner-container\" *ngIf=\"nodeExpand.expandable && nodeExpand.loading\">\n        <span class=\"clr-treenode-spinner spinner\">\n            Loading...\n        </span>\n    </div>\n    <clr-checkbox\n        class=\"clr-treenode-checkbox\"\n        *ngIf=\"selectable\"\n        [(ngModel)]=\"selected\"\n        [(clrIndeterminate)]=\"indeterminate\"\n        [clrAriaLabeledBy]=\"nodeId\"></clr-checkbox>\n    <div class=\"clr-treenode-content\" [id]=\"nodeId\">\n        <ng-content></ng-content>\n    </div>\n</div>\n<!-- FIXME: remove this string concatenation when boolean states are supported -->\n<div\n    class=\"clr-treenode-children\"\n    [@childNodesState]=\"state\">\n    <ng-content select=\"clr-tree-node\"></ng-content>\n    <ng-content select=\"[clrIfExpanded]\"></ng-content>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"clr-tree-node-content-container\">\n    <button\n        type=\"button\"\n        class=\"clr-treenode-caret\"\n        (click)=\"toggleExpand()\"\n        *ngIf=\"nodeExpand.expandable && !nodeExpand.loading\"\n        [attr.aria-expanded]=\"nodeExpand.expanded\">\n        <clr-icon\n            class=\"clr-treenode-caret-icon\"\n            shape=\"caret\"\n            [attr.dir]=\"caretDirection\"></clr-icon>\n    </button>\n    <div class=\"clr-treenode-spinner-container\" *ngIf=\"nodeExpand.expandable && nodeExpand.loading\">\n        <span class=\"clr-treenode-spinner spinner\">\n            Loading...\n        </span>\n    </div>\n    <clr-checkbox\n        class=\"clr-treenode-checkbox\"\n        *ngIf=\"selectable\"\n        [(ngModel)]=\"selected\"\n        [(clrIndeterminate)]=\"indeterminate\"\n        [clrAriaLabeledBy]=\"nodeId\"></clr-checkbox>\n    <div class=\"clr-treenode-content\" [id]=\"nodeId\">\n        <ng-content></ng-content>\n    </div>\n</div>\n<!-- FIXME: remove this string concatenation when boolean states are supported -->\n<div\n    class=\"clr-treenode-children\"\n    [@childNodesState]=\"state\"\n    [attr.role]=\"ariaTreeNodeChildrenRole\">\n    <ng-content select=\"clr-tree-node\"></ng-content>\n    <ng-content select=\"[clrIfExpanded]\"></ng-content>\n</div>\n",
                 providers: [
                     Expand,
                     { provide: LoadingListener, useExisting: Expand },
@@ -7115,7 +7148,7 @@ ClrTreeNode.decorators = [
                         transition('expanded <=> collapsed', animate('0.2s ease-in-out')),
                     ]),
                 ],
-                host: { class: 'clr-tree-node' },
+                host: { '[class.clr-tree-node]': 'true' },
             },] },
 ];
 ClrTreeNode.ctorParameters = function () { return [
@@ -7129,6 +7162,9 @@ ClrTreeNode.propDecorators = {
     "nodeSelectedChange": [{ type: Output, args: ['clrSelectedChange',] },],
     "nodeIndeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
     "nodeIndeterminateChanged": [{ type: Output, args: ['clrIndeterminateChange',] },],
+    "treeNodeRole": [{ type: HostBinding, args: ['attr.role',] },],
+    "rootAriaMultiSelectable": [{ type: HostBinding, args: ['attr.aria-multiselectable',] },],
+    "ariaSelected": [{ type: HostBinding, args: ['attr.aria-selected',] },],
 };
 var CLR_TREE_VIEW_DIRECTIVES = [ClrTreeNode];
 var ClrTreeViewModule = /** @class */ (function () {
