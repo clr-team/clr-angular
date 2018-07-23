@@ -14,7 +14,7 @@ export declare class ClrInputContainer implements DynamicWrapper, OnDestroy {
     private ifErrorService;
     private layoutService;
     private controlClassService;
-    subscription: Subscription;
+    subscriptions: Subscription[];
     invalid: boolean;
     _dynamic: boolean;
     label: ClrLabel;

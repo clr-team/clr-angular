@@ -44,6 +44,7 @@ export { MultiAlertService as ɵp } from './emphasis/alert/providers/multi-alert
 export { IfErrorService as ɵdw } from './forms/common/if-error/if-error.service';
 export { ControlClassService as ɵdz } from './forms/common/providers/control-class.service';
 export { ControlIdService as ɵx } from './forms/common/providers/control-id.service';
+export { FocusService as ɵea } from './forms/common/providers/focus.service';
 export { LayoutService as ɵdy } from './forms/common/providers/layout.service';
 export { NgControlService as ɵdx } from './forms/common/providers/ng-control.service';
 export { WrappedFormControl as ɵbb } from './forms/common/wrapped-control';

@@ -11573,11 +11573,12 @@ var ClrInputContainer = /** @class */ (function () {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
-        this.subscription = this.ifErrorService.statusChanges.subscribe(function (control) {
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
-        });
+        }));
     }
     ClrInputContainer.prototype.controlClass = function () {
         return this.controlClassService.controlClass(this.invalid, this.addGrid());
@@ -11589,8 +11590,8 @@ var ClrInputContainer = /** @class */ (function () {
         return false;
     };
     ClrInputContainer.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
         }
     };
     return ClrInputContainer;
@@ -11715,17 +11716,209 @@ ClrRadioModule.decorators = [
                 entryComponents: [ClrRadioContainer],
             },] },
 ];
+var FocusService = /** @class */ (function () {
+    function FocusService() {
+        this._focused = new rxjs.BehaviorSubject(false);
+    }
+    Object.defineProperty(FocusService.prototype, "focusChange", {
+        get: function () {
+            return this._focused.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FocusService.prototype, "focused", {
+        set: function (state$$1) {
+            this._focused.next(state$$1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FocusService;
+}());
+FocusService.decorators = [
+    { type: core.Injectable },
+];
+var ToggleService = new core.InjectionToken(undefined);
+function ToggleServiceProvider() {
+    return new rxjs.BehaviorSubject(false);
+}
+var ClrPasswordContainer = /** @class */ (function () {
+    function ClrPasswordContainer(ifErrorService, layoutService, controlClassService, focusService, toggleService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.focusService = focusService;
+        this.toggleService = toggleService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.show = false;
+        this.focus = false;
+        this._toggle = true;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
+            _this.focus = state$$1;
+        }));
+    }
+    Object.defineProperty(ClrPasswordContainer.prototype, "clrToggle", {
+        get: function () {
+            return this._toggle;
+        },
+        set: function (state$$1) {
+            this._toggle = state$$1;
+            if (!state$$1) {
+                this.show = false;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrPasswordContainer.prototype.toggle = function () {
+        this.show = !this.show;
+        this.toggleService.next(this.show);
+    };
+    ClrPasswordContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrPasswordContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrPasswordContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrPasswordContainer;
+}());
+ClrPasswordContainer.decorators = [
+    { type: core.Component, args: [{
+                selector: 'clr-password-container',
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-input-wrapper\">\n        <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n          <ng-content select=\"[clrPassword]\"></ng-content>\n          <clr-icon shape=\"eye\" *ngIf=\"!show && clrToggle\" class=\"clr-input-group-icon-action\" (click)=\"toggle()\"></clr-icon>\n          <clr-icon shape=\"eye-hide\" *ngIf=\"show && clrToggle\" class=\"clr-input-group-icon-action\" (click)=\"toggle()\"></clr-icon>\n        </div>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [
+                    IfErrorService,
+                    NgControlService,
+                    ControlIdService,
+                    ControlClassService,
+                    FocusService,
+                    { provide: ToggleService, useFactory: ToggleServiceProvider },
+                ],
+            },] },
+];
+ClrPasswordContainer.ctorParameters = function () { return [
+    { type: IfErrorService, },
+    { type: LayoutService, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, },
+    { type: FocusService, },
+    { type: rxjs.BehaviorSubject, decorators: [{ type: core.Inject, args: [ToggleService,] },] },
+]; };
+ClrPasswordContainer.propDecorators = {
+    "clrToggle": [{ type: core.Input, args: ['clrToggle',] },],
+    "label": [{ type: core.ContentChild, args: [ClrLabel,] },],
+};
+var ClrPassword = /** @class */ (function (_super) {
+    __extends(ClrPassword, _super);
+    function ClrPassword(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
+        var _this = _super.call(this, ClrPasswordContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        _this.focusService = focusService;
+        _this.type = type;
+        _this.toggleService = toggleService;
+        if (!_this.control) {
+            throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
+        }
+        if (!_this.focusService) {
+            throw new Error('clrPassword requires being wrapped in <clr-password-container>');
+        }
+        if (!_this.type) {
+            renderer.setAttribute(el.nativeElement, 'type', 'password');
+        }
+        controlClassService.className = el.nativeElement.className;
+        _this.subscription = _this.toggleService.subscribe(function (toggle) {
+            renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
+        });
+        return _this;
+    }
+    ClrPassword.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrPassword.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
+    ClrPassword.prototype.onFocus = function () {
+        if (this.focusService) {
+            this.focusService.focused = true;
+        }
+    };
+    ClrPassword.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+        if (this.focusService) {
+            this.focusService.focused = false;
+        }
+    };
+    return ClrPassword;
+}(WrappedFormControl));
+ClrPassword.decorators = [
+    { type: core.Directive, args: [{ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } },] },
+];
+ClrPassword.ctorParameters = function () { return [
+    { type: core.ViewContainerRef, },
+    { type: NgControlService, decorators: [{ type: core.Optional },] },
+    { type: IfErrorService, decorators: [{ type: core.Optional },] },
+    { type: forms.NgControl, decorators: [{ type: core.Optional },] },
+    { type: FocusService, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, },
+    { type: undefined, decorators: [{ type: core.Attribute, args: ['type',] },] },
+    { type: core.Renderer2, },
+    { type: core.ElementRef, },
+    { type: rxjs.BehaviorSubject, decorators: [{ type: core.Inject, args: [ToggleService,] },] },
+]; };
+ClrPassword.propDecorators = {
+    "onFocus": [{ type: core.HostListener, args: ['focus',] },],
+    "onBlur": [{ type: core.HostListener, args: ['blur',] },],
+};
+var ClrPasswordModule = /** @class */ (function () {
+    function ClrPasswordModule() {
+    }
+    return ClrPasswordModule;
+}());
+ClrPasswordModule.decorators = [
+    { type: core.NgModule, args: [{
+                imports: [common.CommonModule, forms.FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrPassword, ClrPasswordContainer],
+                exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
+                entryComponents: [ClrPasswordContainer],
+            },] },
+];
 var ClrTextareaContainer = /** @class */ (function () {
     function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
         var _this = this;
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
-        this.subscription = this.ifErrorService.statusChanges.subscribe(function (control) {
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
-        });
+        }));
     }
     ClrTextareaContainer.prototype.controlClass = function () {
         return this.controlClassService.controlClass(this.invalid, this.addGrid());
@@ -11737,8 +11930,8 @@ var ClrTextareaContainer = /** @class */ (function () {
         return false;
     };
     ClrTextareaContainer.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
         }
     };
     return ClrTextareaContainer;
@@ -11829,10 +12022,11 @@ ClrFormsNextModule.decorators = [
                 exports: [
                     ClrCommonFormsModule,
                     ClrCheckboxNextModule,
+                    ClrDatepickerModule,
                     ClrInputModule,
+                    ClrPasswordModule,
                     ClrTextareaModule,
                     ClrRadioModule,
-                    ClrDatepickerModule,
                 ],
             },] },
 ];
@@ -11992,6 +12186,9 @@ exports.ClrControlHelper = ClrControlHelper;
 exports.ClrLabel = ClrLabel;
 exports.ClrLayout = ClrLayout;
 exports.ClrCommonFormsModule = ClrCommonFormsModule;
+exports.ClrCheckboxNext = ClrCheckboxNext;
+exports.ClrCheckboxContainer = ClrCheckboxContainer;
+exports.ClrCheckboxNextModule = ClrCheckboxNextModule;
 exports.ClrDateContainer = ClrDateContainer;
 exports.ClrDateInput = ClrDateInput;
 exports.ClrDatepickerViewManager = ClrDatepickerViewManager;
@@ -12002,15 +12199,17 @@ exports.ClrCalendar = ClrCalendar;
 exports.ClrDay = ClrDay;
 exports.CLR_DATEPICKER_DIRECTIVES = CLR_DATEPICKER_DIRECTIVES;
 exports.ClrDatepickerModule = ClrDatepickerModule;
-exports.ClrCheckboxNext = ClrCheckboxNext;
-exports.ClrCheckboxContainer = ClrCheckboxContainer;
-exports.ClrCheckboxNextModule = ClrCheckboxNextModule;
 exports.ClrInput = ClrInput;
 exports.ClrInputContainer = ClrInputContainer;
 exports.ClrInputModule = ClrInputModule;
 exports.ClrRadio = ClrRadio;
 exports.ClrRadioContainer = ClrRadioContainer;
 exports.ClrRadioModule = ClrRadioModule;
+exports.ClrPassword = ClrPassword;
+exports.ToggleService = ToggleService;
+exports.ToggleServiceProvider = ToggleServiceProvider;
+exports.ClrPasswordContainer = ClrPasswordContainer;
+exports.ClrPasswordModule = ClrPasswordModule;
 exports.ClrTextarea = ClrTextarea;
 exports.ClrTextareaContainer = ClrTextareaContainer;
 exports.ClrTextareaModule = ClrTextareaModule;
@@ -12191,6 +12390,7 @@ exports.ɵp = MultiAlertService;
 exports.ɵdw = IfErrorService;
 exports.ɵdz = ControlClassService;
 exports.ɵx = ControlIdService;
+exports.ɵea = FocusService;
 exports.ɵdy = LayoutService;
 exports.ɵdx = NgControlService;
 exports.ɵbb = WrappedFormControl;
