@@ -1722,7 +1722,7 @@ var LocaleHelperService = /** @class */ (function () {
         this.initializeLocaleDaysNarrow();
     };
     LocaleHelperService.prototype.initializeLocaleDaysNarrow = function () {
-        var tempArr = common.getLocaleDayNames(this.locale, common.FormStyle.Format, common.TranslationWidth.Narrow).slice();
+        var tempArr = common.getLocaleDayNames(this.locale, common.FormStyle.Standalone, common.TranslationWidth.Narrow).slice();
         var firstDayOfWeek = this.firstDayOfWeek;
         if (firstDayOfWeek > 0) {
             var prevDays = tempArr.splice(0, firstDayOfWeek);
@@ -1731,10 +1731,10 @@ var LocaleHelperService = /** @class */ (function () {
         this._localeDaysNarrow = tempArr;
     };
     LocaleHelperService.prototype.initializeLocaleMonthsAbbreviated = function () {
-        this._localeMonthsAbbreviated = common.getLocaleMonthNames(this.locale, common.FormStyle.Format, common.TranslationWidth.Abbreviated).slice();
+        this._localeMonthsAbbreviated = common.getLocaleMonthNames(this.locale, common.FormStyle.Standalone, common.TranslationWidth.Abbreviated).slice();
     };
     LocaleHelperService.prototype.initializeLocaleMonthsWide = function () {
-        this._localeMonthsWide = common.getLocaleMonthNames(this.locale, common.FormStyle.Format, common.TranslationWidth.Wide).slice();
+        this._localeMonthsWide = common.getLocaleMonthNames(this.locale, common.FormStyle.Standalone, common.TranslationWidth.Wide).slice();
     };
     LocaleHelperService.prototype.initializeFirstDayOfWeek = function () {
         this._firstDayOfWeek = common.getLocaleFirstDayOfWeek(this.locale);
