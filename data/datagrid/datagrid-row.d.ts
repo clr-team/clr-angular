@@ -13,14 +13,12 @@ export declare class ClrDatagridRow implements AfterContentInit {
     expand: Expand;
     hideableColumnService: HideableColumnService;
     id: string;
+    radioId: string;
     SELECTION_TYPE: typeof SelectionType;
-    private readonly ENTER_KEY_CODE;
-    private readonly SPACE_KEY_CODE;
     /**
      * Model of the row, to use for selection
      */
     item: any;
-    role: string;
     constructor(selection: Selection, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, hideableColumnService: HideableColumnService);
     private _selected;
     /**
@@ -32,8 +30,6 @@ export declare class ClrDatagridRow implements AfterContentInit {
     expanded: boolean;
     expandedChange: EventEmitter<boolean>;
     toggleExpand(): void;
-    toggleSelection(): void;
-    keypress(event: KeyboardEvent): void;
     private subscription;
     /*****
      * property dgCells

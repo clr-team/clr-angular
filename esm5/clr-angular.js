@@ -4327,6 +4327,21 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrDatagridColumn.prototype, "ariaSort", {
+        get: function () {
+            switch (this._sortOrder) {
+                default:
+                case ClrDatagridSortOrder.UNSORTED:
+                    return 'none';
+                case ClrDatagridSortOrder.ASC:
+                    return 'ascending';
+                case ClrDatagridSortOrder.DESC:
+                    return 'descending';
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     ClrDatagridColumn.prototype.sort = function (reverse) {
         if (!this.sortable) {
             return;
@@ -4403,7 +4418,12 @@ ClrDatagridColumn.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-column',
                 template: "\n        <div class=\"datagrid-column-flex\">\n            <!-- I'm really not happy with that select since it's not very scalable -->\n            <ng-content select=\"clr-dg-filter, clr-dg-string-filter\"></ng-content>\n\n            <clr-dg-string-filter\n                    *ngIf=\"field && !customFilter\"\n                    [clrDgStringFilter]=\"registered\"\n                    [(clrFilterValue)]=\"filterValue\"></clr-dg-string-filter>\n\n            <ng-template #columnTitle><ng-content></ng-content></ng-template>\n\n            <button class=\"datagrid-column-title\" *ngIf=\"sortable\" (click)=\"sort()\" type=\"button\">\n               <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n            </button>\n\n            <span class=\"datagrid-column-title\" *ngIf=\"!sortable\">\n               <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n            </span>\n\n            <div class=\"datagrid-column-separator\">\n                <button #columnHandle class=\"datagrid-column-handle\" tabindex=\"-1\" type=\"button\"></button>\n                <div #columnHandleTracker class=\"datagrid-column-handle-tracker\"></div>\n            </div>\n        </div>\n    ",
-                host: { '[class.datagrid-column]': 'true', '[class.datagrid-column--hidden]': 'hidden' },
+                host: {
+                    '[class.datagrid-column]': 'true',
+                    '[class.datagrid-column--hidden]': 'hidden',
+                    '[attr.aria-sort]': 'ariaSort',
+                    role: 'columnheader',
+                },
             },] },
 ];
 ClrDatagridColumn.ctorParameters = function () { return [
@@ -4825,7 +4845,11 @@ ClrDatagridCell.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-cell',
                 template: "\n        <ng-content></ng-content>\n    ",
-                host: { '[class.datagrid-cell]': 'true', '[class.datagrid-signpost-trigger]': 'signpost.length > 0' },
+                host: {
+                    '[class.datagrid-cell]': 'true',
+                    '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
+                    role: 'cell',
+                },
             },] },
 ];
 ClrDatagridCell.ctorParameters = function () { return [
@@ -5102,13 +5126,11 @@ var ClrDatagridRow = /** @class */ (function () {
         this.expand = expand;
         this.hideableColumnService = hideableColumnService;
         this.SELECTION_TYPE = SelectionType;
-        this.ENTER_KEY_CODE = 13;
-        this.SPACE_KEY_CODE = 32;
         this._selected = false;
         this.selectedChanged = new EventEmitter(false);
         this.expandedChange = new EventEmitter(false);
         this.id = 'clr-dg-row' + nbRow++;
-        this.role = selection.rowSelectionMode ? 'button' : null;
+        this.radioId = 'clr-dg-row-rd' + nbRow++;
     }
     Object.defineProperty(ClrDatagridRow.prototype, "selected", {
         get: function () {
@@ -5153,32 +5175,6 @@ var ClrDatagridRow = /** @class */ (function () {
             this.expandedChange.emit(this.expanded);
         }
     };
-    ClrDatagridRow.prototype.toggleSelection = function () {
-        if (!this.selection.rowSelectionMode) {
-            return;
-        }
-        switch (this.selection.selectionType) {
-            case SelectionType.None:
-                break;
-            case SelectionType.Single:
-                this.selection.currentSingle = this.item;
-                break;
-            case SelectionType.Multi:
-                this.toggle();
-                break;
-            default:
-                break;
-        }
-    };
-    ClrDatagridRow.prototype.keypress = function (event) {
-        if (!this.selection.rowSelectionMode) {
-            return;
-        }
-        if (event.keyCode === this.ENTER_KEY_CODE || event.keyCode === this.SPACE_KEY_CODE) {
-            event.preventDefault();
-            this.toggleSelection();
-        }
-    };
     ClrDatagridRow.prototype.ngAfterContentInit = function () {
         var _this = this;
         var columnsList = this.hideableColumnService.getColumns();
@@ -5211,11 +5207,12 @@ var ClrDatagridRow = /** @class */ (function () {
 ClrDatagridRow.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-row',
-                template: "\n        <div class=\"datagrid-row-master datagrid-row-flex\">\n            <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n                         class=\"datagrid-select datagrid-fixed-column\">\n                <clr-checkbox [clrChecked]=\"selected\" (clrCheckedChange)=\"toggle($event)\"></clr-checkbox>\n            </clr-dg-cell>\n            <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n                         class=\"datagrid-select datagrid-fixed-column\">\n                <div class=\"radio\">\n                    <input type=\"radio\" [id]=\"id\" [name]=\"selection.id + '-radio'\" [value]=\"item\"\n                           [(ngModel)]=\"selection.currentSingle\" [checked]=\"selection.currentSingle === item\">\n                    <label for=\"{{id}}\"></label>\n                </div>\n            </clr-dg-cell>\n            <clr-dg-cell *ngIf=\"rowActionService.hasActionableRow\"\n                         class=\"datagrid-row-actions datagrid-fixed-column\">\n                <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n            </clr-dg-cell>\n            <clr-dg-cell *ngIf=\"globalExpandable.hasExpandableRow\"\n                         class=\"datagrid-expandable-caret datagrid-fixed-column\">\n                <ng-container *ngIf=\"expand.expandable\">\n                    <button (click)=\"toggleExpand()\" *ngIf=\"!expand.loading\" type=\"button\" class=\"datagrid-expandable-caret-button\">\n                        <clr-icon shape=\"caret\" [attr.dir]=\"expand.expanded?'down':'right'\" class=\"datagrid-expandable-caret-icon\"></clr-icon>\n                    </button>\n                    <div class=\"spinner spinner-sm\" *ngIf=\"expand.loading\"></div>\n                </ng-container>\n            </clr-dg-cell>\n            <ng-content *ngIf=\"!expand.replace || !expand.expanded || expand.loading\"></ng-content>\n\n            <ng-template *ngIf=\"expand.replace && expand.expanded && !expand.loading\"\n                         [ngTemplateOutlet]=\"detail\"></ng-template>\n        </div>\n\n        <ng-template *ngIf=\"!expand.replace && expand.expanded && !expand.loading\"\n                     [ngTemplateOutlet]=\"detail\"></ng-template>\n\n        <!-- \n            We need the \"project into template\" hack because we need this in 2 different places\n            depending on whether the details replace the row or not.\n        -->\n        <ng-template #detail>\n            <ng-content select=\"clr-dg-row-detail\"></ng-content>\n        </ng-template>\n    ",
+                template: "\n    <!--\n      We need to wrap the #rowContent in label element if we are in rowSelectionMode.\n      Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.\n    -->\n    <label class=\"datagrid-row-clickable\" *ngIf=\"selection.rowSelectionMode\">\n      <ng-template [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    </label>\n    \n    <ng-template *ngIf=\"!selection.rowSelectionMode\" [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    \n    <ng-template *ngIf=\"!expand.replace && expand.expanded && !expand.loading\"\n                 [ngTemplateOutlet]=\"detail\"></ng-template>\n    <!-- \n        We need the \"project into template\" hack because we need this in 2 different places\n        depending on whether the details replace the row or not.\n    -->\n    <ng-template #detail>\n        <ng-content select=\"clr-dg-row-detail\"></ng-content>\n    </ng-template>\n\n    <ng-template #rowContent>\n      <div role=\"row\" [id]=\"id\" class=\"datagrid-row-master datagrid-row-flex\">\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <clr-checkbox [clrChecked]=\"selected\" (clrCheckedChange)=\"toggle($event)\"></clr-checkbox>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <div class=\"radio\">\n            <input type=\"radio\" [id]=\"radioId\" [name]=\"selection.id + '-radio'\" [value]=\"item\"\n                   [(ngModel)]=\"selection.currentSingle\" [checked]=\"selection.currentSingle === item\">\n            <label for=\"{{radioId}}\"></label>\n          </div>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"rowActionService.hasActionableRow\"\n                     class=\"datagrid-row-actions datagrid-fixed-column\">\n          <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"globalExpandable.hasExpandableRow\"\n                     class=\"datagrid-expandable-caret datagrid-fixed-column\">\n          <ng-container *ngIf=\"expand.expandable\">\n            <button (click)=\"toggleExpand()\" *ngIf=\"!expand.loading\" type=\"button\" class=\"datagrid-expandable-caret-button\">\n              <clr-icon shape=\"caret\" [attr.dir]=\"expand.expanded?'down':'right'\" class=\"datagrid-expandable-caret-icon\"></clr-icon>\n            </button>\n            <div class=\"spinner spinner-sm\" *ngIf=\"expand.loading\"></div>\n          </ng-container>\n        </clr-dg-cell>\n        <ng-content *ngIf=\"!expand.replace || !expand.expanded || expand.loading\"></ng-content>\n\n        <ng-template *ngIf=\"expand.replace && expand.expanded && !expand.loading\"\n                     [ngTemplateOutlet]=\"detail\"></ng-template>\n      </div>\n    </ng-template>\n\n    ",
                 host: {
                     '[class.datagrid-row]': 'true',
                     '[class.datagrid-selected]': 'selected',
-                    '[attr.tabindex]': 'selection.rowSelectionMode ? 0 : null',
+                    '[attr.aria-owns]': 'id',
+                    role: 'rowgroup',
                 },
                 providers: [Expand, { provide: LoadingListener, useExisting: Expand }],
             },] },
@@ -5229,13 +5226,10 @@ ClrDatagridRow.ctorParameters = function () { return [
 ]; };
 ClrDatagridRow.propDecorators = {
     "item": [{ type: Input, args: ['clrDgItem',] },],
-    "role": [{ type: HostBinding, args: ['attr.role',] },],
     "selected": [{ type: Input, args: ['clrDgSelected',] },],
     "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
     "expanded": [{ type: Input, args: ['clrDgExpanded',] },],
     "expandedChange": [{ type: Output, args: ['clrDgExpandedChange',] },],
-    "toggleSelection": [{ type: HostListener, args: ['click',] },],
-    "keypress": [{ type: HostListener, args: ['keypress', ['$event'],] },],
     "dgCells": [{ type: ContentChildren, args: [ClrDatagridCell,] },],
 };
 var ColumnToggleButtonsService = /** @class */ (function () {
@@ -5460,7 +5454,7 @@ var ClrDatagrid = /** @class */ (function () {
 ClrDatagrid.decorators = [
     { type: Component, args: [{
                 selector: 'clr-datagrid',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-overlay-wrapper\">\n    <div class=\"datagrid-scroll-wrapper\">\n        <div class=\"datagrid\" #datagrid>\n            <clr-dg-table-wrapper class=\"datagrid-table-wrapper\">\n                <div clrDgHead class=\"datagrid-head\">\n                    <div class=\"datagrid-row datagrid-row-flex\">\n                        <!-- header for datagrid where you can select multiple rows -->\n                        <div class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\">\n                        <span class=\"datagrid-column-title\">\n                            <clr-checkbox [(ngModel)]=\"allSelected\"></clr-checkbox>\n                        </span>\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for datagrid where you can select one row only -->\n                        <div class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for single row action; only display if we have at least one actionable row in datagrid -->\n                        <div class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                             *ngIf=\"rowActionService.hasActionableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for carets; only display if we have at least one expandable row in datagrid -->\n                        <div class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                             *ngIf=\"expandableRows.hasExpandableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <ng-content select=\"clr-dg-column\"></ng-content>\n                    </div>\n                </div>\n\n                <ng-template *ngIf=\"iterator\"\n                             ngFor [ngForOf]=\"items.displayed\" [ngForTrackBy]=\"items.trackBy\"\n                             [ngForTemplate]=\"iterator.template\"></ng-template>\n                <ng-content *ngIf=\"!iterator\"></ng-content>\n\n                <!-- Custom placeholder overrides the default empty one -->\n                <ng-content select=\"clr-dg-placeholder\"></ng-content>\n                <clr-dg-placeholder *ngIf=\"!placeholder\"></clr-dg-placeholder>\n            </clr-dg-table-wrapper>\n\n            <!--\n                This is not inside the table because there is no good way of having a single column span\n                everything when using custom elements with display:table-cell.\n            -->\n            <ng-content select=\"clr-dg-footer\"></ng-content>\n        </div>\n    </div>\n    <div class=\"datagrid-spinner\" *ngIf=\"loading\">\n        <div class=\"spinner\">Loading...</div>\n    </div>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-overlay-wrapper\">\n    <div class=\"datagrid-scroll-wrapper\">\n        <div class=\"datagrid\" #datagrid>\n            <clr-dg-table-wrapper class=\"datagrid-table-wrapper\" role=\"grid\">\n                <div clrDgHead class=\"datagrid-head\" role=\"rowgroup\">\n                    <div role=\"row\" class=\"datagrid-row datagrid-row-flex\">\n                        <!-- header for datagrid where you can select multiple rows -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\">\n                        <span class=\"datagrid-column-title\">\n                            <clr-checkbox [(ngModel)]=\"allSelected\"></clr-checkbox>\n                        </span>\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for datagrid where you can select one row only -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for single row action; only display if we have at least one actionable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                             *ngIf=\"rowActionService.hasActionableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for carets; only display if we have at least one expandable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                             *ngIf=\"expandableRows.hasExpandableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <ng-content select=\"clr-dg-column\"></ng-content>\n                    </div>\n                </div>\n\n                <ng-template *ngIf=\"iterator\"\n                             ngFor [ngForOf]=\"items.displayed\" [ngForTrackBy]=\"items.trackBy\"\n                             [ngForTemplate]=\"iterator.template\"></ng-template>\n                <ng-content *ngIf=\"!iterator\"></ng-content>\n\n                <!-- Custom placeholder overrides the default empty one -->\n                <ng-content select=\"clr-dg-placeholder\"></ng-content>\n                <clr-dg-placeholder *ngIf=\"!placeholder\"></clr-dg-placeholder>\n            </clr-dg-table-wrapper>\n\n            <!--\n                This is not inside the table because there is no good way of having a single column span\n                everything when using custom elements with display:table-cell.\n            -->\n            <ng-content select=\"clr-dg-footer\"></ng-content>\n        </div>\n    </div>\n    <div class=\"datagrid-spinner\" *ngIf=\"loading\">\n        <div class=\"spinner\">Loading...</div>\n    </div>\n</div>\n",
                 providers: [
                     Selection,
                     Sort,
@@ -6498,7 +6492,7 @@ var DatagridTableRenderer = /** @class */ (function () {
 DatagridTableRenderer.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-table-wrapper',
-                template: "\n        <ng-template #head><ng-content select=\"[clrDgHead]\"></ng-content></ng-template>\n        <ng-container #outside></ng-container>\n        <div clrDgBody class=\"datagrid-body\">\n            <ng-container #inside></ng-container>\n            <ng-content></ng-content>\n        </div>\n    ",
+                template: "\n        <ng-template #head><ng-content select=\"[clrDgHead]\"></ng-content></ng-template>\n        <ng-container #outside></ng-container>\n        <div clrDgBody class=\"datagrid-body\" role=\"rowgroup\">\n            <ng-container #inside></ng-container>\n            <ng-content></ng-content>\n        </div>\n    ",
             },] },
 ];
 DatagridTableRenderer.ctorParameters = function () { return [

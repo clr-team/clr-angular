@@ -69,6 +69,7 @@ export declare class ClrDatagridColumn extends DatagridFilterRegistrar<DatagridS
      */
     private _sortOrder;
     sortOrder: ClrDatagridSortOrder;
+    readonly ariaSort: string;
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
     /**
      * Sorts the datagrid based on this column
