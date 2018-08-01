@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import { FiltersProvider } from './filters';
 import { Page } from './page';
 import { Sort } from './sort';
-export declare class Items {
+export declare class Items<T = any> {
     private _filters;
     private _sort;
     private _page;
-    constructor(_filters: FiltersProvider, _sort: Sort, _page: Page);
+    constructor(_filters: FiltersProvider<T>, _sort: Sort<T>, _page: Page);
     /**
      * Indicates if the data is currently loading
      */
@@ -15,7 +15,7 @@ export declare class Items {
     /**
      * Tracking function to identify objects. Default is reference equality.
      */
-    trackBy: TrackByFunction<any>;
+    trackBy: TrackByFunction<T>;
     /**
      * Subscriptions to the other providers changes.
      */
@@ -37,7 +37,7 @@ export declare class Items {
      * List of all items in the datagrid
      */
     private _all;
-    all: any[];
+    all: T[];
     /**
      * Manually recompute the list of displayed items
      */
@@ -50,16 +50,16 @@ export declare class Items {
      * List of items currently displayed
      */
     private _displayed;
-    readonly displayed: any[];
+    readonly displayed: T[];
     /**
      * The Observable that lets other classes subscribe to items changes
      */
     private _change;
     private emitChange();
-    readonly change: Observable<any[]>;
+    readonly change: Observable<T[]>;
     private _allChanges;
     private emitAllChanges(items);
-    readonly allChanges: Observable<any[]>;
+    readonly allChanges: Observable<T[]>;
     /**
      * Checks if we don't have data to process yet, to abort early operations
      */

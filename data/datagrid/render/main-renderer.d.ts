@@ -6,14 +6,14 @@ import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare const domAdapterFactory: (platformId: Object) => DomAdapter | NoopDomAdapter;
-export declare class DatagridMainRenderer implements AfterContentInit, AfterViewChecked, OnDestroy {
+export declare class DatagridMainRenderer<T = any> implements AfterContentInit, AfterViewChecked, OnDestroy {
     private organizer;
     private items;
     private page;
     private domAdapter;
     private el;
     private renderer;
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2);
     headers: QueryList<DatagridHeaderRenderer>;
     ngAfterContentInit(): void;
     ngAfterViewChecked(): void;

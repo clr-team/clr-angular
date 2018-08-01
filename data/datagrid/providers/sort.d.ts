@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
 import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 import { StateDebouncer } from './state-debouncer.provider';
-export declare class Sort {
+export declare class Sort<T = any> {
     private stateDebouncer;
     constructor(stateDebouncer: StateDebouncer);
     /**
      * Currently active comparator
      */
     private _comparator;
-    comparator: ClrDatagridComparatorInterface<any>;
+    comparator: ClrDatagridComparatorInterface<T>;
     /**
      * Ascending order if false, descending if true
      */
@@ -19,7 +19,7 @@ export declare class Sort {
      */
     private _change;
     private emitChange();
-    readonly change: Observable<Sort>;
+    readonly change: Observable<Sort<T>>;
     /**
      * Sets a comparator as the current one, or toggles reverse if the comparator is already used. The
      * optional forceReverse input parameter allows to override that toggling behavior by sorting in
@@ -27,7 +27,7 @@ export declare class Sort {
      *
      * @memberof Sort
      */
-    toggle(sortBy: ClrDatagridComparatorInterface<any>, forceReverse?: boolean): void;
+    toggle(sortBy: ClrDatagridComparatorInterface<T>, forceReverse?: boolean): void;
     /**
      * Clears the current sorting order
      */
@@ -35,5 +35,5 @@ export declare class Sort {
     /**
      * Compares two objects according to the current comparator
      */
-    compare(a: any, b: any): number;
+    compare(a: T, b: T): number;
 }

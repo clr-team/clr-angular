@@ -7,10 +7,10 @@ import { DragDispatcher } from './providers/drag-dispatcher';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
-export declare class ClrDatagridColumn extends DatagridFilterRegistrar<DatagridStringFilterImpl> {
+export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> {
     private _sort;
     private _dragDispatcher;
-    constructor(_sort: Sort, filters: FiltersProvider, _dragDispatcher: DragDispatcher);
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, _dragDispatcher: DragDispatcher);
     /**
      * @property columnId
      *
@@ -45,7 +45,7 @@ export declare class ClrDatagridColumn extends DatagridFilterRegistrar<DatagridS
      * ClrDatagridComparatorInterface to use when sorting the column
      */
     private _sortBy;
-    sortBy: ClrDatagridComparatorInterface<any> | string;
+    sortBy: ClrDatagridComparatorInterface<T> | string;
     /**
      * Indicates if the column is sortable
      */

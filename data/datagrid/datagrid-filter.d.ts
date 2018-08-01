@@ -10,8 +10,8 @@ import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
  * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
  * since it can be anything (not just a text input).
  */
-export declare class ClrDatagridFilter extends DatagridFilterRegistrar<ClrDatagridFilterInterface<any>> implements CustomFilter {
-    constructor(_filters: FiltersProvider);
+export declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter {
+    constructor(_filters: FiltersProvider<T>);
     anchorPoint: Point;
     popoverPoint: Point;
     popoverOptions: PopoverOptions;
@@ -21,7 +21,7 @@ export declare class ClrDatagridFilter extends DatagridFilterRegistrar<ClrDatagr
     private _open;
     open: boolean;
     openChanged: EventEmitter<boolean>;
-    customFilter: ClrDatagridFilterInterface<any> | RegisteredFilter<ClrDatagridFilterInterface<any>>;
+    customFilter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>;
     /**
      * Indicates if the filter is currently active
      */

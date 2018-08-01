@@ -5,8 +5,8 @@ export declare class ColumnToggleButtonsService {
     buttons: TemplateRef<any>;
     selectAllDisabled: boolean;
     private _okButtonClicked;
-    readonly okButtonClicked: Observable<any>;
+    readonly okButtonClicked: Observable<void>;
     private _selectAllButtonClicked;
-    readonly selectAllButtonClicked: Observable<any>;
+    readonly selectAllButtonClicked: Observable<void>;
     buttonClicked(type: ColumnToggleButtons): void;
 }

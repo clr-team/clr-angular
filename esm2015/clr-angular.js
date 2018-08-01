@@ -5526,6 +5526,9 @@ Page.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class FiltersProvider {
     /**
      * @param {?} _page
@@ -5640,7 +5643,7 @@ FiltersProvider.ctorParameters = () => [
 ];
 // unsupported: template constraints.
 /**
- * @template F
+ * @template T, F
  */
 class RegisteredFilter {
     /**
@@ -5660,7 +5663,7 @@ class RegisteredFilter {
 // unsupported: template constraints.
 /**
  * @abstract
- * @template F
+ * @template T, F
  */
 class DatagridFilterRegistrar {
     /**
@@ -5683,10 +5686,10 @@ class DatagridFilterRegistrar {
         // If we previously had another filter, we unregister it
         this.deleteFilter();
         if (filter$$1 instanceof RegisteredFilter) {
-            this.registered = /** @type {?} */ (filter$$1);
+            this.registered = filter$$1;
         }
         else if (filter$$1) {
-            this.registered = this.filters.add(/** @type {?} */ (filter$$1));
+            this.registered = this.filters.add(filter$$1);
         }
     }
     /**
@@ -5714,6 +5717,7 @@ class DatagridFilterRegistrar {
  * Custom filter that can be added in any column to override the default object property string filter.
  * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
  * since it can be anything (not just a text input).
+ * @template T
  */
 class ClrDatagridFilter extends DatagridFilterRegistrar {
     /**
@@ -5811,6 +5815,9 @@ ClrDatagridFilter.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class DatagridStringFilterImpl {
     /**
      * @param {?} filterFn
@@ -5885,6 +5892,9 @@ class DatagridStringFilterImpl {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class DatagridStringFilter extends DatagridFilterRegistrar {
     /**
      * @param {?} filters
@@ -5909,7 +5919,7 @@ class DatagridStringFilter extends DatagridFilterRegistrar {
             this.setFilter(value);
         }
         else {
-            this.setFilter(new DatagridStringFilterImpl(/** @type {?} */ (value)));
+            this.setFilter(new DatagridStringFilterImpl(value));
         }
     }
     /**
@@ -6196,6 +6206,7 @@ ExpandableOompaLoompa.ctorParameters = () => [
 /**
  * Generic accessor for deep object properties
  * that can be specified as simple dot-separated strings.
+ * @template T
  */
 class NestedProperty {
     /**
@@ -6231,6 +6242,9 @@ class NestedProperty {
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
  */
 class DatagridPropertyComparator {
     /**
@@ -6282,6 +6296,9 @@ class DatagridPropertyComparator {
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
  */
 class DatagridPropertyStringFilter {
     /**
@@ -6449,6 +6466,9 @@ DragDispatcher.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class Sort {
     /**
      * @param {?} stateDebouncer
@@ -6561,6 +6581,9 @@ Sort.ctorParameters = () => [
  * @suppress {checkTypes} checked by tsc
  */
 let nbCount = 0;
+/**
+ * @template T
+ */
 class ClrDatagridColumn extends DatagridFilterRegistrar {
     /**
      * @param {?} _sort
@@ -6914,6 +6937,9 @@ ClrDatagridColumn.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class Items {
     /**
      * @param {?} _filters
@@ -7121,6 +7147,9 @@ Items.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class ClrDatagridItems {
     /**
      * @param {?} template
@@ -7192,6 +7221,9 @@ ClrDatagridItems.propDecorators = {
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
  */
 class ClrDatagridPlaceholder {
     /**
@@ -7639,6 +7671,9 @@ const SelectionType = {
 SelectionType[SelectionType.None] = "None";
 SelectionType[SelectionType.Single] = "Single";
 SelectionType[SelectionType.Multi] = "Multi";
+/**
+ * @template T
+ */
 class Selection {
     /**
      * @param {?} _items
@@ -7977,6 +8012,9 @@ Selection.ctorParameters = () => [
  * @suppress {checkTypes} checked by tsc
  */
 let nbRow = 0;
+/**
+ * @template T
+ */
 class ClrDatagridRow {
     /**
      * @param {?} selection
@@ -8238,6 +8276,7 @@ ColumnToggleButtonsService.decorators = [
  */
 /**
  * This provider aggregates state changes from the various providers of the Datagrid
+ * @template T
  */
 class StateProvider {
     /**
@@ -8281,15 +8320,15 @@ class StateProvider {
             state$$1.filters = [];
             for (const /** @type {?} */ filter$$1 of activeFilters) {
                 if (filter$$1 instanceof DatagridStringFilterImpl) {
-                    const /** @type {?} */ stringFilter = (/** @type {?} */ (filter$$1)).filterFn;
+                    const /** @type {?} */ stringFilter = filter$$1.filterFn;
                     if (stringFilter instanceof DatagridPropertyStringFilter) {
                         /*
                                                  * Special case again for the default object property filter,
                                                  * we give the property name instead of the full filter object.
                                                  */
                         state$$1.filters.push({
-                            property: (/** @type {?} */ (stringFilter)).prop,
-                            value: (/** @type {?} */ (filter$$1)).value,
+                            property: stringFilter.prop,
+                            value: filter$$1.value,
                         });
                         continue;
                     }
@@ -8314,6 +8353,9 @@ StateProvider.ctorParameters = () => [
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
  */
 class ClrDatagrid {
     /**
@@ -8462,10 +8504,10 @@ class ClrDatagrid {
         this._subscriptions.push(this.stateProvider.change.subscribe(state$$1 => this.refresh.emit(state$$1)));
         this._subscriptions.push(this.selection.change.subscribe(s => {
             if (this.selection.selectionType === SelectionType.Single) {
-                this.singleSelectedChanged.emit(s);
+                this.singleSelectedChanged.emit(/** @type {?} */ (s));
             }
             else if (this.selection.selectionType === SelectionType.Multi) {
-                this.selectedChanged.emit(s);
+                this.selectedChanged.emit(/** @type {?} */ (s));
             }
         }));
     }
@@ -8969,6 +9011,9 @@ DatagridDetailRegisterer.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class ClrDatagridFooter {
     /**
      * @param {?} selection
@@ -9217,6 +9262,9 @@ ClrDatagridHideableColumn.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @template T
+ */
 class ClrDatagridItemsTrackBy {
     /**
      * @param {?} _items
@@ -9452,6 +9500,7 @@ ClrDatagridPagination.propDecorators = {
 /**
  * Generic bland container serving various purposes for Datagrid.
  * For instance, it can help span a text over multiple rows in detail view.
+ * @template T
  */
 class ClrDatagridRowDetail {
     /**
@@ -10006,6 +10055,9 @@ const domAdapterFactory = (platformId) => {
         return new NoopDomAdapter();
     }
 };
+/**
+ * @template T
+ */
 class DatagridMainRenderer {
     /**
      * @param {?} organizer

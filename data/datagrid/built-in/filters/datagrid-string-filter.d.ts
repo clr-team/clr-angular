@@ -6,13 +6,13 @@ import { FiltersProvider, RegisteredFilter } from '../../providers/filters';
 import { DomAdapter } from '../../render/dom-adapter';
 import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 import { DatagridStringFilterImpl } from './datagrid-string-filter-impl';
-export declare class DatagridStringFilter extends DatagridFilterRegistrar<DatagridStringFilterImpl> implements CustomFilter, AfterViewInit {
+export declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit {
     private domAdapter;
-    constructor(filters: FiltersProvider, domAdapter: DomAdapter);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter);
     /**
      * Customizable filter logic based on a search text
      */
-    customStringFilter: ClrDatagridStringFilterInterface<any> | RegisteredFilter<DatagridStringFilterImpl>;
+    customStringFilter: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>;
     /**
      * Indicates if the filter dropdown is open
      */
@@ -24,7 +24,7 @@ export declare class DatagridStringFilter extends DatagridFilterRegistrar<Datagr
     /**
      * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
      */
-    filterContainer: ClrDatagridFilter;
+    filterContainer: ClrDatagridFilter<T>;
     ngAfterViewInit(): void;
     /**
      * Common setter for the input value

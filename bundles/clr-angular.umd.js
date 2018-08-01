@@ -3656,10 +3656,10 @@ var DatagridFilterRegistrar = /** @class */ (function () {
     DatagridFilterRegistrar.prototype.setFilter = function (filter$$1) {
         this.deleteFilter();
         if (filter$$1 instanceof RegisteredFilter) {
-            this.registered = (filter$$1);
+            this.registered = filter$$1;
         }
         else if (filter$$1) {
-            this.registered = this.filters.add((filter$$1));
+            this.registered = this.filters.add(filter$$1);
         }
     };
     DatagridFilterRegistrar.prototype.deleteFilter = function () {
@@ -3793,7 +3793,7 @@ var DatagridStringFilter = /** @class */ (function (_super) {
                 this.setFilter(value);
             }
             else {
-                this.setFilter(new DatagridStringFilterImpl((value)));
+                this.setFilter(new DatagridStringFilterImpl(value));
             }
         },
         enumerable: true,
@@ -5359,11 +5359,11 @@ var StateProvider = /** @class */ (function () {
                     for (var activeFilters_1 = __values(activeFilters), activeFilters_1_1 = activeFilters_1.next(); !activeFilters_1_1.done; activeFilters_1_1 = activeFilters_1.next()) {
                         var filter$$1 = activeFilters_1_1.value;
                         if (filter$$1 instanceof DatagridStringFilterImpl) {
-                            var stringFilter = ((filter$$1)).filterFn;
+                            var stringFilter = filter$$1.filterFn;
                             if (stringFilter instanceof DatagridPropertyStringFilter) {
                                 state$$1.filters.push({
-                                    property: ((stringFilter)).prop,
-                                    value: ((filter$$1)).value,
+                                    property: stringFilter.prop,
+                                    value: filter$$1.value,
                                 });
                                 continue;
                             }
@@ -5495,10 +5495,10 @@ var ClrDatagrid = /** @class */ (function () {
         this._subscriptions.push(this.stateProvider.change.subscribe(function (state$$1) { return _this.refresh.emit(state$$1); }));
         this._subscriptions.push(this.selection.change.subscribe(function (s) {
             if (_this.selection.selectionType === SelectionType.Single) {
-                _this.singleSelectedChanged.emit(s);
+                _this.singleSelectedChanged.emit((s));
             }
             else if (_this.selection.selectionType === SelectionType.Multi) {
-                _this.selectedChanged.emit(s);
+                _this.selectedChanged.emit((s));
             }
         }));
     };

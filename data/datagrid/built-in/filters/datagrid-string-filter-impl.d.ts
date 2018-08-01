@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 import { ClrDatagridFilterInterface } from '../../interfaces/filter.interface';
 import { ClrDatagridStringFilterInterface } from '../../interfaces/string-filter.interface';
-export declare class DatagridStringFilterImpl implements ClrDatagridFilterInterface<any> {
-    filterFn: ClrDatagridStringFilterInterface<any>;
-    constructor(filterFn: ClrDatagridStringFilterInterface<any>);
+export declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
+    filterFn: ClrDatagridStringFilterInterface<T>;
+    constructor(filterFn: ClrDatagridStringFilterInterface<T>);
     /**
      * The Observable required as part of the Filter interface
      */
@@ -29,5 +29,5 @@ export declare class DatagridStringFilterImpl implements ClrDatagridFilterInterf
     /**
      * Tests if an item matches a search text
      */
-    accepts(item: any): boolean;
+    accepts(item: T): boolean;
 }

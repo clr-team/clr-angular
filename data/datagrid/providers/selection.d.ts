@@ -6,13 +6,13 @@ export declare enum SelectionType {
     Single = 1,
     Multi = 2,
 }
-export declare class Selection {
+export declare class Selection<T = any> {
     private _items;
     private _filters;
     id: string;
     private prevSelectionRefs;
     private prevSingleSelectionRef;
-    constructor(_items: Items, _filters: FiltersProvider);
+    constructor(_items: Items<T>, _filters: FiltersProvider<T>);
     clearSelection(): void;
     private _selectionType;
     selectionType: SelectionType;
@@ -34,22 +34,22 @@ export declare class Selection {
      * The current selection in single selection type
      */
     private _currentSingle;
-    currentSingle: any;
+    currentSingle: T;
     /**
      * The current selection
      */
     private _current;
-    current: any[];
+    current: T[];
     /**
      * The Observable that lets other classes subscribe to selection changes
      */
     private _change;
     private emitChange();
-    readonly change: Observable<any[] | any>;
+    readonly change: Observable<T[] | T>;
     /**
      * Checks if an item is currently selected
      */
-    isSelected(item: any): boolean;
+    isSelected(item: T): boolean;
     /**
      * Selects an item
      */
@@ -61,7 +61,7 @@ export declare class Selection {
     /**
      * Selects or deselects an item
      */
-    setSelected(item: any, selected: boolean): void;
+    setSelected(item: T, selected: boolean): void;
     /**
      * Checks if all currently displayed items are selected
      */

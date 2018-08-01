@@ -21,7 +21,7 @@ export declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 export declare class ClrDatagridModule {
 }
 /** @deprecated since 0.11 */
-export interface Datagrid extends ClrDatagrid {
+export interface Datagrid extends ClrDatagrid<any> {
 }
 /** @deprecated since 0.11 */
 export declare const Datagrid: typeof ClrDatagrid;
@@ -36,7 +36,7 @@ export interface DatagridActionOverflow extends ClrDatagridActionOverflow {
 /** @deprecated since 0.11 */
 export declare const DatagridActionOverflow: typeof ClrDatagridActionOverflow;
 /** @deprecated since 0.11 */
-export interface DatagridColumn extends ClrDatagridColumn {
+export interface DatagridColumn extends ClrDatagridColumn<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridColumn: typeof ClrDatagridColumn;
@@ -51,22 +51,22 @@ export interface DatagridHideableColumnDirective extends ClrDatagridHideableColu
 /** @deprecated since 0.11 */
 export declare const DatagridHideableColumnDirective: typeof ClrDatagridHideableColumn;
 /** @deprecated since 0.11 */
-export interface DatagridFilter extends ClrDatagridFilter {
+export interface DatagridFilter extends ClrDatagridFilter<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridFilter: typeof ClrDatagridFilter;
 /** @deprecated since 0.11 */
-export interface DatagridItems extends ClrDatagridItems {
+export interface DatagridItems extends ClrDatagridItems<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridItems: typeof ClrDatagridItems;
 /** @deprecated since 0.11 */
-export interface DatagridRow extends ClrDatagridRow {
+export interface DatagridRow extends ClrDatagridRow<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridRow: typeof ClrDatagridRow;
 /** @deprecated since 0.11 */
-export interface DatagridRowDetail extends ClrDatagridRowDetail {
+export interface DatagridRowDetail extends ClrDatagridRowDetail<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridRowDetail: typeof ClrDatagridRowDetail;
@@ -76,7 +76,7 @@ export interface DatagridCell extends ClrDatagridCell {
 /** @deprecated since 0.11 */
 export declare const DatagridCell: typeof ClrDatagridCell;
 /** @deprecated since 0.11 */
-export interface DatagridFooter extends ClrDatagridFooter {
+export interface DatagridFooter extends ClrDatagridFooter<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridFooter: typeof ClrDatagridFooter;
@@ -86,7 +86,7 @@ export interface DatagridPagination extends ClrDatagridPagination {
 /** @deprecated since 0.11 */
 export declare const DatagridPagination: typeof ClrDatagridPagination;
 /** @deprecated since 0.11 */
-export interface DatagridPlaceholder extends ClrDatagridPlaceholder {
+export interface DatagridPlaceholder extends ClrDatagridPlaceholder<any> {
 }
 /** @deprecated since 0.11 */
 export declare const DatagridPlaceholder: typeof ClrDatagridPlaceholder;
@@ -103,7 +103,7 @@ export interface Comparator<T> extends ClrDatagridComparatorInterface<T> {
 export interface Filter<T> extends ClrDatagridFilterInterface<T> {
 }
 /** @deprecated since 0.11 */
-export interface State extends ClrDatagridStateInterface {
+export interface State extends ClrDatagridStateInterface<any> {
 }
 /** @deprecated since 0.11 */
 export interface StringFilter<T> extends ClrDatagridStringFilterInterface<T> {

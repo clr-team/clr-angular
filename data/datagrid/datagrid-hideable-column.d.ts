@@ -26,7 +26,9 @@ export declare class ClrDatagridHideableColumn {
      * *clrDgHideableColumn={hidden: true}
      *
      */
-    clrDgHideableColumn: any;
+    clrDgHideableColumn: {
+        hidden: boolean;
+    };
     /**
      *
      * @description
@@ -48,5 +50,5 @@ export declare class ClrDatagridHideableColumn {
      * Used the DatagridColumn to get and set an id for this HiddenColumn
      *
      */
-    constructor(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, dgColumn: ClrDatagridColumn);
+    constructor(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, dgColumn: ClrDatagridColumn<any>);
 }

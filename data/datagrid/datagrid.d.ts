@@ -11,15 +11,15 @@ import { RowActionService } from './providers/row-action-service';
 import { Selection, SelectionType } from './providers/selection';
 import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnDestroy {
+export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
     private columnService;
     private organizer;
-    items: Items;
+    items: Items<T>;
     expandableRows: ExpandableRowsCount;
-    selection: Selection;
+    selection: Selection<T>;
     rowActionService: RowActionService;
     private stateProvider;
-    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items, expandableRows: ExpandableRowsCount, selection: Selection, rowActionService: RowActionService, stateProvider: StateProvider);
+    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>);
     SELECTION_TYPE: typeof SelectionType;
     /**
      * Freezes the datagrid while data is loading
@@ -28,7 +28,7 @@ export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnD
     /**
      * Output emitted whenever the data needs to be refreshed, based on user action or external ones
      */
-    refresh: EventEmitter<ClrDatagridStateInterface>;
+    refresh: EventEmitter<ClrDatagridStateInterface<T>>;
     /**
      * Public method to re-trigger the computation of displayed items manually
      */
@@ -36,17 +36,17 @@ export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnD
     /**
      * We grab the smart iterator from projected content
      */
-    iterator: ClrDatagridItems;
+    iterator: ClrDatagridItems<T>;
     /**
      * Array of all selected items
      */
-    selected: any[];
-    selectedChanged: EventEmitter<any[]>;
+    selected: T[];
+    selectedChanged: EventEmitter<T[]>;
     /**
      * Selected item in single-select mode
      */
-    singleSelected: any;
-    singleSelectedChanged: EventEmitter<any>;
+    singleSelected: T;
+    singleSelectedChanged: EventEmitter<T>;
     /**
      * Selection/Deselection on row click mode
      */
@@ -67,17 +67,17 @@ export declare class ClrDatagrid implements AfterContentInit, AfterViewInit, OnD
     /**
      * Custom placeholder detection
      */
-    placeholder: ClrDatagridPlaceholder;
+    placeholder: ClrDatagridPlaceholder<T>;
     /**
      * Hideable Column data source / detection.
      */
-    columns: QueryList<ClrDatagridColumn>;
+    columns: QueryList<ClrDatagridColumn<T>>;
     /**
      * When the datagrid is user-managed without the smart iterator, we get the items displayed
      * by querying the projected content. This is needed to keep track of the models currently
      * displayed, typically for selection.
      */
-    rows: QueryList<ClrDatagridRow>;
+    rows: QueryList<ClrDatagridRow<T>>;
     ngAfterContentInit(): void;
     /**
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
