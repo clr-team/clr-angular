@@ -1097,6 +1097,7 @@ ClrIfActive.propDecorators = {
 var IfOpenService = /** @class */ (function () {
     function IfOpenService() {
         this._openChange = new rxjs.Subject();
+        this._ignoredElementChange = new rxjs.Subject();
     }
     Object.defineProperty(IfOpenService.prototype, "openChange", {
         get: function () {
@@ -1123,6 +1124,16 @@ var IfOpenService = /** @class */ (function () {
         this.originalEvent = event;
         this.open = !this.open;
         delete this.originalEvent;
+    };
+    Object.defineProperty(IfOpenService.prototype, "ignoredElementChange", {
+        get: function () {
+            return this._ignoredElementChange.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    IfOpenService.prototype.registerIgnoredElement = function (element) {
+        this._ignoredElementChange.next(element);
     };
     return IfOpenService;
 }());

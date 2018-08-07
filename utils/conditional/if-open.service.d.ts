@@ -1,3 +1,4 @@
+import { ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 export declare class IfOpenService {
     /********
@@ -44,4 +45,11 @@ export declare class IfOpenService {
      */
     originalEvent: any;
     toggleWithEvent(event: any): void;
+    /**
+     *  Popovers might need to ignore click events on an element
+     *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
+     */
+    private _ignoredElementChange;
+    readonly ignoredElementChange: Observable<ElementRef>;
+    registerIgnoredElement(element: ElementRef): void;
 }

@@ -1590,6 +1590,11 @@ class IfOpenService {
          * implemting the IfOpen structural directive.
          */
         this._openChange = new Subject();
+        /**
+         *  Popovers might need to ignore click events on an element
+         *  (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
+         */
+        this._ignoredElementChange = new Subject();
     }
     /**
      * ******
@@ -1638,6 +1643,19 @@ class IfOpenService {
         this.originalEvent = event;
         this.open = !this.open;
         delete this.originalEvent;
+    }
+    /**
+     * @return {?}
+     */
+    get ignoredElementChange() {
+        return this._ignoredElementChange.asObservable();
+    }
+    /**
+     * @param {?} element
+     * @return {?}
+     */
+    registerIgnoredElement(element) {
+        this._ignoredElementChange.next(element);
     }
 }
 IfOpenService.decorators = [
