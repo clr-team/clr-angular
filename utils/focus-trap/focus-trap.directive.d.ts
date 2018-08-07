@@ -1,14 +1,21 @@
-import { AfterViewInit, ElementRef, Injector, OnDestroy } from '@angular/core';
+import { AfterViewInit, ElementRef, Injector, OnDestroy, Renderer2 } from '@angular/core';
 import { FocusTrapTracker } from './focus-trap-tracker.service';
 export declare class FocusTrapDirective implements AfterViewInit, OnDestroy {
-    elementRef: ElementRef;
+    private el;
+    private injector;
     private focusTrapsTracker;
+    private renderer;
     private platformId;
-    private _previousActiveElement;
+    private previousActiveElement;
     private document;
-    constructor(elementRef: ElementRef, injector: Injector, focusTrapsTracker: FocusTrapTracker, platformId: Object);
+    private topReboundEl;
+    private bottomReboundEl;
+    constructor(el: ElementRef, injector: Injector, focusTrapsTracker: FocusTrapTracker, renderer: Renderer2, platformId: Object);
     onFocusIn(event: any): void;
-    ngAfterViewInit(): void;
+    private createFocusableOffScreenEl();
+    private addReboundEls();
+    private removeReboundEls();
     setPreviousFocus(): void;
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
 }

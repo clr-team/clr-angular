@@ -1802,6 +1802,12 @@ class FocusTrapTracker {
     /**
      * @return {?}
      */
+    get nbFocusTrappers() {
+        return this._previousFocusTraps.length;
+    }
+    /**
+     * @return {?}
+     */
     activatePreviousTrapper() {
         this._current = this._previousFocusTraps.pop();
     }
@@ -1816,26 +1822,76 @@ FocusTrapTracker.decorators = [
  */
 class FocusTrapDirective {
     /**
-     * @param {?} elementRef
+     * @param {?} el
      * @param {?} injector
      * @param {?} focusTrapsTracker
+     * @param {?} renderer
      * @param {?} platformId
      */
-    constructor(elementRef, injector, focusTrapsTracker, platformId) {
-        this.elementRef = elementRef;
+    constructor(el, injector, focusTrapsTracker, renderer, platformId) {
+        this.el = el;
+        this.injector = injector;
         this.focusTrapsTracker = focusTrapsTracker;
+        this.renderer = renderer;
         this.platformId = platformId;
-        this.document = injector.get(DOCUMENT);
+        this.document = this.injector.get(DOCUMENT);
         this.focusTrapsTracker.current = this;
+        this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '0');
     }
     /**
      * @param {?} event
      * @return {?}
      */
     onFocusIn(event) {
-        const /** @type {?} */ nativeElement = this.elementRef.nativeElement;
-        if (this.focusTrapsTracker.current === this && !nativeElement.contains(event.target)) {
+        const /** @type {?} */ nativeElement = this.el.nativeElement;
+        if (this.focusTrapsTracker.current === this && event.target && !nativeElement.contains(event.target)) {
             nativeElement.focus();
+        }
+    }
+    /**
+     * @return {?}
+     */
+    createFocusableOffScreenEl() {
+        const /** @type {?} */ offScreenSpan = this.renderer.createElement('span');
+        this.renderer.setAttribute(offScreenSpan, 'tabindex', '0');
+        this.renderer.addClass(offScreenSpan, 'offscreen-focus-rebounder');
+        return offScreenSpan;
+    }
+    /**
+     * @return {?}
+     */
+    addReboundEls() {
+        // We will add these focus rebounding elements only in the following conditions:
+        // 1. It should be running inside browser platform as it accesses document.body element
+        // 2. We should NOT add them more than once. Hence, we are counting a number of focus trappers
+        //    and only add on the first focus trapper.
+        if (isPlatformBrowser(this.platformId) && this.focusTrapsTracker.nbFocusTrappers === 1) {
+            this.topReboundEl = this.createFocusableOffScreenEl();
+            this.bottomReboundEl = this.createFocusableOffScreenEl();
+            // Add reboundBeforeTrapEl to the document body as the first child
+            this.renderer.insertBefore(this.document.body, this.topReboundEl, this.document.body.firstChild);
+            // Add reboundAfterTrapEl to the document body as the last child
+            this.renderer.appendChild(this.document.body, this.bottomReboundEl);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    removeReboundEls() {
+        if (isPlatformBrowser(this.platformId) &&
+            this.focusTrapsTracker.nbFocusTrappers === 1 &&
+            this.topReboundEl &&
+            this.bottomReboundEl) {
+            this.renderer.removeChild(this.document.body, this.topReboundEl);
+            this.renderer.removeChild(this.document.body, this.bottomReboundEl);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    setPreviousFocus() {
+        if (this.previousActiveElement && this.previousActiveElement.focus) {
+            this.previousActiveElement.focus();
         }
     }
     /**
@@ -1843,23 +1899,15 @@ class FocusTrapDirective {
      */
     ngAfterViewInit() {
         if (isPlatformBrowser(this.platformId)) {
-            this._previousActiveElement = /** @type {?} */ (document.activeElement);
-            const /** @type {?} */ nativeElement = this.elementRef.nativeElement;
-            nativeElement.setAttribute('tabindex', '0');
+            this.previousActiveElement = /** @type {?} */ (this.document.activeElement);
         }
-    }
-    /**
-     * @return {?}
-     */
-    setPreviousFocus() {
-        if (this._previousActiveElement && this._previousActiveElement.focus) {
-            this._previousActiveElement.focus();
-        }
+        this.addReboundEls();
     }
     /**
      * @return {?}
      */
     ngOnDestroy() {
+        this.removeReboundEls();
         this.setPreviousFocus();
         this.focusTrapsTracker.activatePreviousTrapper();
     }
@@ -1872,6 +1920,7 @@ FocusTrapDirective.ctorParameters = () => [
     { type: ElementRef, },
     { type: Injector, },
     { type: FocusTrapTracker, },
+    { type: Renderer2, },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 FocusTrapDirective.propDecorators = {

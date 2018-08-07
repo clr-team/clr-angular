@@ -1152,6 +1152,13 @@ var FocusTrapTracker = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(FocusTrapTracker.prototype, "nbFocusTrappers", {
+        get: function () {
+            return this._previousFocusTraps.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
     FocusTrapTracker.prototype.activatePreviousTrapper = function () {
         this._current = this._previousFocusTraps.pop();
     };
@@ -1161,32 +1168,58 @@ FocusTrapTracker.decorators = [
     { type: Injectable },
 ];
 var FocusTrapDirective = /** @class */ (function () {
-    function FocusTrapDirective(elementRef, injector, focusTrapsTracker, platformId) {
-        this.elementRef = elementRef;
+    function FocusTrapDirective(el, injector, focusTrapsTracker, renderer, platformId) {
+        this.el = el;
+        this.injector = injector;
         this.focusTrapsTracker = focusTrapsTracker;
+        this.renderer = renderer;
         this.platformId = platformId;
-        this.document = injector.get(DOCUMENT);
+        this.document = this.injector.get(DOCUMENT);
         this.focusTrapsTracker.current = this;
+        this.renderer.setAttribute(this.el.nativeElement, 'tabindex', '0');
     }
     FocusTrapDirective.prototype.onFocusIn = function (event) {
-        var nativeElement = this.elementRef.nativeElement;
-        if (this.focusTrapsTracker.current === this && !nativeElement.contains(event.target)) {
+        var nativeElement = this.el.nativeElement;
+        if (this.focusTrapsTracker.current === this && event.target && !nativeElement.contains(event.target)) {
             nativeElement.focus();
+        }
+    };
+    FocusTrapDirective.prototype.createFocusableOffScreenEl = function () {
+        var offScreenSpan = this.renderer.createElement('span');
+        this.renderer.setAttribute(offScreenSpan, 'tabindex', '0');
+        this.renderer.addClass(offScreenSpan, 'offscreen-focus-rebounder');
+        return offScreenSpan;
+    };
+    FocusTrapDirective.prototype.addReboundEls = function () {
+        if (isPlatformBrowser(this.platformId) && this.focusTrapsTracker.nbFocusTrappers === 1) {
+            this.topReboundEl = this.createFocusableOffScreenEl();
+            this.bottomReboundEl = this.createFocusableOffScreenEl();
+            this.renderer.insertBefore(this.document.body, this.topReboundEl, this.document.body.firstChild);
+            this.renderer.appendChild(this.document.body, this.bottomReboundEl);
+        }
+    };
+    FocusTrapDirective.prototype.removeReboundEls = function () {
+        if (isPlatformBrowser(this.platformId) &&
+            this.focusTrapsTracker.nbFocusTrappers === 1 &&
+            this.topReboundEl &&
+            this.bottomReboundEl) {
+            this.renderer.removeChild(this.document.body, this.topReboundEl);
+            this.renderer.removeChild(this.document.body, this.bottomReboundEl);
+        }
+    };
+    FocusTrapDirective.prototype.setPreviousFocus = function () {
+        if (this.previousActiveElement && this.previousActiveElement.focus) {
+            this.previousActiveElement.focus();
         }
     };
     FocusTrapDirective.prototype.ngAfterViewInit = function () {
         if (isPlatformBrowser(this.platformId)) {
-            this._previousActiveElement = (document.activeElement);
-            var nativeElement = this.elementRef.nativeElement;
-            nativeElement.setAttribute('tabindex', '0');
+            this.previousActiveElement = (this.document.activeElement);
         }
-    };
-    FocusTrapDirective.prototype.setPreviousFocus = function () {
-        if (this._previousActiveElement && this._previousActiveElement.focus) {
-            this._previousActiveElement.focus();
-        }
+        this.addReboundEls();
     };
     FocusTrapDirective.prototype.ngOnDestroy = function () {
+        this.removeReboundEls();
         this.setPreviousFocus();
         this.focusTrapsTracker.activatePreviousTrapper();
     };
@@ -1199,6 +1232,7 @@ FocusTrapDirective.ctorParameters = function () { return [
     { type: ElementRef, },
     { type: Injector, },
     { type: FocusTrapTracker, },
+    { type: Renderer2, },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ]; };
 FocusTrapDirective.propDecorators = {
