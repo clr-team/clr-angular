@@ -11715,46 +11715,6 @@ ClrInputModule.decorators = [
                 entryComponents: [ClrInputContainer],
             },] },
 ];
-var ClrRadioContainer = /** @class */ (function () {
-    function ClrRadioContainer() {
-        this._dynamic = false;
-    }
-    return ClrRadioContainer;
-}());
-ClrRadioContainer.decorators = [
-    { type: core.Component, args: [{
-                selector: 'clr-radio-container',
-                template: "\n        <!-- We want the radio input to be before the label, always -->\n        <ng-content select=\"[clrRadio]\"></ng-content>\n        <ng-content></ng-content>\n        <label *ngIf=\"_dynamic\"></label>\n    ",
-                host: { '[class.radio]': 'true' },
-                providers: [ControlIdService],
-            },] },
-];
-var ClrRadio = /** @class */ (function (_super) {
-    __extends(ClrRadio, _super);
-    function ClrRadio(vcr) {
-        return _super.call(this, ClrRadioContainer, vcr) || this;
-    }
-    return ClrRadio;
-}(WrappedFormControl));
-ClrRadio.decorators = [
-    { type: core.Directive, args: [{ selector: '[clrRadio]' },] },
-];
-ClrRadio.ctorParameters = function () { return [
-    { type: core.ViewContainerRef, },
-]; };
-var ClrRadioModule = /** @class */ (function () {
-    function ClrRadioModule() {
-    }
-    return ClrRadioModule;
-}());
-ClrRadioModule.decorators = [
-    { type: core.NgModule, args: [{
-                imports: [common.CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
-                declarations: [ClrRadio, ClrRadioContainer],
-                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer],
-                entryComponents: [ClrRadioContainer],
-            },] },
-];
 var FocusService = /** @class */ (function () {
     function FocusService() {
         this._focused = new rxjs.BehaviorSubject(false);
@@ -11946,6 +11906,158 @@ ClrPasswordModule.decorators = [
                 entryComponents: [ClrPasswordContainer],
             },] },
 ];
+var ClrRadioContainer = /** @class */ (function () {
+    function ClrRadioContainer() {
+        this._dynamic = false;
+    }
+    return ClrRadioContainer;
+}());
+ClrRadioContainer.decorators = [
+    { type: core.Component, args: [{
+                selector: 'clr-radio-container',
+                template: "\n        <!-- We want the radio input to be before the label, always -->\n        <ng-content select=\"[clrRadio]\"></ng-content>\n        <ng-content></ng-content>\n        <label *ngIf=\"_dynamic\"></label>\n    ",
+                host: { '[class.radio]': 'true' },
+                providers: [ControlIdService],
+            },] },
+];
+var ClrRadio = /** @class */ (function (_super) {
+    __extends(ClrRadio, _super);
+    function ClrRadio(vcr) {
+        return _super.call(this, ClrRadioContainer, vcr) || this;
+    }
+    return ClrRadio;
+}(WrappedFormControl));
+ClrRadio.decorators = [
+    { type: core.Directive, args: [{ selector: '[clrRadio]' },] },
+];
+ClrRadio.ctorParameters = function () { return [
+    { type: core.ViewContainerRef, },
+]; };
+var ClrRadioModule = /** @class */ (function () {
+    function ClrRadioModule() {
+    }
+    return ClrRadioModule;
+}());
+ClrRadioModule.decorators = [
+    { type: core.NgModule, args: [{
+                imports: [common.CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
+                declarations: [ClrRadio, ClrRadioContainer],
+                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer],
+                entryComponents: [ClrRadioContainer],
+            },] },
+];
+var ClrSelectContainer = /** @class */ (function () {
+    function ClrSelectContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.multi = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(ngControlService.controlChanges.subscribe(function (control) {
+            _this.multi = control.valueAccessor instanceof forms.SelectMultipleControlValueAccessor;
+        }));
+    }
+    ClrSelectContainer.prototype.wrapperClass = function () {
+        return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
+    };
+    ClrSelectContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrSelectContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrSelectContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrSelectContainer;
+}());
+ClrSelectContainer.decorators = [
+    { type: core.Component, args: [{
+                selector: 'clr-select-container',
+                template: "    \n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div [ngClass]=\"wrapperClass()\">\n                <ng-content select=\"[clrSelect]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+ClrSelectContainer.ctorParameters = function () { return [
+    { type: IfErrorService, },
+    { type: LayoutService, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, },
+    { type: NgControlService, },
+]; };
+ClrSelectContainer.propDecorators = {
+    "label": [{ type: core.ContentChild, args: [ClrLabel,] },],
+    "multiple": [{ type: core.ContentChild, args: [forms.SelectMultipleControlValueAccessor,] },],
+};
+var ClrSelect = /** @class */ (function (_super) {
+    __extends(ClrSelect, _super);
+    function ClrSelect(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        var _this = _super.call(this, ClrSelectContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        if (!control) {
+            throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
+    }
+    ClrSelect.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrSelect.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
+    return ClrSelect;
+}(WrappedFormControl));
+ClrSelect.decorators = [
+    { type: core.Directive, args: [{ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } },] },
+];
+ClrSelect.ctorParameters = function () { return [
+    { type: core.ViewContainerRef, },
+    { type: NgControlService, decorators: [{ type: core.Optional },] },
+    { type: IfErrorService, decorators: [{ type: core.Optional },] },
+    { type: forms.NgControl, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, decorators: [{ type: core.Optional },] },
+    { type: core.ElementRef, },
+]; };
+ClrSelect.propDecorators = {
+    "onBlur": [{ type: core.HostListener, args: ['blur',] },],
+};
+var ClrSelectModule = /** @class */ (function () {
+    function ClrSelectModule() {
+    }
+    return ClrSelectModule;
+}());
+ClrSelectModule.decorators = [
+    { type: core.NgModule, args: [{
+                imports: [common.CommonModule, forms.FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrSelect, ClrSelectContainer],
+                exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
+                entryComponents: [ClrSelectContainer],
+            },] },
+];
 var ClrTextareaContainer = /** @class */ (function () {
     function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
         var _this = this;
@@ -12064,8 +12176,9 @@ ClrFormsNextModule.decorators = [
                     ClrDatepickerModule,
                     ClrInputModule,
                     ClrPasswordModule,
-                    ClrTextareaModule,
                     ClrRadioModule,
+                    ClrSelectModule,
+                    ClrTextareaModule,
                 ],
             },] },
 ];
@@ -12241,14 +12354,17 @@ exports.ClrDatepickerModule = ClrDatepickerModule;
 exports.ClrInput = ClrInput;
 exports.ClrInputContainer = ClrInputContainer;
 exports.ClrInputModule = ClrInputModule;
-exports.ClrRadio = ClrRadio;
-exports.ClrRadioContainer = ClrRadioContainer;
-exports.ClrRadioModule = ClrRadioModule;
 exports.ClrPassword = ClrPassword;
 exports.ToggleService = ToggleService;
 exports.ToggleServiceProvider = ToggleServiceProvider;
 exports.ClrPasswordContainer = ClrPasswordContainer;
 exports.ClrPasswordModule = ClrPasswordModule;
+exports.ClrRadio = ClrRadio;
+exports.ClrRadioContainer = ClrRadioContainer;
+exports.ClrRadioModule = ClrRadioModule;
+exports.ClrSelect = ClrSelect;
+exports.ClrSelectContainer = ClrSelectContainer;
+exports.ClrSelectModule = ClrSelectModule;
 exports.ClrTextarea = ClrTextarea;
 exports.ClrTextareaContainer = ClrTextareaContainer;
 exports.ClrTextareaModule = ClrTextareaModule;
