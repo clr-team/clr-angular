@@ -18276,20 +18276,6 @@ const WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
  * @suppress {checkTypes} checked by tsc
  */
 class ClarityModule {
-    /**
-     * @deprecated
-     * @return {?}
-     */
-    static forRoot() {
-        return { ngModule: ClarityModule, providers: [] };
-    }
-    /**
-     * @deprecated
-     * @return {?}
-     */
-    static forChild() {
-        return { ngModule: ClarityModule, providers: [] };
-    }
 }
 ClarityModule.decorators = [
     { type: NgModule, args: [{

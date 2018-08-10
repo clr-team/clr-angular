@@ -1,6 +1,6 @@
 {
   "name": "@clr/angular",
-  "version": "0.12.6",
+  "version": "0.13.0-beta.1",
   "description": "Angular components for Clarity",
   "es2015": "esm2015/clr-angular.js",
   "homepage": "https://vmware.github.io/clarity/",
@@ -23,7 +23,7 @@
     "@angular/forms": "^6.0.0",
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
-    "@clr/ui": "0.12.6"
+    "@clr/ui": "0.13.0-beta.1"
   },
   "author": "clarity",
   "license": "MIT",
@@ -31,6 +31,14 @@
     "url": "https://github.com/vmware/clarity/issues"
   },
   "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/migration-collection.json",
+    "packageGroup": [
+      "@clr/angular",
+      "@clr/ui",
+      "@clr/icons"
+    ]
+  },
   "typings": "clr-angular.d.ts",
   "metadata": "clr-angular.metadata.json",
   "dependencies": {

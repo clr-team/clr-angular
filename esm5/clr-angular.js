@@ -11204,12 +11204,6 @@ var WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
 var ClarityModule = /** @class */ (function () {
     function ClarityModule() {
     }
-    ClarityModule.forRoot = function () {
-        return { ngModule: ClarityModule, providers: [] };
-    };
-    ClarityModule.forChild = function () {
-        return { ngModule: ClarityModule, providers: [] };
-    };
     return ClarityModule;
 }());
 ClarityModule.decorators = [
