@@ -38,15 +38,6 @@ export declare class ClrWizard implements OnInit, OnDestroy, AfterContentInit, D
      */
     size: string;
     /**
-     * The property that reveals the ghost pages in the wizard. Set through the
-     * clrWizardshowGhostPages input.
-     *
-     * @memberof Wizard
-     * @deprecated since 0.12
-     *
-     */
-    showGhostPages: boolean;
-    /**
      * Resets page completed states when navigating backwards. Can be set using
      * the clrWizardForceForwardNavigation input.
      *
@@ -484,33 +475,4 @@ export declare class ClrWizard implements OnInit, OnDestroy, AfterContentInit, D
      * @memberof ClrWizard
      */
     reset(): void;
-    /**
-     * A convenience getter to retrieve the ghost Page animation state from
-     * WizardNavigationService.
-     *
-     * @name ghostPageState
-     * @memberof Wizard
-     * @deprecated since 0.12
-     */
-    readonly ghostPageState: string;
-    /**
-     * Convenience method that resets the ghost page animation.
-     *
-     * @name deactivateGhostPages
-     * @memberof ClrWizard
-     * @deprecated since 0.12
-     */
-    deactivateGhostPages(): void;
-    /**
-     * Manages the state of the ghost page animation based on the location
-     * of the current page in the workflow.
-     *
-     * Accepts an optional string parameter that can reset the ghost page
-     * animation to its closed state.
-     *
-     * @name setGhostPages
-     *
-     * @memberof ClrWizard
-     */
-    setGhostPages(deactivateOrNot?: string): void;
 }

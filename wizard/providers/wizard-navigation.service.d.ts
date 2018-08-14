@@ -135,19 +135,9 @@ export declare class WizardNavigationService implements OnDestroy {
     readonly currentPageIsFirst: boolean;
     /**
      * Returns a Boolean that tells you whether or not the current page is the
-     * next to last page in the Wizard.
-     *
-     * This is used to determine the animation state of ghost pages.
-     *
-     * @memberof WizardNavigationService
-     */
-    readonly currentPageIsNextToLast: boolean;
-    /**
-     * Returns a Boolean that tells you whether or not the current page is the
      * last page in the Wizard.
      *
-     * This is used to determine the animation state of ghost pages as well as
-     * which buttons should display in the wizard footer.
+     * This is used to determine which buttons should display in the wizard footer.
      *
      * @memberof WizardNavigationService
      */
@@ -370,34 +360,6 @@ export declare class WizardNavigationService implements OnDestroy {
      * @memberof WizardNavigationService
      */
     setFirstPageCurrent(): void;
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    private _wizardGhostPageState;
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    wizardGhostPageState: string;
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    private _hideWizardGhostPages;
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    /**
-     * @memberof WizardNavigationService
-     * @deprecated since 0.12
-     */
-    hideWizardGhostPages: boolean;
     /**
      * Updates the stepnav on the left side of the wizard when pages are dynamically
      * added or removed from the collection of pages.

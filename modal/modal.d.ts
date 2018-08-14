@@ -11,7 +11,6 @@ export declare class ClrModal implements OnChanges, OnDestroy {
     size: string;
     staticBackdrop: boolean;
     skipAnimation: string;
-    ghostPageState: string;
     bypassScrollService: boolean;
     stopClose: boolean;
     altClose: EventEmitter<boolean>;

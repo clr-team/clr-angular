@@ -9149,10 +9149,6 @@ ScrollingService.decorators = [
 ScrollingService.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
 ]; };
-var GHOST_PAGE_ANIMATION = {
-    STATES: { NO_PAGES: 'inactive', ALL_PAGES: 'ready', NEXT_TO_LAST_PAGE: 'penultimateGhost', LAST_PAGE: 'lastGhost' },
-    TRANSITIONS: { IN: '100ms ease-out', OUT: '100ms ease-in' },
-};
 var ClrModal = /** @class */ (function () {
     function ClrModal(_scrollingService) {
         this._scrollingService = _scrollingService;
@@ -9161,7 +9157,6 @@ var ClrModal = /** @class */ (function () {
         this.closable = true;
         this.staticBackdrop = false;
         this.skipAnimation = 'false';
-        this.ghostPageState = 'hidden';
         this.bypassScrollService = false;
         this.stopClose = false;
         this.altClose = new core.EventEmitter(false);
@@ -9221,7 +9216,7 @@ ClrModal.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-modal',
                 viewProviders: [ScrollingService],
-                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n        <div class=\"modal-outer-wrapper\">\n            <div class=\"modal-content-wrapper\">\n                <!-- only used in wizards -->\n                <ng-content select=\".modal-nav\"></ng-content>\n\n                <div class=\"modal-content\">\n                    <div class=\"modal-header\">\n                        <button type=\"button\" class=\"close\" aria-label=\"Close\"\n                                *ngIf=\"closable\" (click)=\"close()\">\n                            <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n                        </button>\n                        <ng-content select=\".modal-title\"></ng-content>\n                    </div>\n                    <ng-content select=\".modal-body\"></ng-content>\n                    <ng-content select=\".modal-footer\"></ng-content>\n                </div>\n            </div>\n            <!--todo: deprecate the modal-ghost-wrapper div below after 0.12-->\n            <div class=\"modal-ghost-wrapper\">\n                <div [@ghostPageOneState]=\"ghostPageState\" class=\"modal-ghost modal-ghost-1\"></div>\n                <div [@ghostPageTwoState]=\"ghostPageState\" class=\"modal-ghost modal-ghost-2\"></div>\n            </div>\n        </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
+                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n      <div class=\"modal-content-wrapper\">\n        <!-- only used in wizards -->\n        <ng-content select=\".modal-nav\"></ng-content>\n\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" aria-label=\"Close\"\n                    *ngIf=\"closable\" (click)=\"close()\">\n              <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n            </button>\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <ng-content select=\".modal-body\"></ng-content>\n          <ng-content select=\".modal-footer\"></ng-content>\n        </div>\n      </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
                 styles: [
                     "\n        :host { display: none; }\n        :host.open { display: inline; }\n    ",
                 ],
@@ -9233,26 +9228,6 @@ ClrModal.decorators = [
                     animations.trigger('fade', [
                         animations.transition('void => *', [animations.style({ opacity: 0 }), animations.animate('0.2s ease-in-out', animations.style({ opacity: 0.85 }))]),
                         animations.transition('* => void', [animations.animate('0.2s ease-in-out', animations.style({ opacity: 0 }))]),
-                    ]),
-                    animations.trigger('ghostPageOneState', [
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.NO_PAGES, animations.style({ left: '-24px' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES, animations.style({ left: '0' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE, animations.style({ left: '-24px' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE, animations.style({ left: '-24px' })),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.NO_PAGES + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                    ]),
-                    animations.trigger('ghostPageTwoState', [
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.NO_PAGES, animations.style({ left: '-24px', top: '24px', bottom: '24px' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES, animations.style({ left: '24px' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE, animations.style({ left: '0px', top: '24px', bottom: '24px', background: '#bbb' })),
-                        animations.state(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE, animations.style({ left: '-24px', top: '24px', bottom: '24px' })),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.NO_PAGES + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        animations.transition(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE + ' => *', animations.animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
                     ]),
                 ],
             },] },
@@ -9268,7 +9243,6 @@ ClrModal.propDecorators = {
     "size": [{ type: core.Input, args: ['clrModalSize',] },],
     "staticBackdrop": [{ type: core.Input, args: ['clrModalStaticBackdrop',] },],
     "skipAnimation": [{ type: core.Input, args: ['clrModalSkipAnimation',] },],
-    "ghostPageState": [{ type: core.Input, args: ['clrModalGhostPageState',] },],
     "bypassScrollService": [{ type: core.Input, args: ['clrModalOverrideScrollService',] },],
     "stopClose": [{ type: core.Input, args: ['clrModalPreventClose',] },],
     "altClose": [{ type: core.Output, args: ['clrModalAlternateClose',] },],
@@ -9847,8 +9821,6 @@ var WizardNavigationService = /** @class */ (function () {
         this.wizardHasAltNext = false;
         this.wizardStopNavigation = false;
         this.wizardDisableStepnav = false;
-        this._wizardGhostPageState = GHOST_PAGE_ANIMATION.STATES.NO_PAGES;
-        this._hideWizardGhostPages = true;
         this.previousButtonSubscription = this.buttonService.previousBtnClicked.subscribe(function () {
             var currentPage = _this.currentPage;
             if (_this.currentPageIsFirst || currentPage.previousStepDisabled) {
@@ -9917,13 +9889,6 @@ var WizardNavigationService = /** @class */ (function () {
     Object.defineProperty(WizardNavigationService.prototype, "currentPageIsFirst", {
         get: function () {
             return this.pageCollection.firstPage === this.currentPage;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(WizardNavigationService.prototype, "currentPageIsNextToLast", {
-        get: function () {
-            return this.pageCollection.penultimatePage === this.currentPage;
         },
         enumerable: true,
         configurable: true
@@ -10159,31 +10124,6 @@ var WizardNavigationService = /** @class */ (function () {
     WizardNavigationService.prototype.setFirstPageCurrent = function () {
         this.currentPage = this.pageCollection.pagesAsArray[0];
     };
-    Object.defineProperty(WizardNavigationService.prototype, "wizardGhostPageState", {
-        get: function () {
-            return this._wizardGhostPageState;
-        },
-        set: function (value) {
-            if (this.hideWizardGhostPages) {
-                this._wizardGhostPageState = GHOST_PAGE_ANIMATION.STATES.NO_PAGES;
-            }
-            else {
-                this._wizardGhostPageState = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(WizardNavigationService.prototype, "hideWizardGhostPages", {
-        get: function () {
-            return this._hideWizardGhostPages;
-        },
-        set: function (value) {
-            this._hideWizardGhostPages = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     WizardNavigationService.prototype.updateNavigation = function () {
         var toSetCurrent;
         var currentPageRemoved;
@@ -10594,7 +10534,6 @@ var ClrWizard = /** @class */ (function () {
         this.headerActionService = headerActionService;
         this.elementRef = elementRef;
         this.size = 'xl';
-        this.showGhostPages = false;
         this._forceForward = false;
         this.closable = true;
         this._open = false;
@@ -10705,7 +10644,6 @@ var ClrWizard = /** @class */ (function () {
     ClrWizard.prototype.ngOnInit = function () {
         var _this = this;
         this.currentPageSubscription = this.navService.currentPageChanged.subscribe(function (page) {
-            _this.setGhostPages();
             _this.currentPageChanged.emit();
         });
     };
@@ -10727,13 +10665,8 @@ var ClrWizard = /** @class */ (function () {
         }
     };
     ClrWizard.prototype.ngAfterContentInit = function () {
-        var navService = this.navService;
         this.pageCollection.pages = this.pages;
         this.headerActionService.wizardHeaderActions = this.headerActions;
-        if (this.showGhostPages) {
-            navService.hideWizardGhostPages = false;
-            this.deactivateGhostPages();
-        }
         if (this._open) {
             this.buttonService.buttonsReady = true;
         }
@@ -10787,7 +10720,6 @@ var ClrWizard = /** @class */ (function () {
             this.navService.setFirstPageCurrent();
         }
         this.buttonService.buttonsReady = true;
-        this.setGhostPages();
         this._openChanged.emit(true);
     };
     ClrWizard.prototype.close = function () {
@@ -10795,7 +10727,6 @@ var ClrWizard = /** @class */ (function () {
             return;
         }
         this._open = false;
-        this.deactivateGhostPages();
         this._openChanged.emit(false);
     };
     ClrWizard.prototype.toggle = function (value) {
@@ -10834,7 +10765,6 @@ var ClrWizard = /** @class */ (function () {
         if (this.stopNavigation) {
             return;
         }
-        this.deactivateGhostPages();
         this.close();
     };
     ClrWizard.prototype.forceNext = function () {
@@ -10870,49 +10800,19 @@ var ClrWizard = /** @class */ (function () {
         this.pageCollection.reset();
         this.onReset.next();
     };
-    Object.defineProperty(ClrWizard.prototype, "ghostPageState", {
-        get: function () {
-            return this.navService.wizardGhostPageState;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClrWizard.prototype.deactivateGhostPages = function () {
-        this.setGhostPages('deactivate');
-    };
-    ClrWizard.prototype.setGhostPages = function (deactivateOrNot) {
-        if (deactivateOrNot === void 0) { deactivateOrNot = ''; }
-        var navService = this.navService;
-        var ghostpageStates = GHOST_PAGE_ANIMATION.STATES;
-        if (this.showGhostPages) {
-            if (deactivateOrNot === 'deactivate') {
-                navService.wizardGhostPageState = ghostpageStates.NO_PAGES;
-            }
-            else if (navService.currentPageIsLast) {
-                navService.wizardGhostPageState = ghostpageStates.LAST_PAGE;
-            }
-            else if (navService.currentPageIsNextToLast) {
-                navService.wizardGhostPageState = ghostpageStates.NEXT_TO_LAST_PAGE;
-            }
-            else {
-                navService.wizardGhostPageState = ghostpageStates.ALL_PAGES;
-            }
-        }
-    };
     return ClrWizard;
 }());
 ClrWizard.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-wizard',
                 providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService],
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!--todo: deprecate clrModalGhostPageState after 0.12-->\n<clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalGhostPageState]=\"ghostPageState\"\n    [clrModalOverrideScrollService]=\"isStatic\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\">\n\n    <nav class=\"modal-nav clr-wizard-stepnav-wrapper\">\n        <h3 class=\"clr-wizard-title\"><ng-content select=\"clr-wizard-title\"></ng-content></h3>\n        <clr-wizard-stepnav></clr-wizard-stepnav>\n    </nav>\n\n    <h3 class=\"modal-title\">\n        <span class=\"modal-title-text\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n        </span>\n\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n            <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n                <ng-content select=\"clr-wizard-header-action\"></ng-content>\n            </div>\n            <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n            </div>\n        </div>\n    </h3>\n\n    <div class=\"modal-body\">\n        <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n        </main>\n    </div>\n    <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n            <div *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-content select=\"clr-wizard-button\"></ng-content>\n            </div>\n            <div *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            </div>\n        </div>\n    </div>\n</clr-modal>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalOverrideScrollService]=\"isStatic\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\">\n\n    <nav class=\"modal-nav clr-wizard-stepnav-wrapper\">\n        <h3 class=\"clr-wizard-title\"><ng-content select=\"clr-wizard-title\"></ng-content></h3>\n        <clr-wizard-stepnav></clr-wizard-stepnav>\n    </nav>\n\n    <h3 class=\"modal-title\">\n        <span class=\"modal-title-text\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n        </span>\n\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n            <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n                <ng-content select=\"clr-wizard-header-action\"></ng-content>\n            </div>\n            <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n            </div>\n        </div>\n    </h3>\n\n    <div class=\"modal-body\">\n        <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n        </main>\n    </div>\n    <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n            <div *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-content select=\"clr-wizard-button\"></ng-content>\n            </div>\n            <div *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            </div>\n        </div>\n    </div>\n</clr-modal>\n",
                 host: {
                     '[class.clr-wizard]': 'true',
                     '[class.wizard-md]': "size == 'md'",
                     '[class.wizard-lg]': "size == 'lg'",
                     '[class.wizard-xl]': "size == 'xl'",
                     '[class.lastPage]': 'navService.currentPageIsLast',
-                    '[class.clr-wizard--ghosted]': 'showGhostPages',
                 },
             },] },
 ];
@@ -10926,7 +10826,6 @@ ClrWizard.ctorParameters = function () { return [
 ]; };
 ClrWizard.propDecorators = {
     "size": [{ type: core.Input, args: ['clrWizardSize',] },],
-    "showGhostPages": [{ type: core.Input, args: ['clrWizardShowGhostPages',] },],
     "forceForward": [{ type: core.Input, args: ['clrWizardForceForwardNavigation',] },],
     "closable": [{ type: core.Input, args: ['clrWizardClosable',] },],
     "clrWizardOpen": [{ type: core.Input, args: ['clrWizardOpen',] },],
@@ -12496,7 +12395,7 @@ exports.WizardPageNavTitleDirective = WizardPageNavTitleDirective;
 exports.WizardPageButtonsDirective = WizardPageButtonsDirective;
 exports.WizardPageHeaderActionsDirective = WizardPageHeaderActionsDirective;
 exports.WIZARD_DIRECTIVES = WIZARD_DIRECTIVES;
-exports.ɵdb = ButtonInGroupService;
+exports.ɵda = ButtonInGroupService;
 exports.ɵcq = DatagridRowExpandAnimation;
 exports.ɵcn = ActionableOompaLoompa;
 exports.ɵcl = DatagridWillyWonka;
@@ -12536,12 +12435,12 @@ exports.ɵcv = clrTreeSelectionProviderFactory;
 exports.ɵcu = TreeSelectionService;
 exports.ɵo = AlertIconAndTypesService;
 exports.ɵp = MultiAlertService;
-exports.ɵdw = IfErrorService;
-exports.ɵdz = ControlClassService;
+exports.ɵdv = IfErrorService;
+exports.ɵdy = ControlClassService;
 exports.ɵx = ControlIdService;
-exports.ɵea = FocusService;
-exports.ɵdy = LayoutService;
-exports.ɵdx = NgControlService;
+exports.ɵdz = FocusService;
+exports.ɵdx = LayoutService;
+exports.ɵdw = NgControlService;
 exports.ɵbb = WrappedFormControl;
 exports.ɵw = DateFormControlService;
 exports.ɵz = DateIOService;
@@ -12550,20 +12449,19 @@ exports.ɵba = DatepickerEnabledService;
 exports.ɵbd = DatepickerFocusService;
 exports.ɵy = LocaleHelperService;
 exports.ɵbc = ViewManagerService;
-exports.ɵdd = ResponsiveNavigationProvider;
-exports.ɵdc = ResponsiveNavigationService;
-exports.ɵdn = ActiveOompaLoompa;
-exports.ɵdm = TabsWillyWonka;
-exports.ɵdh = AriaService;
-exports.ɵdl = TabsService;
-exports.ɵdi = TABS_ID;
-exports.ɵdk = TABS_ID_PROVIDER;
-exports.ɵdj = tokenFactory$1;
-exports.ɵdq = VerticalNavGroupRegistrationService;
-exports.ɵdr = VerticalNavGroupService;
-exports.ɵdp = VerticalNavIconService;
-exports.ɵdo = VerticalNavService;
-exports.ɵda = GHOST_PAGE_ANIMATION;
+exports.ɵdc = ResponsiveNavigationProvider;
+exports.ɵdb = ResponsiveNavigationService;
+exports.ɵdm = ActiveOompaLoompa;
+exports.ɵdl = TabsWillyWonka;
+exports.ɵdg = AriaService;
+exports.ɵdk = TabsService;
+exports.ɵdh = TABS_ID;
+exports.ɵdj = TABS_ID_PROVIDER;
+exports.ɵdi = tokenFactory$1;
+exports.ɵdp = VerticalNavGroupRegistrationService;
+exports.ɵdq = VerticalNavGroupService;
+exports.ɵdo = VerticalNavIconService;
+exports.ɵdn = VerticalNavService;
 exports.ɵi = AbstractPopover;
 exports.ɵb = POPOVER_DIRECTIVES;
 exports.ɵh = POPOVER_HOST_ANCHOR;
@@ -12594,13 +12492,13 @@ exports.ɵbf = OUSTIDE_CLICK_DIRECTIVES;
 exports.ɵbg = OutsideClick;
 exports.ɵbe = ClrOutsideClickModule;
 exports.ɵcz = ScrollingService;
-exports.ɵdf = TEMPLATE_REF_DIRECTIVES;
-exports.ɵdg = TemplateRefContainer;
-exports.ɵde = ClrTemplateRefModule;
-exports.ɵdu = ButtonHubService;
-exports.ɵdv = HeaderActionService;
-exports.ɵdt = PageCollectionService;
-exports.ɵds = WizardNavigationService;
+exports.ɵde = TEMPLATE_REF_DIRECTIVES;
+exports.ɵdf = TemplateRefContainer;
+exports.ɵdd = ClrTemplateRefModule;
+exports.ɵdt = ButtonHubService;
+exports.ɵdu = HeaderActionService;
+exports.ɵds = PageCollectionService;
+exports.ɵdr = WizardNavigationService;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

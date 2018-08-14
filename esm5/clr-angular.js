@@ -9090,10 +9090,6 @@ ScrollingService.decorators = [
 ScrollingService.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
 ]; };
-var GHOST_PAGE_ANIMATION = {
-    STATES: { NO_PAGES: 'inactive', ALL_PAGES: 'ready', NEXT_TO_LAST_PAGE: 'penultimateGhost', LAST_PAGE: 'lastGhost' },
-    TRANSITIONS: { IN: '100ms ease-out', OUT: '100ms ease-in' },
-};
 var ClrModal = /** @class */ (function () {
     function ClrModal(_scrollingService) {
         this._scrollingService = _scrollingService;
@@ -9102,7 +9098,6 @@ var ClrModal = /** @class */ (function () {
         this.closable = true;
         this.staticBackdrop = false;
         this.skipAnimation = 'false';
-        this.ghostPageState = 'hidden';
         this.bypassScrollService = false;
         this.stopClose = false;
         this.altClose = new EventEmitter(false);
@@ -9162,7 +9157,7 @@ ClrModal.decorators = [
     { type: Component, args: [{
                 selector: 'clr-modal',
                 viewProviders: [ScrollingService],
-                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n        <div class=\"modal-outer-wrapper\">\n            <div class=\"modal-content-wrapper\">\n                <!-- only used in wizards -->\n                <ng-content select=\".modal-nav\"></ng-content>\n\n                <div class=\"modal-content\">\n                    <div class=\"modal-header\">\n                        <button type=\"button\" class=\"close\" aria-label=\"Close\"\n                                *ngIf=\"closable\" (click)=\"close()\">\n                            <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n                        </button>\n                        <ng-content select=\".modal-title\"></ng-content>\n                    </div>\n                    <ng-content select=\".modal-body\"></ng-content>\n                    <ng-content select=\".modal-footer\"></ng-content>\n                </div>\n            </div>\n            <!--todo: deprecate the modal-ghost-wrapper div below after 0.12-->\n            <div class=\"modal-ghost-wrapper\">\n                <div [@ghostPageOneState]=\"ghostPageState\" class=\"modal-ghost modal-ghost-1\"></div>\n                <div [@ghostPageTwoState]=\"ghostPageState\" class=\"modal-ghost modal-ghost-2\"></div>\n            </div>\n        </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
+                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n      <div class=\"modal-content-wrapper\">\n        <!-- only used in wizards -->\n        <ng-content select=\".modal-nav\"></ng-content>\n\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" aria-label=\"Close\"\n                    *ngIf=\"closable\" (click)=\"close()\">\n              <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n            </button>\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <ng-content select=\".modal-body\"></ng-content>\n          <ng-content select=\".modal-footer\"></ng-content>\n        </div>\n      </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
                 styles: [
                     "\n        :host { display: none; }\n        :host.open { display: inline; }\n    ",
                 ],
@@ -9174,26 +9169,6 @@ ClrModal.decorators = [
                     trigger('fade', [
                         transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
                         transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
-                    ]),
-                    trigger('ghostPageOneState', [
-                        state(GHOST_PAGE_ANIMATION.STATES.NO_PAGES, style({ left: '-24px' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES, style({ left: '0' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE, style({ left: '-24px' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE, style({ left: '-24px' })),
-                        transition(GHOST_PAGE_ANIMATION.STATES.NO_PAGES + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                    ]),
-                    trigger('ghostPageTwoState', [
-                        state(GHOST_PAGE_ANIMATION.STATES.NO_PAGES, style({ left: '-24px', top: '24px', bottom: '24px' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES, style({ left: '24px' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE, style({ left: '0px', top: '24px', bottom: '24px', background: '#bbb' })),
-                        state(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE, style({ left: '-24px', top: '24px', bottom: '24px' })),
-                        transition(GHOST_PAGE_ANIMATION.STATES.NO_PAGES + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.ALL_PAGES + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.LAST_PAGE + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.IN)),
-                        transition(GHOST_PAGE_ANIMATION.STATES.NEXT_TO_LAST_PAGE + ' => *', animate(GHOST_PAGE_ANIMATION.TRANSITIONS.OUT)),
                     ]),
                 ],
             },] },
@@ -9209,7 +9184,6 @@ ClrModal.propDecorators = {
     "size": [{ type: Input, args: ['clrModalSize',] },],
     "staticBackdrop": [{ type: Input, args: ['clrModalStaticBackdrop',] },],
     "skipAnimation": [{ type: Input, args: ['clrModalSkipAnimation',] },],
-    "ghostPageState": [{ type: Input, args: ['clrModalGhostPageState',] },],
     "bypassScrollService": [{ type: Input, args: ['clrModalOverrideScrollService',] },],
     "stopClose": [{ type: Input, args: ['clrModalPreventClose',] },],
     "altClose": [{ type: Output, args: ['clrModalAlternateClose',] },],
@@ -9788,8 +9762,6 @@ var WizardNavigationService = /** @class */ (function () {
         this.wizardHasAltNext = false;
         this.wizardStopNavigation = false;
         this.wizardDisableStepnav = false;
-        this._wizardGhostPageState = GHOST_PAGE_ANIMATION.STATES.NO_PAGES;
-        this._hideWizardGhostPages = true;
         this.previousButtonSubscription = this.buttonService.previousBtnClicked.subscribe(function () {
             var currentPage = _this.currentPage;
             if (_this.currentPageIsFirst || currentPage.previousStepDisabled) {
@@ -9858,13 +9830,6 @@ var WizardNavigationService = /** @class */ (function () {
     Object.defineProperty(WizardNavigationService.prototype, "currentPageIsFirst", {
         get: function () {
             return this.pageCollection.firstPage === this.currentPage;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(WizardNavigationService.prototype, "currentPageIsNextToLast", {
-        get: function () {
-            return this.pageCollection.penultimatePage === this.currentPage;
         },
         enumerable: true,
         configurable: true
@@ -10100,31 +10065,6 @@ var WizardNavigationService = /** @class */ (function () {
     WizardNavigationService.prototype.setFirstPageCurrent = function () {
         this.currentPage = this.pageCollection.pagesAsArray[0];
     };
-    Object.defineProperty(WizardNavigationService.prototype, "wizardGhostPageState", {
-        get: function () {
-            return this._wizardGhostPageState;
-        },
-        set: function (value) {
-            if (this.hideWizardGhostPages) {
-                this._wizardGhostPageState = GHOST_PAGE_ANIMATION.STATES.NO_PAGES;
-            }
-            else {
-                this._wizardGhostPageState = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(WizardNavigationService.prototype, "hideWizardGhostPages", {
-        get: function () {
-            return this._hideWizardGhostPages;
-        },
-        set: function (value) {
-            this._hideWizardGhostPages = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     WizardNavigationService.prototype.updateNavigation = function () {
         var toSetCurrent;
         var currentPageRemoved;
@@ -10535,7 +10475,6 @@ var ClrWizard = /** @class */ (function () {
         this.headerActionService = headerActionService;
         this.elementRef = elementRef;
         this.size = 'xl';
-        this.showGhostPages = false;
         this._forceForward = false;
         this.closable = true;
         this._open = false;
@@ -10646,7 +10585,6 @@ var ClrWizard = /** @class */ (function () {
     ClrWizard.prototype.ngOnInit = function () {
         var _this = this;
         this.currentPageSubscription = this.navService.currentPageChanged.subscribe(function (page) {
-            _this.setGhostPages();
             _this.currentPageChanged.emit();
         });
     };
@@ -10668,13 +10606,8 @@ var ClrWizard = /** @class */ (function () {
         }
     };
     ClrWizard.prototype.ngAfterContentInit = function () {
-        var navService = this.navService;
         this.pageCollection.pages = this.pages;
         this.headerActionService.wizardHeaderActions = this.headerActions;
-        if (this.showGhostPages) {
-            navService.hideWizardGhostPages = false;
-            this.deactivateGhostPages();
-        }
         if (this._open) {
             this.buttonService.buttonsReady = true;
         }
@@ -10728,7 +10661,6 @@ var ClrWizard = /** @class */ (function () {
             this.navService.setFirstPageCurrent();
         }
         this.buttonService.buttonsReady = true;
-        this.setGhostPages();
         this._openChanged.emit(true);
     };
     ClrWizard.prototype.close = function () {
@@ -10736,7 +10668,6 @@ var ClrWizard = /** @class */ (function () {
             return;
         }
         this._open = false;
-        this.deactivateGhostPages();
         this._openChanged.emit(false);
     };
     ClrWizard.prototype.toggle = function (value) {
@@ -10775,7 +10706,6 @@ var ClrWizard = /** @class */ (function () {
         if (this.stopNavigation) {
             return;
         }
-        this.deactivateGhostPages();
         this.close();
     };
     ClrWizard.prototype.forceNext = function () {
@@ -10811,49 +10741,19 @@ var ClrWizard = /** @class */ (function () {
         this.pageCollection.reset();
         this.onReset.next();
     };
-    Object.defineProperty(ClrWizard.prototype, "ghostPageState", {
-        get: function () {
-            return this.navService.wizardGhostPageState;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClrWizard.prototype.deactivateGhostPages = function () {
-        this.setGhostPages('deactivate');
-    };
-    ClrWizard.prototype.setGhostPages = function (deactivateOrNot) {
-        if (deactivateOrNot === void 0) { deactivateOrNot = ''; }
-        var navService = this.navService;
-        var ghostpageStates = GHOST_PAGE_ANIMATION.STATES;
-        if (this.showGhostPages) {
-            if (deactivateOrNot === 'deactivate') {
-                navService.wizardGhostPageState = ghostpageStates.NO_PAGES;
-            }
-            else if (navService.currentPageIsLast) {
-                navService.wizardGhostPageState = ghostpageStates.LAST_PAGE;
-            }
-            else if (navService.currentPageIsNextToLast) {
-                navService.wizardGhostPageState = ghostpageStates.NEXT_TO_LAST_PAGE;
-            }
-            else {
-                navService.wizardGhostPageState = ghostpageStates.ALL_PAGES;
-            }
-        }
-    };
     return ClrWizard;
 }());
 ClrWizard.decorators = [
     { type: Component, args: [{
                 selector: 'clr-wizard',
                 providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService],
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!--todo: deprecate clrModalGhostPageState after 0.12-->\n<clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalGhostPageState]=\"ghostPageState\"\n    [clrModalOverrideScrollService]=\"isStatic\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\">\n\n    <nav class=\"modal-nav clr-wizard-stepnav-wrapper\">\n        <h3 class=\"clr-wizard-title\"><ng-content select=\"clr-wizard-title\"></ng-content></h3>\n        <clr-wizard-stepnav></clr-wizard-stepnav>\n    </nav>\n\n    <h3 class=\"modal-title\">\n        <span class=\"modal-title-text\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n        </span>\n\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n            <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n                <ng-content select=\"clr-wizard-header-action\"></ng-content>\n            </div>\n            <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n            </div>\n        </div>\n    </h3>\n\n    <div class=\"modal-body\">\n        <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n        </main>\n    </div>\n    <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n            <div *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-content select=\"clr-wizard-button\"></ng-content>\n            </div>\n            <div *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            </div>\n        </div>\n    </div>\n</clr-modal>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalOverrideScrollService]=\"isStatic\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\">\n\n    <nav class=\"modal-nav clr-wizard-stepnav-wrapper\">\n        <h3 class=\"clr-wizard-title\"><ng-content select=\"clr-wizard-title\"></ng-content></h3>\n        <clr-wizard-stepnav></clr-wizard-stepnav>\n    </nav>\n\n    <h3 class=\"modal-title\">\n        <span class=\"modal-title-text\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n        </span>\n\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n            <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n                <ng-content select=\"clr-wizard-header-action\"></ng-content>\n            </div>\n            <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n            </div>\n        </div>\n    </h3>\n\n    <div class=\"modal-body\">\n        <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n        </main>\n    </div>\n    <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n            <div *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-content select=\"clr-wizard-button\"></ng-content>\n            </div>\n            <div *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n                class=\"clr-wizard-footer-buttons-wrapper\">\n                <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            </div>\n        </div>\n    </div>\n</clr-modal>\n",
                 host: {
                     '[class.clr-wizard]': 'true',
                     '[class.wizard-md]': "size == 'md'",
                     '[class.wizard-lg]': "size == 'lg'",
                     '[class.wizard-xl]': "size == 'xl'",
                     '[class.lastPage]': 'navService.currentPageIsLast',
-                    '[class.clr-wizard--ghosted]': 'showGhostPages',
                 },
             },] },
 ];
@@ -10867,7 +10767,6 @@ ClrWizard.ctorParameters = function () { return [
 ]; };
 ClrWizard.propDecorators = {
     "size": [{ type: Input, args: ['clrWizardSize',] },],
-    "showGhostPages": [{ type: Input, args: ['clrWizardShowGhostPages',] },],
     "forceForward": [{ type: Input, args: ['clrWizardForceForwardNavigation',] },],
     "closable": [{ type: Input, args: ['clrWizardClosable',] },],
     "clrWizardOpen": [{ type: Input, args: ['clrWizardOpen',] },],
@@ -12176,5 +12075,5 @@ function slide(direction) {
     ];
 }
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, Button, ButtonGroup, BUTTON_GROUP_DIRECTIVES, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, LoadingButton, LOADING_BUTTON_DIRECTIVES, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, CodeHighlight, CODE_HIGHLIGHT_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, Datagrid, DatagridActionBar, DatagridActionOverflow, DatagridColumn, DatagridColumnToggle, DatagridHideableColumnDirective, DatagridFilter, DatagridItems, DatagridRow, DatagridRowDetail, DatagridCell, DatagridFooter, DatagridPagination, DatagridPlaceholder, SortOrder, DATAGRID_DIRECTIVES, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, TreeNode, TREE_VIEW_DIRECTIVES, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, StackView, StackHeader, StackBlock, StackViewCustomTags, StackInput, StackSelect, STACK_VIEW_DIRECTIVES, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, Alert, AlertItem, Alerts, AlertsPager, ALERT_DIRECTIVES, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, Checkbox, ClrCheckbox, CHECKBOX_DIRECTIVES, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, IconCustomTag, ICON_DIRECTIVES, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainer, LAYOUT_DIRECTIVES, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, Header, NavLevelDirective, NAVIGATION_DIRECTIVES, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, Tab, Tabs, TabContent, TabOverflowContent, TabLinkDirective, TABS_DIRECTIVES, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, VerticalNav, VerticalNavGroup, VerticalNavGroupChildren, VerticalNavIcon, VerticalNavLink, VERTICAL_NAV_DIRECTIVES, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, Modal, MODAL_DIRECTIVES, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, menuPositions, DROPDOWN_DIRECTIVES, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, Signpost, SignpostContent, SignpostTrigger, SIGNPOST_DIRECTIVES, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, Tooltip, TooltipContent, TooltipTrigger, TOOLTIP_DIRECTIVES, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, Loading, LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, Wizard, WizardPage, WizardStepnav, WizardStepnavItem, WizardButton, WizardHeaderAction, WizardCustomTags, WizardPageTitleDirective, WizardPageNavTitleDirective, WizardPageButtonsDirective, WizardPageHeaderActionsDirective, WIZARD_DIRECTIVES, ButtonInGroupService as ɵdb, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdw, ControlClassService as ɵdz, ControlIdService as ɵx, FocusService as ɵea, LayoutService as ɵdy, NgControlService as ɵdx, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdd, ResponsiveNavigationService as ɵdc, ActiveOompaLoompa as ɵdn, TabsWillyWonka as ɵdm, AriaService as ɵdh, TabsService as ɵdl, TABS_ID as ɵdi, TABS_ID_PROVIDER as ɵdk, tokenFactory$1 as ɵdj, VerticalNavGroupRegistrationService as ɵdq, VerticalNavGroupService as ɵdr, VerticalNavIconService as ɵdp, VerticalNavService as ɵdo, GHOST_PAGE_ANIMATION as ɵda, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵdf, TemplateRefContainer as ɵdg, ClrTemplateRefModule as ɵde, ButtonHubService as ɵdu, HeaderActionService as ɵdv, PageCollectionService as ɵdt, WizardNavigationService as ɵds };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, Button, ButtonGroup, BUTTON_GROUP_DIRECTIVES, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, LoadingButton, LOADING_BUTTON_DIRECTIVES, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, CodeHighlight, CODE_HIGHLIGHT_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, Datagrid, DatagridActionBar, DatagridActionOverflow, DatagridColumn, DatagridColumnToggle, DatagridHideableColumnDirective, DatagridFilter, DatagridItems, DatagridRow, DatagridRowDetail, DatagridCell, DatagridFooter, DatagridPagination, DatagridPlaceholder, SortOrder, DATAGRID_DIRECTIVES, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, TreeNode, TREE_VIEW_DIRECTIVES, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, StackView, StackHeader, StackBlock, StackViewCustomTags, StackInput, StackSelect, STACK_VIEW_DIRECTIVES, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, Alert, AlertItem, Alerts, AlertsPager, ALERT_DIRECTIVES, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, Checkbox, ClrCheckbox, CHECKBOX_DIRECTIVES, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, IconCustomTag, ICON_DIRECTIVES, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainer, LAYOUT_DIRECTIVES, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, Header, NavLevelDirective, NAVIGATION_DIRECTIVES, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, Tab, Tabs, TabContent, TabOverflowContent, TabLinkDirective, TABS_DIRECTIVES, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, VerticalNav, VerticalNavGroup, VerticalNavGroupChildren, VerticalNavIcon, VerticalNavLink, VERTICAL_NAV_DIRECTIVES, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, Modal, MODAL_DIRECTIVES, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, menuPositions, DROPDOWN_DIRECTIVES, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, Signpost, SignpostContent, SignpostTrigger, SIGNPOST_DIRECTIVES, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, Tooltip, TooltipContent, TooltipTrigger, TOOLTIP_DIRECTIVES, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, Loading, LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, Wizard, WizardPage, WizardStepnav, WizardStepnavItem, WizardButton, WizardHeaderAction, WizardCustomTags, WizardPageTitleDirective, WizardPageNavTitleDirective, WizardPageButtonsDirective, WizardPageHeaderActionsDirective, WIZARD_DIRECTIVES, ButtonInGroupService as ɵda, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdv, ControlClassService as ɵdy, ControlIdService as ɵx, FocusService as ɵdz, LayoutService as ɵdx, NgControlService as ɵdw, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdc, ResponsiveNavigationService as ɵdb, ActiveOompaLoompa as ɵdm, TabsWillyWonka as ɵdl, AriaService as ɵdg, TabsService as ɵdk, TABS_ID as ɵdh, TABS_ID_PROVIDER as ɵdj, tokenFactory$1 as ɵdi, VerticalNavGroupRegistrationService as ɵdp, VerticalNavGroupService as ɵdq, VerticalNavIconService as ɵdo, VerticalNavService as ɵdn, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵde, TemplateRefContainer as ɵdf, ClrTemplateRefModule as ɵdd, ButtonHubService as ɵdt, HeaderActionService as ɵdu, PageCollectionService as ɵds, WizardNavigationService as ɵdr };
 //# sourceMappingURL=clr-angular.js.map
