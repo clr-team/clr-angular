@@ -7780,6 +7780,13 @@ class Selection {
                     let /** @type {?} */ newSingle;
                     const /** @type {?} */ trackBy = this._items.trackBy;
                     let /** @type {?} */ selectionUpdated = false;
+                    // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
+                    if (this.currentSingle && !this.prevSingleSelectionRef) {
+                        if (this._items.all && this._items.trackBy) {
+                            const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === this.currentSingle);
+                            this.prevSingleSelectionRef = this._items.trackBy(lookup, this.currentSingle);
+                        }
+                    }
                     updatedItems.forEach((item, index) => {
                         const /** @type {?} */ ref = trackBy(index, item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
@@ -7788,10 +7795,10 @@ class Selection {
                             selectionUpdated = true;
                         }
                     });
-                    // Delete the currentSingle if it doesn't exist anymore if we're using smart datagrids
-                    // where we expect all items to be present.
-                    // No explicit "delete" is required, since it would still be undefined at this point.
-                    // Marking it as selectionUpdated will emit the change when the currentSingle is updated below.
+                    // If we're using smart datagrids, we expect all items to be present in the updatedItems array.
+                    // Therefore, we should delete the currentSingle if it used to be defined but doesn't exist anymore.
+                    // No explicit "delete" is required, since newSingle would be undefined at this point.
+                    // Marking it as selectionUpdated here will set currentSingle to undefined below in the setTimeout.
                     if (this._items.smart && !newSingle) {
                         selectionUpdated = true;
                     }
@@ -7810,6 +7817,16 @@ class Selection {
                     let /** @type {?} */ leftOver = this.current.slice();
                     const /** @type {?} */ trackBy = this._items.trackBy;
                     let /** @type {?} */ selectionUpdated = false;
+                    // if the current has been set before data was loaded, we look up and save the ref from current data set
+                    if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
+                        if (this._items.all && this._items.trackBy) {
+                            this.prevSelectionRefs = [];
+                            this.current.forEach(item => {
+                                const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === item);
+                                this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
+                            });
+                        }
+                    }
                     // TODO: revisit this when we work on https://github.com/vmware/clarity/issues/2342
                     // currently, the selection is cleared when filter is applied, so the logic inside
                     // the if statement below results in broken behavior.

@@ -4941,6 +4941,12 @@ var Selection = /** @class */ (function () {
                     var newSingle_1;
                     var trackBy_1 = _this._items.trackBy;
                     var selectionUpdated_1 = false;
+                    if (_this.currentSingle && !_this.prevSingleSelectionRef) {
+                        if (_this._items.all && _this._items.trackBy) {
+                            var lookup = _this._items.all.findIndex(function (maybe) { return maybe === _this.currentSingle; });
+                            _this.prevSingleSelectionRef = _this._items.trackBy(lookup, _this.currentSingle);
+                        }
+                    }
                     updatedItems.forEach(function (item, index) {
                         var ref = trackBy_1(index, item);
                         if (_this.prevSingleSelectionRef === ref) {
@@ -4962,6 +4968,15 @@ var Selection = /** @class */ (function () {
                     var leftOver_1 = _this.current.slice();
                     var trackBy_2 = _this._items.trackBy;
                     var selectionUpdated_2 = false;
+                    if (_this.current.length > 0 && _this.prevSelectionRefs.length !== _this.current.length) {
+                        if (_this._items.all && _this._items.trackBy) {
+                            _this.prevSelectionRefs = [];
+                            _this.current.forEach(function (item) {
+                                var lookup = _this._items.all.findIndex(function (maybe) { return maybe === item; });
+                                _this.prevSelectionRefs.push(_this._items.trackBy(lookup, item));
+                            });
+                        }
+                    }
                     if (leftOver_1.length > 0) {
                         updatedItems.forEach(function (item, index) {
                             var ref = trackBy_2(index, item);
