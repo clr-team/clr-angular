@@ -23,8 +23,6 @@ var ClrIconModule = /** @class */ (function () {
 ClrIconModule.decorators = [
     { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_ICON_DIRECTIVES], exports: [CLR_ICON_DIRECTIVES] },] },
 ];
-var IconCustomTag = ClrIconCustomTag;
-var ICON_DIRECTIVES = CLR_ICON_DIRECTIVES;
 var Point = {
     RIGHT_CENTER: 0,
     RIGHT_TOP: 1,
@@ -443,8 +441,6 @@ var ClrLoadingModule = /** @class */ (function () {
 ClrLoadingModule.decorators = [
     { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
 ];
-var Loading = ClrLoading;
-var LOADING_DIRECTIVES = CLR_LOADING_DIRECTIVES;
 var ButtonInGroupService = /** @class */ (function () {
     function ButtonInGroupService() {
         this._changes = new Subject();
@@ -764,9 +760,6 @@ ClrButtonGroupModule.decorators = [
                 exports: [CLR_BUTTON_GROUP_DIRECTIVES],
             },] },
 ];
-var Button = ClrButton;
-var ButtonGroup = ClrButtonGroup;
-var BUTTON_GROUP_DIRECTIVES = CLR_BUTTON_GROUP_DIRECTIVES;
 var ClrLoadingButton = /** @class */ (function () {
     function ClrLoadingButton(el, renderer) {
         this.el = el;
@@ -861,8 +854,6 @@ ClrLoadingButtonModule.decorators = [
                 exports: [CLR_LOADING_BUTTON_DIRECTIVES],
             },] },
 ];
-var LoadingButton = ClrLoadingButton;
-var LOADING_BUTTON_DIRECTIVES = CLR_LOADING_BUTTON_DIRECTIVES;
 var ClrButtonModule = /** @class */ (function () {
     function ClrButtonModule() {
     }
@@ -927,8 +918,6 @@ ClrSyntaxHighlightModule.decorators = [
                 exports: [CLR_CODE_HIGHLIGHT_DIRECTIVES],
             },] },
 ];
-var CodeHighlight = ClrCodeHighlight;
-var CODE_HIGHLIGHT_DIRECTIVES = CLR_CODE_HIGHLIGHT_DIRECTIVES;
 var ClrCodeModule = /** @class */ (function () {
     function ClrCodeModule() {
     }
@@ -2980,9 +2969,6 @@ var ClrCheckboxModule = /** @class */ (function () {
 ClrCheckboxModule.decorators = [
     { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
 ];
-var Checkbox = ClrCheckboxDeprecated;
-var ClrCheckbox = ClrCheckboxDeprecated;
-var CHECKBOX_DIRECTIVES = CLR_CHECKBOX_DIRECTIVES;
 var ClrFormsModule = /** @class */ (function () {
     function ClrFormsModule() {
     }
@@ -6618,29 +6604,6 @@ ClrDatagridModule.decorators = [
                 exports: [CLR_DATAGRID_DIRECTIVES, ClrIfExpandModule],
             },] },
 ];
-var Datagrid = ClrDatagrid;
-var DatagridActionBar = ClrDatagridActionBar;
-var DatagridActionOverflow = ClrDatagridActionOverflow;
-var DatagridColumn = ClrDatagridColumn;
-var DatagridColumnToggle = ClrDatagridColumnToggle;
-var DatagridHideableColumnDirective = ClrDatagridHideableColumn;
-var DatagridFilter = ClrDatagridFilter;
-var DatagridItems = ClrDatagridItems;
-var DatagridRow = ClrDatagridRow;
-var DatagridRowDetail = ClrDatagridRowDetail;
-var DatagridCell = ClrDatagridCell;
-var DatagridFooter = ClrDatagridFooter;
-var DatagridPagination = ClrDatagridPagination;
-var DatagridPlaceholder = ClrDatagridPlaceholder;
-var SortOrder = {
-    Unsorted: 0,
-    Asc: 1,
-    Desc: -1,
-};
-SortOrder[SortOrder.Unsorted] = "Unsorted";
-SortOrder[SortOrder.Asc] = "Asc";
-SortOrder[SortOrder.Desc] = "Desc";
-var DATAGRID_DIRECTIVES = CLR_DATAGRID_DIRECTIVES;
 var ClrStackBlock = /** @class */ (function () {
     function ClrStackBlock(parent) {
         this.parent = parent;
@@ -6897,13 +6860,6 @@ ClrStackViewModule.decorators = [
                 exports: [CLR_STACK_VIEW_DIRECTIVES],
             },] },
 ];
-var StackView = ClrStackView;
-var StackHeader = ClrStackHeader;
-var StackBlock = ClrStackBlock;
-var StackViewCustomTags = ClrStackViewCustomTags;
-var StackInput = ClrStackInput;
-var StackSelect = ClrStackSelect;
-var STACK_VIEW_DIRECTIVES = CLR_STACK_VIEW_DIRECTIVES;
 var NB_INSTANCES = 0;
 var UNIQUE_ID = new InjectionToken('UNIQUE_ID');
 function uniqueIdFactory() {
@@ -7233,8 +7189,6 @@ ClrTreeViewModule.decorators = [
                 exports: [CLR_TREE_VIEW_DIRECTIVES, ClrIfExpandModule],
             },] },
 ];
-var TreeNode = ClrTreeNode;
-var TREE_VIEW_DIRECTIVES = CLR_TREE_VIEW_DIRECTIVES;
 var ClrDataModule = /** @class */ (function () {
     function ClrDataModule() {
     }
@@ -7463,12 +7417,6 @@ ClrDropdownModule.decorators = [
                 exports: [CLR_DROPDOWN_DIRECTIVES, ClrConditionalModule, ClrIconModule],
             },] },
 ];
-var Dropdown = ClrDropdown;
-var DropdownMenu = ClrDropdownMenu;
-var DropdownTrigger = ClrDropdownTrigger;
-var DropdownItem = ClrDropdownItem;
-var menuPositions = CLR_MENU_POSITIONS;
-var DROPDOWN_DIRECTIVES = CLR_DROPDOWN_DIRECTIVES;
 var ALERT_TYPES = [
     'alert-info',
     'alert-warning',
@@ -7894,11 +7842,6 @@ ClrAlertModule.decorators = [
                 exports: [CLR_ALERT_DIRECTIVES],
             },] },
 ];
-var Alert = ClrAlert;
-var AlertItem = ClrAlertItem;
-var Alerts = ClrAlerts;
-var AlertsPager = ClrAlertsPager;
-var ALERT_DIRECTIVES = CLR_ALERT_DIRECTIVES;
 var ClrEmphasisModule = /** @class */ (function () {
     function ClrEmphasisModule() {
     }
@@ -8065,8 +8008,6 @@ ClrMainContainerModule.decorators = [
                 exports: [CLR_LAYOUT_DIRECTIVES],
             },] },
 ];
-var MainContainer = ClrMainContainer;
-var LAYOUT_DIRECTIVES = CLR_LAYOUT_DIRECTIVES;
 var MainContainerWillyWonka = /** @class */ (function (_super) {
     __extends(MainContainerWillyWonka, _super);
     function MainContainerWillyWonka() {
@@ -8266,9 +8207,6 @@ ClrNavigationModule.decorators = [
                 exports: [CLR_NAVIGATION_DIRECTIVES],
             },] },
 ];
-var Header = ClrHeader;
-var NavLevelDirective = ClrNavLevel;
-var NAVIGATION_DIRECTIVES = CLR_NAVIGATION_DIRECTIVES;
 var TemplateRefContainer = /** @class */ (function () {
     function TemplateRefContainer() {
     }
@@ -8666,12 +8604,6 @@ ClrTabsModule.decorators = [
                 exports: [CLR_TABS_DIRECTIVES, ClrConditionalModule],
             },] },
 ];
-var Tab = ClrTab;
-var Tabs = ClrTabs;
-var TabContent = ClrTabContent;
-var TabOverflowContent = ClrTabOverflowContent;
-var TabLinkDirective = ClrTabLink;
-var TABS_DIRECTIVES = CLR_TABS_DIRECTIVES;
 var VerticalNavGroupRegistrationService = /** @class */ (function () {
     function VerticalNavGroupRegistrationService() {
         this.navGroupCount = 0;
@@ -9071,12 +9003,6 @@ ClrVerticalNavModule.decorators = [
                 exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrIfExpandModule, ClrIconModule],
             },] },
 ];
-var VerticalNav = ClrVerticalNav;
-var VerticalNavGroup = ClrVerticalNavGroup;
-var VerticalNavGroupChildren = ClrVerticalNavGroupChildren;
-var VerticalNavIcon = ClrVerticalNavIcon;
-var VerticalNavLink = ClrVerticalNavLink;
-var VERTICAL_NAV_DIRECTIVES = CLR_VERTICAL_NAV_DIRECTIVES;
 var ClrLayoutModule = /** @class */ (function () {
     function ClrLayoutModule() {
     }
@@ -9217,8 +9143,6 @@ ClrModalModule.decorators = [
                 exports: [CLR_MODAL_DIRECTIVES],
             },] },
 ];
-var Modal = ClrModal;
-var MODAL_DIRECTIVES = CLR_MODAL_DIRECTIVES;
 var SIGNPOST_POSITIONS = {
     'top-left': { anchorPoint: Point.TOP_CENTER, popoverPoint: Point.BOTTOM_RIGHT, offsetY: -10, offsetX: 0 },
     'top-middle': { anchorPoint: Point.TOP_CENTER, popoverPoint: Point.BOTTOM_CENTER, offsetY: -10, offsetX: 0 },
@@ -9315,10 +9239,6 @@ ClrSignpostModule.decorators = [
                 providers: [],
             },] },
 ];
-var Signpost = ClrSignpost;
-var SignpostContent = ClrSignpostContent;
-var SignpostTrigger = ClrSignpostTrigger;
-var SIGNPOST_DIRECTIVES = CLR_SIGNPOST_DIRECTIVES;
 var ClrTooltip = /** @class */ (function () {
     function ClrTooltip() {
     }
@@ -9467,10 +9387,6 @@ ClrTooltipModule.decorators = [
                 exports: [CLR_TOOLTIP_DIRECTIVES, ClrConditionalModule, ClrIconModule],
             },] },
 ];
-var Tooltip = ClrTooltip;
-var TooltipContent = ClrTooltipContent;
-var TooltipTrigger = ClrTooltipTrigger;
-var TOOLTIP_DIRECTIVES = CLR_TOOLTIP_DIRECTIVES;
 var ClrPopoverModule = /** @class */ (function () {
     function ClrPopoverModule() {
     }
@@ -11103,18 +11019,6 @@ ClrWizardModule.decorators = [
                 exports: [CLR_WIZARD_DIRECTIVES],
             },] },
 ];
-var Wizard = ClrWizard;
-var WizardPage = ClrWizardPage;
-var WizardStepnav = ClrWizardStepnav;
-var WizardStepnavItem = ClrWizardStepnavItem;
-var WizardButton = ClrWizardButton;
-var WizardHeaderAction = ClrWizardHeaderAction;
-var WizardCustomTags = ClrWizardCustomTags;
-var WizardPageTitleDirective = ClrWizardPageTitle;
-var WizardPageNavTitleDirective = ClrWizardPageNavTitle;
-var WizardPageButtonsDirective = ClrWizardPageButtons;
-var WizardPageHeaderActionsDirective = ClrWizardPageHeaderActions;
-var WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
 var ClarityModule = /** @class */ (function () {
     function ClarityModule() {
     }
@@ -12090,5 +11994,5 @@ function slide(direction) {
     ];
 }
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, Button, ButtonGroup, BUTTON_GROUP_DIRECTIVES, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, LoadingButton, LOADING_BUTTON_DIRECTIVES, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, CodeHighlight, CODE_HIGHLIGHT_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, Datagrid, DatagridActionBar, DatagridActionOverflow, DatagridColumn, DatagridColumnToggle, DatagridHideableColumnDirective, DatagridFilter, DatagridItems, DatagridRow, DatagridRowDetail, DatagridCell, DatagridFooter, DatagridPagination, DatagridPlaceholder, SortOrder, DATAGRID_DIRECTIVES, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, TreeNode, TREE_VIEW_DIRECTIVES, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, StackView, StackHeader, StackBlock, StackViewCustomTags, StackInput, StackSelect, STACK_VIEW_DIRECTIVES, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, Alert, AlertItem, Alerts, AlertsPager, ALERT_DIRECTIVES, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, Checkbox, ClrCheckbox, CHECKBOX_DIRECTIVES, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, IconCustomTag, ICON_DIRECTIVES, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainer, LAYOUT_DIRECTIVES, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, Header, NavLevelDirective, NAVIGATION_DIRECTIVES, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, Tab, Tabs, TabContent, TabOverflowContent, TabLinkDirective, TABS_DIRECTIVES, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, VerticalNav, VerticalNavGroup, VerticalNavGroupChildren, VerticalNavIcon, VerticalNavLink, VERTICAL_NAV_DIRECTIVES, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, Modal, MODAL_DIRECTIVES, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, menuPositions, DROPDOWN_DIRECTIVES, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, Signpost, SignpostContent, SignpostTrigger, SIGNPOST_DIRECTIVES, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, Tooltip, TooltipContent, TooltipTrigger, TOOLTIP_DIRECTIVES, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, Loading, LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, Wizard, WizardPage, WizardStepnav, WizardStepnavItem, WizardButton, WizardHeaderAction, WizardCustomTags, WizardPageTitleDirective, WizardPageNavTitleDirective, WizardPageButtonsDirective, WizardPageHeaderActionsDirective, WIZARD_DIRECTIVES, ButtonInGroupService as ɵda, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdv, ControlClassService as ɵdy, ControlIdService as ɵx, FocusService as ɵdz, LayoutService as ɵdx, NgControlService as ɵdw, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdc, ResponsiveNavigationService as ɵdb, ActiveOompaLoompa as ɵdm, TabsWillyWonka as ɵdl, AriaService as ɵdg, TabsService as ɵdk, TABS_ID as ɵdh, TABS_ID_PROVIDER as ɵdj, tokenFactory$1 as ɵdi, VerticalNavGroupRegistrationService as ɵdp, VerticalNavGroupService as ɵdq, VerticalNavIconService as ɵdo, VerticalNavService as ɵdn, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵde, TemplateRefContainer as ɵdf, ClrTemplateRefModule as ɵdd, ButtonHubService as ɵdt, HeaderActionService as ɵdu, PageCollectionService as ɵds, WizardNavigationService as ɵdr };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrCodeModule, ClrCodeHighlight, CLR_CODE_HIGHLIGHT_DIRECTIVES, ClrSyntaxHighlightModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵda, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdv, ControlClassService as ɵdy, ControlIdService as ɵx, FocusService as ɵdz, LayoutService as ɵdx, NgControlService as ɵdw, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdc, ResponsiveNavigationService as ɵdb, ActiveOompaLoompa as ɵdm, TabsWillyWonka as ɵdl, AriaService as ɵdg, TabsService as ɵdk, TABS_ID as ɵdh, TABS_ID_PROVIDER as ɵdj, tokenFactory$1 as ɵdi, VerticalNavGroupRegistrationService as ɵdp, VerticalNavGroupService as ɵdq, VerticalNavIconService as ɵdo, VerticalNavService as ɵdn, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵde, TemplateRefContainer as ɵdf, ClrTemplateRefModule as ɵdd, ButtonHubService as ɵdt, HeaderActionService as ɵdu, PageCollectionService as ɵds, WizardNavigationService as ɵdr };
 //# sourceMappingURL=clr-angular.js.map
