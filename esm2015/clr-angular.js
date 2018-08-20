@@ -8262,14 +8262,7 @@ class ColumnToggleButtonsService {
     constructor() {
         this.buttons = null;
         this.selectAllDisabled = false;
-        this._okButtonClicked = new Subject();
         this._selectAllButtonClicked = new Subject();
-    }
-    /**
-     * @return {?}
-     */
-    get okButtonClicked() {
-        return this._okButtonClicked.asObservable();
     }
     /**
      * @return {?}
@@ -8282,15 +8275,8 @@ class ColumnToggleButtonsService {
      * @return {?}
      */
     buttonClicked(type) {
-        switch (type.toLowerCase()) {
-            case 'ok':
-                this._okButtonClicked.next();
-                break;
-            case 'selectall':
-                this._selectAllButtonClicked.next();
-                break;
-            default:
-                break;
+        if (type.toLowerCase() === 'selectall') {
+            this._selectAllButtonClicked.next();
         }
     }
 }
@@ -8778,25 +8764,10 @@ class ClrDatagridColumnToggleButton {
      */
     constructor(toggleButtons) {
         this.toggleButtons = toggleButtons;
-    }
-    /**
-     * @return {?}
-     */
-    getClasses() {
-        let /** @type {?} */ classes = 'btn ';
-        if (this.isOk()) {
-            classes += 'btn-primary';
-        }
-        else {
-            classes += 'btn-sm btn-link p6 text-uppercase';
-        }
-        return classes;
-    }
-    /**
-     * @return {?}
-     */
-    isOk() {
-        return this.clrType === 'ok';
+        /**
+         * @deprecated since 0.13
+         */
+        this.clrType = 'selectAll';
     }
     /**
      * @return {?}
@@ -8809,15 +8780,13 @@ ClrDatagridColumnToggleButton.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-column-toggle-button',
                 template: `
-        <button
+        <button class="btn btn-sm btn-link"
             (click)="click()"
-            [disabled]="toggleButtons.selectAllDisabled && !isOk()"
-            [ngClass]="getClasses()"
+            [disabled]="toggleButtons.selectAllDisabled"
             type="button">
             <ng-content></ng-content>
         </button>
     `,
-                host: { '[class.action-right]': 'isOk()' },
             },] },
 ];
 /** @nocollapse */
@@ -8897,9 +8866,6 @@ class ClrDatagridColumnToggle {
                 }
             });
         }));
-        this.subscriptions.push(this.columnToggleButtons.okButtonClicked.subscribe(() => {
-            this.toggleUI();
-        }));
         this.subscriptions.push(this.columnToggleButtons.selectAllButtonClicked.subscribe(() => {
             this.selectAll();
         }));
@@ -8978,14 +8944,6 @@ ClrDatagridColumnToggle.decorators = [
                             [disabled]="allColumnsVisible"
                             (click)="selectAll()"
                             type="button">Select All
-                    </button>
-                </div>
-                <div class="action-right">
-                    <button
-                            (click)="toggleUI()"
-                            class="btn btn-primary"
-                            type="button">
-                        Ok
                     </button>
                 </div>
             </div>

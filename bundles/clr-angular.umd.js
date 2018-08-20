@@ -5341,16 +5341,8 @@ var ColumnToggleButtonsService = /** @class */ (function () {
     function ColumnToggleButtonsService() {
         this.buttons = null;
         this.selectAllDisabled = false;
-        this._okButtonClicked = new rxjs.Subject();
         this._selectAllButtonClicked = new rxjs.Subject();
     }
-    Object.defineProperty(ColumnToggleButtonsService.prototype, "okButtonClicked", {
-        get: function () {
-            return this._okButtonClicked.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ColumnToggleButtonsService.prototype, "selectAllButtonClicked", {
         get: function () {
             return this._selectAllButtonClicked.asObservable();
@@ -5359,15 +5351,8 @@ var ColumnToggleButtonsService = /** @class */ (function () {
         configurable: true
     });
     ColumnToggleButtonsService.prototype.buttonClicked = function (type) {
-        switch (type.toLowerCase()) {
-            case 'ok':
-                this._okButtonClicked.next();
-                break;
-            case 'selectall':
-                this._selectAllButtonClicked.next();
-                break;
-            default:
-                break;
+        if (type.toLowerCase() === 'selectall') {
+            this._selectAllButtonClicked.next();
         }
     };
     return ColumnToggleButtonsService;
@@ -5667,20 +5652,8 @@ ClrDatagridActionOverflow.propDecorators = {
 var ClrDatagridColumnToggleButton = /** @class */ (function () {
     function ClrDatagridColumnToggleButton(toggleButtons) {
         this.toggleButtons = toggleButtons;
+        this.clrType = 'selectAll';
     }
-    ClrDatagridColumnToggleButton.prototype.getClasses = function () {
-        var classes = 'btn ';
-        if (this.isOk()) {
-            classes += 'btn-primary';
-        }
-        else {
-            classes += 'btn-sm btn-link p6 text-uppercase';
-        }
-        return classes;
-    };
-    ClrDatagridColumnToggleButton.prototype.isOk = function () {
-        return this.clrType === 'ok';
-    };
     ClrDatagridColumnToggleButton.prototype.click = function () {
         this.toggleButtons.buttonClicked(this.clrType);
     };
@@ -5689,8 +5662,7 @@ var ClrDatagridColumnToggleButton = /** @class */ (function () {
 ClrDatagridColumnToggleButton.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-dg-column-toggle-button',
-                template: "\n        <button\n            (click)=\"click()\"\n            [disabled]=\"toggleButtons.selectAllDisabled && !isOk()\"\n            [ngClass]=\"getClasses()\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    ",
-                host: { '[class.action-right]': 'isOk()' },
+                template: "\n        <button class=\"btn btn-sm btn-link\"\n            (click)=\"click()\"\n            [disabled]=\"toggleButtons.selectAllDisabled\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    ",
             },] },
 ];
 ClrDatagridColumnToggleButton.ctorParameters = function () { return [
@@ -5743,9 +5715,6 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
                 }
             });
         }));
-        this.subscriptions.push(this.columnToggleButtons.okButtonClicked.subscribe(function () {
-            _this.toggleUI();
-        }));
         this.subscriptions.push(this.columnToggleButtons.selectAllButtonClicked.subscribe(function () {
             _this.selectAll();
         }));
@@ -5771,7 +5740,7 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
 ClrDatagridColumnToggle.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-dg-column-toggle',
-                template: "\n        <button\n                #anchor\n                (click)=\"toggleUI()\"\n                class=\"btn btn-sm btn-link column-toggle--action\"\n                type=\"button\">\n            <clr-icon shape=\"view-columns\"></clr-icon>\n        </button>\n        <div class=\"column-switch\"\n             *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n            <div class=\"switch-header\">\n                <ng-container *ngIf=\"!title\">Show Columns</ng-container>\n                <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n                <button\n                    class=\"btn btn-sm btn-link\"\n                    (click)=\"toggleUI()\"\n                    type=\"button\">\n                    <clr-icon\n                            shape=\"close\"></clr-icon>\n                </button>\n            </div>\n            <ul class=\"switch-content list-unstyled\">\n                <li *ngFor=\"let column of columns\">\n                    <clr-checkbox [clrChecked]=\"!column.hidden\"\n                                  [clrDisabled]=\"column.lastVisibleColumn\"\n                                  (clrCheckedChange)=\"toggleColumn($event, column)\">\n                        <ng-template [ngTemplateOutlet]=\"column.template\"></ng-template>\n                    </clr-checkbox>\n                </li>\n            </ul>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length > 0\">\n                <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n            </div>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length === 0\">\n                <div>\n                    <button\n                            class=\"btn btn-sm btn-link p6 text-uppercase\"\n                            [disabled]=\"allColumnsVisible\"\n                            (click)=\"selectAll()\"\n                            type=\"button\">Select All\n                    </button>\n                </div>\n                <div class=\"action-right\">\n                    <button\n                            (click)=\"toggleUI()\"\n                            class=\"btn btn-primary\"\n                            type=\"button\">\n                        Ok\n                    </button>\n                </div>\n            </div>\n        </div>\n    ",
+                template: "\n        <button\n                #anchor\n                (click)=\"toggleUI()\"\n                class=\"btn btn-sm btn-link column-toggle--action\"\n                type=\"button\">\n            <clr-icon shape=\"view-columns\"></clr-icon>\n        </button>\n        <div class=\"column-switch\"\n             *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n            <div class=\"switch-header\">\n                <ng-container *ngIf=\"!title\">Show Columns</ng-container>\n                <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n                <button\n                    class=\"btn btn-sm btn-link\"\n                    (click)=\"toggleUI()\"\n                    type=\"button\">\n                    <clr-icon\n                            shape=\"close\"></clr-icon>\n                </button>\n            </div>\n            <ul class=\"switch-content list-unstyled\">\n                <li *ngFor=\"let column of columns\">\n                    <clr-checkbox [clrChecked]=\"!column.hidden\"\n                                  [clrDisabled]=\"column.lastVisibleColumn\"\n                                  (clrCheckedChange)=\"toggleColumn($event, column)\">\n                        <ng-template [ngTemplateOutlet]=\"column.template\"></ng-template>\n                    </clr-checkbox>\n                </li>\n            </ul>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length > 0\">\n                <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n            </div>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length === 0\">\n                <div>\n                    <button\n                            class=\"btn btn-sm btn-link p6 text-uppercase\"\n                            [disabled]=\"allColumnsVisible\"\n                            (click)=\"selectAll()\"\n                            type=\"button\">Select All\n                    </button>\n                </div>\n            </div>\n        </div>\n    ",
                 host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'open' },
             },] },
 ];
