@@ -923,68 +923,6 @@ ClrButtonModule.decorators = [
                 exports: [ClrLoadingButtonModule, ClrButtonGroupModule],
             },] },
 ];
-var ClrCodeHighlight = /** @class */ (function () {
-    function ClrCodeHighlight(_el, renderer, platformId) {
-        this._el = _el;
-        this.renderer = renderer;
-        this.platformId = platformId;
-        this._highlight = '';
-    }
-    ClrCodeHighlight.prototype.ngAfterContentInit = function () {
-        this.redraw();
-    };
-    ClrCodeHighlight.prototype.redraw = function () {
-        if (this._el && this._el.nativeElement && common.isPlatformBrowser(this.platformId)) {
-            Prism.highlightElement(this._el.nativeElement);
-        }
-    };
-    Object.defineProperty(ClrCodeHighlight.prototype, "highlight", {
-        get: function () {
-            return this._highlight;
-        },
-        set: function (val) {
-            if (val && val.trim() !== '') {
-                this._highlight = val;
-                this.renderer.addClass(this._el.nativeElement, this._highlight);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ClrCodeHighlight;
-}());
-ClrCodeHighlight.decorators = [
-    { type: core.Directive, args: [{ selector: 'code[clr-code-highlight]' },] },
-];
-ClrCodeHighlight.ctorParameters = function () { return [
-    { type: core.ElementRef, },
-    { type: core.Renderer2, },
-    { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-]; };
-ClrCodeHighlight.propDecorators = {
-    "highlight": [{ type: core.Input, args: ['clr-code-highlight',] },],
-};
-var CLR_CODE_HIGHLIGHT_DIRECTIVES = [ClrCodeHighlight];
-var ClrSyntaxHighlightModule = /** @class */ (function () {
-    function ClrSyntaxHighlightModule() {
-    }
-    return ClrSyntaxHighlightModule;
-}());
-ClrSyntaxHighlightModule.decorators = [
-    { type: core.NgModule, args: [{
-                imports: [common.CommonModule],
-                declarations: [CLR_CODE_HIGHLIGHT_DIRECTIVES],
-                exports: [CLR_CODE_HIGHLIGHT_DIRECTIVES],
-            },] },
-];
-var ClrCodeModule = /** @class */ (function () {
-    function ClrCodeModule() {
-    }
-    return ClrCodeModule;
-}());
-ClrCodeModule.decorators = [
-    { type: core.NgModule, args: [{ exports: [ClrSyntaxHighlightModule] },] },
-];
 var activeCounter = 0;
 var IF_ACTIVE_ID = new core.InjectionToken('IF_ACTIVE_ID');
 function tokenFactory() {
@@ -11064,7 +11002,6 @@ ClarityModule.decorators = [
                     ClrConditionalModule,
                     ClrFocusTrapModule,
                     ClrButtonModule,
-                    ClrCodeModule,
                     ClrFormsModule,
                     ClrLayoutModule,
                     ClrPopoverModule,
@@ -12032,10 +11969,6 @@ exports.ClrButtonGroupModule = ClrButtonGroupModule;
 exports.ClrLoadingButton = ClrLoadingButton;
 exports.CLR_LOADING_BUTTON_DIRECTIVES = CLR_LOADING_BUTTON_DIRECTIVES;
 exports.ClrLoadingButtonModule = ClrLoadingButtonModule;
-exports.ClrCodeModule = ClrCodeModule;
-exports.ClrCodeHighlight = ClrCodeHighlight;
-exports.CLR_CODE_HIGHLIGHT_DIRECTIVES = CLR_CODE_HIGHLIGHT_DIRECTIVES;
-exports.ClrSyntaxHighlightModule = ClrSyntaxHighlightModule;
 exports.ClrDataModule = ClrDataModule;
 exports.ClrDatagrid = ClrDatagrid;
 exports.ClrDatagridActionBar = ClrDatagridActionBar;
