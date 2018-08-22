@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('@angular/animations'), require('rxjs/operators'), require('@angular/forms')) :
-	typeof define === 'function' && define.amd ? define('@clr/angular', ['exports', '@angular/core', '@angular/common', 'rxjs', '@angular/animations', 'rxjs/operators', '@angular/forms'], factory) :
-	(factory((global.clr = global.clr || {}, global.clr.angular = {}),global.ng.core,global.ng.common,global.rxjs,global.ng.animations,global.Rx.Observable.prototype,global.ng.forms));
-}(this, (function (exports,core,common,rxjs,animations,operators,forms) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('@angular/animations'), require('rxjs/operators'), require('@angular/forms'), require('util')) :
+	typeof define === 'function' && define.amd ? define('@clr/angular', ['exports', '@angular/core', '@angular/common', 'rxjs', '@angular/animations', 'rxjs/operators', '@angular/forms', 'util'], factory) :
+	(factory((global.clr = global.clr || {}, global.clr.angular = {}),global.ng.core,global.ng.common,global.rxjs,global.ng.animations,global.Rx.Observable.prototype,global.ng.forms,global.util));
+}(this, (function (exports,core,common,rxjs,animations,operators,forms,util) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11183,22 +11183,21 @@ ClrControlHelper.decorators = [
             },] },
 ];
 var ClrLabel = /** @class */ (function () {
-    function ClrLabel(controlIdService, ifErrorService, layoutService, renderer, el) {
+    function ClrLabel(controlIdService, layoutService, renderer, el) {
         this.controlIdService = controlIdService;
-        this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.renderer = renderer;
         this.el = el;
     }
     ClrLabel.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ifErrorService) {
+        if (this.controlIdService) {
             this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
         }
         if (this.layoutService &&
             !this.layoutService.isVertical() &&
             this.el.nativeElement &&
-            this.el.nativeElement.getAttribute('class').indexOf('clr-col') === -1) {
+            this.el.nativeElement.className.indexOf('clr-col') < 0) {
             this.renderer.addClass(this.el.nativeElement, 'clr-col-xs-12');
             this.renderer.addClass(this.el.nativeElement, 'clr-col-md-2');
         }
@@ -11218,7 +11217,6 @@ ClrLabel.decorators = [
 ];
 ClrLabel.ctorParameters = function () { return [
     { type: ControlIdService, decorators: [{ type: core.Optional },] },
-    { type: IfErrorService, decorators: [{ type: core.Optional },] },
     { type: LayoutService, decorators: [{ type: core.Optional },] },
     { type: core.Renderer2, },
     { type: core.ElementRef, },
@@ -11624,25 +11622,56 @@ ClrPasswordModule.decorators = [
                 entryComponents: [ClrPasswordContainer],
             },] },
 ];
-var ClrRadioContainer = /** @class */ (function () {
-    function ClrRadioContainer() {
+var ClrRadioWrapper = /** @class */ (function () {
+    function ClrRadioWrapper(controlClassService) {
+        this.controlClassService = controlClassService;
         this._dynamic = false;
+        this.hasContainer = false;
+        if (controlClassService) {
+            this.hasContainer = true;
+        }
     }
-    return ClrRadioContainer;
+    return ClrRadioWrapper;
 }());
-ClrRadioContainer.decorators = [
+ClrRadioWrapper.decorators = [
     { type: core.Component, args: [{
-                selector: 'clr-radio-container',
-                template: "\n        <!-- We want the radio input to be before the label, always -->\n        <ng-content select=\"[clrRadio]\"></ng-content>\n        <ng-content></ng-content>\n        <label *ngIf=\"_dynamic\"></label>\n    ",
-                host: { '[class.radio]': 'true' },
+                selector: 'clr-radio-wrapper',
+                template: "\n    <ng-content select=\"[clrRadio]\"></ng-content>\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label\"></label>\n  ",
+                host: {
+                    '[class.clr-radio-wrapper]': '!hasContainer',
+                },
                 providers: [ControlIdService],
             },] },
 ];
+ClrRadioWrapper.ctorParameters = function () { return [
+    { type: ControlClassService, decorators: [{ type: core.Optional },] },
+]; };
+ClrRadioWrapper.propDecorators = {
+    "label": [{ type: core.ContentChild, args: [ClrLabel,] },],
+};
 var ClrRadio = /** @class */ (function (_super) {
     __extends(ClrRadio, _super);
-    function ClrRadio(vcr) {
-        return _super.call(this, ClrRadioContainer, vcr) || this;
+    function ClrRadio(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        var _this = _super.call(this, ClrRadioWrapper, vcr, 0) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
     }
+    ClrRadio.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrRadio.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
     return ClrRadio;
 }(WrappedFormControl));
 ClrRadio.decorators = [
@@ -11650,7 +11679,77 @@ ClrRadio.decorators = [
 ];
 ClrRadio.ctorParameters = function () { return [
     { type: core.ViewContainerRef, },
+    { type: NgControlService, decorators: [{ type: core.Optional },] },
+    { type: IfErrorService, decorators: [{ type: core.Optional },] },
+    { type: forms.NgControl, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, decorators: [{ type: core.Optional },] },
+    { type: core.ElementRef, },
 ]; };
+ClrRadio.propDecorators = {
+    "onBlur": [{ type: core.HostListener, args: ['blur',] },],
+};
+var ClrRadioContainer = /** @class */ (function () {
+    function ClrRadioContainer(ifErrorService, layoutService, controlClassService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this.inline = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+    }
+    Object.defineProperty(ClrRadioContainer.prototype, "clrInline", {
+        get: function () {
+            return this.inline;
+        },
+        set: function (value) {
+            if (!util.isBoolean(value)) {
+                this.inline = value === 'false' ? false : true;
+            }
+            else {
+                this.inline = !!value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrRadioContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrRadioContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrRadioContainer.prototype.ngOnDestroy = function () {
+        this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+    };
+    return ClrRadioContainer;
+}());
+ClrRadioContainer.decorators = [
+    { type: core.Component, args: [{
+                selector: 'clr-radio-container',
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-radio-wrapper\" [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [NgControlService, ControlClassService, IfErrorService],
+            },] },
+];
+ClrRadioContainer.ctorParameters = function () { return [
+    { type: IfErrorService, },
+    { type: LayoutService, decorators: [{ type: core.Optional },] },
+    { type: ControlClassService, },
+]; };
+ClrRadioContainer.propDecorators = {
+    "label": [{ type: core.ContentChild, args: [ClrLabel,] },],
+    "clrInline": [{ type: core.Input },],
+};
 var ClrRadioModule = /** @class */ (function () {
     function ClrRadioModule() {
     }
@@ -11658,10 +11757,10 @@ var ClrRadioModule = /** @class */ (function () {
 }());
 ClrRadioModule.decorators = [
     { type: core.NgModule, args: [{
-                imports: [common.CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
-                declarations: [ClrRadio, ClrRadioContainer],
-                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer],
-                entryComponents: [ClrRadioContainer],
+                imports: [common.CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
+                declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                entryComponents: [ClrRadioWrapper],
             },] },
 ];
 var ClrSelectContainer = /** @class */ (function () {
@@ -12038,6 +12137,7 @@ exports.ClrPasswordContainer = ClrPasswordContainer;
 exports.ClrPasswordModule = ClrPasswordModule;
 exports.ClrRadio = ClrRadio;
 exports.ClrRadioContainer = ClrRadioContainer;
+exports.ClrRadioWrapper = ClrRadioWrapper;
 exports.ClrRadioModule = ClrRadioModule;
 exports.ClrSelect = ClrSelect;
 exports.ClrSelectContainer = ClrSelectContainer;
