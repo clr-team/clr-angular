@@ -271,7 +271,7 @@ class Popover {
                 break;
             default:
         }
-        this.element.style.transform = `translateX(${leftDiff}px) translateY(${topDiff}px)`;
+        this.element.style.transform = `translateX(${Math.round(leftDiff)}px) translateY(${Math.round(topDiff)}px)`;
         return this._scroll.asObservable();
     }
     /**
