@@ -51,6 +51,18 @@ Start changes for Clarity 0.13.0
                     if (updated.search(/clrWizardShowGhostPages/g) > -1) {
                         logMessage('error', 'ACTION REQUIRED: Clarity has removed ghost pages from the Wizard component, please update your wizards accordingly.', filePath, '0.13.0-beta.2');
                     }
+                    // Alert to using clrType in hide/show panel in datagrid (https://github.com/vmware/clarity/pull/2546)
+                    if (updated.search(/clrType=['|"]selectAll|ok['|"]/g) > -1) {
+                        logMessage('warn', 'WARNING: Clarity has removed the ok button (clrType="ok") from the column hide/show panel in datagrid. Any custom <clr-dg-column-toggle-button> component will now default to clrType="selectAll" without needing the attribute. Please remove any custom ok button in the column hide/show panel, and also remove the clrType attributes for buttons with clrType="selectAll"', filePath, '0.13.0-beta.2');
+                    }
+                    // Alert to using deprecated icons
+                    if (updated.search(/shape=['"](angle-double|bar-chart|collapse|line-chart|wand)['"]/g) > -1) {
+                        logMessage('info', 'UPDATED: The following icons have been deprecated in its respective set and have been moved to another set: \n`angle-double`, `bar-chart`, `collapse`, `line-chart`, `wand`\nPlease check that they are being imported from the correct set.', filePath, '0.13.0-beta.2');
+                    }
+                    // Alert to using bootstrap's push / pull in Clarity grid
+                    if (updated.search(/(push|pull)-(xs|sm|md|lg|xl)-([0-9])/g) > -1) {
+                        logMessage('error', 'ACTION REQUIRED: Clarity has removed push and pull support in its grid system, you need either remove all uses or follow migration instructions.', filePath, '0.13.0-beta.2');
+                    }
                     if (content !== updated) {
                         tree.overwrite(filePath, updated);
                     }

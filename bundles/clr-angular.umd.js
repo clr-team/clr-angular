@@ -6670,9 +6670,9 @@ ClrStackBlock.decorators = [
                 host: { '[class.stack-block]': 'true' },
                 animations: [
                     animations.trigger('collapse', [
-                        animations.state('true', animations.style({ height: 0 })),
-                        animations.transition('true => false', [animations.animate('0.2s ease-in-out', animations.style({ height: '*' }))]),
-                        animations.transition('false => true', [animations.style({ height: '*' }), animations.animate('0.2s ease-in-out')]),
+                        animations.state('true', animations.style({ height: 0, display: 'none' })),
+                        animations.transition('true => false', [animations.animate('0.2s ease-in-out', animations.style({ height: '*', display: '*' }))]),
+                        animations.transition('false => true', [animations.style({ height: '*', display: '*' }), animations.animate('0.2s ease-in-out')]),
                     ]),
                 ],
             },] },
