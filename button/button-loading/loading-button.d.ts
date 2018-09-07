@@ -10,5 +10,5 @@ export declare class ClrLoadingButton implements LoadingListener {
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     constructor(el: ElementRef, renderer: Renderer2);
     loadingStateChange(state: ClrLoadingState): void;
-    private setExplicitButtonWidth();
+    private setExplicitButtonWidth;
 }

@@ -10,6 +10,6 @@ export declare class DatagridTableRenderer implements OnDestroy {
     outsideContainer: ViewContainerRef;
     insideContainer: ViewContainerRef;
     ngAfterViewInit(): void;
-    private tableMode(on);
-    private noLayout(on);
+    private tableMode;
+    private noLayout;
 }

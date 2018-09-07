@@ -27,8 +27,8 @@ export declare abstract class AbstractPopover implements AfterViewChecked, OnDes
     private documentESCListener;
     private ignoredElementClickListener;
     private ignore;
-    private attachESCListener();
-    private detachESCListener();
-    private attachOutsideClickListener();
-    private detachOutsideClickListener();
+    private attachESCListener;
+    private detachESCListener;
+    private attachOutsideClickListener;
+    private detachOutsideClickListener;
 }

@@ -4,7 +4,7 @@ export declare abstract class OompaLoompa implements AfterContentChecked, OnDest
     constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
     private subscription;
     private latestFlavor;
-    readonly abstract flavor: any;
+    abstract readonly flavor: any;
     ngAfterContentChecked(): void;
     ngOnDestroy(): void;
 }

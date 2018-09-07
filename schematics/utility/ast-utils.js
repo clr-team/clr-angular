@@ -241,6 +241,8 @@ function addSymbolToNgModuleMetadata(source, ngModulePath, metadataField, symbol
     // Get all the children property assignment of object literals.
     const matchingProperties = node.properties
         .filter(prop => prop.kind == ts.SyntaxKind.PropertyAssignment)
+        // Filter out every fields that's not "metadataField". Also handles string literals
+        // (but not expressions).
         .filter((prop) => {
         const name = prop.name;
         switch (name.kind) {

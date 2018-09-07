@@ -3,12 +3,14 @@ import { YearRangeModel } from './model/year-range.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrYearpicker implements AfterViewInit {
     private _dateNavigationService;
     private _viewManagerService;
     private _datepickerFocusService;
     private _elRef;
-    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef);
+    commonStrings: ClrCommonStrings;
+    constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, commonStrings: ClrCommonStrings);
     /**
      * YearRangeModel which is used to build the YearPicker view.
      */
@@ -25,7 +27,7 @@ export declare class ClrYearpicker implements AfterViewInit {
      * Increments the focus year by the value passed. Updates the YearRangeModel if the
      * new value is not in the current decade.
      */
-    private incrementFocusYearBy(value);
+    private incrementFocusYearBy;
     /**
      * Calls the DateNavigationService to update the year value of the calendar.
      * Also changes the view to the daypicker.

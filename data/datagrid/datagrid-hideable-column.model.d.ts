@@ -54,12 +54,12 @@ export declare class DatagridHideableColumnModel {
      *
      */
     /**
-     *
-     * @description
-     * The setter for setting the hidden state of a DatagridHideableColumnModel instance.
-     * It also broadcasts the change after its set.
-     *
-     */
+    *
+    * @description
+    * The setter for setting the hidden state of a DatagridHideableColumnModel instance.
+    * It also broadcasts the change after its set.
+    *
+    */
     hidden: boolean;
     /**
      *

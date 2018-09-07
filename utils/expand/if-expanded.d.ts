@@ -15,7 +15,7 @@ export declare class ClrIfExpanded implements OnInit, OnDestroy {
      * Subscriptions to all the services and queries changes
      */
     private _subscriptions;
-    private updateView();
+    private updateView;
     ngOnInit(): void;
     ngOnDestroy(): void;
 }

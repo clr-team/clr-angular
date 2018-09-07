@@ -8,5 +8,5 @@ export declare class VerticalNavService {
     collapsed: boolean;
     private _collapsible;
     collapsible: boolean;
-    private updateCollapseBehavior(value);
+    private updateCollapseBehavior;
 }

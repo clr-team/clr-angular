@@ -1,7 +1,7 @@
 export declare enum Layouts {
     VERTICAL = "vertical",
     HORIZONTAL = "horizontal",
-    COMPACT = "compact",
+    COMPACT = "compact"
 }
 export declare class LayoutService {
     layout: Layouts;

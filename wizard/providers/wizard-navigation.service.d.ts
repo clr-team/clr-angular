@@ -152,15 +152,15 @@ export declare class WizardNavigationService implements OnDestroy {
      * @memberof WizardNavigationService
      */
     /**
-     * Accepts a ClrWizardPage object, since that object to be the current/active
-     * page in the wizard, and emits the ClrWizardPage.onLoad (clrWizardPageOnLoad)
-     * event for that page.
-     *
-     * Note that all of this work is bypassed if the ClrWizardPage object is already
-     * the current page.
-     *
-     * @memberof WizardNavigationService
-     */
+    * Accepts a ClrWizardPage object, since that object to be the current/active
+    * page in the wizard, and emits the ClrWizardPage.onLoad (clrWizardPageOnLoad)
+    * event for that page.
+    *
+    * Note that all of this work is bypassed if the ClrWizardPage object is already
+    * the current page.
+    *
+    * @memberof WizardNavigationService
+    */
     currentPage: ClrWizardPage;
     /**
      * (DEPRECATED) A legacy means of setting the current page in the wizard.

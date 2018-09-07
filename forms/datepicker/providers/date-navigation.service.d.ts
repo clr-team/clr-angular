@@ -10,13 +10,13 @@ import { DayModel } from '../model/day.model';
 export declare class DateNavigationService {
     private _displayedCalendar;
     readonly displayedCalendar: CalendarModel;
-    private setDisplayedCalendar(value);
+    private setDisplayedCalendar;
     /**
      * Variable to store today's date.
      */
     private _todaysFullDate;
     private _today;
-    private initializeTodaysDate();
+    private initializeTodaysDate;
     readonly today: DayModel;
     selectedDay: DayModel;
     private _selectedDayChange;

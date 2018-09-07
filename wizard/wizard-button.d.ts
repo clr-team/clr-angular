@@ -11,7 +11,7 @@ export declare class ClrWizardButton {
     hidden: boolean;
     wasClicked: EventEmitter<string>;
     constructor(navService: WizardNavigationService, buttonService: ButtonHubService);
-    private checkDefaultAndCustomType(valueToCheck, typeToLookUp);
+    private checkDefaultAndCustomType;
     readonly isCancel: boolean;
     readonly isNext: boolean;
     readonly isPrevious: boolean;

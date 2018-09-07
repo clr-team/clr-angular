@@ -14,8 +14,8 @@ export declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFil
      */
     private _rawValue;
     /**
-     * Common setter for the input value
-     */
+    * Common setter for the input value
+    */
     value: string;
     /**
      * Input value converted to lowercase

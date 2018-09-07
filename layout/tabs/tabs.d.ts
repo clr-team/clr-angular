@@ -3,13 +3,15 @@ import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabLink } from './tab-link.directive';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrTabs implements AfterContentInit {
     ifActiveService: IfActiveService;
     ifOpenService: IfOpenService;
     tabsService: TabsService;
     tabsId: number;
+    commonStrings: ClrCommonStrings;
     tabLinkDirectives: QueryList<ClrTabLink>;
-    constructor(ifActiveService: IfActiveService, ifOpenService: IfOpenService, tabsService: TabsService, tabsId: number);
+    constructor(ifActiveService: IfActiveService, ifOpenService: IfOpenService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStrings);
     readonly activeTabInOverflow: boolean;
     ngAfterContentInit(): void;
     toggleOverflow(event: any): void;

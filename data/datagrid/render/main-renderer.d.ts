@@ -18,7 +18,7 @@ export declare class DatagridMainRenderer<T = any> implements AfterContentInit, 
     ngAfterContentInit(): void;
     ngAfterViewChecked(): void;
     private _heightSet;
-    private shouldComputeHeight();
+    private shouldComputeHeight;
     /**
      * Computes the height of the datagrid.
      *
@@ -29,14 +29,14 @@ export declare class DatagridMainRenderer<T = any> implements AfterContentInit, 
      *
      * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
      */
-    private computeDatagridHeight();
-    private resetDatagridHeight();
+    private computeDatagridHeight;
+    private resetDatagridHeight;
     private _subscriptions;
     ngOnDestroy(): void;
     /**
      * Makes each header compute its width.
      */
-    private computeHeadersWidth();
+    private computeHeadersWidth;
     /**
      * Indicates if we want to re-compute columns width. This should only happen:
      * 1) When headers change, with columns being added or removed
@@ -47,5 +47,5 @@ export declare class DatagridMainRenderer<T = any> implements AfterContentInit, 
     /**
      * Triggers a whole re-rendring cycle to set column sizes, if needed.
      */
-    private stabilizeColumns();
+    private stabilizeColumns;
 }

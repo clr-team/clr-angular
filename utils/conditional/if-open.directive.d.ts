@@ -5,12 +5,6 @@ export declare class ClrIfOpen implements OnDestroy {
     private template;
     private container;
     private subscription;
-    /********
-     *
-     * @description
-     * A getter that returns the current IfOpenService.open value.
-     *
-     */
     /*********
      *
      * @description
@@ -18,6 +12,12 @@ export declare class ClrIfOpen implements OnDestroy {
      *
      * @param value
      */
+    /********
+    *
+    * @description
+    * A getter that returns the current IfOpenService.open value.
+    *
+    */
     open: boolean;
     /**********
      * @property openChange

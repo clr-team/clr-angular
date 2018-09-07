@@ -25,7 +25,7 @@ export declare class ClrDatagridCell {
     id: string;
     private hiddenStateSubscription;
     constructor(hideableColumnService: HideableColumnService, _el: ElementRef, _renderer: Renderer2);
-    private mapHideableColumn(columnId);
-    private setHiddenClass(hideableColumnValue);
+    private mapHideableColumn;
+    private setHiddenClass;
     ngOnDestroy(): void;
 }

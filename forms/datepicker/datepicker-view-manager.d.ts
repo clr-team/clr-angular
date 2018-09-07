@@ -7,7 +7,7 @@ export declare class ClrDatepickerViewManager extends AbstractPopover {
     /**
      * Configure Popover Direction and Close indicators
      */
-    private configurePopover();
+    private configurePopover;
     /**
      * Returns if the current view is the monthpicker.
      */

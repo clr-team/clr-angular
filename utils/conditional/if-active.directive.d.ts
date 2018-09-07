@@ -8,12 +8,7 @@ export declare class ClrIfActive implements OnDestroy {
     private subscription;
     private wasActive;
     constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
-    private checkAndUpdateView(currentId);
-    /********
-     *
-     * @description
-     * A getter that returns the current IfActiveService.active value.
-     */
+    private checkAndUpdateView;
     /*********
      *
      * @description
@@ -21,6 +16,11 @@ export declare class ClrIfActive implements OnDestroy {
      *
      * @param value
      */
+    /********
+    *
+    * @description
+    * A getter that returns the current IfActiveService.active value.
+    */
     active: boolean;
     /**********
      * @property activeChange

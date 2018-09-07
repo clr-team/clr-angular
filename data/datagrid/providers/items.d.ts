@@ -55,10 +55,10 @@ export declare class Items<T = any> {
      * The Observable that lets other classes subscribe to items changes
      */
     private _change;
-    private emitChange();
+    private emitChange;
     readonly change: Observable<T[]>;
     private _allChanges;
-    private emitAllChanges(items);
+    private emitAllChanges;
     readonly allChanges: Observable<T[]>;
     /**
      * Checks if we don't have data to process yet, to abort early operations
@@ -67,13 +67,13 @@ export declare class Items<T = any> {
     /**
      * FiltersProvider items from the raw list
      */
-    private _filterItems();
+    private _filterItems;
     /**
      * Sorts items in the filtered list
      */
-    private _sortItems();
+    private _sortItems;
     /**
      * Extracts the current page from the sorted list
      */
-    private _changePage();
+    private _changePage;
 }

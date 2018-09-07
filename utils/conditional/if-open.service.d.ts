@@ -27,17 +27,17 @@ export declare class IfOpenService {
     /*********
      *
      * @description
-     * A getter that returns the current value of this IfOpen instance.
-     *
-     */
-    /*********
-     *
-     * @description
      * A setter function that updates the current state of _open for this instance of IfOpen structural directive. And,
      * broadcasts the new value to all subscribers.
      *
      * @param value
      */
+    /*********
+    *
+    * @description
+    * A getter that returns the current value of this IfOpen instance.
+    *
+    */
     open: boolean;
     /**
      * Sometimes, we need to remember the event that triggered the toggling to avoid loops.

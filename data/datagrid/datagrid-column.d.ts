@@ -57,8 +57,8 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      */
     private _sorted;
     /**
-     * @deprecated This will be removed soon, in favor of the sortOrder mechanism
-     */
+    * @deprecated This will be removed soon, in favor of the sortOrder mechanism
+    */
     sorted: boolean;
     /**
      * @deprecated This will be removed soon, in favor of the sortOrder mechanism
@@ -69,7 +69,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      */
     private _sortOrder;
     sortOrder: ClrDatagridSortOrder;
-    readonly ariaSort: string;
+    readonly ariaSort: "none" | "ascending" | "descending";
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
     /**
      * Sorts the datagrid based on this column

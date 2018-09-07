@@ -6,5 +6,5 @@ export declare class DatagridHeadRenderer implements OnDestroy {
     constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     private subscription;
     ngOnDestroy(): void;
-    private accountForScrollbar(width);
+    private accountForScrollbar;
 }

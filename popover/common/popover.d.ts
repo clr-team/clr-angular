@@ -12,19 +12,19 @@ export declare enum Point {
     BOTTOM_LEFT = 8,
     LEFT_CENTER = 9,
     LEFT_TOP = 10,
-    LEFT_BOTTOM = 11,
+    LEFT_BOTTOM = 11
 }
 export declare class Popover {
     private element;
     private _scroll;
     constructor(element: any);
-    anchor(anchor: any, anchorAlign: Point, popoverAlign: Point, {offsetX, offsetY, useAnchorParent}?: PopoverOptions): Observable<any>;
+    anchor(anchor: any, anchorAlign: Point, popoverAlign: Point, { offsetX, offsetY, useAnchorParent }?: PopoverOptions): Observable<any>;
     release(): void;
-    private isPositioned(container);
+    private isPositioned;
     private scrollableElements;
-    private emitScrollEvent();
+    private emitScrollEvent;
     private boundOnScrollListener;
-    private addScrollEventListeners(e);
-    private removeScrollEventListeners();
-    private scrolls(container);
+    private addScrollEventListeners;
+    private removeScrollEventListeners;
+    private scrolls;
 }

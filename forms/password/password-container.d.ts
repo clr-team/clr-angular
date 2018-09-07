@@ -12,6 +12,7 @@ import { ClrLabel } from '../common/label';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare const ToggleService: InjectionToken<any>;
 export declare function ToggleServiceProvider(): BehaviorSubject<boolean>;
 export declare class ClrPasswordContainer implements DynamicWrapper, OnDestroy {
@@ -20,6 +21,7 @@ export declare class ClrPasswordContainer implements DynamicWrapper, OnDestroy {
     private controlClassService;
     focusService: FocusService;
     private toggleService;
+    commonStrings: ClrCommonStrings;
     subscriptions: Subscription[];
     invalid: boolean;
     control: NgControl;
@@ -29,7 +31,7 @@ export declare class ClrPasswordContainer implements DynamicWrapper, OnDestroy {
     _toggle: boolean;
     clrToggle: boolean;
     label: ClrLabel;
-    constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService, focusService: FocusService, toggleService: BehaviorSubject<boolean>);
+    constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService, focusService: FocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStrings);
     toggle(): void;
     controlClass(): string;
     addGrid(): boolean;

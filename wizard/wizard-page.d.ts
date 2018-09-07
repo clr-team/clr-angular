@@ -84,11 +84,11 @@ export declare class ClrWizardPage implements OnInit {
      *
      */
     /**
-     * Sets whether the page should allow forward navigation.
-     *
-     * @memberof WizardPage
-     *
-     */
+    * Sets whether the page should allow forward navigation.
+    *
+    * @memberof WizardPage
+    *
+    */
     nextStepDisabled: boolean;
     /**
      * Emits when the value of ClrWizardPage.nextStepDisabled changes.
@@ -119,11 +119,11 @@ export declare class ClrWizardPage implements OnInit {
      *
      */
     /**
-     * Sets whether the page should allow backward navigation.
-     *
-     * @memberof WizardPage
-     *
-     */
+    * Sets whether the page should allow backward navigation.
+    *
+    * @memberof WizardPage
+    *
+    */
     previousStepDisabled: boolean;
     /**
      * Emits when the value of ClrWizardPage.previousStepDisabled changes.
@@ -156,16 +156,16 @@ export declare class ClrWizardPage implements OnInit {
      *
      */
     /**
-     * Overrides the cancel action from the page level. Allows you to use an
-     * alternate function for validation or data-munging before cancelling the
-     * wizard when combined with the ClrWizardPage.onCancel
-     * (the clrWizardPageOnCancel output).
-     *
-     * Requires that you manually close the wizard from your host component,
-     * usually with a call to Wizard.forceNext() or wizard.next();
-     *
-     * @memberof ClrWizardPage
-     */
+    * Overrides the cancel action from the page level. Allows you to use an
+    * alternate function for validation or data-munging before cancelling the
+    * wizard when combined with the ClrWizardPage.onCancel
+    * (the clrWizardPageOnCancel output).
+    *
+    * Requires that you manually close the wizard from your host component,
+    * usually with a call to Wizard.forceNext() or wizard.next();
+    *
+    * @memberof ClrWizardPage
+    */
     stopCancel: boolean;
     /**
      *
@@ -186,18 +186,18 @@ export declare class ClrWizardPage implements OnInit {
      *
      */
     /**
-     * Overrides forward navigation from the page level. Allows you to use an
-     * alternate function for validation or data-munging before moving the
-     * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
-     * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
-     * (clrWizardPageNext) outputs.
-     *
-     * Requires that you manually tell the wizard to navigate forward from
-     * the hostComponent, usually with a call to Wizard.forceNext() or
-     * wizard.next();
-     *
-     * @memberof ClrWizardPage
-     */
+    * Overrides forward navigation from the page level. Allows you to use an
+    * alternate function for validation or data-munging before moving the
+    * wizard to the next pagewhen combined with the ClrWizardPage.onCommit
+    * (clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked
+    * (clrWizardPageNext) outputs.
+    *
+    * Requires that you manually tell the wizard to navigate forward from
+    * the hostComponent, usually with a call to Wizard.forceNext() or
+    * wizard.next();
+    *
+    * @memberof ClrWizardPage
+    */
     stopNext: boolean;
     /**
      * An event emitter carried over from a legacy version of ClrWizardPage.
@@ -387,12 +387,12 @@ export declare class ClrWizardPage implements OnInit {
      *
      */
     /**
-     * A ClrWizardPage can be manually set to completed using this boolean setter.
-     * It is recommended that users rely on the convenience functions in the wizard
-     * and navigation service instead of manually setting pages’ completion state.
-     *
-     * @memberof ClrWizardPage
-     */
+    * A ClrWizardPage can be manually set to completed using this boolean setter.
+    * It is recommended that users rely on the convenience functions in the wizard
+    * and navigation service instead of manually setting pages’ completion state.
+    *
+    * @memberof ClrWizardPage
+    */
     completed: boolean;
     /**
      * Checks with the navigation service to see if it is the current page.

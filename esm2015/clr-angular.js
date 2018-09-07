@@ -1,14 +1,14 @@
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, InjectionToken, Inject, Injector, PLATFORM_ID, NgZone, LOCALE_ID, ComponentFactoryResolver, HostBinding, Self, forwardRef, ChangeDetectorRef, ContentChild, IterableDiffers, Attribute } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, HostBinding, ComponentFactoryResolver, InjectionToken, Inject, Injector, PLATFORM_ID, NgZone, LOCALE_ID, Self, ContentChild, Attribute, ChangeDetectorRef, IterableDiffers, forwardRef } from '@angular/core';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth } from '@angular/common';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
-import { first, map, filter } from 'rxjs/operators';
-import { NgControl, NG_VALUE_ACCESSOR, FormsModule, SelectMultipleControlValueAccessor } from '@angular/forms';
+import { filter, first, map } from 'rxjs/operators';
+import { NgControl, FormsModule, SelectMultipleControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { isBoolean } from 'util';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrIconCustomTag {
 }
@@ -18,13 +18,14 @@ ClrIconCustomTag.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_ICON_DIRECTIVES = [ClrIconCustomTag];
 class ClrIconModule {
 }
@@ -34,7 +35,7 @@ ClrIconModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -56,22 +57,27 @@ const Point = {
     LEFT_TOP: 10,
     LEFT_BOTTOM: 11,
 };
-Point[Point.RIGHT_CENTER] = "RIGHT_CENTER";
-Point[Point.RIGHT_TOP] = "RIGHT_TOP";
-Point[Point.RIGHT_BOTTOM] = "RIGHT_BOTTOM";
-Point[Point.TOP_CENTER] = "TOP_CENTER";
-Point[Point.TOP_RIGHT] = "TOP_RIGHT";
-Point[Point.TOP_LEFT] = "TOP_LEFT";
-Point[Point.BOTTOM_CENTER] = "BOTTOM_CENTER";
-Point[Point.BOTTOM_RIGHT] = "BOTTOM_RIGHT";
-Point[Point.BOTTOM_LEFT] = "BOTTOM_LEFT";
-Point[Point.LEFT_CENTER] = "LEFT_CENTER";
-Point[Point.LEFT_TOP] = "LEFT_TOP";
-Point[Point.LEFT_BOTTOM] = "LEFT_BOTTOM";
+Point[Point.RIGHT_CENTER] = 'RIGHT_CENTER';
+Point[Point.RIGHT_TOP] = 'RIGHT_TOP';
+Point[Point.RIGHT_BOTTOM] = 'RIGHT_BOTTOM';
+Point[Point.TOP_CENTER] = 'TOP_CENTER';
+Point[Point.TOP_RIGHT] = 'TOP_RIGHT';
+Point[Point.TOP_LEFT] = 'TOP_LEFT';
+Point[Point.BOTTOM_CENTER] = 'BOTTOM_CENTER';
+Point[Point.BOTTOM_RIGHT] = 'BOTTOM_RIGHT';
+Point[Point.BOTTOM_LEFT] = 'BOTTOM_LEFT';
+Point[Point.LEFT_CENTER] = 'LEFT_CENTER';
+Point[Point.LEFT_TOP] = 'LEFT_TOP';
+Point[Point.LEFT_BOTTOM] = 'LEFT_BOTTOM';
+/** @type {?} */
 const POSITION_RELATIVE = 'relative';
+/** @type {?} */
 const POSITION_ABSOLUTE = 'absolute';
+/** @type {?} */
 const POSITION_FIXED = 'fixed';
+/** @type {?} */
 const OVERFLOW_SCROLL = 'scroll';
+/** @type {?} */
 const OVERFLOW_AUTO = 'auto';
 class Popover {
     /**
@@ -104,11 +110,14 @@ class Popover {
         }
         // explicitly override anchor's style to static
         anchor.style.position = 'static';
-        const /** @type {?} */ anchorRect = anchor.getBoundingClientRect();
-        const /** @type {?} */ popoverRect = this.element.getBoundingClientRect();
-        // position of left top corner of anchor + the offset
-        let /** @type {?} */ leftDiff = anchorRect.left - popoverRect.left + offsetX;
-        let /** @type {?} */ topDiff = anchorRect.top - popoverRect.top + offsetY;
+        /** @type {?} */
+        const anchorRect = anchor.getBoundingClientRect();
+        /** @type {?} */
+        const popoverRect = this.element.getBoundingClientRect();
+        /** @type {?} */
+        let leftDiff = anchorRect.left - popoverRect.left + offsetX;
+        /** @type {?} */
+        let topDiff = anchorRect.top - popoverRect.top + offsetY;
         // first, adjust positioning based on anchor's align point
         switch (anchorAlign) {
             case Point.LEFT_TOP:
@@ -191,21 +200,16 @@ class Popover {
                 break;
             default:
         }
-        // Third, adjust with popover's margins based on the two align points.
-        // Here, we make an assumption that popover is primarily positioned outside the
-        // anchor with minor offset. Without this assumption, it's impossible to apply
-        // the popover's margins in a predictable way. For example, assume that a popover
-        // and its anchor are exactly the same size. if a popover is positioned inside the
-        // anchor (which is technically possible), then it becomes impossible to know what to do
-        // if the popover has a non-zero margin value all around (because applying the margin in
-        // all four directions will result in no margin visually, which isn't what we want).
-        // Therefore, our logic makes assumptions about margins of interest given the points,
-        // and only covers the cases where popover is outside the anchor.
-        const /** @type {?} */ popoverComputedStyle = getComputedStyle(this.element);
-        const /** @type {?} */ marginLeft = parseInt(popoverComputedStyle.marginLeft, 10);
-        const /** @type {?} */ marginRight = parseInt(popoverComputedStyle.marginRight, 10);
-        const /** @type {?} */ marginTop = parseInt(popoverComputedStyle.marginTop, 10);
-        const /** @type {?} */ marginBottom = parseInt(popoverComputedStyle.marginBottom, 10);
+        /** @type {?} */
+        const popoverComputedStyle = getComputedStyle(this.element);
+        /** @type {?} */
+        const marginLeft = parseInt(popoverComputedStyle.marginLeft, 10);
+        /** @type {?} */
+        const marginRight = parseInt(popoverComputedStyle.marginRight, 10);
+        /** @type {?} */
+        const marginTop = parseInt(popoverComputedStyle.marginTop, 10);
+        /** @type {?} */
+        const marginBottom = parseInt(popoverComputedStyle.marginBottom, 10);
         switch (anchorAlign) {
             case Point.LEFT_TOP:
             case Point.TOP_LEFT:
@@ -286,7 +290,8 @@ class Popover {
      * @return {?}
      */
     isPositioned(container) {
-        const /** @type {?} */ position = getComputedStyle(container).position;
+        /** @type {?} */
+        const position = getComputedStyle(container).position;
         return position === POSITION_RELATIVE || position === POSITION_ABSOLUTE || position === POSITION_FIXED;
     }
     /**
@@ -301,8 +306,10 @@ class Popover {
      */
     addScrollEventListeners(e) {
         this._scroll = new Subject();
-        const /** @type {?} */ anchor = e;
-        let /** @type {?} */ current = e;
+        /** @type {?} */
+        const anchor = e;
+        /** @type {?} */
+        let current = e;
         while (current && current !== document) {
             if (this.scrolls(current)) {
                 current.addEventListener('scroll', this.boundOnScrollListener);
@@ -318,7 +325,7 @@ class Popover {
      * @return {?}
      */
     removeScrollEventListeners() {
-        for (const /** @type {?} */ elem of this.scrollableElements) {
+        for (const elem of this.scrollableElements) {
             elem.removeEventListener('scroll', this.boundOnScrollListener);
         }
         this.scrollableElements.length = 0;
@@ -332,7 +339,8 @@ class Popover {
      * @return {?}
      */
     scrolls(container) {
-        const /** @type {?} */ computedStyles = getComputedStyle(container);
+        /** @type {?} */
+        const computedStyles = getComputedStyle(container);
         return (computedStyles.overflowX === OVERFLOW_SCROLL ||
             computedStyles.overflowX === OVERFLOW_AUTO ||
             computedStyles.overflowY === OVERFLOW_SCROLL ||
@@ -342,9 +350,11 @@ class Popover {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let openCount = 0;
+/** @type {?} */
 const waiting = [];
 class PopoverDirectiveOld {
     /**
@@ -382,7 +392,8 @@ class PopoverDirectiveOld {
             this.destroyPopover();
             if (!this.popoverOptions.allowMultipleOpen) {
                 if (waiting.length > 0) {
-                    const /** @type {?} */ createPopoverFn = waiting.shift();
+                    /** @type {?} */
+                    const createPopoverFn = waiting.shift();
                     createPopoverFn();
                 }
             }
@@ -392,13 +403,14 @@ class PopoverDirectiveOld {
      * @return {?}
      */
     createPopover() {
-        const /** @type {?} */ embeddedViewRef = /** @type {?} */ (this.viewContainer.createEmbeddedView(this.templateRef));
+        /** @type {?} */
+        const embeddedViewRef = /** @type {?} */ (this.viewContainer.createEmbeddedView(this.templateRef));
         // TODO: Not sure of the risks associated with using this. Find an alternative.
         // Needed for find the correct height and width of dynamically created views
         // inside of the popover. For Eg: Button Groups
         embeddedViewRef.detectChanges();
-        // filter out other nodes in the view ref so we are only left with element nodes
-        const /** @type {?} */ elementNodes = embeddedViewRef.rootNodes.filter((node) => {
+        /** @type {?} */
+        const elementNodes = embeddedViewRef.rootNodes.filter((node) => {
             return node.nodeType === 1;
         });
         // we take the first element node in the embedded view; usually there should only be one anyways
@@ -433,27 +445,28 @@ PopoverDirectiveOld.decorators = [
 ];
 /** @nocollapse */
 PopoverDirectiveOld.ctorParameters = () => [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ];
 PopoverDirectiveOld.propDecorators = {
-    "anchorElem": [{ type: Input, args: ['clrPopoverOldAnchor',] },],
-    "anchorPoint": [{ type: Input, args: ['clrPopoverOldAnchorPoint',] },],
-    "popoverPoint": [{ type: Input, args: ['clrPopoverOldPopoverPoint',] },],
-    "popoverOptions": [{ type: Input, args: ['clrPopoverOldOptions',] },],
-    "clrPopoverOldChange": [{ type: Output, args: ['clrPopoverOldChange',] },],
-    "clrPopoverOld": [{ type: Input },],
+    anchorElem: [{ type: Input, args: ['clrPopoverOldAnchor',] }],
+    anchorPoint: [{ type: Input, args: ['clrPopoverOldAnchorPoint',] }],
+    popoverPoint: [{ type: Input, args: ['clrPopoverOldPopoverPoint',] }],
+    popoverOptions: [{ type: Input, args: ['clrPopoverOldOptions',] }],
+    clrPopoverOldChange: [{ type: Output, args: ['clrPopoverOldChange',] }],
+    clrPopoverOld: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const POPOVER_DIRECTIVES = [PopoverDirectiveOld];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -468,7 +481,7 @@ ClrCommonPopoverModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -485,7 +498,7 @@ class LoadingListener {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @enum {number} */
 const ClrLoadingState = {
@@ -494,10 +507,10 @@ const ClrLoadingState = {
     SUCCESS: 2,
     ERROR: 3,
 };
-ClrLoadingState[ClrLoadingState.DEFAULT] = "DEFAULT";
-ClrLoadingState[ClrLoadingState.LOADING] = "LOADING";
-ClrLoadingState[ClrLoadingState.SUCCESS] = "SUCCESS";
-ClrLoadingState[ClrLoadingState.ERROR] = "ERROR";
+ClrLoadingState[ClrLoadingState.DEFAULT] = 'DEFAULT';
+ClrLoadingState[ClrLoadingState.LOADING] = 'LOADING';
+ClrLoadingState[ClrLoadingState.SUCCESS] = 'SUCCESS';
+ClrLoadingState[ClrLoadingState.ERROR] = 'ERROR';
 class ClrLoading {
     /**
      * @param {?} listener
@@ -541,16 +554,17 @@ ClrLoading.decorators = [
 ];
 /** @nocollapse */
 ClrLoading.ctorParameters = () => [
-    { type: LoadingListener, decorators: [{ type: Optional },] },
+    { type: LoadingListener, decorators: [{ type: Optional }] }
 ];
 ClrLoading.propDecorators = {
-    "loadingState": [{ type: Input, args: ['clrLoading',] },],
+    loadingState: [{ type: Input, args: ['clrLoading',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const CLR_LOADING_DIRECTIVES = [ClrLoading];
 class ClrLoadingModule {
 }
@@ -560,7 +574,7 @@ ClrLoadingModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -570,7 +584,7 @@ ClrLoadingModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -601,7 +615,7 @@ ButtonInGroupService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -655,7 +669,8 @@ class ClrButton {
      */
     set classNames(value) {
         if (typeof value === 'string') {
-            const /** @type {?} */ classNames = value.split(' ');
+            /** @type {?} */
+            const classNames = value.split(' ');
             if (classNames.indexOf('btn') === -1) {
                 classNames.push('btn');
             }
@@ -751,27 +766,23 @@ ClrButton.decorators = [
 ];
 /** @nocollapse */
 ClrButton.ctorParameters = () => [
-    { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional },] },
+    { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional }] }
 ];
 ClrButton.propDecorators = {
-    "templateRef": [{ type: ViewChild, args: ['buttonProjectedRef',] },],
-    "inMenu": [{ type: Input, args: ['clrInMenu',] },],
-    "classNames": [{ type: Input, args: ['class',] },],
-    "name": [{ type: Input, args: ['name',] },],
-    "type": [{ type: Input, args: ['type',] },],
-    "disabled": [{ type: Input, args: ['disabled',] },],
-    "_click": [{ type: Output, args: ['click',] },],
+    templateRef: [{ type: ViewChild, args: ['buttonProjectedRef',] }],
+    inMenu: [{ type: Input, args: ['clrInMenu',] }],
+    classNames: [{ type: Input, args: ['class',] }],
+    name: [{ type: Input, args: ['name',] }],
+    type: [{ type: Input, args: ['type',] }],
+    disabled: [{ type: Input, args: ['disabled',] }],
+    _click: [{ type: Output, args: ['click',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
+/** @type {?} */
 const CLR_MENU_POSITIONS = [
     'bottom-left',
     'bottom-right',
@@ -785,7 +796,34 @@ const CLR_MENU_POSITIONS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * @abstract
+ */
+class ClrCommonStrings {
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// We do not want to export our service publicly
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -796,10 +834,12 @@ class ClrButtonGroup {
     /**
      * @param {?} buttonGroupNewService
      * @param {?} elementRef
+     * @param {?} commonStrings
      */
-    constructor(buttonGroupNewService, elementRef) {
+    constructor(buttonGroupNewService, elementRef, commonStrings) {
         this.buttonGroupNewService = buttonGroupNewService;
         this.elementRef = elementRef;
+        this.commonStrings = commonStrings;
         this.inlineButtons = [];
         this.menuButtons = [];
         this._openMenu = false;
@@ -834,8 +874,10 @@ class ClrButtonGroup {
      * @return {?}
      */
     rearrangeButton(button) {
-        let /** @type {?} */ fromView;
-        let /** @type {?} */ toView;
+        /** @type {?} */
+        let fromView;
+        /** @type {?} */
+        let toView;
         if (button.inMenu) {
             fromView = this.inlineButtons;
             toView = this.menuButtons;
@@ -844,10 +886,12 @@ class ClrButtonGroup {
             fromView = this.menuButtons;
             toView = this.inlineButtons;
         }
-        const /** @type {?} */ index = fromView.indexOf(button);
+        /** @type {?} */
+        const index = fromView.indexOf(button);
         if (index > -1) {
             fromView.splice(index, 1);
-            const /** @type {?} */ moveIndex = this.getMoveIndex(button);
+            /** @type {?} */
+            const moveIndex = this.getMoveIndex(button);
             if (moveIndex <= toView.length) {
                 toView.splice(moveIndex, 0, button);
             }
@@ -862,15 +906,18 @@ class ClrButtonGroup {
      * @return {?}
      */
     getMoveIndex(buttonToMove) {
-        const /** @type {?} */ tempArr = this.buttons.filter(button => button.inMenu === buttonToMove.inMenu);
+        /** @type {?} */
+        const tempArr = this.buttons.filter(button => button.inMenu === buttonToMove.inMenu);
         return tempArr.indexOf(buttonToMove);
     }
     /**
      * @return {?}
      */
     initializeButtons() {
-        const /** @type {?} */ tempInlineButtons = [];
-        const /** @type {?} */ tempInMenuButtons = [];
+        /** @type {?} */
+        const tempInlineButtons = [];
+        /** @type {?} */
+        const tempInMenuButtons = [];
         this.buttons.forEach(button => {
             if (button.inMenu) {
                 tempInMenuButtons.push(button);
@@ -973,8 +1020,10 @@ class ClrButtonGroup {
         if (this.openMenu && !this._overflowMenuToggleClicked) {
             // Reset the overflow menu toggle clicked flag
             this._overflowMenuToggleClicked = false;
-            let /** @type {?} */ current = target; // Get the element in the DOM on which the mouse was clicked
-            const /** @type {?} */ host = this.elementRef.nativeElement; // Current Button Group
+            /** @type {?} */
+            let current = target;
+            /** @type {?} */
+            const host = this.elementRef.nativeElement; // Current Button Group
             if (current.classList.contains('dropdown-menu')) {
                 current = current.parentNode;
                 while (current) {
@@ -1015,7 +1064,7 @@ ClrButtonGroup.decorators = [
         <button
             class="btn dropdown-toggle"
             (click)="toggleMenu()">
-            <clr-icon shape="ellipsis-horizontal"></clr-icon>
+            <clr-icon shape="ellipsis-horizontal" [attr.title]="commonStrings.more"></clr-icon>
         </button>
         <div
             class="dropdown-menu"
@@ -1036,24 +1085,26 @@ ClrButtonGroup.decorators = [
 ];
 /** @nocollapse */
 ClrButtonGroup.ctorParameters = () => [
-    { type: ButtonInGroupService, },
-    { type: ElementRef, },
+    { type: ButtonInGroupService },
+    { type: ElementRef },
+    { type: ClrCommonStrings }
 ];
 ClrButtonGroup.propDecorators = {
-    "buttons": [{ type: ContentChildren, args: [ClrButton,] },],
-    "menuPosition": [{ type: Input, args: ['clrMenuPosition',] },],
-    "onMouseClick": [{ type: HostListener, args: ['document:click', ['$event.target'],] },],
+    buttons: [{ type: ContentChildren, args: [ClrButton,] }],
+    menuPosition: [{ type: Input, args: ['clrMenuPosition',] }],
+    onMouseClick: [{ type: HostListener, args: ['document:click', ['$event.target'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_BUTTON_GROUP_DIRECTIVES = [ClrButton, ClrButtonGroup];
 class ClrButtonGroupModule {
 }
@@ -1067,7 +1118,7 @@ ClrButtonGroupModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -1122,7 +1173,8 @@ class ClrLoadingButton {
      */
     setExplicitButtonWidth() {
         if (this.el.nativeElement && this.el.nativeElement.getBoundingClientRect) {
-            const /** @type {?} */ boundingClientRect = this.el.nativeElement.getBoundingClientRect();
+            /** @type {?} */
+            const boundingClientRect = this.el.nativeElement.getBoundingClientRect();
             this.renderer.setStyle(this.el.nativeElement, 'width', `${boundingClientRect.width}px`);
         }
     }
@@ -1172,23 +1224,24 @@ ClrLoadingButton.decorators = [
 ];
 /** @nocollapse */
 ClrLoadingButton.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 ClrLoadingButton.propDecorators = {
-    "disabled": [{ type: Input, args: ['disabled',] },],
-    "clrLoadingChange": [{ type: Output, args: ['clrLoadingChange',] },],
+    disabled: [{ type: Input, args: ['disabled',] }],
+    clrLoadingChange: [{ type: Output, args: ['clrLoadingChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_LOADING_BUTTON_DIRECTIVES = [ClrLoadingButton];
 class ClrLoadingButtonModule {
 }
@@ -1202,7 +1255,7 @@ ClrLoadingButtonModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -1219,9 +1272,671 @@ ClrButtonModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class EmptyAnchor {
+}
+EmptyAnchor.decorators = [
+    { type: Component, args: [{
+                template: '',
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * Internal module, please do not export!
+ */
+class ClrHostWrappingModule {
+}
+ClrHostWrappingModule.decorators = [
+    { type: NgModule, args: [{ declarations: [EmptyAnchor], exports: [EmptyAnchor], entryComponents: [EmptyAnchor] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrControlError {
+}
+ClrControlError.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-control-error',
+                template: `
+    <ng-content></ng-content>
+    `,
+                host: { '[class.clr-subtext]': 'true' },
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrControlHelper {
+}
+ClrControlHelper.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-control-helper',
+                template: `
+    <ng-content></ng-content>
+    `,
+                host: { '[class.clr-subtext]': 'true' },
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class NgControlService {
+    constructor() {
+        this._controlChanges = new Subject();
+    }
+    /**
+     * @return {?}
+     */
+    get controlChanges() {
+        return this._controlChanges.asObservable();
+    }
+    /**
+     * @param {?} control
+     * @return {?}
+     */
+    setControl(control) {
+        this._controlChanges.next(control);
+    }
+}
+NgControlService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class IfErrorService {
+    /**
+     * @param {?} ngControlService
+     */
+    constructor(ngControlService) {
+        this.ngControlService = ngControlService;
+        this._statusChanges = new Subject();
+        this.subscriptions = [];
+        // Wait for the control to be available
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
+            this.listenForChanges();
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    get statusChanges() {
+        return this._statusChanges.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    listenForChanges() {
+        this.subscriptions.push(this.control.statusChanges.pipe(filter(() => this.control.touched)).subscribe(() => {
+            this._statusChanges.next(this.control);
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    triggerStatusChange() {
+        if (this.control) {
+            this._statusChanges.next(this.control);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+}
+IfErrorService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+IfErrorService.ctorParameters = () => [
+    { type: NgControlService }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+class ClrIfError {
+    /**
+     * @param {?} service
+     * @param {?} template
+     * @param {?} container
+     */
+    constructor(service, template, container) {
+        this.service = service;
+        this.template = template;
+        this.container = container;
+        this.displayed = false;
+        if (!this.service) {
+            throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
+        }
+        else {
+            this.displayError(false);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.subscription = this.service.statusChanges.subscribe(control => {
+            // If there is a specific error to track, check it, otherwise check overall validity
+            if (this.error) {
+                this.displayError(control.hasError(this.error));
+            }
+            else {
+                this.displayError(control.invalid);
+            }
+        });
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+    /**
+     * @param {?} invalid
+     * @return {?}
+     */
+    displayError(invalid) {
+        if (invalid && !this.displayed) {
+            this.container.createEmbeddedView(this.template);
+            this.displayed = true;
+        }
+        else if (!invalid) {
+            this.container.clear();
+            this.displayed = false;
+        }
+    }
+}
+ClrIfError.decorators = [
+    { type: Directive, args: [{ selector: '[clrIfError]' },] },
+];
+/** @nocollapse */
+ClrIfError.ctorParameters = () => [
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
+];
+ClrIfError.propDecorators = {
+    error: [{ type: Input, args: ['clrIfError',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+let counter = 0;
+class ControlIdService {
+    constructor() {
+        this._id = 'clr-form-control-' + ++counter;
+        this._idChange = new BehaviorSubject(this._id);
+    }
+    /**
+     * @return {?}
+     */
+    get id() {
+        return this._id;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set id(value) {
+        this._id = value;
+        this._idChange.next(value);
+    }
+    /**
+     * @return {?}
+     */
+    get idChange() {
+        return this._idChange.asObservable();
+    }
+}
+ControlIdService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @enum {string} */
+const Layouts = {
+    VERTICAL: 'vertical',
+    HORIZONTAL: 'horizontal',
+    COMPACT: 'compact',
+};
+class LayoutService {
+    constructor() {
+        this.layout = Layouts.VERTICAL;
+        this.layoutValues = Object.keys(Layouts).map(key => Layouts[key]);
+    }
+    /**
+     * @return {?}
+     */
+    isVertical() {
+        return this.layout === Layouts.VERTICAL;
+    }
+    /**
+     * @return {?}
+     */
+    get layoutClass() {
+        return `clr-form-${this.layout}`;
+    }
+    /**
+     * @param {?} layout
+     * @return {?}
+     */
+    isValid(layout) {
+        return this.layoutValues.indexOf(layout) > -1;
+    }
+}
+LayoutService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+class ClrLabel {
+    /**
+     * @param {?} controlIdService
+     * @param {?} layoutService
+     * @param {?} renderer
+     * @param {?} el
+     */
+    constructor(controlIdService, layoutService, renderer, el) {
+        this.controlIdService = controlIdService;
+        this.layoutService = layoutService;
+        this.renderer = renderer;
+        this.el = el;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        // Only add the clr-control-label if it is inside a control container
+        if (this.controlIdService) {
+            this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
+        }
+        // Only set the grid column classes if we are in the right context and if they aren't already set
+        if (this.layoutService &&
+            !this.layoutService.isVertical() &&
+            this.el.nativeElement &&
+            this.el.nativeElement.className.indexOf('clr-col') < 0) {
+            this.renderer.addClass(this.el.nativeElement, 'clr-col-xs-12');
+            this.renderer.addClass(this.el.nativeElement, 'clr-col-md-2');
+        }
+        if (!this.forAttr && this.controlIdService) {
+            this.subscription = this.controlIdService.idChange.subscribe(id => (this.forAttr = id));
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+}
+ClrLabel.decorators = [
+    { type: Directive, args: [{ selector: 'label' },] },
+];
+/** @nocollapse */
+ClrLabel.ctorParameters = () => [
+    { type: ControlIdService, decorators: [{ type: Optional }] },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+ClrLabel.propDecorators = {
+    forAttr: [{ type: HostBinding, args: ['attr.for',] }, { type: Input, args: ['for',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrForm {
+}
+ClrForm.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrForm]',
+                providers: [LayoutService],
+                host: { '[class.clr-form]': 'true' },
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrLayout {
+    /**
+     * @param {?} layoutService
+     */
+    constructor(layoutService) {
+        this.layoutService = layoutService;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        // Only set the layout if it is a valid option
+        if (this.layout && this.layoutService.isValid(this.layout)) {
+            this.layoutService.layout = this.layout;
+        }
+    }
+}
+ClrLayout.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrLayout]',
+                host: {
+                    '[class]': 'layoutService.layoutClass',
+                },
+            },] },
+];
+/** @nocollapse */
+ClrLayout.ctorParameters = () => [
+    { type: LayoutService }
+];
+ClrLayout.propDecorators = {
+    layout: [{ type: Input, args: ['clrLayout',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrCommonFormsModule {
+}
+ClrCommonFormsModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule],
+                declarations: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
+                exports: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// unsupported: template constraints.
+/**
+ * @template W
+ */
+class HostWrapper {
+    /**
+     * @param {?} containerType
+     * @param {?} vcr
+     * @param {?=} index
+     */
+    constructor(containerType, vcr, index = 0) {
+        this.injector = vcr.injector;
+        // If the host is already wrapped, we don't do anything
+        if (!this.injector.get(containerType, null)) {
+            /** @type {?} */
+            const cfr = this.injector.get(ComponentFactoryResolver);
+            /** @type {?} */
+            const el = this.injector.get(ElementRef);
+            // We need a new anchor, since we're projecting the current one.
+            vcr.createComponent(cfr.resolveComponentFactory(EmptyAnchor));
+            /** @type {?} */
+            const factory = cfr.resolveComponentFactory(containerType);
+            /** @type {?} */
+            const element = [];
+            element[index] = [el.nativeElement];
+            /** @type {?} */
+            const containerRef = vcr.createComponent(factory, undefined, undefined, element);
+            // We can now remove the useless anchor
+            vcr.remove(0);
+            // We note that the container was dynamically created
+            containerRef.instance._dynamic = true;
+            // We keep the wrapper's injector to access the dependencies that weren't available before.
+            this.injector = containerRef.injector;
+        }
+    }
+    /**
+     * @template T
+     * @param {?} token
+     * @param {?=} notFoundValue
+     * @return {?}
+     */
+    get(token, notFoundValue) {
+        return this.injector.get(token, notFoundValue);
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+// unsupported: template constraints.
+/**
+ * @template W
+ */
+class WrappedFormControl {
+    /**
+     * @param {?} wrapperType
+     * @param {?} vcr
+     * @param {?=} index
+     */
+    constructor(wrapperType, vcr, index = 0) {
+        this.wrapperType = wrapperType;
+        this.vcr = vcr;
+        this.index = index;
+    }
+    /**
+     * @return {?}
+     */
+    get id() {
+        return this._id;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set id(value) {
+        this._id = value;
+        if (this.controlIdService) {
+            this.controlIdService.id = value;
+        }
+    }
+    /**
+     * @template T
+     * @param {?} token
+     * @param {?=} notFoundValue
+     * @return {?}
+     */
+    getProviderFromContainer(token, notFoundValue) {
+        return this._containerInjector.get(token, notFoundValue);
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
+        this.controlIdService = this._containerInjector.get(ControlIdService);
+        if (this._id) {
+            this.controlIdService.id = this._id;
+        }
+        else {
+            this._id = this.controlIdService.id;
+        }
+        // No need to subscribe to controlIdService.idChange because the input is the only one that can update the id.
+    }
+}
+WrappedFormControl.propDecorators = {
+    id: [{ type: HostBinding }, { type: Input }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrCheckboxContainer {
+    constructor() {
+        // Indicates whether the container is dynamically created by the checkbox input itself
+        this._dynamic = false;
+    }
+}
+ClrCheckboxContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-checkbox-container',
+                template: `
+        <!-- We want the checkbox input to be before the label, always -->
+        <ng-content select="[clrCheckbox]"></ng-content>
+        <ng-content></ng-content>
+        <label *ngIf="_dynamic"></label>
+    `,
+                host: { '[class.checkbox]': 'true' },
+                providers: [ControlIdService],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrCheckboxNext extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     */
+    constructor(vcr) {
+        super(ClrCheckboxContainer, vcr);
+    }
+}
+ClrCheckboxNext.decorators = [
+    { type: Directive, args: [{ selector: '[clrCheckbox]' },] },
+];
+/** @nocollapse */
+ClrCheckboxNext.ctorParameters = () => [
+    { type: ViewContainerRef }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrCheckboxNextModule {
+}
+ClrCheckboxNextModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
+                declarations: [ClrCheckboxNext, ClrCheckboxContainer],
+                exports: [ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer],
+                entryComponents: [ClrCheckboxContainer],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
 let activeCounter = 0;
+/** @type {?} */
 const IF_ACTIVE_ID = new InjectionToken('IF_ACTIVE_ID');
 /**
  * @return {?}
@@ -1229,6 +1944,7 @@ const IF_ACTIVE_ID = new InjectionToken('IF_ACTIVE_ID');
 function tokenFactory() {
     return ++activeCounter;
 }
+/** @type {?} */
 const IF_ACTIVE_ID_PROVIDER = {
     provide: IF_ACTIVE_ID,
     useFactory: tokenFactory,
@@ -1299,7 +2015,7 @@ IfActiveService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**********
  *
@@ -1344,7 +2060,8 @@ class ClrIfActive {
      * @return {?}
      */
     checkAndUpdateView(currentId) {
-        const /** @type {?} */ isNowActive = currentId === this.id;
+        /** @type {?} */
+        const isNowActive = currentId === this.id;
         // only emit if the new active state is changed since last time.
         if (isNowActive !== this.wasActive) {
             this.updateView(isNowActive);
@@ -1405,19 +2122,19 @@ ClrIfActive.decorators = [
 ];
 /** @nocollapse */
 ClrIfActive.ctorParameters = () => [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ];
 ClrIfActive.propDecorators = {
-    "active": [{ type: Input, args: ['clrIfActive',] },],
-    "activeChange": [{ type: Output, args: ['clrIfActiveChange',] },],
+    active: [{ type: Input, args: ['clrIfActive',] }],
+    activeChange: [{ type: Output, args: ['clrIfActiveChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*********
  * @class IfOpenService
@@ -1513,7 +2230,7 @@ IfOpenService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**********
  *
@@ -1601,24 +2318,25 @@ ClrIfOpen.decorators = [
 ];
 /** @nocollapse */
 ClrIfOpen.ctorParameters = () => [
-    { type: IfOpenService, },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: IfOpenService },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ];
 ClrIfOpen.propDecorators = {
-    "open": [{ type: Input, args: ['clrIfOpen',] },],
-    "openChange": [{ type: Output, args: ['clrIfOpenChange',] },],
+    open: [{ type: Input, args: ['clrIfOpen',] }],
+    openChange: [{ type: Output, args: ['clrIfOpenChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrConditionalModule {
 }
@@ -1628,7 +2346,7 @@ ClrConditionalModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class FocusTrapTracker {
     constructor() {
@@ -1667,7 +2385,7 @@ FocusTrapTracker.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class FocusTrapDirective {
     /**
@@ -1692,7 +2410,8 @@ class FocusTrapDirective {
      * @return {?}
      */
     onFocusIn(event) {
-        const /** @type {?} */ nativeElement = this.el.nativeElement;
+        /** @type {?} */
+        const nativeElement = this.el.nativeElement;
         if (this.focusTrapsTracker.current === this && event.target && !nativeElement.contains(event.target)) {
             nativeElement.focus();
         }
@@ -1701,7 +2420,8 @@ class FocusTrapDirective {
      * @return {?}
      */
     createFocusableOffScreenEl() {
-        const /** @type {?} */ offScreenSpan = this.renderer.createElement('span');
+        /** @type {?} */
+        const offScreenSpan = this.renderer.createElement('span');
         this.renderer.setAttribute(offScreenSpan, 'tabindex', '0');
         this.renderer.addClass(offScreenSpan, 'offscreen-focus-rebounder');
         return offScreenSpan;
@@ -1766,25 +2486,26 @@ FocusTrapDirective.decorators = [
 ];
 /** @nocollapse */
 FocusTrapDirective.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Injector, },
-    { type: FocusTrapTracker, },
-    { type: Renderer2, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: ElementRef },
+    { type: Injector },
+    { type: FocusTrapTracker },
+    { type: Renderer2 },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ];
 FocusTrapDirective.propDecorators = {
-    "onFocusIn": [{ type: HostListener, args: ['document:focusin', ['$event'],] },],
+    onFocusIn: [{ type: HostListener, args: ['document:focusin', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const FOCUS_TRAP_DIRECTIVES = [FocusTrapDirective];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrFocusTrapModule {
 }
@@ -1799,101 +2520,86 @@ ClrFocusTrapModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class EmptyAnchor {
-}
-EmptyAnchor.decorators = [
-    { type: Component, args: [{
-                template: '',
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/**
- * Internal module, please do not export!
- */
-class ClrHostWrappingModule {
-}
-ClrHostWrappingModule.decorators = [
-    { type: NgModule, args: [{ declarations: [EmptyAnchor], exports: [EmptyAnchor], entryComponents: [EmptyAnchor] },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2017 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const UP_ARROW = 38;
+/** @type {?} */
 const DOWN_ARROW = 40;
+/** @type {?} */
 const RIGHT_ARROW = 39;
+/** @type {?} */
 const LEFT_ARROW = 37;
+/** @type {?} */
 
+/** @type {?} */
 
+/** @type {?} */
 
+/** @type {?} */
 const ESC = 27;
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/**
+/** *
  * This is the en-001 short locale date format. Setting as default.
- */
+  @type {?} */
 const DEFAULT_LOCALE_FORMAT = 'dd/MM/y';
-// https://en.wikipedia.org/wiki/Date_format_by_country
+/** @type {?} */
 const LITTLE_ENDIAN_REGEX = /d+.+m+.+y+/i;
+/** @type {?} */
 const MIDDLE_ENDIAN_REGEX = /m+.+d+.+y+/i;
-// No need for BIG_ENDIAN_REGEX because anything that doesn't satisfy the above 2
-// is automatically BIG_ENDIAN
+/** @type {?} */
 const DELIMITER_REGEX = /d+|m+|y+/i;
+/** @type {?} */
 const USER_INPUT_REGEX = /\d+/g;
+/** @type {?} */
 const MOBILE_USERAGENT_REGEX = /Mobi/i;
+/** @type {?} */
 const RTL_REGEX = /\u200f/g;
+/** @type {?} */
 const YEAR = 'YYYY';
+/** @type {?} */
 const MONTH = 'MM';
+/** @type {?} */
 const DATE = 'DD';
+/** @type {?} */
 const LITTLE_ENDIAN = {
     name: 'LITTLE_ENDIAN',
     format: [DATE, MONTH, YEAR],
 };
+/** @type {?} */
 const MIDDLE_ENDIAN = {
     name: 'MIDDLE_ENDIAN',
     format: [MONTH, DATE, YEAR],
 };
+/** @type {?} */
 const BIG_ENDIAN = {
     name: 'BIG_ENDIAN',
     format: [YEAR, MONTH, DATE],
 };
+/** @type {?} */
 const NO_OF_DAYS_IN_A_WEEK = 7;
+/** @type {?} */
 const NO_OF_ROWS_IN_CALENDAR_VIEW = 6;
+/** @type {?} */
 const TOTAL_DAYS_IN_DAYS_VIEW = NO_OF_DAYS_IN_A_WEEK * NO_OF_ROWS_IN_CALENDAR_VIEW;
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -1934,9 +2640,12 @@ function parseToFourDigitYear(year) {
     if (year > 999) {
         return year;
     }
-    const /** @type {?} */ currYear = new Date().getFullYear();
-    const /** @type {?} */ century = Math.floor(currYear / 100) * 100;
-    let /** @type {?} */ result = year + century;
+    /** @type {?} */
+    const currYear = new Date().getFullYear();
+    /** @type {?} */
+    const century = Math.floor(currYear / 100) * 100;
+    /** @type {?} */
+    let result = year + century;
     if (result > currYear + 20) {
         result = result - 100;
     }
@@ -1945,7 +2654,7 @@ function parseToFourDigitYear(year) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -1978,7 +2687,7 @@ class DayViewModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2000,7 +2709,8 @@ class CalendarModel {
      * @return {?}
      */
     initializeDaysInCalendar() {
-        const /** @type {?} */ noOfDaysInCalendar = getNumberOfDaysInTheMonth(this.year, this.month);
+        /** @type {?} */
+        const noOfDaysInCalendar = getNumberOfDaysInTheMonth(this.year, this.month);
         this.days = Array(noOfDaysInCalendar)
             .fill(null)
             .map((date, index) => {
@@ -2057,7 +2767,7 @@ class CalendarModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2106,10 +2816,8 @@ class DayModel {
      * @return {?}
      */
     incrementBy(value) {
-        // Creating new Javascript Date object to increment because
-        // it will automatically take care of switching to next or previous
-        // months & years without we having to worry about it.
-        const /** @type {?} */ date = new Date(this.year, this.month, this.date + value);
+        /** @type {?} */
+        const date = new Date(this.year, this.month, this.date + value);
         return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
     }
     /**
@@ -2123,7 +2831,7 @@ class DayModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2162,15 +2870,18 @@ class CalendarViewModel {
      * @return {?}
      */
     initializeCalendarView() {
-        // Generate prev and next month calendar models.
-        const /** @type {?} */ prevMonthCalendar = this.calendar.previousMonth();
-        const /** @type {?} */ nextMonthCalendar = this.calendar.nextMonth();
-        // Get no of days from prev and next months.
-        const /** @type {?} */ daysFromPrevMonthInCalView = this.numDaysFromPrevMonthInCalView(this.calendar.year, this.calendar.month);
-        const /** @type {?} */ daysFromNextMonthInCalView = TOTAL_DAYS_IN_DAYS_VIEW - (this.calendar.days.length + daysFromPrevMonthInCalView);
-        // Generate prev, curr and next day view models
-        let /** @type {?} */ prevMonthDayViews = [];
-        let /** @type {?} */ nextMonthDayViews = [];
+        /** @type {?} */
+        const prevMonthCalendar = this.calendar.previousMonth();
+        /** @type {?} */
+        const nextMonthCalendar = this.calendar.nextMonth();
+        /** @type {?} */
+        const daysFromPrevMonthInCalView = this.numDaysFromPrevMonthInCalView(this.calendar.year, this.calendar.month);
+        /** @type {?} */
+        const daysFromNextMonthInCalView = TOTAL_DAYS_IN_DAYS_VIEW - (this.calendar.days.length + daysFromPrevMonthInCalView);
+        /** @type {?} */
+        let prevMonthDayViews = [];
+        /** @type {?} */
+        let nextMonthDayViews = [];
         if (daysFromPrevMonthInCalView > 0) {
             prevMonthDayViews = this.generateDayViewModels(prevMonthCalendar.days.slice(-1 * daysFromPrevMonthInCalView), true, false);
         }
@@ -2191,7 +2902,8 @@ class CalendarViewModel {
      * @return {?}
      */
     generateDayViewModels(days, isDisabled, isCurrentCalendar) {
-        const /** @type {?} */ dayViews = days.map(day => {
+        /** @type {?} */
+        const dayViews = days.map(day => {
             return new DayViewModel(day, false, isDisabled, false, false);
         });
         if (isCurrentCalendar && this.calendar.isDayInCalendar(this.today)) {
@@ -2211,7 +2923,8 @@ class CalendarViewModel {
      * @return {?}
      */
     numDaysFromPrevMonthInCalView(currentYear, currentMonth) {
-        const /** @type {?} */ firstDayOfCurrMonth = getDay(currentYear, currentMonth, 1);
+        /** @type {?} */
+        const firstDayOfCurrMonth = getDay(currentYear, currentMonth, 1);
         if (firstDayOfCurrMonth >= this.firstDayOfWeek) {
             return firstDayOfCurrMonth - this.firstDayOfWeek;
         }
@@ -2239,9 +2952,11 @@ class CalendarViewModel {
      * @return {?}
      */
     generateCalendarView(prev, curr, next) {
-        const /** @type {?} */ combinationArr = [...prev, ...curr, ...next];
-        const /** @type {?} */ calendarView = [];
-        for (let /** @type {?} */ i = 0; i < NO_OF_ROWS_IN_CALENDAR_VIEW; i++) {
+        /** @type {?} */
+        const combinationArr = [...prev, ...curr, ...next];
+        /** @type {?} */
+        const calendarView = [];
+        for (let i = 0; i < NO_OF_ROWS_IN_CALENDAR_VIEW; i++) {
             calendarView[i] = combinationArr.slice(i * NO_OF_DAYS_IN_A_WEEK, (i + 1) * NO_OF_DAYS_IN_A_WEEK);
         }
         return calendarView;
@@ -2302,7 +3017,7 @@ class CalendarViewModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2468,7 +3183,7 @@ DateNavigationService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2498,7 +3213,8 @@ class DatepickerFocusService {
                 .pipe(first())
                 .subscribe(() => {
                 if (isPlatformBrowser(this.platformId)) {
-                    const /** @type {?} */ focusEl = elRef.nativeElement.querySelector('[tabindex="0"]');
+                    /** @type {?} */
+                    const focusEl = elRef.nativeElement.querySelector('[tabindex="0"]');
                     if (focusEl) {
                         focusEl.focus();
                     }
@@ -2512,13 +3228,13 @@ DatepickerFocusService.decorators = [
 ];
 /** @nocollapse */
 DatepickerFocusService.ctorParameters = () => [
-    { type: NgZone, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2585,13 +3301,14 @@ class LocaleHelperService {
      * @return {?}
      */
     initializeLocaleDaysNarrow() {
-        // Get locale day names starting with Sunday
-        const /** @type {?} */ tempArr = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Narrow).slice();
-        // Get first day of the week based on the locale
-        const /** @type {?} */ firstDayOfWeek = this.firstDayOfWeek;
+        /** @type {?} */
+        const tempArr = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Narrow).slice();
+        /** @type {?} */
+        const firstDayOfWeek = this.firstDayOfWeek;
         // Rearrange the tempArr to start with the first day of the week based on the locale.
         if (firstDayOfWeek > 0) {
-            const /** @type {?} */ prevDays = tempArr.splice(0, firstDayOfWeek);
+            /** @type {?} */
+            const prevDays = tempArr.splice(0, firstDayOfWeek);
             tempArr.push(...prevDays);
         }
         this._localeDaysNarrow = tempArr;
@@ -2631,12 +3348,12 @@ LocaleHelperService.decorators = [
 ];
 /** @nocollapse */
 LocaleHelperService.ctorParameters = () => [
-    { type: undefined, decorators: [{ type: Inject, args: [LOCALE_ID,] },] },
+    { type: String, decorators: [{ type: Inject, args: [LOCALE_ID,] }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrCalendar {
     /**
@@ -2774,53 +3491,18 @@ ClrCalendar.decorators = [
 ];
 /** @nocollapse */
 ClrCalendar.ctorParameters = () => [
-    { type: LocaleHelperService, },
-    { type: DateNavigationService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: LocaleHelperService },
+    { type: DateNavigationService },
+    { type: DatepickerFocusService },
+    { type: ElementRef }
 ];
 ClrCalendar.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-let counter = 0;
-class ControlIdService {
-    constructor() {
-        this._id = 'clr-form-control-' + ++counter;
-        this._idChange = new BehaviorSubject(this._id);
-    }
-    /**
-     * @return {?}
-     */
-    get id() {
-        return this._id;
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set id(value) {
-        this._id = value;
-        this._idChange.next(value);
-    }
-    /**
-     * @return {?}
-     */
-    get idChange() {
-        return this._idChange.asObservable();
-    }
-}
-ControlIdService.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2863,7 +3545,7 @@ DateFormControlService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -2886,7 +3568,8 @@ class DateIOService {
      * @return {?}
      */
     initializeLocaleDisplayFormat() {
-        const /** @type {?} */ format = this.cldrLocaleDateFormat.toLocaleLowerCase();
+        /** @type {?} */
+        const format = this.cldrLocaleDateFormat.toLocaleLowerCase();
         if (LITTLE_ENDIAN_REGEX.test(format)) {
             this.localeDisplayFormat = LITTLE_ENDIAN;
         }
@@ -2904,10 +3587,10 @@ class DateIOService {
      */
     extractDelimiters() {
         if (this.cldrLocaleDateFormat) {
-            // Sanitize Date Format. Remove RTL characters.
-            // FIXME: When we support RTL, remove this and handle it correctly.
-            const /** @type {?} */ localeFormat = this.cldrLocaleDateFormat.replace(RTL_REGEX, '');
-            const /** @type {?} */ delimiters = localeFormat.split(DELIMITER_REGEX);
+            /** @type {?} */
+            const localeFormat = this.cldrLocaleDateFormat.replace(RTL_REGEX, '');
+            /** @type {?} */
+            const delimiters = localeFormat.split(DELIMITER_REGEX);
             // NOTE: The split from the CLDR date format should always result
             // in an arary with 4 elements. The 1st and the 2nd values are the delimiters
             // we will use in order.
@@ -2929,10 +3612,14 @@ class DateIOService {
             if (isNaN(date.getTime())) {
                 return '';
             }
-            const /** @type {?} */ dateNo = date.getDate();
-            const /** @type {?} */ monthNo = date.getMonth() + 1;
-            const /** @type {?} */ dateStr = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
-            const /** @type {?} */ monthStr = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
+            /** @type {?} */
+            const dateNo = date.getDate();
+            /** @type {?} */
+            const monthNo = date.getMonth() + 1;
+            /** @type {?} */
+            const dateStr = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
+            /** @type {?} */
+            const monthStr = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
             if (this.localeDisplayFormat === LITTLE_ENDIAN) {
                 return dateStr + this.delimiters[0] + monthStr + this.delimiters[1] + date.getFullYear();
             }
@@ -2949,7 +3636,8 @@ class DateIOService {
      * @return {?}
      */
     get placeholderText() {
-        const /** @type {?} */ format = this.localeDisplayFormat.format;
+        /** @type {?} */
+        const format = this.localeDisplayFormat.format;
         return format[0] + this.delimiters[0] + format[1] + this.delimiters[1] + format[2];
     }
     /**
@@ -2982,23 +3670,17 @@ class DateIOService {
      * @return {?}
      */
     validateAndGetDate(year, month, date) {
-        // I don't know whats wrong with the TS compiler. It throws an error if I write
-        // the below if statement. The error is:
-        // Operator '!==' cannot be applied to types '2' and '4'
-        // More info here: https://github.com/Microsoft/TypeScript/issues/12794#issuecomment-270342936
-        /*
-                if (year.length !== 2 || year.length !== 4) {
-                    return null;
-                }
-                */
-        // Instead I have to write the logic like this x-(
-        const /** @type {?} */ y = +year;
-        const /** @type {?} */ m = +month - 1; // month is 0 based
-        const /** @type {?} */ d = +date;
+        /** @type {?} */
+        const y = +year;
+        /** @type {?} */
+        const m = +month - 1;
+        /** @type {?} */
+        const d = +date;
         if (!this.isValidMonth(m) || !this.isValidDate(y, m, d)) {
             return null;
         }
-        const /** @type {?} */ result = parseToFourDigitYear(y);
+        /** @type {?} */
+        const result = parseToFourDigitYear(y);
         return result !== -1 ? new Date(result, m, d) : null;
     }
     /**
@@ -3010,7 +3692,8 @@ class DateIOService {
         if (!date) {
             return null;
         }
-        const /** @type {?} */ dateParts = date.match(USER_INPUT_REGEX);
+        /** @type {?} */
+        const dateParts = date.match(USER_INPUT_REGEX);
         if (!dateParts || dateParts.length !== 3) {
             return null;
         }
@@ -3034,25 +3717,24 @@ DateIOService.decorators = [
 ];
 /** @nocollapse */
 DateIOService.ctorParameters = () => [
-    { type: LocaleHelperService, },
+    { type: LocaleHelperService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// iPad mini screen width
-// http://stephen.io/mediaqueries/#iPadMini
+/** @type {?} */
 const DATEPICKER_ENABLE_BREAKPOINT = 768;
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -3095,12 +3777,12 @@ DatepickerEnabledService.decorators = [
 ];
 /** @nocollapse */
 DatepickerEnabledService.ctorParameters = () => [
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDateContainer {
     /**
@@ -3108,12 +3790,14 @@ class ClrDateContainer {
      * @param {?} _dateNavigationService
      * @param {?} _datepickerEnabledService
      * @param {?} dateFormControlService
+     * @param {?} commonStrings
      */
-    constructor(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService) {
+    constructor(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings) {
         this._ifOpenService = _ifOpenService;
         this._dateNavigationService = _dateNavigationService;
         this._datepickerEnabledService = _datepickerEnabledService;
         this.dateFormControlService = dateFormControlService;
+        this.commonStrings = commonStrings;
         // Unused but have to add it :-(
         this._dynamic = false;
         this._sub = this._ifOpenService.openChange.subscribe(open => {
@@ -3158,12 +3842,16 @@ ClrDateContainer.decorators = [
                 selector: 'clr-date-container',
                 template: `
         <ng-content></ng-content>
+        <!--
+          Isn't this button supposed to be aria-hidden="true"? 
+          I thought we decided screenreaders just typed the date in.
+        -->
         <button
             type="button"
             class="datepicker-trigger"
             (click)="toggleDatepicker($event)"
             *ngIf="isEnabled">
-            <clr-icon shape="calendar" class="datepicker-trigger-icon"></clr-icon>
+            <clr-icon shape="calendar" class="datepicker-trigger-icon" [attr.title]="commonStrings.open"></clr-icon>
         </button>
         <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
     `,
@@ -3181,143 +3869,16 @@ ClrDateContainer.decorators = [
 ];
 /** @nocollapse */
 ClrDateContainer.ctorParameters = () => [
-    { type: IfOpenService, },
-    { type: DateNavigationService, },
-    { type: DatepickerEnabledService, },
-    { type: DateFormControlService, },
+    { type: IfOpenService },
+    { type: DateNavigationService },
+    { type: DatepickerEnabledService },
+    { type: DateFormControlService },
+    { type: ClrCommonStrings }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-// unsupported: template constraints.
-/**
- * @template W
- */
-class HostWrapper {
-    /**
-     * @param {?} containerType
-     * @param {?} vcr
-     * @param {?=} index
-     */
-    constructor(containerType, vcr, index = 0) {
-        this.injector = vcr.injector;
-        // If the host is already wrapped, we don't do anything
-        if (!this.injector.get(containerType, null)) {
-            const /** @type {?} */ cfr = this.injector.get(ComponentFactoryResolver);
-            const /** @type {?} */ el = this.injector.get(ElementRef);
-            // We need a new anchor, since we're projecting the current one.
-            vcr.createComponent(cfr.resolveComponentFactory(EmptyAnchor));
-            const /** @type {?} */ factory = cfr.resolveComponentFactory(containerType);
-            // Craft the element array based on what slot to use. Angular only uses the index to determine
-            // which ng-content to project into, so if you have more than one ng-content you'll need to set
-            // the index in the constructor appropriately
-            const /** @type {?} */ element = [];
-            element[index] = [el.nativeElement];
-            // We're assuming only one projection slot, but in more complex cases we might want to provide
-            // a different array of projected elements.
-            const /** @type {?} */ containerRef = vcr.createComponent(factory, undefined, undefined, element);
-            // We can now remove the useless anchor
-            vcr.remove(0);
-            // We note that the container was dynamically created
-            containerRef.instance._dynamic = true;
-            // We keep the wrapper's injector to access the dependencies that weren't available before.
-            this.injector = containerRef.injector;
-        }
-    }
-    /**
-     * @template T
-     * @param {?} token
-     * @param {?=} notFoundValue
-     * @return {?}
-     */
-    get(token, notFoundValue) {
-        return this.injector.get(token, notFoundValue);
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-// unsupported: template constraints.
-/**
- * @template W
- */
-class WrappedFormControl {
-    /**
-     * @param {?} wrapperType
-     * @param {?} vcr
-     * @param {?=} index
-     */
-    constructor(wrapperType, vcr, index = 0) {
-        this.wrapperType = wrapperType;
-        this.vcr = vcr;
-        this.index = index;
-    }
-    /**
-     * @return {?}
-     */
-    get id() {
-        return this._id;
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set id(value) {
-        this._id = value;
-        if (this.controlIdService) {
-            this.controlIdService.id = value;
-        }
-    }
-    /**
-     * @template T
-     * @param {?} token
-     * @param {?=} notFoundValue
-     * @return {?}
-     */
-    getProviderFromContainer(token, notFoundValue) {
-        return this._containerInjector.get(token, notFoundValue);
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
-        this.controlIdService = this._containerInjector.get(ControlIdService);
-        if (this._id) {
-            this.controlIdService.id = this._id;
-        }
-        else {
-            this._id = this.controlIdService.id;
-        }
-        // No need to subscribe to controlIdService.idChange because the input is the only one that can update the id.
-    }
-}
-WrappedFormControl.propDecorators = {
-    "id": [{ type: HostBinding }, { type: Input },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -3419,9 +3980,11 @@ class ClrDateInput extends WrappedFormControl {
         // input object,  we reflect it with the right date on the input field using the IO service.  I am not sure if
         // these are major issues or not but just noting them down here.
         if (this._dateNavigationService) {
-            const /** @type {?} */ selDay = this._dateNavigationService.selectedDay;
+            /** @type {?} */
+            const selDay = this._dateNavigationService.selectedDay;
             if (selDay) {
-                const /** @type {?} */ dateStr = this._dateIOService.toLocaleDisplayFormatString(selDay.toDate());
+                /** @type {?} */
+                const dateStr = this._dateIOService.toLocaleDisplayFormatString(selDay.toDate());
                 this.writeDateStrToInputField(dateStr);
             }
         }
@@ -3474,10 +4037,8 @@ class ClrDateInput extends WrappedFormControl {
      */
     processUserDateObject(value) {
         if (this._dateIOService) {
-            // The date object is converted back to string because in Javascript you can create a date object
-            // like this: new Date("Test"). This is a date object but it is invalid. Converting the date object
-            // that the user passed helps us to verify the validity of the date object.
-            const /** @type {?} */ dateStr = this._dateIOService.toLocaleDisplayFormatString(value);
+            /** @type {?} */
+            const dateStr = this._dateIOService.toLocaleDisplayFormatString(value);
             this.updateInputValue(dateStr);
         }
     }
@@ -3486,9 +4047,11 @@ class ClrDateInput extends WrappedFormControl {
      * @return {?}
      */
     updateInputValue(dateStr) {
-        const /** @type {?} */ date = this._dateIOService.isValidInput(dateStr);
+        /** @type {?} */
+        const date = this._dateIOService.isValidInput(dateStr);
         if (date) {
-            const /** @type {?} */ dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+            /** @type {?} */
+            const dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
             if (!dayModel.isEqual(this._dateNavigationService.selectedDay)) {
                 this._dateNavigationService.selectedDay = dayModel;
                 this.writeDateStrToInputField(dateStr);
@@ -3533,10 +4096,13 @@ class ClrDateInput extends WrappedFormControl {
      * @return {?}
      */
     onValueChange(target) {
-        const /** @type {?} */ value = target.value;
-        const /** @type {?} */ date = this._dateIOService.isValidInput(value);
+        /** @type {?} */
+        const value = target.value;
+        /** @type {?} */
+        const date = this._dateIOService.isValidInput(value);
         if (date) {
-            const /** @type {?} */ dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+            /** @type {?} */
+            const dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
             this._dateNavigationService.selectedDay = dayModel;
             this.emitDateOutput(dayModel);
         }
@@ -3553,7 +4119,8 @@ class ClrDateInput extends WrappedFormControl {
         if (this._dateNavigationService && this._dateIOService) {
             // This subscription is fired when the user selects a date from the popover.
             this._subscriptions.push(this._dateNavigationService.selectedDayChange.subscribe((dayModel) => {
-                const /** @type {?} */ dateStr = this._dateIOService.toLocaleDisplayFormatString(dayModel.toDate());
+                /** @type {?} */
+                const dateStr = this._dateIOService.toLocaleDisplayFormatString(dayModel.toDate());
                 this.writeDateStrToInputField(dateStr);
                 // This makes sure that ngModelChange is fired
                 // TODO: Check if there is a better way to do this.
@@ -3568,9 +4135,11 @@ class ClrDateInput extends WrappedFormControl {
             // we only emit the Output when the user has focused out of the input.
             if (this._ngControl) {
                 this._subscriptions.push(this._ngControl.valueChanges.subscribe((value) => {
-                    const /** @type {?} */ date = this._dateIOService.isValidInput(value);
+                    /** @type {?} */
+                    const date = this._dateIOService.isValidInput(value);
                     if (date) {
-                        const /** @type {?} */ dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
+                        /** @type {?} */
+                        const dayModel = new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
                         this._dateNavigationService.selectedDay = dayModel;
                         this.initializePreviousOutput(dayModel);
                     }
@@ -3599,29 +4168,29 @@ ClrDateInput.decorators = [
 ];
 /** @nocollapse */
 ClrDateInput.ctorParameters = () => [
-    { type: ClrDateContainer, decorators: [{ type: Optional },] },
-    { type: ViewContainerRef, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: NgControl, decorators: [{ type: Self }, { type: Optional },] },
-    { type: DateIOService, decorators: [{ type: Optional },] },
-    { type: DateNavigationService, decorators: [{ type: Optional },] },
-    { type: DatepickerEnabledService, decorators: [{ type: Optional },] },
-    { type: DateFormControlService, decorators: [{ type: Optional },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: ClrDateContainer, decorators: [{ type: Optional }] },
+    { type: ViewContainerRef },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: NgControl, decorators: [{ type: Self }, { type: Optional }] },
+    { type: DateIOService, decorators: [{ type: Optional }] },
+    { type: DateNavigationService, decorators: [{ type: Optional }] },
+    { type: DatepickerEnabledService, decorators: [{ type: Optional }] },
+    { type: DateFormControlService, decorators: [{ type: Optional }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ];
 ClrDateInput.propDecorators = {
-    "date": [{ type: Input, args: ['clrDate',] },],
-    "placeholder": [{ type: Input },],
-    "placeholderText": [{ type: HostBinding, args: ['attr.placeholder',] },],
-    "inputType": [{ type: HostBinding, args: ['attr.type',] },],
-    "_dateUpdated": [{ type: Output, args: ['clrDateChange',] },],
-    "onValueChange": [{ type: HostListener, args: ['change', ['$event.target'],] },],
+    date: [{ type: Input, args: ['clrDate',] }],
+    placeholder: [{ type: Input }],
+    placeholderText: [{ type: HostBinding, args: ['attr.placeholder',] }],
+    inputType: [{ type: HostBinding, args: ['attr.type',] }],
+    _dateUpdated: [{ type: Output, args: ['clrDateChange',] }],
+    onValueChange: [{ type: HostListener, args: ['change', ['$event.target'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -3764,16 +4333,16 @@ AbstractPopover.decorators = [
 ];
 /** @nocollapse */
 AbstractPopover.ctorParameters = () => [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] }
 ];
 AbstractPopover.propDecorators = {
-    "isOffScreen": [{ type: HostBinding, args: ['class.is-off-screen',] },],
+    isOffScreen: [{ type: HostBinding, args: ['class.is-off-screen',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -3830,7 +4399,7 @@ ViewManagerService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -3898,14 +4467,14 @@ ClrDatepickerViewManager.decorators = [
 ];
 /** @nocollapse */
 ClrDatepickerViewManager.ctorParameters = () => [
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
-    { type: Injector, },
-    { type: ViewManagerService, },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] },
+    { type: Injector },
+    { type: ViewManagerService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -3935,7 +4504,8 @@ class ClrDay {
      * @return {?}
      */
     selectDay() {
-        const /** @type {?} */ day = this.dayView.dayModel;
+        /** @type {?} */
+        const day = this.dayView.dayModel;
         this._dateNavigationService.notifySelectedDayChanged(day);
         this.dateFormControlService.markAsDirty();
         this._ifOpenService.open = false;
@@ -3962,28 +4532,30 @@ ClrDay.decorators = [
 ];
 /** @nocollapse */
 ClrDay.ctorParameters = () => [
-    { type: DateNavigationService, },
-    { type: IfOpenService, },
-    { type: DateFormControlService, },
+    { type: DateNavigationService },
+    { type: IfOpenService },
+    { type: DateFormControlService }
 ];
 ClrDay.propDecorators = {
-    "dayView": [{ type: Input, args: ['clrDayView',] },],
+    dayView: [{ type: Input, args: ['clrDayView',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDaypicker {
     /**
      * @param {?} _viewManagerService
      * @param {?} _dateNavigationService
      * @param {?} _localeHelperService
+     * @param {?} commonStrings
      */
-    constructor(_viewManagerService, _dateNavigationService, _localeHelperService) {
+    constructor(_viewManagerService, _dateNavigationService, _localeHelperService, commonStrings) {
         this._viewManagerService = _viewManagerService;
         this._dateNavigationService = _dateNavigationService;
         this._localeHelperService = _localeHelperService;
+        this.commonStrings = commonStrings;
     }
     /**
      * Calls the ViewManagerService to change to the monthpicker view.
@@ -4047,13 +4619,13 @@ ClrDaypicker.decorators = [
     </div>
     <div class="calendar-switchers">
         <button class="calendar-btn switcher" type="button" (click)="previousMonth()">
-            <clr-icon shape="angle" dir="left"></clr-icon>
+            <clr-icon shape="angle" dir="left" [attr.title]="commonStrings.previous"></clr-icon>
         </button>
         <button class="calendar-btn switcher" type="button" (click)="currentMonth()">
-            <clr-icon shape="event"></clr-icon>
+            <clr-icon shape="event" [attr.title]="commonStrings.current"></clr-icon>
         </button>
         <button class="calendar-btn switcher" type="button" (click)="nextMonth()">
-            <clr-icon shape="angle" dir="right"></clr-icon>
+            <clr-icon shape="angle" dir="right" [attr.title]="commonStrings.next"></clr-icon>
         </button>
     </div>
 </div>
@@ -4062,14 +4634,15 @@ ClrDaypicker.decorators = [
 ];
 /** @nocollapse */
 ClrDaypicker.ctorParameters = () => [
-    { type: ViewManagerService, },
-    { type: DateNavigationService, },
-    { type: LocaleHelperService, },
+    { type: ViewManagerService },
+    { type: DateNavigationService },
+    { type: LocaleHelperService },
+    { type: ClrCommonStrings }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrMonthpicker {
     /**
@@ -4130,7 +4703,8 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const /** @type {?} */ keyCode = event.keyCode;
+            /** @type {?} */
+            const keyCode = event.keyCode;
             if (keyCode === UP_ARROW && this._focusedMonthIndex > 0) {
                 event.preventDefault();
                 this._focusedMonthIndex--;
@@ -4182,25 +4756,26 @@ ClrMonthpicker.decorators = [
 ];
 /** @nocollapse */
 ClrMonthpicker.ctorParameters = () => [
-    { type: ViewManagerService, },
-    { type: LocaleHelperService, },
-    { type: DateNavigationService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: ViewManagerService },
+    { type: LocaleHelperService },
+    { type: DateNavigationService },
+    { type: DatepickerFocusService },
+    { type: ElementRef }
 ];
 ClrMonthpicker.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const YEARS_TO_DISPLAY = 10;
 class YearRangeModel {
     /**
@@ -4224,9 +4799,12 @@ class YearRangeModel {
      * @return {?}
      */
     generateYearRange() {
-        const /** @type {?} */ remainder = this.year % YEARS_TO_DISPLAY;
-        const /** @type {?} */ floor = this.year - remainder;
-        const /** @type {?} */ ceil = floor + YEARS_TO_DISPLAY;
+        /** @type {?} */
+        const remainder = this.year % YEARS_TO_DISPLAY;
+        /** @type {?} */
+        const floor = this.year - remainder;
+        /** @type {?} */
+        const ceil = floor + YEARS_TO_DISPLAY;
         this.yearRange = this.generateRange(floor, ceil);
     }
     /**
@@ -4271,7 +4849,7 @@ class YearRangeModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrYearpicker {
     /**
@@ -4279,12 +4857,14 @@ class ClrYearpicker {
      * @param {?} _viewManagerService
      * @param {?} _datepickerFocusService
      * @param {?} _elRef
+     * @param {?} commonStrings
      */
-    constructor(_dateNavigationService, _viewManagerService, _datepickerFocusService, _elRef) {
+    constructor(_dateNavigationService, _viewManagerService, _datepickerFocusService, _elRef, commonStrings) {
         this._dateNavigationService = _dateNavigationService;
         this._viewManagerService = _viewManagerService;
         this._datepickerFocusService = _datepickerFocusService;
         this._elRef = _elRef;
+        this.commonStrings = commonStrings;
         this.yearRangeModel = new YearRangeModel(this.calendarYear);
         this._focusedYear = this.calendarYear;
     }
@@ -4377,7 +4957,8 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const /** @type {?} */ keyCode = event.keyCode;
+            /** @type {?} */
+            const keyCode = event.keyCode;
             if (keyCode === UP_ARROW) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-1);
@@ -4410,13 +4991,13 @@ ClrYearpicker.decorators = [
                 template: `
         <div class="year-switchers">
             <button class="calendar-btn switcher" type="button" (click)="previousDecade()">
-                <clr-icon shape="angle" dir="left"></clr-icon>
+                <clr-icon shape="angle" dir="left" [attr.title]="commonStrings.previous"></clr-icon>
             </button>
             <button class="calendar-btn switcher" type="button" (click)="currentDecade()">
-                <clr-icon shape="event"></clr-icon>
+                <clr-icon shape="event" [attr.title]="commonStrings.current"></clr-icon>
             </button>
             <button class="calendar-btn switcher" type="button" (click)="nextDecade()">
-                <clr-icon shape="angle" dir="right"></clr-icon>
+                <clr-icon shape="angle" dir="right" [attr.title]="commonStrings.next"></clr-icon>
             </button>
         </div>
         <div class="years">
@@ -4438,24 +5019,26 @@ ClrYearpicker.decorators = [
 ];
 /** @nocollapse */
 ClrYearpicker.ctorParameters = () => [
-    { type: DateNavigationService, },
-    { type: ViewManagerService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: DateNavigationService },
+    { type: ViewManagerService },
+    { type: DatepickerFocusService },
+    { type: ElementRef },
+    { type: ClrCommonStrings }
 ];
 ClrYearpicker.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_DATEPICKER_DIRECTIVES = [
     ClrDay,
     ClrDateContainer,
@@ -4479,220 +5062,1117 @@ ClrDatepickerModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Private counter to generate unique IDs for the checkboxes, to bind the labels to them.
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
  */
-let latestId = 0;
-/**
- * @deprecated ClrCheckbox will be renamed to ClrCheckboxDeprecated in 0.12, and will be replaced with a new
- * implementation in 0.13, so if you import it you will need to update your references.
- */
-class ClrCheckboxDeprecated {
+class ControlClassService {
     constructor() {
-        // If our host has an ID attribute, we use this instead of our index.
-        this._id = (latestId++).toString();
-        // If host provides an clrAriaLabeledBy input, we apply it to the checkbox
-        this.clrAriaLabeledBy = null;
-        // If our host has a name attribute, we apply it to the checkbox.
-        this.name = null;
-        // If the host is disabled we apply it to the checkbox
-        this.disabled = false;
-        // Support for inline checkboxes, adds the necessary class to the host
-        this.inline = false;
-        this._checked = false;
-        this._indeterminate = false;
-        this.indeterminateChange = new EventEmitter(false);
-        this.change = new EventEmitter(false);
-        this.onChangeCallback = (_) => { };
-        this.onTouchedCallback = () => { };
+        this.className = '';
+    }
+    /**
+     * @param {?=} invalid
+     * @param {?=} grid
+     * @return {?}
+     */
+    controlClass(invalid = false, grid = false) {
+        /** @type {?} */
+        const controlClasses = [];
+        if (invalid) {
+            controlClasses.push('clr-error');
+        }
+        if (grid && this.className.indexOf('clr-col') === -1) {
+            controlClasses.push('clr-col-md-10 clr-col-xs-12');
+        }
+        return controlClasses.join(' ');
+    }
+}
+ControlClassService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrInputContainer {
+    /**
+     * @param {?} ifErrorService
+     * @param {?} layoutService
+     * @param {?} controlClassService
+     */
+    constructor(ifErrorService, layoutService, controlClassService) {
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
+            this.invalid = control.invalid;
+        }));
     }
     /**
      * @return {?}
      */
-    get id() {
-        return `clr-checkbox-${this._id}`;
+    controlClass() {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
     }
     /**
      * @return {?}
      */
-    get checked() {
-        return this._checked;
+    addGrid() {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
     }
     /**
-     * @param {?} value
      * @return {?}
      */
-    set checked(value) {
-        if (value !== this._checked) {
-            if (this._indeterminate) {
-                this.setIndeterminate(false);
-            }
-            this.setChecked(value);
+    ngOnDestroy() {
+        if (this.subscriptions) {
+            this.subscriptions.map(sub => sub.unsubscribe());
+        }
+    }
+}
+ClrInputContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-input-container',
+                template: `
+        <ng-content select="label"></ng-content>
+        <label *ngIf="!label && addGrid()"></label>
+        <div class="clr-control-container" [ngClass]="controlClass()">
+            <div class="clr-input-wrapper">
+                <ng-content select="[clrInput]"></ng-content>
+                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+            </div>
+            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+        </div>
+    `,
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+/** @nocollapse */
+ClrInputContainer.ctorParameters = () => [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+];
+ClrInputContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrInput extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     * @param {?} ngControlService
+     * @param {?} ifErrorService
+     * @param {?} control
+     * @param {?} controlClassService
+     * @param {?} type
+     * @param {?} renderer
+     * @param {?} el
+     */
+    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
+        super(ClrInputContainer, vcr, 1);
+        this.ngControlService = ngControlService;
+        this.ifErrorService = ifErrorService;
+        this.control = control;
+        this.type = type;
+        if (!control) {
+            throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
+        }
+        // Set type if it is missing
+        if (!this.type) {
+            renderer.setAttribute(el.nativeElement, 'type', 'text');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
         }
     }
     /**
      * @return {?}
      */
-    get indeterminate() {
-        return this._indeterminate;
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set indeterminate(value) {
-        if (this._indeterminate !== value) {
-            if (this._checked) {
-                this.setChecked(false);
-            }
-            this.setIndeterminate(value);
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
         }
     }
     /**
-     * @param {?} value
      * @return {?}
      */
-    setIndeterminate(value) {
-        this._indeterminate = value;
-        this.indeterminateChange.emit(this._indeterminate);
+    onBlur() {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    }
+}
+ClrInput.decorators = [
+    { type: Directive, args: [{ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } },] },
+];
+/** @nocollapse */
+ClrInput.ctorParameters = () => [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+ClrInput.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrInputModule {
+}
+ClrInputModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrInput, ClrInputContainer],
+                exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
+                entryComponents: [ClrInputContainer],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class FocusService {
+    constructor() {
+        this._focused = new BehaviorSubject(false);
     }
     /**
-     * @param {?} value
      * @return {?}
      */
-    setChecked(value) {
-        this._checked = value;
-        this.change.emit(this._checked);
+    get focusChange() {
+        return this._focused.asObservable();
+    }
+    /**
+     * @param {?} state
+     * @return {?}
+     */
+    set focused(state$$1) {
+        this._focused.next(state$$1);
+    }
+}
+FocusService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @type {?} */
+const ToggleService = new InjectionToken(undefined);
+/**
+ * @return {?}
+ */
+function ToggleServiceProvider() {
+    return new BehaviorSubject(false);
+}
+class ClrPasswordContainer {
+    /**
+     * @param {?} ifErrorService
+     * @param {?} layoutService
+     * @param {?} controlClassService
+     * @param {?} focusService
+     * @param {?} toggleService
+     * @param {?} commonStrings
+     */
+    constructor(ifErrorService, layoutService, controlClassService, focusService, toggleService, commonStrings) {
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.focusService = focusService;
+        this.toggleService = toggleService;
+        this.commonStrings = commonStrings;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.show = false;
+        this.focus = false;
+        this._toggle = true;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
+            this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.focusService.focusChange.subscribe(state$$1 => {
+            this.focus = state$$1;
+        }));
+    }
+    /**
+     * @param {?} state
+     * @return {?}
+     */
+    set clrToggle(state$$1) {
+        this._toggle = state$$1;
+        if (!state$$1) {
+            this.show = false;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    get clrToggle() {
+        return this._toggle;
     }
     /**
      * @return {?}
      */
     toggle() {
-        this.checked = !this.checked;
-        this.onChangeCallback(this.checked);
+        this.show = !this.show;
+        this.toggleService.next(this.show);
+    }
+    /**
+     * @return {?}
+     */
+    controlClass() {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    }
+    /**
+     * @return {?}
+     */
+    addGrid() {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.subscriptions) {
+            this.subscriptions.map(sub => sub.unsubscribe());
+        }
+    }
+}
+ClrPasswordContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-password-container',
+                template: `
+    <ng-content select="label"></ng-content>
+    <label *ngIf="!label && addGrid()"></label>
+    <div class="clr-control-container" [ngClass]="controlClass()">
+      <div class="clr-input-wrapper">
+        <div class="clr-input-group" [class.clr-focus]="focus">
+          <ng-content select="[clrPassword]"></ng-content>
+          <clr-icon *ngIf="!show && clrToggle"
+            shape="eye" 
+            class="clr-input-group-icon-action"
+            [attr.title]="commonStrings.show"
+            (click)="toggle()"></clr-icon>
+          <clr-icon *ngIf="show && clrToggle" 
+            shape="eye-hide"
+            class="clr-input-group-icon-action"
+            [attr.title]="commonStrings.hide"
+            (click)="toggle()"></clr-icon>
+        </div>
+        <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+      </div>
+      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+    </div>
+    `,
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [
+                    IfErrorService,
+                    NgControlService,
+                    ControlIdService,
+                    ControlClassService,
+                    FocusService,
+                    { provide: ToggleService, useFactory: ToggleServiceProvider },
+                ],
+            },] },
+];
+/** @nocollapse */
+ClrPasswordContainer.ctorParameters = () => [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: FocusService },
+    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] },
+    { type: ClrCommonStrings }
+];
+ClrPasswordContainer.propDecorators = {
+    clrToggle: [{ type: Input, args: ['clrToggle',] }],
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrPassword extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     * @param {?} ngControlService
+     * @param {?} ifErrorService
+     * @param {?} control
+     * @param {?} focusService
+     * @param {?} controlClassService
+     * @param {?} type
+     * @param {?} renderer
+     * @param {?} el
+     * @param {?} toggleService
+     */
+    constructor(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
+        super(ClrPasswordContainer, vcr, 1);
+        this.ngControlService = ngControlService;
+        this.ifErrorService = ifErrorService;
+        this.control = control;
+        this.focusService = focusService;
+        this.type = type;
+        this.toggleService = toggleService;
+        if (!this.control) {
+            throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
+        }
+        if (!this.focusService) {
+            throw new Error('clrPassword requires being wrapped in <clr-password-container>');
+        }
+        // Set type if it is missing
+        if (!this.type) {
+            renderer.setAttribute(el.nativeElement, 'type', 'password');
+        }
+        controlClassService.className = el.nativeElement.className;
+        this.subscription = this.toggleService.subscribe(toggle => {
+            renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
+        });
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+    /**
+     * @return {?}
+     */
+    onFocus() {
+        if (this.focusService) {
+            this.focusService.focused = true;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    onBlur() {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+        if (this.focusService) {
+            this.focusService.focused = false;
+        }
+    }
+}
+ClrPassword.decorators = [
+    { type: Directive, args: [{ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } },] },
+];
+/** @nocollapse */
+ClrPassword.ctorParameters = () => [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: FocusService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
+    { type: Renderer2 },
+    { type: ElementRef },
+    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] }
+];
+ClrPassword.propDecorators = {
+    onFocus: [{ type: HostListener, args: ['focus',] }],
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrPasswordModule {
+}
+ClrPasswordModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrPassword, ClrPasswordContainer],
+                exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
+                entryComponents: [ClrPasswordContainer],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrRadioWrapper {
+    /**
+     * @param {?} controlClassService
+     */
+    constructor(controlClassService) {
+        this.controlClassService = controlClassService;
+        // We need both _dynamic for HostWrapper and ContentChild(ClrLabel) in cases where
+        // the user puts a radio inside a wrapper without a label, host wrapping doesn't apply
+        // but we'd still need to insert a label
+        this._dynamic = false;
+        this.hasContainer = false;
+        if (controlClassService) {
+            this.hasContainer = true;
+        }
+    }
+}
+ClrRadioWrapper.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-radio-wrapper',
+                template: `
+    <ng-content select="[clrRadio]"></ng-content>
+    <ng-content select="label"></ng-content>
+    <label *ngIf="!label"></label>
+  `,
+                host: {
+                    '[class.clr-radio-wrapper]': '!hasContainer',
+                },
+                providers: [ControlIdService],
+            },] },
+];
+/** @nocollapse */
+ClrRadioWrapper.ctorParameters = () => [
+    { type: ControlClassService, decorators: [{ type: Optional }] }
+];
+ClrRadioWrapper.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrRadio extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     * @param {?} ngControlService
+     * @param {?} ifErrorService
+     * @param {?} control
+     * @param {?} controlClassService
+     * @param {?} el
+     */
+    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        super(ClrRadioWrapper, vcr, 0);
+        this.ngControlService = ngControlService;
+        this.ifErrorService = ifErrorService;
+        this.control = control;
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    onBlur() {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    }
+}
+ClrRadio.decorators = [
+    { type: Directive, args: [{ selector: '[clrRadio]' },] },
+];
+/** @nocollapse */
+ClrRadio.ctorParameters = () => [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: ElementRef }
+];
+ClrRadio.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrRadioContainer {
+    /**
+     * @param {?} ifErrorService
+     * @param {?} layoutService
+     * @param {?} controlClassService
+     */
+    constructor(ifErrorService, layoutService, controlClassService) {
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this.inline = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
+            this.invalid = control.invalid;
+        }));
     }
     /**
      * @param {?} value
      * @return {?}
      */
-    writeValue(value) {
-        if (value === null) {
-            value = false;
+    set clrInline(value) {
+        if (!isBoolean(value)) {
+            this.inline = value === 'false' ? false : true;
         }
-        if (value !== this.checked) {
-            this.checked = value;
+        else {
+            this.inline = !!value;
         }
     }
     /**
-     * @param {?} onChange
      * @return {?}
      */
-    registerOnChange(onChange) {
-        this.onChangeCallback = onChange;
-    }
-    /**
-     * @param {?} onTouched
-     * @return {?}
-     */
-    registerOnTouched(onTouched) {
-        this.onTouchedCallback = onTouched;
+    get clrInline() {
+        return this.inline;
     }
     /**
      * @return {?}
      */
-    touch() {
-        this.onTouchedCallback();
+    controlClass() {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
     }
     /**
      * @return {?}
      */
-    checkIndeterminateState() {
-        if (!this.disabled) {
-            this.toggle();
+    addGrid() {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
         }
+        return false;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.map(sub => sub.unsubscribe());
     }
 }
-ClrCheckboxDeprecated.decorators = [
+ClrRadioContainer.decorators = [
     { type: Component, args: [{
-                selector: 'clr-checkbox',
+                selector: 'clr-radio-container',
                 template: `
-        <!--
-            FIXME: We are not subscribed to the change event but the click event here.
-            The reason for that is because checkboxes behave differently on IE & Edge.
-            https://stackoverflow.com/a/19447939
-            
-            To fix that, we listen to every click event and then toggle the checkbox manually
-            to make it behave the same way across the browsers we support.
-            
-            This works for cases when users toggle the checkbox using the keyboard too:
-            https://stackoverflow.com/questions/27878940/spacebar-triggering-click-event-on-checkbox
-        -->
-        <input type="checkbox" [attr.aria-labelledby]="clrAriaLabeledBy"
-               [id]="id" [name]="name" [checked]="checked"
-               [indeterminate]="indeterminate" [disabled]="disabled"
-               (blur)="touch()" (click)="checkIndeterminateState()">
-        <label [attr.for]="id">
-            <ng-content></ng-content>
-        </label>
+    <ng-content select="label"></ng-content>
+    <label *ngIf="!label && addGrid()"></label>
+    <div class="clr-control-container" [ngClass]="controlClass()">
+      <div class="clr-radio-wrapper" [class.clr-radio-inline]="clrInline">
+        <ng-content select="clr-radio-wrapper"></ng-content>
+      </div>
+      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+      <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+    </div>
     `,
-                host: { '[class.checkbox]': '!inline', '[class.checkbox-inline]': 'inline', '[class.disabled]': 'disabled' },
-                /*
-                     * This provider lets us declare our checkbox as a ControlValueAccessor,
-                     * which allows us to use [(ngModel)] directly on our component,
-                     * with all the automatic features wiring that come with it.
-                     */
-                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ClrCheckboxDeprecated), multi: true }],
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [NgControlService, ControlClassService, IfErrorService],
             },] },
 ];
 /** @nocollapse */
-ClrCheckboxDeprecated.propDecorators = {
-    "_id": [{ type: Input, args: ['id',] },],
-    "clrAriaLabeledBy": [{ type: Input, args: ['clrAriaLabeledBy',] },],
-    "name": [{ type: Input, args: ['name',] },],
-    "disabled": [{ type: Input, args: ['clrDisabled',] },],
-    "inline": [{ type: Input, args: ['clrInline',] },],
-    "checked": [{ type: Input, args: ['clrChecked',] },],
-    "indeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
-    "indeterminateChange": [{ type: Output, args: ['clrIndeterminateChange',] },],
-    "change": [{ type: Output, args: ['clrCheckedChange',] },],
+ClrRadioContainer.ctorParameters = () => [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+];
+ClrRadioContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    clrInline: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrRadioModule {
+}
+ClrRadioModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
+                declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                entryComponents: [ClrRadioWrapper],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrSelectContainer {
+    /**
+     * @param {?} ifErrorService
+     * @param {?} layoutService
+     * @param {?} controlClassService
+     * @param {?} ngControlService
+     */
+    constructor(ifErrorService, layoutService, controlClassService, ngControlService) {
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.multi = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
+            this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(ngControlService.controlChanges.subscribe(control => {
+            this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    wrapperClass() {
+        return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
+    }
+    /**
+     * @return {?}
+     */
+    controlClass() {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    }
+    /**
+     * @return {?}
+     */
+    addGrid() {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.subscriptions) {
+            this.subscriptions.map(sub => sub.unsubscribe());
+        }
+    }
+}
+ClrSelectContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-select-container',
+                template: `    
+        <ng-content select="label"></ng-content>
+        <label *ngIf="!label && addGrid()"></label>
+        <div class="clr-control-container" [ngClass]="controlClass()">
+            <div [ngClass]="wrapperClass()">
+                <ng-content select="[clrSelect]"></ng-content>
+                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+            </div>
+            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+        </div>
+    `,
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+/** @nocollapse */
+ClrSelectContainer.ctorParameters = () => [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: NgControlService }
+];
+ClrSelectContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrSelect extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     * @param {?} ngControlService
+     * @param {?} ifErrorService
+     * @param {?} control
+     * @param {?} controlClassService
+     * @param {?} el
+     */
+    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        super(ClrSelectContainer, vcr, 1);
+        this.ngControlService = ngControlService;
+        this.ifErrorService = ifErrorService;
+        this.control = control;
+        if (!control) {
+            throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    onBlur() {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    }
+}
+ClrSelect.decorators = [
+    { type: Directive, args: [{ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } },] },
+];
+/** @nocollapse */
+ClrSelect.ctorParameters = () => [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: ElementRef }
+];
+ClrSelect.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrSelectModule {
+}
+ClrSelectModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrSelect, ClrSelectContainer],
+                exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
+                entryComponents: [ClrSelectContainer],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrTextareaContainer {
+    /**
+     * @param {?} ifErrorService
+     * @param {?} layoutService
+     * @param {?} controlClassService
+     */
+    constructor(ifErrorService, layoutService, controlClassService) {
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
+            this.invalid = control.invalid;
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    controlClass() {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    }
+    /**
+     * @return {?}
+     */
+    addGrid() {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.subscriptions) {
+            this.subscriptions.map(sub => sub.unsubscribe());
+        }
+    }
+}
+ClrTextareaContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-textarea-container',
+                template: `
+        <ng-content select="label"></ng-content>
+        <label *ngIf="!label && addGrid()"></label>
+        <div class="clr-control-container" [ngClass]="controlClass()">
+            <div class="clr-textarea-wrapper">
+                <ng-content select="[clrTextarea]"></ng-content>
+                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+            </div>
+            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+        </div>
+    `,
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+/** @nocollapse */
+ClrTextareaContainer.ctorParameters = () => [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+];
+ClrTextareaContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrTextarea extends WrappedFormControl {
+    /**
+     * @param {?} vcr
+     * @param {?} ngControlService
+     * @param {?} ifErrorService
+     * @param {?} control
+     * @param {?} controlClassService
+     * @param {?} renderer
+     * @param {?} el
+     */
+    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
+        super(ClrTextareaContainer, vcr, 1);
+        this.ngControlService = ngControlService;
+        this.ifErrorService = ifErrorService;
+        this.control = control;
+        if (!control) {
+            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    onBlur() {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    }
+}
+ClrTextarea.decorators = [
+    { type: Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
+];
+/** @nocollapse */
+ClrTextarea.ctorParameters = () => [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+ClrTextarea.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrTextareaModule {
+}
+ClrTextareaModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrTextarea, ClrTextareaContainer],
+                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
+                entryComponents: [ClrTextareaContainer],
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const CLR_CHECKBOX_DIRECTIVES = [ClrCheckboxDeprecated];
-class ClrCheckboxModule {
+class ClrFormsNextModule {
 }
-ClrCheckboxModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
+ClrFormsNextModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule],
+                exports: [
+                    ClrCommonFormsModule,
+                    ClrCheckboxNextModule,
+                    ClrDatepickerModule,
+                    ClrInputModule,
+                    ClrPasswordModule,
+                    ClrRadioModule,
+                    ClrSelectModule,
+                    ClrTextareaModule,
+                ],
+            },] },
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrFormsModule {
-}
-ClrFormsModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], exports: [ClrCheckboxModule, ClrDatepickerModule] },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class Expand {
     constructor() {
@@ -4771,7 +6251,7 @@ Expand.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * TODO: make this a reusable directive outside of Datagrid, like [clrLoading].
@@ -4853,24 +6333,25 @@ ClrIfExpanded.decorators = [
 ];
 /** @nocollapse */
 ClrIfExpanded.ctorParameters = () => [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-    { type: Expand, },
+    { type: TemplateRef },
+    { type: ViewContainerRef },
+    { type: Expand }
 ];
 ClrIfExpanded.propDecorators = {
-    "expanded": [{ type: Input, args: ['clrIfExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrIfExpandedChange',] },],
+    expanded: [{ type: Input, args: ['clrIfExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrIfExpandedChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const EXPAND_DIRECTIVES = [ClrIfExpanded];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrIfExpandModule {
 }
@@ -4880,7 +6361,7 @@ ClrIfExpandModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class OutsideClick {
     /**
@@ -4896,8 +6377,10 @@ class OutsideClick {
      * @return {?}
      */
     documentClick(event) {
-        const /** @type {?} */ target = event.target; // Get the element in the DOM on which the mouse was clicked
-        const /** @type {?} */ host = this.el.nativeElement; // Get the current actionMenu native HTML element
+        /** @type {?} */
+        const target = event.target;
+        /** @type {?} */
+        const host = this.el.nativeElement; // Get the current actionMenu native HTML element
         if (target === host) {
             return;
         }
@@ -4912,23 +6395,24 @@ OutsideClick.decorators = [
 ];
 /** @nocollapse */
 OutsideClick.ctorParameters = () => [
-    { type: ElementRef, },
+    { type: ElementRef }
 ];
 OutsideClick.propDecorators = {
-    "strict": [{ type: Input, args: ['clrStrict',] },],
-    "outsideClick": [{ type: Output, args: ['clrOutsideClick',] },],
-    "documentClick": [{ type: HostListener, args: ['document:click', ['$event'],] },],
+    strict: [{ type: Input, args: ['clrStrict',] }],
+    outsideClick: [{ type: Output, args: ['clrOutsideClick',] }],
+    documentClick: [{ type: HostListener, args: ['document:click', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const OUSTIDE_CLICK_DIRECTIVES = [OutsideClick];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrOutsideClickModule {
 }
@@ -4938,7 +6422,7 @@ ClrOutsideClickModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -4952,7 +6436,8 @@ class DomAdapter {
      */
     userDefinedWidth(element) {
         element.classList.add('datagrid-cell-width-zero');
-        const /** @type {?} */ userDefinedWidth = parseInt(getComputedStyle(element).getPropertyValue('width'), 10);
+        /** @type {?} */
+        const userDefinedWidth = parseInt(getComputedStyle(element).getPropertyValue('width'), 10);
         element.classList.remove('datagrid-cell-width-zero');
         return userDefinedWidth;
     }
@@ -5019,7 +6504,7 @@ DomAdapter.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -5108,7 +6593,7 @@ DatagridRenderOrganizer.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -5172,7 +6657,8 @@ class DatagridRowExpandAnimation {
         // I don't like realigning the columns before the animation, since the scrollbar could appear or disappear
         // halfway, but that's a compromise we have to make for now. We can look into a smarter fix later.
         this.renderOrganizer.scrollbar.next();
-        const /** @type {?} */ newHeight = this.domAdapter.computedHeight(this.el.nativeElement);
+        /** @type {?} */
+        const newHeight = this.domAdapter.computedHeight(this.el.nativeElement);
         this.running = this.el.nativeElement.animate({ height: [this.oldHeight + 'px', newHeight + 'px'], overflowY: ['hidden', 'hidden'], easing: 'ease-in-out' }, { duration: 200 });
         this.running.onfinish = () => {
             this.renderer.setStyle(this.el.nativeElement, 'overflow-y', null);
@@ -5186,16 +6672,16 @@ DatagridRowExpandAnimation.decorators = [
 ];
 /** @nocollapse */
 DatagridRowExpandAnimation.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: DomAdapter, },
-    { type: Renderer2, },
-    { type: Expand, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: DomAdapter },
+    { type: Renderer2 },
+    { type: Expand },
+    { type: DatagridRenderOrganizer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -5205,7 +6691,7 @@ class CustomFilter {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -5247,7 +6733,7 @@ StateDebouncer.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class Page {
     /**
@@ -5284,7 +6770,8 @@ class Page {
      * @return {?}
      */
     set size(size) {
-        const /** @type {?} */ oldSize = this._size;
+        /** @type {?} */
+        const oldSize = this._size;
         if (size !== oldSize) {
             this._size = size;
             if (size === 0) {
@@ -5404,7 +6891,8 @@ class Page {
         if (this.size === 0) {
             return this.totalItems - 1;
         }
-        let /** @type {?} */ lastInPage = this.current * this.size - 1;
+        /** @type {?} */
+        let lastInPage = this.current * this.size - 1;
         if (this.totalItems) {
             lastInPage = Math.min(lastInPage, this.totalItems - 1);
         }
@@ -5423,12 +6911,12 @@ Page.decorators = [
 ];
 /** @nocollapse */
 Page.ctorParameters = () => [
-    { type: StateDebouncer, },
+    { type: StateDebouncer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -5476,7 +6964,8 @@ class FiltersProvider {
      * @return {?}
      */
     getActiveFilters() {
-        const /** @type {?} */ ret = [];
+        /** @type {?} */
+        const ret = [];
         for (const { filter: filter$$1 } of this._all) {
             if (filter$$1 && filter$$1.isActive()) {
                 ret.push(filter$$1);
@@ -5491,10 +6980,14 @@ class FiltersProvider {
      * @return {?}
      */
     add(filter$$1) {
-        const /** @type {?} */ index = this._all.length;
-        const /** @type {?} */ subscription = filter$$1.changes.subscribe(() => this.resetPageAndEmitFilterChange([filter$$1]));
-        let /** @type {?} */ hasUnregistered = false;
-        const /** @type {?} */ registered = new RegisteredFilter(filter$$1, () => {
+        /** @type {?} */
+        const index = this._all.length;
+        /** @type {?} */
+        const subscription = filter$$1.changes.subscribe(() => this.resetPageAndEmitFilterChange([filter$$1]));
+        /** @type {?} */
+        let hasUnregistered = false;
+        /** @type {?} */
+        const registered = new RegisteredFilter(filter$$1, () => {
             if (hasUnregistered) {
                 return;
             }
@@ -5542,8 +7035,8 @@ FiltersProvider.decorators = [
 ];
 /** @nocollapse */
 FiltersProvider.ctorParameters = () => [
-    { type: Page, },
-    { type: StateDebouncer, },
+    { type: Page },
+    { type: StateDebouncer }
 ];
 // unsupported: template constraints.
 /**
@@ -5562,7 +7055,7 @@ class RegisteredFilter {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 // unsupported: template constraints.
 /**
@@ -5615,7 +7108,7 @@ class DatagridFilterRegistrar {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Custom filter that can be added in any column to override the default object property string filter.
@@ -5626,9 +7119,11 @@ class DatagridFilterRegistrar {
 class ClrDatagridFilter extends DatagridFilterRegistrar {
     /**
      * @param {?} _filters
+     * @param {?} commonStrings
      */
-    constructor(_filters) {
+    constructor(_filters, commonStrings) {
         super(_filters);
+        this.commonStrings = commonStrings;
         this.anchorPoint = Point.RIGHT_BOTTOM;
         this.popoverPoint = Point.RIGHT_TOP;
         this.popoverOptions = { allowMultipleOpen: true };
@@ -5649,7 +7144,8 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
      * @return {?}
      */
     set open(open) {
-        const /** @type {?} */ boolOpen = !!open;
+        /** @type {?} */
+        const boolOpen = !!open;
         if (boolOpen !== this._open) {
             this._open = boolOpen;
             this.openChanged.emit(boolOpen);
@@ -5692,10 +7188,8 @@ ClrDatagridFilter.decorators = [
             <div class="datagrid-filter">
                 <!-- FIXME: this whole filter part needs a final design before we can try to have a cleaner DOM -->
                 <div class="datagrid-filter-close-wrapper">
-                    <button type="button" class="close" 
-                        aria-label="Close" (click)="open = false"
-                        type="button">
-                        <clr-icon aria-hidden="true" shape="close"></clr-icon>
+                    <button type="button" class="close" (click)="open = false">
+                        <clr-icon shape="close" [attr.title]="commonStrings.close"></clr-icon>
                     </button>
                 </div>
     
@@ -5707,17 +7201,18 @@ ClrDatagridFilter.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridFilter.ctorParameters = () => [
-    { type: FiltersProvider, },
+    { type: FiltersProvider },
+    { type: ClrCommonStrings }
 ];
 ClrDatagridFilter.propDecorators = {
-    "open": [{ type: Input, args: ['clrDgFilterOpen',] },],
-    "openChanged": [{ type: Output, args: ['clrDgFilterOpenChange',] },],
-    "customFilter": [{ type: Input, args: ['clrDgFilter',] },],
+    open: [{ type: Input, args: ['clrDgFilterOpen',] }],
+    openChanged: [{ type: Output, args: ['clrDgFilterOpenChange',] }],
+    customFilter: [{ type: Input, args: ['clrDgFilter',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -5794,7 +7289,7 @@ class DatagridStringFilterImpl {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -5890,20 +7385,20 @@ DatagridStringFilter.decorators = [
 ];
 /** @nocollapse */
 DatagridStringFilter.ctorParameters = () => [
-    { type: FiltersProvider, },
-    { type: DomAdapter, },
+    { type: FiltersProvider },
+    { type: DomAdapter }
 ];
 DatagridStringFilter.propDecorators = {
-    "customStringFilter": [{ type: Input, args: ['clrDgStringFilter',] },],
-    "input": [{ type: ViewChild, args: ['input',] },],
-    "filterContainer": [{ type: ViewChild, args: [ClrDatagridFilter,] },],
-    "value": [{ type: Input, args: ['clrFilterValue',] },],
-    "filterValueChange": [{ type: Output, args: ['clrFilterValueChange',] },],
+    customStringFilter: [{ type: Input, args: ['clrDgStringFilter',] }],
+    input: [{ type: ViewChild, args: ['input',] }],
+    filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter,] }],
+    value: [{ type: Input, args: ['clrFilterValue',] }],
+    filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -5936,7 +7431,7 @@ class OompaLoompa {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -5973,7 +7468,7 @@ RowActionService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class WillyWonka {
     constructor() {
@@ -5995,7 +7490,7 @@ class WillyWonka {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridWillyWonka extends WillyWonka {
 }
@@ -6005,7 +7500,7 @@ DatagridWillyWonka.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ActionableOompaLoompa extends OompaLoompa {
     /**
@@ -6032,14 +7527,14 @@ ActionableOompaLoompa.decorators = [
 ];
 /** @nocollapse */
 ActionableOompaLoompa.ctorParameters = () => [
-    { type: ChangeDetectorRef, },
-    { type: DatagridWillyWonka, decorators: [{ type: Optional },] },
-    { type: RowActionService, },
+    { type: ChangeDetectorRef },
+    { type: DatagridWillyWonka, decorators: [{ type: Optional }] },
+    { type: RowActionService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ExpandableRowsCount {
     constructor() {
@@ -6071,7 +7566,7 @@ ExpandableRowsCount.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ExpandableOompaLoompa extends OompaLoompa {
     /**
@@ -6098,14 +7593,14 @@ ExpandableOompaLoompa.decorators = [
 ];
 /** @nocollapse */
 ExpandableOompaLoompa.ctorParameters = () => [
-    { type: ChangeDetectorRef, },
-    { type: DatagridWillyWonka, decorators: [{ type: Optional },] },
-    { type: ExpandableRowsCount, },
+    { type: ChangeDetectorRef },
+    { type: DatagridWillyWonka, decorators: [{ type: Optional }] },
+    { type: ExpandableRowsCount }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Generic accessor for deep object properties
@@ -6128,8 +7623,9 @@ class NestedProperty {
      */
     getPropValue(item) {
         if (this.splitProp) {
-            let /** @type {?} */ value = item;
-            for (const /** @type {?} */ nestedProp of this.splitProp) {
+            /** @type {?} */
+            let value = item;
+            for (const nestedProp of this.splitProp) {
                 if (value == null || typeof value === 'undefined' || typeof value[nestedProp] === 'undefined') {
                     return undefined;
                 }
@@ -6145,7 +7641,7 @@ class NestedProperty {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -6164,8 +7660,10 @@ class DatagridPropertyComparator {
      * @return {?}
      */
     compare(a, b) {
-        let /** @type {?} */ propA = this.nestedProp.getPropValue(a);
-        let /** @type {?} */ propB = this.nestedProp.getPropValue(b);
+        /** @type {?} */
+        let propA = this.nestedProp.getPropValue(a);
+        /** @type {?} */
+        let propB = this.nestedProp.getPropValue(b);
         if (typeof propA === 'string') {
             propA = propA.toLowerCase();
         }
@@ -6199,7 +7697,7 @@ class DatagridPropertyComparator {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -6220,7 +7718,8 @@ class DatagridPropertyStringFilter {
      * @return {?}
      */
     accepts(item, search) {
-        const /** @type {?} */ propValue = this.nestedProp.getPropValue(item);
+        /** @type {?} */
+        const propValue = this.nestedProp.getPropValue(item);
         if (typeof propValue === 'undefined') {
             return false;
         }
@@ -6235,7 +7734,7 @@ class DatagridPropertyStringFilter {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -6248,13 +7747,13 @@ const ClrDatagridSortOrder = {
     ASC: 1,
     DESC: -1,
 };
-ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED] = "UNSORTED";
-ClrDatagridSortOrder[ClrDatagridSortOrder.ASC] = "ASC";
-ClrDatagridSortOrder[ClrDatagridSortOrder.DESC] = "DESC";
+ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED] = 'UNSORTED';
+ClrDatagridSortOrder[ClrDatagridSortOrder.ASC] = 'ASC';
+ClrDatagridSortOrder[ClrDatagridSortOrder.DESC] = 'DESC';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -6295,7 +7794,8 @@ class DragDispatcher {
      * @return {?}
      */
     addDragListener() {
-        const /** @type {?} */ handleEl = this.handleRef.nativeElement;
+        /** @type {?} */
+        const handleEl = this.handleRef.nativeElement;
         this._listeners = [
             this.customDragEvent(handleEl, 'mousedown', 'mousemove', 'mouseup'),
             this.customDragEvent(handleEl, 'touchstart', 'touchmove', 'touchend'),
@@ -6309,8 +7809,10 @@ class DragDispatcher {
      * @return {?}
      */
     customDragEvent(element, startOnEvent, moveOnEvent, endOnEvent) {
-        let /** @type {?} */ dragMoveListener;
-        let /** @type {?} */ dragEndListener;
+        /** @type {?} */
+        let dragMoveListener;
+        /** @type {?} */
+        let dragEndListener;
         return this._renderer.listen(element, startOnEvent, (startEvent) => {
             this.notifyDragStart(startEvent);
             dragMoveListener = this._ngZone.runOutsideAngular(() => {
@@ -6362,13 +7864,13 @@ DragDispatcher.decorators = [
 ];
 /** @nocollapse */
 DragDispatcher.ctorParameters = () => [
-    { type: NgZone, },
-    { type: Renderer2, },
+    { type: NgZone },
+    { type: Renderer2 }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -6477,13 +7979,14 @@ Sort.decorators = [
 ];
 /** @nocollapse */
 Sort.ctorParameters = () => [
-    { type: StateDebouncer, },
+    { type: StateDebouncer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbCount = 0;
 /**
  * @template T
@@ -6817,29 +8320,29 @@ ClrDatagridColumn.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridColumn.ctorParameters = () => [
-    { type: Sort, },
-    { type: FiltersProvider, },
-    { type: DragDispatcher, },
+    { type: Sort },
+    { type: FiltersProvider },
+    { type: DragDispatcher }
 ];
 ClrDatagridColumn.propDecorators = {
-    "handleElRef": [{ type: ViewChild, args: ['columnHandle',] },],
-    "handleTrackerElRef": [{ type: ViewChild, args: ['columnHandleTracker',] },],
-    "field": [{ type: Input, args: ['clrDgField',] },],
-    "sortBy": [{ type: Input, args: ['clrDgSortBy',] },],
-    "sorted": [{ type: Input, args: ['clrDgSorted',] },],
-    "sortedChange": [{ type: Output, args: ['clrDgSortedChange',] },],
-    "sortOrder": [{ type: Input, args: ['clrDgSortOrder',] },],
-    "sortOrderChange": [{ type: Output, args: ['clrDgSortOrderChange',] },],
-    "asc": [{ type: HostBinding, args: ['class.asc',] },],
-    "desc": [{ type: HostBinding, args: ['class.desc',] },],
-    "projectedFilter": [{ type: ContentChild, args: [CustomFilter,] },],
-    "updateFilterValue": [{ type: Input, args: ['clrFilterValue',] },],
-    "filterValueChange": [{ type: Output, args: ['clrFilterValueChange',] },],
+    handleElRef: [{ type: ViewChild, args: ['columnHandle',] }],
+    handleTrackerElRef: [{ type: ViewChild, args: ['columnHandleTracker',] }],
+    field: [{ type: Input, args: ['clrDgField',] }],
+    sortBy: [{ type: Input, args: ['clrDgSortBy',] }],
+    sorted: [{ type: Input, args: ['clrDgSorted',] }],
+    sortedChange: [{ type: Output, args: ['clrDgSortedChange',] }],
+    sortOrder: [{ type: Input, args: ['clrDgSortOrder',] }],
+    sortOrderChange: [{ type: Output, args: ['clrDgSortOrderChange',] }],
+    asc: [{ type: HostBinding, args: ['class.asc',] }],
+    desc: [{ type: HostBinding, args: ['class.desc',] }],
+    projectedFilter: [{ type: ContentChild, args: [CustomFilter,] }],
+    updateFilterValue: [{ type: Input, args: ['clrFilterValue',] }],
+    filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -7042,14 +8545,14 @@ Items.decorators = [
 ];
 /** @nocollapse */
 Items.ctorParameters = () => [
-    { type: FiltersProvider, },
-    { type: Sort, },
-    { type: Page, },
+    { type: FiltersProvider },
+    { type: Sort },
+    { type: Page }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -7079,7 +8582,8 @@ class ClrDatagridItems {
      */
     ngOnChanges(changes) {
         if ('rawItems' in changes) {
-            const /** @type {?} */ currentItems = changes["rawItems"].currentValue;
+            /** @type {?} */
+            const currentItems = changes["rawItems"].currentValue;
             if (!this._differ && currentItems) {
                 this._differ = this._differs.find(currentItems).create(this._items.trackBy);
             }
@@ -7097,7 +8601,8 @@ class ClrDatagridItems {
      */
     ngDoCheck() {
         if (this._differ) {
-            const /** @type {?} */ changes = this._differ.diff(this._rawItems);
+            /** @type {?} */
+            const changes = this._differ.diff(this._rawItems);
             if (changes) {
                 // TODO: not very efficient right now,
                 // but premature optimization is the root of all evil.
@@ -7113,18 +8618,18 @@ ClrDatagridItems.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridItems.ctorParameters = () => [
-    { type: TemplateRef, },
-    { type: IterableDiffers, },
-    { type: Items, },
+    { type: TemplateRef },
+    { type: IterableDiffers },
+    { type: Items }
 ];
 ClrDatagridItems.propDecorators = {
-    "rawItems": [{ type: Input, args: ['clrDgItemsOf',] },],
-    "trackBy": [{ type: Input, args: ['clrDgItemsTrackBy',] },],
+    rawItems: [{ type: Input, args: ['clrDgItemsOf',] }],
+    trackBy: [{ type: Input, args: ['clrDgItemsTrackBy',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -7160,23 +8665,24 @@ ClrDatagridPlaceholder.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridPlaceholder.ctorParameters = () => [
-    { type: Items, },
+    { type: Items }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const POPOVER_HOST_ANCHOR = new InjectionToken('POPOVER_HOST_ANCHOR');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*********
  *
@@ -7228,17 +8734,17 @@ ClrSignpostTrigger.decorators = [
 ];
 /** @nocollapse */
 ClrSignpostTrigger.ctorParameters = () => [
-    { type: IfOpenService, },
-    { type: Renderer2, },
-    { type: ElementRef, },
+    { type: IfOpenService },
+    { type: Renderer2 },
+    { type: ElementRef }
 ];
 ClrSignpostTrigger.propDecorators = {
-    "onSignpostTriggerClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+    onSignpostTriggerClick: [{ type: HostListener, args: ['click', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*********
  *
@@ -7250,7 +8756,11 @@ ClrSignpostTrigger.propDecorators = {
  *
  */
 class ClrSignpost {
-    constructor() {
+    /**
+     * @param {?} commonStrings
+     */
+    constructor(commonStrings) {
+        this.commonStrings = commonStrings;
         /**
          * *******
          * \@property useCustomTrigger
@@ -7284,7 +8794,7 @@ ClrSignpost.decorators = [
                 type="button"
                 class="signpost-action btn btn-small btn-link"
                 clrSignpostTrigger>
-                <clr-icon shape="info"></clr-icon>
+                <clr-icon shape="info" [attr.title]="commonStrings.info"></clr-icon>
             </button>
         </ng-container>
         
@@ -7295,13 +8805,16 @@ ClrSignpost.decorators = [
             },] },
 ];
 /** @nocollapse */
+ClrSignpost.ctorParameters = () => [
+    { type: ClrCommonStrings }
+];
 ClrSignpost.propDecorators = {
-    "customTrigger": [{ type: ContentChild, args: [ClrSignpostTrigger,] },],
+    customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -7355,7 +8868,8 @@ class HideableColumnService {
      * @return {?}
      */
     get canHideNextColumn() {
-        const /** @type {?} */ hiddenColumns = this._columnList.filter(column => column !== undefined).filter(column => column.hidden);
+        /** @type {?} */
+        const hiddenColumns = this._columnList.filter(column => column !== undefined).filter(column => column.hidden);
         return this._columnList.length - hiddenColumns.length > 1;
     }
     /**
@@ -7482,7 +8996,7 @@ HideableColumnService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridCell {
     /**
@@ -7511,7 +9025,8 @@ class ClrDatagridCell {
         if (!columnId) {
             return;
         }
-        const /** @type {?} */ hideableColumn = this.hideableColumnService.getColumnById(this._id);
+        /** @type {?} */
+        const hideableColumn = this.hideableColumnService.getColumnById(this._id);
         this.setHiddenClass(hideableColumn.hidden);
         this.hiddenStateSubscription = hideableColumn.hiddenChangeState.subscribe(() => {
             this.setHiddenClass(hideableColumn.hidden);
@@ -7553,18 +9068,19 @@ ClrDatagridCell.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridCell.ctorParameters = () => [
-    { type: HideableColumnService, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: HideableColumnService },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 ClrDatagridCell.propDecorators = {
-    "signpost": [{ type: ContentChildren, args: [ClrSignpost,] },],
+    signpost: [{ type: ContentChildren, args: [ClrSignpost,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbSelection = 0;
 /** @enum {number} */
 const SelectionType = {
@@ -7572,9 +9088,9 @@ const SelectionType = {
     Single: 1,
     Multi: 2,
 };
-SelectionType[SelectionType.None] = "None";
-SelectionType[SelectionType.Single] = "Single";
-SelectionType[SelectionType.Multi] = "Multi";
+SelectionType[SelectionType.None] = 'None';
+SelectionType[SelectionType.Single] = 'Single';
+SelectionType[SelectionType.Multi] = 'Multi';
 /**
  * @template T
  */
@@ -7614,18 +9130,23 @@ class Selection {
                     break;
                 }
                 case SelectionType.Single: {
-                    let /** @type {?} */ newSingle;
-                    const /** @type {?} */ trackBy = this._items.trackBy;
-                    let /** @type {?} */ selectionUpdated = false;
+                    /** @type {?} */
+                    let newSingle;
+                    /** @type {?} */
+                    const trackBy = this._items.trackBy;
+                    /** @type {?} */
+                    let selectionUpdated = false;
                     // if the currentSingle has been set before data was loaded, we look up and save the ref from current data set
                     if (this.currentSingle && !this.prevSingleSelectionRef) {
                         if (this._items.all && this._items.trackBy) {
-                            const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === this.currentSingle);
+                            /** @type {?} */
+                            const lookup = this._items.all.findIndex(maybe => maybe === this.currentSingle);
                             this.prevSingleSelectionRef = this._items.trackBy(lookup, this.currentSingle);
                         }
                     }
                     updatedItems.forEach((item, index) => {
-                        const /** @type {?} */ ref = trackBy(index, item);
+                        /** @type {?} */
+                        const ref = trackBy(index, item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
                         if (this.prevSingleSelectionRef === ref) {
                             newSingle = item;
@@ -7651,15 +9172,19 @@ class Selection {
                     break;
                 }
                 case SelectionType.Multi: {
-                    let /** @type {?} */ leftOver = this.current.slice();
-                    const /** @type {?} */ trackBy = this._items.trackBy;
-                    let /** @type {?} */ selectionUpdated = false;
+                    /** @type {?} */
+                    let leftOver = this.current.slice();
+                    /** @type {?} */
+                    const trackBy = this._items.trackBy;
+                    /** @type {?} */
+                    let selectionUpdated = false;
                     // if the current has been set before data was loaded, we look up and save the ref from current data set
                     if (this.current.length > 0 && this.prevSelectionRefs.length !== this.current.length) {
                         if (this._items.all && this._items.trackBy) {
                             this.prevSelectionRefs = [];
                             this.current.forEach(item => {
-                                const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === item);
+                                /** @type {?} */
+                                const lookup = this._items.all.findIndex(maybe => maybe === item);
                                 this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
                             });
                         }
@@ -7669,9 +9194,10 @@ class Selection {
                     // the if statement below results in broken behavior.
                     if (leftOver.length > 0) {
                         updatedItems.forEach((item, index) => {
-                            const /** @type {?} */ ref = trackBy(index, item);
-                            // Look in current selected refs array if item is selected, and update actual value
-                            const /** @type {?} */ selectedIndex = this.prevSelectionRefs.indexOf(ref);
+                            /** @type {?} */
+                            const ref = trackBy(index, item);
+                            /** @type {?} */
+                            const selectedIndex = this.prevSelectionRefs.indexOf(ref);
                             if (selectedIndex > -1) {
                                 leftOver[selectedIndex] = item;
                                 selectionUpdated = true;
@@ -7762,7 +9288,8 @@ class Selection {
         }
         this._currentSingle = value;
         if (this._items.all && this._items.trackBy && value) {
-            const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === value);
+            /** @type {?} */
+            const lookup = this._items.all.findIndex(maybe => maybe === value);
             this.prevSingleSelectionRef = this._items.trackBy(lookup, value);
         }
         this.emitChange();
@@ -7828,8 +9355,8 @@ class Selection {
     selectItem(item) {
         this.current.push(item);
         if (this._items.trackBy) {
-            // Push selected ref onto array
-            const /** @type {?} */ lookup = this._items.all.findIndex(maybe => maybe === item);
+            /** @type {?} */
+            const lookup = this._items.all.findIndex(maybe => maybe === item);
             this.prevSelectionRefs.push(this._items.trackBy(lookup, item));
         }
     }
@@ -7859,7 +9386,8 @@ class Selection {
                 // in single selection, set currentSingle method should be used
                 break;
             case SelectionType.Multi:
-                const /** @type {?} */ index = this.current.indexOf(item);
+                /** @type {?} */
+                const index = this.current.indexOf(item);
                 if (index >= 0 && !selected) {
                     this.deselectItem(index);
                     this.emitChange();
@@ -7881,12 +9409,15 @@ class Selection {
         if (this._selectionType !== SelectionType.Multi || !this._items.displayed) {
             return false;
         }
-        const /** @type {?} */ displayedItems = this._items.displayed;
-        const /** @type {?} */ nbDisplayed = this._items.displayed.length;
+        /** @type {?} */
+        const displayedItems = this._items.displayed;
+        /** @type {?} */
+        const nbDisplayed = this._items.displayed.length;
         if (nbDisplayed < 1) {
             return false;
         }
-        const /** @type {?} */ temp = displayedItems.filter(item => this.current.indexOf(item) > -1);
+        /** @type {?} */
+        const temp = displayedItems.filter(item => this.current.indexOf(item) > -1);
         return temp.length === displayedItems.length;
     }
     /**
@@ -7903,7 +9434,8 @@ class Selection {
                  */
         if (this.isAllSelected()) {
             this._items.displayed.forEach(item => {
-                const /** @type {?} */ currentIndex = this.current.indexOf(item);
+                /** @type {?} */
+                const currentIndex = this.current.indexOf(item);
                 if (currentIndex > -1) {
                     this.deselectItem(currentIndex);
                 }
@@ -7924,14 +9456,15 @@ Selection.decorators = [
 ];
 /** @nocollapse */
 Selection.ctorParameters = () => [
-    { type: Items, },
-    { type: FiltersProvider, },
+    { type: Items },
+    { type: FiltersProvider }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbRow = 0;
 /**
  * @template T
@@ -7943,13 +9476,15 @@ class ClrDatagridRow {
      * @param {?} globalExpandable
      * @param {?} expand
      * @param {?} hideableColumnService
+     * @param {?} commonStrings
      */
-    constructor(selection, rowActionService, globalExpandable, expand, hideableColumnService) {
+    constructor(selection, rowActionService, globalExpandable, expand, hideableColumnService, commonStrings) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.globalExpandable = globalExpandable;
         this.expand = expand;
         this.hideableColumnService = hideableColumnService;
+        this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         this._selected = false;
         this.selectedChanged = new EventEmitter(false);
@@ -8017,12 +9552,13 @@ class ClrDatagridRow {
      * @return {?}
      */
     ngAfterContentInit() {
-        // Make sure things get started
-        const /** @type {?} */ columnsList = this.hideableColumnService.getColumns();
+        /** @type {?} */
+        const columnsList = this.hideableColumnService.getColumns();
         this.updateCellsForColumns(columnsList);
         // Triggered when the Cells list changes per row-renderer
         this.dgCells.changes.subscribe(cellList => {
-            const /** @type {?} */ columnList = this.hideableColumnService.getColumns();
+            /** @type {?} */
+            const columnList = this.hideableColumnService.getColumns();
             if (cellList.length === columnList.length) {
                 this.updateCellsForColumns(columnList);
             }
@@ -8049,7 +9585,8 @@ class ClrDatagridRow {
     updateCellsForColumns(columnList) {
         // Map cells to columns with Array.index
         this.dgCells.forEach((cell, index) => {
-            const /** @type {?} */ currentColumn = columnList[index]; // Accounts for null space.
+            /** @type {?} */
+            const currentColumn = columnList[index]; // Accounts for null space.
             if (currentColumn) {
                 cell.id = currentColumn.id;
             }
@@ -8090,13 +9627,19 @@ ClrDatagridRow.decorators = [
       <div role="row" [id]="id" class="datagrid-row-master datagrid-row-flex">
         <clr-dg-cell *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
                      class="datagrid-select datagrid-fixed-column">
-          <clr-checkbox [clrChecked]="selected" (clrCheckedChange)="toggle($event)"></clr-checkbox>
+          <input clrCheckbox type="checkbox" [ngModel]="selected" (ngModelChange)="toggle($event)"
+            [attr.aria-label]="commonStrings.select">
         </clr-dg-cell>
         <clr-dg-cell *ngIf="selection.selectionType === SELECTION_TYPE.Single"
                      class="datagrid-select datagrid-fixed-column">
           <div class="radio">
+            <!-- TODO: it would be better if in addition to the generic "Select" label, we could add aria-labelledby
+            to label the radio by the first cell in the row (typically an id or name).
+             It's pretty easy to label it with the whole row since we already have an id for it, but in most
+             cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->
             <input type="radio" [id]="radioId" [name]="selection.id + '-radio'" [value]="item"
-                   [(ngModel)]="selection.currentSingle" [checked]="selection.currentSingle === item">
+                   [(ngModel)]="selection.currentSingle" [checked]="selection.currentSingle === item"
+                   [attr.aria-label]="commonStrings.select">
             <label for="{{radioId}}"></label>
           </div>
         </clr-dg-cell>
@@ -8108,7 +9651,10 @@ ClrDatagridRow.decorators = [
                      class="datagrid-expandable-caret datagrid-fixed-column">
           <ng-container *ngIf="expand.expandable">
             <button (click)="toggleExpand()" *ngIf="!expand.loading" type="button" class="datagrid-expandable-caret-button">
-              <clr-icon shape="caret" [attr.dir]="expand.expanded?'down':'right'" class="datagrid-expandable-caret-icon"></clr-icon>
+              <clr-icon shape="caret" 
+                class="datagrid-expandable-caret-icon"
+                [attr.dir]="expand.expanded ? 'down' : 'right'"
+                [attr.title]="expand.expanded ? commonStrings.collapse : commonStrings.expand"></clr-icon>
             </button>
             <div class="spinner spinner-sm" *ngIf="expand.loading"></div>
           </ng-container>
@@ -8132,24 +9678,25 @@ ClrDatagridRow.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridRow.ctorParameters = () => [
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: ExpandableRowsCount, },
-    { type: Expand, },
-    { type: HideableColumnService, },
+    { type: Selection },
+    { type: RowActionService },
+    { type: ExpandableRowsCount },
+    { type: Expand },
+    { type: HideableColumnService },
+    { type: ClrCommonStrings }
 ];
 ClrDatagridRow.propDecorators = {
-    "item": [{ type: Input, args: ['clrDgItem',] },],
-    "selected": [{ type: Input, args: ['clrDgSelected',] },],
-    "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
-    "expanded": [{ type: Input, args: ['clrDgExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrDgExpandedChange',] },],
-    "dgCells": [{ type: ContentChildren, args: [ClrDatagridCell,] },],
+    item: [{ type: Input, args: ['clrDgItem',] }],
+    selected: [{ type: Input, args: ['clrDgSelected',] }],
+    selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
+    expanded: [{ type: Input, args: ['clrDgExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrDgExpandedChange',] }],
+    dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ColumnToggleButtonsService {
     constructor() {
@@ -8179,7 +9726,7 @@ ColumnToggleButtonsService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * This provider aggregates state changes from the various providers of the Datagrid
@@ -8206,7 +9753,8 @@ class StateProvider {
      * @return {?}
      */
     get state() {
-        const /** @type {?} */ state$$1 = {};
+        /** @type {?} */
+        const state$$1 = {};
         if (this.page.size > 0) {
             state$$1.page = { from: this.page.firstItem, to: this.page.lastItem, size: this.page.size };
         }
@@ -8222,12 +9770,14 @@ class StateProvider {
                 state$$1.sort = { by: this.sort.comparator, reverse: this.sort.reverse };
             }
         }
-        const /** @type {?} */ activeFilters = this.filters.getActiveFilters();
+        /** @type {?} */
+        const activeFilters = this.filters.getActiveFilters();
         if (activeFilters.length > 0) {
             state$$1.filters = [];
-            for (const /** @type {?} */ filter$$1 of activeFilters) {
+            for (const filter$$1 of activeFilters) {
                 if (filter$$1 instanceof DatagridStringFilterImpl) {
-                    const /** @type {?} */ stringFilter = filter$$1.filterFn;
+                    /** @type {?} */
+                    const stringFilter = filter$$1.filterFn;
                     if (stringFilter instanceof DatagridPropertyStringFilter) {
                         /*
                                                  * Special case again for the default object property filter,
@@ -8251,15 +9801,15 @@ StateProvider.decorators = [
 ];
 /** @nocollapse */
 StateProvider.ctorParameters = () => [
-    { type: FiltersProvider, },
-    { type: Sort, },
-    { type: Page, },
-    { type: StateDebouncer, },
+    { type: FiltersProvider },
+    { type: Sort },
+    { type: Page },
+    { type: StateDebouncer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -8273,8 +9823,9 @@ class ClrDatagrid {
      * @param {?} selection
      * @param {?} rowActionService
      * @param {?} stateProvider
+     * @param {?} commonStrings
      */
-    constructor(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider) {
+    constructor(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider, commonStrings) {
         this.columnService = columnService;
         this.organizer = organizer;
         this.items = items;
@@ -8282,6 +9833,7 @@ class ClrDatagrid {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.stateProvider = stateProvider;
+        this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         /**
          * Output emitted whenever the data needs to be refreshed, based on user action or external ones
@@ -8451,7 +10003,8 @@ ClrDatagrid.decorators = [
                         <div role="columnheader" class="datagrid-column datagrid-select datagrid-fixed-column"
                              *ngIf="selection.selectionType === SELECTION_TYPE.Multi">
                         <span class="datagrid-column-title">
-                            <clr-checkbox [(ngModel)]="allSelected"></clr-checkbox>
+                            <input clrCheckbox type="checkbox" [(ngModel)]="allSelected"
+                                   [attr.aria-label]="commonStrings.selectAll">
                         </span>
                             <div class="datagrid-column-separator"></div>
                         </div>
@@ -8515,32 +10068,33 @@ ClrDatagrid.decorators = [
 ];
 /** @nocollapse */
 ClrDatagrid.ctorParameters = () => [
-    { type: HideableColumnService, },
-    { type: DatagridRenderOrganizer, },
-    { type: Items, },
-    { type: ExpandableRowsCount, },
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: StateProvider, },
+    { type: HideableColumnService },
+    { type: DatagridRenderOrganizer },
+    { type: Items },
+    { type: ExpandableRowsCount },
+    { type: Selection },
+    { type: RowActionService },
+    { type: StateProvider },
+    { type: ClrCommonStrings }
 ];
 ClrDatagrid.propDecorators = {
-    "loading": [{ type: Input, args: ['clrDgLoading',] },],
-    "refresh": [{ type: Output, args: ['clrDgRefresh',] },],
-    "iterator": [{ type: ContentChild, args: [ClrDatagridItems,] },],
-    "selected": [{ type: Input, args: ['clrDgSelected',] },],
-    "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
-    "singleSelected": [{ type: Input, args: ['clrDgSingleSelected',] },],
-    "singleSelectedChanged": [{ type: Output, args: ['clrDgSingleSelectedChange',] },],
-    "rowSelectionMode": [{ type: Input, args: ['clrDgRowSelection',] },],
-    "rowSelectionModeDeprecated": [{ type: Input, args: ['clDgRowSelection',] },],
-    "placeholder": [{ type: ContentChild, args: [ClrDatagridPlaceholder,] },],
-    "columns": [{ type: ContentChildren, args: [ClrDatagridColumn,] },],
-    "rows": [{ type: ContentChildren, args: [ClrDatagridRow,] },],
+    loading: [{ type: Input, args: ['clrDgLoading',] }],
+    refresh: [{ type: Output, args: ['clrDgRefresh',] }],
+    iterator: [{ type: ContentChild, args: [ClrDatagridItems,] }],
+    selected: [{ type: Input, args: ['clrDgSelected',] }],
+    selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
+    singleSelected: [{ type: Input, args: ['clrDgSingleSelected',] }],
+    singleSelectedChanged: [{ type: Output, args: ['clrDgSingleSelectedChange',] }],
+    rowSelectionMode: [{ type: Input, args: ['clrDgRowSelection',] }],
+    rowSelectionModeDeprecated: [{ type: Input, args: ['clDgRowSelection',] }],
+    placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
+    columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
+    rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridActionBar {
 }
@@ -8556,14 +10110,16 @@ ClrDatagridActionBar.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridActionOverflow {
     /**
      * @param {?} rowActionService
+     * @param {?} commonStrings
      */
-    constructor(rowActionService) {
+    constructor(rowActionService, commonStrings) {
         this.rowActionService = rowActionService;
+        this.commonStrings = commonStrings;
         this.anchorPoint = Point.RIGHT_CENTER;
         this.popoverPoint = Point.LEFT_CENTER;
         /**
@@ -8590,7 +10146,8 @@ class ClrDatagridActionOverflow {
      * @return {?}
      */
     set open(open) {
-        const /** @type {?} */ boolOpen = !!open;
+        /** @type {?} */
+        const boolOpen = !!open;
         if (boolOpen !== this._open) {
             this._open = boolOpen;
             this.openChanged.emit(boolOpen);
@@ -8627,7 +10184,7 @@ ClrDatagridActionOverflow.decorators = [
                 selector: 'clr-dg-action-overflow',
                 template: `
         <button (click)="toggle($event)" type="button" class="datagrid-action-toggle" #anchor>
-            <clr-icon shape="ellipsis-vertical"></clr-icon>
+            <clr-icon shape="ellipsis-vertical" [attr.title]="commonStrings.rowActions"></clr-icon>
         </button>
         <ng-template [(clrPopoverOld)]="open" [clrPopoverOldAnchor]="anchor" [clrPopoverOldAnchorPoint]="anchorPoint"
                      [clrPopoverOldPopoverPoint]="popoverPoint">
@@ -8640,16 +10197,17 @@ ClrDatagridActionOverflow.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridActionOverflow.ctorParameters = () => [
-    { type: RowActionService, },
+    { type: RowActionService },
+    { type: ClrCommonStrings }
 ];
 ClrDatagridActionOverflow.propDecorators = {
-    "open": [{ type: Input, args: ['clrDgActionOverflowOpen',] },],
-    "openChanged": [{ type: Output, args: ['clrDgActionOverflowOpenChange',] },],
+    open: [{ type: Input, args: ['clrDgActionOverflowOpen',] }],
+    openChanged: [{ type: Output, args: ['clrDgActionOverflowOpenChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridColumnToggleButton {
     /**
@@ -8684,15 +10242,15 @@ ClrDatagridColumnToggleButton.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridColumnToggleButton.ctorParameters = () => [
-    { type: ColumnToggleButtonsService, },
+    { type: ColumnToggleButtonsService }
 ];
 ClrDatagridColumnToggleButton.propDecorators = {
-    "clrType": [{ type: Input },],
+    clrType: [{ type: Input }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridColumnToggleTitle {
 }
@@ -8705,16 +10263,18 @@ ClrDatagridColumnToggleTitle.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridColumnToggle {
     /**
      * @param {?} hideableColumnService
      * @param {?} columnToggleButtons
+     * @param {?} commonStrings
      */
-    constructor(hideableColumnService, columnToggleButtons) {
+    constructor(hideableColumnService, columnToggleButtons, commonStrings) {
         this.hideableColumnService = hideableColumnService;
         this.columnToggleButtons = columnToggleButtons;
+        this.commonStrings = commonStrings;
         this.subscriptions = [];
         /**
          *
@@ -8803,7 +10363,7 @@ ClrDatagridColumnToggle.decorators = [
                 (click)="toggleUI()"
                 class="btn btn-sm btn-link column-toggle--action"
                 type="button">
-            <clr-icon shape="view-columns"></clr-icon>
+            <clr-icon shape="view-columns" [attr.title]="commonStrings.pickColumns"></clr-icon>
         </button>
         <div class="column-switch"
              *clrPopoverOld="open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint">
@@ -8814,17 +10374,18 @@ ClrDatagridColumnToggle.decorators = [
                     class="btn btn-sm btn-link"
                     (click)="toggleUI()"
                     type="button">
-                    <clr-icon
-                            shape="close"></clr-icon>
+                    <clr-icon shape="close" [attr.title]="commonStrings.close"></clr-icon>
                 </button>
             </div>
             <ul class="switch-content list-unstyled">
                 <li *ngFor="let column of columns">
-                    <clr-checkbox [clrChecked]="!column.hidden"
-                                  [clrDisabled]="column.lastVisibleColumn"
-                                  (clrCheckedChange)="toggleColumn($event, column)">
-                        <ng-template [ngTemplateOutlet]="column.template"></ng-template>
-                    </clr-checkbox>
+                    <clr-checkbox-container>
+                        <input clrCheckbox type="checkbox"
+                          [disabled]="column.lastVisibleColumn"
+                          [ngModel]="!column.hidden" 
+                          (ngModelChange)="toggleColumn($event, column)">
+                        <label><ng-template [ngTemplateOutlet]="column.template"></ng-template></label>
+                    </clr-checkbox-container>
                 </li>
             </ul>
             <div class="switch-footer" *ngIf="buttons.length > 0">
@@ -8847,17 +10408,18 @@ ClrDatagridColumnToggle.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridColumnToggle.ctorParameters = () => [
-    { type: HideableColumnService, },
-    { type: ColumnToggleButtonsService, },
+    { type: HideableColumnService },
+    { type: ColumnToggleButtonsService },
+    { type: ClrCommonStrings }
 ];
 ClrDatagridColumnToggle.propDecorators = {
-    "title": [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] },],
-    "buttons": [{ type: ContentChildren, args: [ClrDatagridColumnToggleButton,] },],
+    title: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
+    buttons: [{ type: ContentChildren, args: [ClrDatagridColumnToggleButton,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridDetailRegisterer {
     /**
@@ -8883,12 +10445,12 @@ DatagridDetailRegisterer.decorators = [
 ];
 /** @nocollapse */
 DatagridDetailRegisterer.ctorParameters = () => [
-    { type: ExpandableRowsCount, decorators: [{ type: Optional },] },
+    { type: ExpandableRowsCount, decorators: [{ type: Optional }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -8911,12 +10473,14 @@ class ClrDatagridFooter {
      */
     ngOnInit() {
         this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe(change => {
-            const /** @type {?} */ hiddenColumnsInSub = change.filter(col => col);
+            /** @type {?} */
+            const hiddenColumnsInSub = change.filter(col => col);
             if (hiddenColumnsInSub.length > 0) {
                 this.activeToggler = true;
             }
         }));
-        const /** @type {?} */ hiddenColumns = this.hideableColumnService.getColumns().filter(col => col);
+        /** @type {?} */
+        const hiddenColumns = this.hideableColumnService.getColumns().filter(col => col);
         if (hiddenColumns.length > 0) {
             this.activeToggler = true;
         }
@@ -8936,9 +10500,10 @@ ClrDatagridFooter.decorators = [
                 template: `
         <ng-container
             *ngIf="(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)">
-            <clr-checkbox [clrDisabled]="true" [clrChecked]="true" class="datagrid-foot-select">
-                {{selection.current.length}}
-            </clr-checkbox>
+            <clr-checkbox-container class="datagrid-foot-select disabled">
+                <input clrCheckbox type="checkbox" checked="checked" disabled>
+                <label>{{selection.current.length}}</label>
+            </clr-checkbox-container>
         </ng-container>
         <ng-content select="clr-dg-column-toggle"></ng-content>
         <clr-dg-column-toggle *ngIf="!toggle && activeToggler"></clr-dg-column-toggle>
@@ -8954,17 +10519,17 @@ ClrDatagridFooter.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridFooter.ctorParameters = () => [
-    { type: Selection, },
-    { type: HideableColumnService, },
-    { type: ChangeDetectorRef, },
+    { type: Selection },
+    { type: HideableColumnService },
+    { type: ChangeDetectorRef }
 ];
 ClrDatagridFooter.propDecorators = {
-    "toggle": [{ type: ContentChild, args: [ClrDatagridColumnToggle,] },],
+    toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  *
@@ -9064,7 +10629,7 @@ class DatagridHideableColumnModel {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  *
@@ -9129,17 +10694,17 @@ ClrDatagridHideableColumn.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridHideableColumn.ctorParameters = () => [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-    { type: ClrDatagridColumn, },
+    { type: TemplateRef },
+    { type: ViewContainerRef },
+    { type: ClrDatagridColumn }
 ];
 ClrDatagridHideableColumn.propDecorators = {
-    "clrDgHideableColumn": [{ type: Input, args: ['clrDgHideableColumn',] },],
+    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -9168,15 +10733,15 @@ ClrDatagridItemsTrackBy.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridItemsTrackBy.ctorParameters = () => [
-    { type: Items, decorators: [{ type: Optional },] },
+    { type: Items, decorators: [{ type: Optional }] }
 ];
 ClrDatagridItemsTrackBy.propDecorators = {
-    "trackBy": [{ type: Input, args: ['ngForTrackBy',] },],
+    trackBy: [{ type: Input, args: ['ngForTrackBy',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDatagridPagination {
     /**
@@ -9307,7 +10872,8 @@ class ClrDatagridPagination {
      * @return {?}
      */
     get middlePages() {
-        const /** @type {?} */ middlePages = [];
+        /** @type {?} */
+        const middlePages = [];
         if (this.page.current > 1) {
             middlePages.push(this.page.current - 1);
         }
@@ -9362,19 +10928,19 @@ ClrDatagridPagination.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridPagination.ctorParameters = () => [
-    { type: Page, },
+    { type: Page }
 ];
 ClrDatagridPagination.propDecorators = {
-    "pageSize": [{ type: Input, args: ['clrDgPageSize',] },],
-    "totalItems": [{ type: Input, args: ['clrDgTotalItems',] },],
-    "lastPage": [{ type: Input, args: ['clrDgLastPage',] },],
-    "currentPage": [{ type: Input, args: ['clrDgPage',] },],
-    "currentChanged": [{ type: Output, args: ['clrDgPageChange',] },],
+    pageSize: [{ type: Input, args: ['clrDgPageSize',] }],
+    totalItems: [{ type: Input, args: ['clrDgTotalItems',] }],
+    lastPage: [{ type: Input, args: ['clrDgLastPage',] }],
+    currentPage: [{ type: Input, args: ['clrDgPage',] }],
+    currentChanged: [{ type: Output, args: ['clrDgPageChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Generic bland container serving various purposes for Datagrid.
@@ -9416,11 +10982,13 @@ class ClrDatagridRowDetail {
      * @return {?}
      */
     ngAfterContentInit() {
-        const /** @type {?} */ columnsList = this.hideableColumnService.getColumns();
+        /** @type {?} */
+        const columnsList = this.hideableColumnService.getColumns();
         this.updateCellsForColumns(columnsList);
         // Triggered when the Cells list changes per row-renderer
         this._subscriptions.push(this.cells.changes.subscribe(cellList => {
-            const /** @type {?} */ columnList = this.hideableColumnService.getColumns();
+            /** @type {?} */
+            const columnList = this.hideableColumnService.getColumns();
             if (cellList.length === columnList.length) {
                 this.updateCellsForColumns(columnList);
             }
@@ -9439,7 +11007,8 @@ class ClrDatagridRowDetail {
      */
     updateCellsForColumns(columnList) {
         this.cells.forEach((cell, index) => {
-            const /** @type {?} */ currentColumn = columnList[index]; // Accounts for null space.
+            /** @type {?} */
+            const currentColumn = columnList[index]; // Accounts for null space.
             if (currentColumn) {
                 cell.id = currentColumn.id;
             }
@@ -9474,19 +11043,19 @@ ClrDatagridRowDetail.decorators = [
 ];
 /** @nocollapse */
 ClrDatagridRowDetail.ctorParameters = () => [
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: Expand, },
-    { type: HideableColumnService, },
+    { type: Selection },
+    { type: RowActionService },
+    { type: Expand },
+    { type: HideableColumnService }
 ];
 ClrDatagridRowDetail.propDecorators = {
-    "cells": [{ type: ContentChildren, args: [ClrDatagridCell,] },],
-    "replace": [{ type: Input, args: ['clrDgReplace',] },],
+    cells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
+    replace: [{ type: Input, args: ['clrDgReplace',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridBodyRenderer {
     /**
@@ -9518,27 +11087,30 @@ DatagridBodyRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridBodyRenderer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
+    { type: ElementRef },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const NO_LAYOUT_CLASS = 'datagrid-no-layout';
+/** @type {?} */
 const COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
+/** @type {?} */
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridCellRenderer {
     /**
@@ -9584,14 +11156,14 @@ DatagridCellRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridCellRenderer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -9653,7 +11225,8 @@ class DatagridColumnResizer {
      * @return {?}
      */
     dragMoveHandler(moveEvent) {
-        const /** @type {?} */ pageMovePosition = moveEvent.pageX || moveEvent.changedTouches[0].pageX;
+        /** @type {?} */
+        const pageMovePosition = moveEvent.pageX || moveEvent.changedTouches[0].pageX;
         this.dragDistancePositionX = this.getPositionWithinMax(pageMovePosition - this.pageStartPositionX);
         this.renderer.setStyle(this.handleTrackerEl, 'right', -1 * this.dragDistancePositionX + 'px');
     }
@@ -9705,19 +11278,19 @@ DatagridColumnResizer.decorators = [
 ];
 /** @nocollapse */
 DatagridColumnResizer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
-    { type: DragDispatcher, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter },
+    { type: DragDispatcher }
 ];
 DatagridColumnResizer.propDecorators = {
-    "resizeEmitter": [{ type: Output, args: ['clrDgColumnResize',] },],
+    resizeEmitter: [{ type: Output, args: ['clrDgColumnResize',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridHeadRenderer {
     /**
@@ -9749,14 +11322,14 @@ DatagridHeadRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridHeadRenderer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridHeaderRenderer {
     /**
@@ -9806,7 +11379,8 @@ class DatagridHeaderRenderer {
      * @return {?}
      */
     computeWidth() {
-        let /** @type {?} */ width = this.strictWidth;
+        /** @type {?} */
+        let width = this.strictWidth;
         if (!width) {
             width = this.domAdapter.scrollWidth(this.el.nativeElement);
         }
@@ -9837,16 +11411,16 @@ DatagridHeaderRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridHeaderRenderer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
-    { type: DatagridColumnResizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter },
+    { type: DatagridColumnResizer }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -9922,10 +11496,9 @@ NoopDomAdapter.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-// Fixes build error
-// @dynamic (https://github.com/angular/angular/issues/19698#issuecomment-338340211)
+/** @type {?} */
 const domAdapterFactory = (platformId) => {
     if (isPlatformBrowser(platformId)) {
         return new DomAdapter();
@@ -10016,8 +11589,8 @@ class DatagridMainRenderer {
      * @return {?}
      */
     computeDatagridHeight() {
-        // IE doesn't return correct value for getComputedStyle(element).getPropertyValue("height")
-        const /** @type {?} */ value = this.domAdapter.clientRectHeight(this.el.nativeElement);
+        /** @type {?} */
+        const value = this.domAdapter.clientRectHeight(this.el.nativeElement);
         this.renderer.setStyle(this.el.nativeElement, 'height', value + 'px');
         this._heightSet = true;
     }
@@ -10039,8 +11612,10 @@ class DatagridMainRenderer {
      * @return {?}
      */
     computeHeadersWidth() {
-        const /** @type {?} */ nbColumns = this.headers.length;
-        let /** @type {?} */ allStrict = true;
+        /** @type {?} */
+        const nbColumns = this.headers.length;
+        /** @type {?} */
+        let allStrict = true;
         this.headers.forEach((header, index) => {
             // On the last header column check whether all columns have strict widths.
             // If all columns have strict widths, remove the strict width from the last column and make it the column's
@@ -10098,20 +11673,20 @@ DatagridMainRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridMainRenderer.ctorParameters = () => [
-    { type: DatagridRenderOrganizer, },
-    { type: Items, },
-    { type: Page, },
-    { type: DomAdapter, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: DatagridRenderOrganizer },
+    { type: Items },
+    { type: Page },
+    { type: DomAdapter },
+    { type: ElementRef },
+    { type: Renderer2 }
 ];
 DatagridMainRenderer.propDecorators = {
-    "headers": [{ type: ContentChildren, args: [DatagridHeaderRenderer,] },],
+    headers: [{ type: ContentChildren, args: [DatagridHeaderRenderer,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridRowRenderer {
     /**
@@ -10135,7 +11710,8 @@ class DatagridRowRenderer {
             return;
         }
         this.cells.forEach((cell, index) => {
-            const /** @type {?} */ width = this.organizer.widths[index];
+            /** @type {?} */
+            const width = this.organizer.widths[index];
             cell.setWidth(width.strict, width.px);
         });
     }
@@ -10159,15 +11735,15 @@ DatagridRowRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridRowRenderer.ctorParameters = () => [
-    { type: DatagridRenderOrganizer, },
+    { type: DatagridRenderOrganizer }
 ];
 DatagridRowRenderer.propDecorators = {
-    "cells": [{ type: ContentChildren, args: [DatagridCellRenderer,] },],
+    cells: [{ type: ContentChildren, args: [DatagridCellRenderer,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class DatagridTableRenderer {
     /**
@@ -10238,25 +11814,26 @@ DatagridTableRenderer.decorators = [
 ];
 /** @nocollapse */
 DatagridTableRenderer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ];
 DatagridTableRenderer.propDecorators = {
-    "projected": [{ type: ViewChild, args: ['head',] },],
-    "outsideContainer": [{ type: ViewChild, args: ['outside', { read: ViewContainerRef },] },],
-    "insideContainer": [{ type: ViewChild, args: ['inside', { read: ViewContainerRef },] },],
+    projected: [{ type: ViewChild, args: ['head',] }],
+    outsideContainer: [{ type: ViewChild, args: ['outside', { read: ViewContainerRef },] }],
+    insideContainer: [{ type: ViewChild, args: ['inside', { read: ViewContainerRef },] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_DATAGRID_DIRECTIVES = [
     ClrDatagrid,
     ClrDatagridActionBar,
@@ -10297,7 +11874,7 @@ ClrDatagridModule.decorators = [
                 imports: [
                     CommonModule,
                     ClrIconModule,
-                    ClrFormsModule,
+                    ClrFormsNextModule,
                     FormsModule,
                     ClrCommonPopoverModule,
                     ClrLoadingModule,
@@ -10310,14 +11887,16 @@ ClrDatagridModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrStackBlock {
     /**
      * @param {?} parent
+     * @param {?} commonStrings
      */
-    constructor(parent) {
+    constructor(parent, commonStrings) {
         this.parent = parent;
+        this.commonStrings = commonStrings;
         this.expanded = false;
         this.expandedChange = new EventEmitter(false);
         this.expandable = false;
@@ -10382,6 +11961,12 @@ class ClrStackBlock {
     /**
      * @return {?}
      */
+    get caretTitle() {
+        return this.expanded ? this.commonStrings.collapse : this.commonStrings.expand;
+    }
+    /**
+     * @return {?}
+     */
     get role() {
         return this.expandable ? 'button' : null;
     }
@@ -10425,7 +12010,8 @@ ClrStackBlock.decorators = [
       <clr-icon shape="caret"
                 class="stack-block-caret"
                 *ngIf="expandable"
-                [attr.dir]="caretDirection"></clr-icon>
+                [attr.dir]="caretDirection"
+                [attr.title]="caretTitle"></clr-icon>
       <ng-content select="clr-stack-label"></ng-content>
     </dt>
     <dd class="stack-block-content">
@@ -10455,20 +12041,21 @@ ClrStackBlock.decorators = [
 ];
 /** @nocollapse */
 ClrStackBlock.ctorParameters = () => [
-    { type: ClrStackBlock, decorators: [{ type: SkipSelf }, { type: Optional },] },
+    { type: ClrStackBlock, decorators: [{ type: SkipSelf }, { type: Optional }] },
+    { type: ClrCommonStrings }
 ];
 ClrStackBlock.propDecorators = {
-    "expanded": [{ type: HostBinding, args: ['class.stack-block-expanded',] }, { type: Input, args: ['clrSbExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrSbExpandedChange',] },],
-    "expandable": [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] },],
-    "getChangedValue": [{ type: HostBinding, args: ['class.stack-block-changed',] },],
-    "setChangedValue": [{ type: Input, args: ['clrSbNotifyChange',] },],
-    "onStackLabelFocus": [{ type: HostBinding, args: ['class.on-focus',] },],
+    expanded: [{ type: HostBinding, args: ['class.stack-block-expanded',] }, { type: Input, args: ['clrSbExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrSbExpandedChange',] }],
+    expandable: [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] }],
+    getChangedValue: [{ type: HostBinding, args: ['class.stack-block-changed',] }],
+    setChangedValue: [{ type: Input, args: ['clrSbNotifyChange',] }],
+    onStackLabelFocus: [{ type: HostBinding, args: ['class.on-focus',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrStackView {
     constructor() {
@@ -10515,17 +12102,13 @@ ClrStackView.decorators = [
                 ],
             },] },
 ];
-/**
-   * End of undocumented experimental feature.
-   */
-/** @nocollapse */
 ClrStackView.propDecorators = {
-    "save": [{ type: Output, args: ['clrStackSave',] },],
+    save: [{ type: Output, args: ['clrStackSave',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrStackHeader {
     /**
@@ -10563,12 +12146,12 @@ ClrStackHeader.decorators = [
 ];
 /** @nocollapse */
 ClrStackHeader.ctorParameters = () => [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10598,7 +12181,7 @@ class StackControl {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10634,12 +12217,12 @@ ClrStackInput.decorators = [
 ];
 /** @nocollapse */
 ClrStackInput.ctorParameters = () => [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10677,12 +12260,12 @@ ClrStackSelect.decorators = [
 ];
 /** @nocollapse */
 ClrStackSelect.ctorParameters = () => [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrStackViewCustomTags {
 }
@@ -10692,13 +12275,14 @@ ClrStackViewCustomTags.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_STACK_VIEW_DIRECTIVES = [
     ClrStackView,
     ClrStackHeader,
@@ -10719,14 +12303,229 @@ ClrStackViewModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** *
+ * Private counter to generate unique IDs for the checkboxes, to bind the labels to them.
+  @type {?} */
+let latestId = 0;
+/**
+ * @deprecated ClrCheckbox will be renamed to ClrCheckboxDeprecated in 0.12, and will be replaced with a new
+ * implementation in 0.13, so if you import it you will need to update your references.
+ */
+class ClrCheckboxDeprecated {
+    constructor() {
+        // If our host has an ID attribute, we use this instead of our index.
+        this._id = (latestId++).toString();
+        // If host provides an clrAriaLabeledBy input, we apply it to the checkbox
+        this.clrAriaLabeledBy = null;
+        // If our host has a name attribute, we apply it to the checkbox.
+        this.name = null;
+        // If the host is disabled we apply it to the checkbox
+        this.disabled = false;
+        // Support for inline checkboxes, adds the necessary class to the host
+        this.inline = false;
+        this._checked = false;
+        this._indeterminate = false;
+        this.indeterminateChange = new EventEmitter(false);
+        this.change = new EventEmitter(false);
+        this.onChangeCallback = (_) => { };
+        this.onTouchedCallback = () => { };
+    }
+    /**
+     * @return {?}
+     */
+    get id() {
+        return `clr-checkbox-${this._id}`;
+    }
+    /**
+     * @return {?}
+     */
+    get checked() {
+        return this._checked;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set checked(value) {
+        if (value !== this._checked) {
+            if (this._indeterminate) {
+                this.setIndeterminate(false);
+            }
+            this.setChecked(value);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    get indeterminate() {
+        return this._indeterminate;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set indeterminate(value) {
+        if (this._indeterminate !== value) {
+            if (this._checked) {
+                this.setChecked(false);
+            }
+            this.setIndeterminate(value);
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    setIndeterminate(value) {
+        this._indeterminate = value;
+        this.indeterminateChange.emit(this._indeterminate);
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    setChecked(value) {
+        this._checked = value;
+        this.change.emit(this._checked);
+    }
+    /**
+     * @return {?}
+     */
+    toggle() {
+        this.checked = !this.checked;
+        this.onChangeCallback(this.checked);
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    writeValue(value) {
+        if (value === null) {
+            value = false;
+        }
+        if (value !== this.checked) {
+            this.checked = value;
+        }
+    }
+    /**
+     * @param {?} onChange
+     * @return {?}
+     */
+    registerOnChange(onChange) {
+        this.onChangeCallback = onChange;
+    }
+    /**
+     * @param {?} onTouched
+     * @return {?}
+     */
+    registerOnTouched(onTouched) {
+        this.onTouchedCallback = onTouched;
+    }
+    /**
+     * @return {?}
+     */
+    touch() {
+        this.onTouchedCallback();
+    }
+    /**
+     * @return {?}
+     */
+    checkIndeterminateState() {
+        if (!this.disabled) {
+            this.toggle();
+        }
+    }
+}
+ClrCheckboxDeprecated.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-checkbox',
+                template: `
+        <!--
+            FIXME: We are not subscribed to the change event but the click event here.
+            The reason for that is because checkboxes behave differently on IE & Edge.
+            https://stackoverflow.com/a/19447939
+            
+            To fix that, we listen to every click event and then toggle the checkbox manually
+            to make it behave the same way across the browsers we support.
+            
+            This works for cases when users toggle the checkbox using the keyboard too:
+            https://stackoverflow.com/questions/27878940/spacebar-triggering-click-event-on-checkbox
+        -->
+        <input type="checkbox" [attr.aria-labelledby]="clrAriaLabeledBy"
+               [id]="id" [name]="name" [checked]="checked"
+               [indeterminate]="indeterminate" [disabled]="disabled"
+               (blur)="touch()" (click)="checkIndeterminateState()">
+        <label [attr.for]="id">
+            <ng-content></ng-content>
+        </label>
+    `,
+                host: { '[class.checkbox]': '!inline', '[class.checkbox-inline]': 'inline', '[class.disabled]': 'disabled' },
+                /*
+                     * This provider lets us declare our checkbox as a ControlValueAccessor,
+                     * which allows us to use [(ngModel)] directly on our component,
+                     * with all the automatic features wiring that come with it.
+                     */
+                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ClrCheckboxDeprecated), multi: true }],
+            },] },
+];
+ClrCheckboxDeprecated.propDecorators = {
+    _id: [{ type: Input, args: ['id',] }],
+    clrAriaLabeledBy: [{ type: Input, args: ['clrAriaLabeledBy',] }],
+    name: [{ type: Input, args: ['name',] }],
+    disabled: [{ type: Input, args: ['clrDisabled',] }],
+    inline: [{ type: Input, args: ['clrInline',] }],
+    checked: [{ type: Input, args: ['clrChecked',] }],
+    indeterminate: [{ type: Input, args: ['clrIndeterminate',] }],
+    indeterminateChange: [{ type: Output, args: ['clrIndeterminateChange',] }],
+    change: [{ type: Output, args: ['clrCheckedChange',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
+const CLR_CHECKBOX_DIRECTIVES = [ClrCheckboxDeprecated];
+class ClrCheckboxModule {
+}
+ClrCheckboxModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrFormsModule {
+}
+ClrFormsModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], exports: [ClrCheckboxModule, ClrDatepickerModule] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @type {?} */
 let NB_INSTANCES = 0;
+/** @type {?} */
 const UNIQUE_ID = new InjectionToken('UNIQUE_ID');
 /**
  * @return {?}
@@ -10734,6 +12533,7 @@ const UNIQUE_ID = new InjectionToken('UNIQUE_ID');
 function uniqueIdFactory() {
     return 'clr-id-' + NB_INSTANCES++;
 }
+/** @type {?} */
 const UNIQUE_ID_PROVIDER = {
     provide: UNIQUE_ID,
     useFactory: uniqueIdFactory,
@@ -10741,7 +12541,7 @@ const UNIQUE_ID_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10800,12 +12600,15 @@ class AbstractTreeSelection {
      * @return {?}
      */
     childChanged() {
-        let /** @type {?} */ oneSelectedChild = false;
-        const /** @type {?} */ previousSelectedValue = this._selected;
-        const /** @type {?} */ previousIndeterminateValue = this._indeterminate;
+        /** @type {?} */
+        let oneSelectedChild = false;
+        /** @type {?} */
+        const previousSelectedValue = this._selected;
+        /** @type {?} */
+        const previousIndeterminateValue = this._indeterminate;
         this._selected = true;
         this._indeterminate = false;
-        for (const /** @type {?} */ child of this.children) {
+        for (const child of this.children) {
             if (child.indeterminate) {
                 this._selected = false;
                 this._indeterminate = true;
@@ -10859,7 +12662,7 @@ class AbstractTreeSelection {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class TreeSelectionService {
     constructor() {
@@ -10872,7 +12675,7 @@ TreeSelectionService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10889,7 +12692,7 @@ function clrTreeSelectionProviderFactory(existing) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -10903,13 +12706,15 @@ class ClrTreeNode extends AbstractTreeSelection {
      * @param {?} parent
      * @param {?} treeSelectionService
      * @param {?} nodeId
+     * @param {?} commonStrings
      */
-    constructor(nodeExpand, parent, treeSelectionService, nodeId) {
+    constructor(nodeExpand, parent, treeSelectionService, nodeId, commonStrings) {
         super(parent);
         this.nodeExpand = nodeExpand;
         this.parent = parent;
         this.treeSelectionService = treeSelectionService;
         this.nodeId = nodeId;
+        this.commonStrings = commonStrings;
         this._children = [];
         this.nodeSelectedChange = new EventEmitter(true);
         this.nodeIndeterminateChanged = new EventEmitter(true);
@@ -10949,7 +12754,8 @@ class ClrTreeNode extends AbstractTreeSelection {
      * @return {?}
      */
     unregister(node) {
-        const /** @type {?} */ index = this.children.indexOf(node);
+        /** @type {?} */
+        const index = this.children.indexOf(node);
         if (index > -1) {
             this.children.splice(index, 1);
         }
@@ -11016,6 +12822,12 @@ class ClrTreeNode extends AbstractTreeSelection {
      */
     get caretDirection() {
         return this.nodeExpand.expanded ? 'down' : 'right';
+    }
+    /**
+     * @return {?}
+     */
+    get caretTitle() {
+        return this.nodeExpand.expanded ? this.commonStrings.collapse : this.commonStrings.expand;
     }
     /**
      * @return {?}
@@ -11096,13 +12908,15 @@ ClrTreeNode.decorators = [
         <clr-icon
             class="clr-treenode-caret-icon"
             shape="caret"
-            [attr.dir]="caretDirection"></clr-icon>
+            [attr.dir]="caretDirection"
+            [attr.title]="caretTitle"></clr-icon>
     </button>
     <div class="clr-treenode-spinner-container" *ngIf="nodeExpand.expandable && nodeExpand.loading">
         <span class="clr-treenode-spinner spinner">
             Loading...
         </span>
     </div>
+    <!-- TODO: Move this to new checkboxes. But the indeterminate two-way binding makes it hard. -->
     <clr-checkbox
         class="clr-treenode-checkbox"
         *ngIf="selectable"
@@ -11144,30 +12958,32 @@ ClrTreeNode.decorators = [
 ];
 /** @nocollapse */
 ClrTreeNode.ctorParameters = () => [
-    { type: Expand, },
-    { type: ClrTreeNode, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: TreeSelectionService, },
-    { type: undefined, decorators: [{ type: Inject, args: [UNIQUE_ID,] },] },
+    { type: Expand },
+    { type: ClrTreeNode, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: TreeSelectionService },
+    { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] },
+    { type: ClrCommonStrings }
 ];
 ClrTreeNode.propDecorators = {
-    "nodeSelected": [{ type: Input, args: ['clrSelected',] },],
-    "nodeSelectedChange": [{ type: Output, args: ['clrSelectedChange',] },],
-    "nodeIndeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
-    "nodeIndeterminateChanged": [{ type: Output, args: ['clrIndeterminateChange',] },],
-    "treeNodeRole": [{ type: HostBinding, args: ['attr.role',] },],
-    "rootAriaMultiSelectable": [{ type: HostBinding, args: ['attr.aria-multiselectable',] },],
-    "ariaSelected": [{ type: HostBinding, args: ['attr.aria-selected',] },],
+    nodeSelected: [{ type: Input, args: ['clrSelected',] }],
+    nodeSelectedChange: [{ type: Output, args: ['clrSelectedChange',] }],
+    nodeIndeterminate: [{ type: Input, args: ['clrIndeterminate',] }],
+    nodeIndeterminateChanged: [{ type: Output, args: ['clrIndeterminateChange',] }],
+    treeNodeRole: [{ type: HostBinding, args: ['attr.role',] }],
+    rootAriaMultiSelectable: [{ type: HostBinding, args: ['attr.aria-multiselectable',] }],
+    ariaSelected: [{ type: HostBinding, args: ['attr.aria-selected',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_TREE_VIEW_DIRECTIVES = [ClrTreeNode];
 class ClrTreeViewModule {
 }
@@ -11181,7 +12997,7 @@ ClrTreeViewModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -11196,7 +13012,7 @@ ClrDataModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class RootDropdownService {
     constructor() {
@@ -11225,6 +13041,7 @@ RootDropdownService.decorators = [
 function clrRootDropdownFactory(existing) {
     return existing || new RootDropdownService();
 }
+/** @type {?} */
 const ROOT_DROPDOWN_PROVIDER = {
     provide: RootDropdownService,
     useFactory: clrRootDropdownFactory,
@@ -11233,7 +13050,7 @@ const ROOT_DROPDOWN_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDropdown {
     /**
@@ -11268,17 +13085,17 @@ ClrDropdown.decorators = [
 ];
 /** @nocollapse */
 ClrDropdown.ctorParameters = () => [
-    { type: ClrDropdown, decorators: [{ type: SkipSelf }, { type: Optional },] },
-    { type: IfOpenService, },
-    { type: RootDropdownService, },
+    { type: ClrDropdown, decorators: [{ type: SkipSelf }, { type: Optional }] },
+    { type: IfOpenService },
+    { type: RootDropdownService }
 ];
 ClrDropdown.propDecorators = {
-    "isMenuClosable": [{ type: Input, args: ['clrCloseMenuOnItemClick',] },],
+    isMenuClosable: [{ type: Input, args: ['clrCloseMenuOnItemClick',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDropdownItem {
     /**
@@ -11313,15 +13130,15 @@ ClrDropdownItem.decorators = [
 ];
 /** @nocollapse */
 ClrDropdownItem.ctorParameters = () => [
-    { type: ClrDropdown, },
-    { type: ElementRef, },
-    { type: RootDropdownService, },
-    { type: Renderer2, },
+    { type: ClrDropdown },
+    { type: ElementRef },
+    { type: RootDropdownService },
+    { type: Renderer2 }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDropdownMenu extends AbstractPopover {
     /**
@@ -11406,17 +13223,17 @@ ClrDropdownMenu.decorators = [
 ];
 /** @nocollapse */
 ClrDropdownMenu.ctorParameters = () => [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
-    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] },
+    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf }] }
 ];
 ClrDropdownMenu.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
+    position: [{ type: Input, args: ['clrPosition',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrDropdownTrigger {
     /**
@@ -11459,22 +13276,23 @@ ClrDropdownTrigger.decorators = [
 ];
 /** @nocollapse */
 ClrDropdownTrigger.ctorParameters = () => [
-    { type: ClrDropdown, },
-    { type: IfOpenService, },
+    { type: ClrDropdown },
+    { type: IfOpenService }
 ];
 ClrDropdownTrigger.propDecorators = {
-    "onDropdownTriggerClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+    onDropdownTriggerClick: [{ type: HostListener, args: ['click', ['$event'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_DROPDOWN_DIRECTIVES = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 class ClrDropdownModule {
 }
@@ -11488,14 +13306,14 @@ ClrDropdownModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// TODO: alert-* types are deprecated and should be removed before 1.0!
+/** @type {?} */
 const ALERT_TYPES = [
     'alert-info',
     'alert-warning',
@@ -11509,7 +13327,7 @@ const ALERT_TYPES = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -11517,7 +13335,11 @@ const ALERT_TYPES = [
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class AlertIconAndTypesService {
-    constructor() {
+    /**
+     * @param {?} commonStrings
+     */
+    constructor(commonStrings) {
+        this.commonStrings = commonStrings;
         this.defaultIconShape = 'info-circle';
         this._alertIconShape = '';
         this._alertType = 'info';
@@ -11559,31 +13381,42 @@ class AlertIconAndTypesService {
         }
     }
     /**
+     * @return {?}
+     */
+    get alertIconTitle() {
+        return this.iconInfoFromType(this._alertType).title;
+    }
+    /**
      * @param {?} type
      * @param {?=} classOrShape
      * @return {?}
      */
     iconInfoFromType(type, classOrShape = 'shape') {
-        const /** @type {?} */ returnObj = { shape: '', cssClass: '' };
+        /** @type {?} */
+        const returnObj = { shape: '', cssClass: '', title: '' };
         switch (type) {
             case 'warning':
             case 'alert-warning':
                 returnObj.shape = 'exclamation-triangle';
                 returnObj.cssClass = 'alert-warning';
+                returnObj.title = this.commonStrings.warning;
                 break;
             case 'danger':
             case 'alert-danger':
                 returnObj.shape = 'exclamation-circle';
                 returnObj.cssClass = 'alert-danger';
+                returnObj.title = this.commonStrings.danger;
                 break;
             case 'success':
             case 'alert-success':
                 returnObj.shape = 'check-circle';
                 returnObj.cssClass = 'alert-success';
+                returnObj.title = this.commonStrings.success;
                 break;
             default:
                 returnObj.shape = this.defaultIconShape;
                 returnObj.cssClass = 'alert-info';
+                returnObj.title = this.commonStrings.info;
                 break;
         }
         return returnObj;
@@ -11592,10 +13425,14 @@ class AlertIconAndTypesService {
 AlertIconAndTypesService.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
+AlertIconAndTypesService.ctorParameters = () => [
+    { type: ClrCommonStrings }
+];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class MultiAlertService {
     constructor() {
@@ -11688,18 +13525,20 @@ MultiAlertService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrAlert {
     /**
      * @param {?} iconService
      * @param {?} cdr
      * @param {?} multiAlertService
+     * @param {?} commonStrings
      */
-    constructor(iconService, cdr, multiAlertService) {
+    constructor(iconService, cdr, multiAlertService, commonStrings) {
         this.iconService = iconService;
         this.cdr = cdr;
         this.multiAlertService = multiAlertService;
+        this.commonStrings = commonStrings;
         this.isSmall = false;
         this.closable = true;
         this.isAppLevel = false;
@@ -11784,7 +13623,10 @@ class ClrAlert {
     }
 }
 ClrAlert.decorators = [
-    { type: Component, args: [{ selector: 'clr-alert', providers: [AlertIconAndTypesService], template: `<!--
+    { type: Component, args: [{
+                selector: 'clr-alert',
+                providers: [AlertIconAndTypesService],
+                template: `<!--
   ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
@@ -11800,31 +13642,34 @@ ClrAlert.decorators = [
     <div class="alert-items">
         <ng-content></ng-content>
     </div>
-    <button type="button" class="close" aria-label="Close" *ngIf="closable" (click)="close()">
-        <clr-icon aria-hidden="true" shape="close"></clr-icon>
+    <button type="button" class="close" *ngIf="closable" (click)="close()">
+        <clr-icon shape="close" [attr.title]="commonStrings.close"></clr-icon>
     </button>
 </div>
-` },] },
+`,
+                styles: [':host { display: block; }'],
+            },] },
 ];
 /** @nocollapse */
 ClrAlert.ctorParameters = () => [
-    { type: AlertIconAndTypesService, },
-    { type: ChangeDetectorRef, },
-    { type: MultiAlertService, decorators: [{ type: Optional },] },
+    { type: AlertIconAndTypesService },
+    { type: ChangeDetectorRef },
+    { type: MultiAlertService, decorators: [{ type: Optional }] },
+    { type: ClrCommonStrings }
 ];
 ClrAlert.propDecorators = {
-    "isSmall": [{ type: Input, args: ['clrAlertSizeSmall',] },],
-    "closable": [{ type: Input, args: ['clrAlertClosable',] },],
-    "isAppLevel": [{ type: Input, args: ['clrAlertAppLevel',] },],
-    "_closed": [{ type: Input, args: ['clrAlertClosed',] },],
-    "_closedChanged": [{ type: Output, args: ['clrAlertClosedChange',] },],
-    "alertType": [{ type: Input, args: ['clrAlertType',] },],
-    "alertIconShape": [{ type: Input, args: ['clrAlertIcon',] },],
+    isSmall: [{ type: Input, args: ['clrAlertSizeSmall',] }],
+    closable: [{ type: Input, args: ['clrAlertClosable',] }],
+    isAppLevel: [{ type: Input, args: ['clrAlertAppLevel',] }],
+    _closed: [{ type: Input, args: ['clrAlertClosed',] }],
+    _closedChanged: [{ type: Output, args: ['clrAlertClosedChange',] }],
+    alertType: [{ type: Input, args: ['clrAlertType',] }],
+    alertIconShape: [{ type: Input, args: ['clrAlertIcon',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -11846,7 +13691,9 @@ ClrAlertItem.decorators = [
                 selector: '.alert-item:not(.static), clr-alert-item',
                 template: `
         <div class="alert-icon-wrapper">
-            <clr-icon class="alert-icon" [attr.shape]="iconService.alertIconShape"></clr-icon>
+            <clr-icon class="alert-icon" 
+              [attr.shape]="iconService.alertIconShape" 
+              [attr.title]="iconService.alertIconTitle"></clr-icon>
         </div>
         <ng-content></ng-content>
     `,
@@ -11855,12 +13702,12 @@ ClrAlertItem.decorators = [
 ];
 /** @nocollapse */
 ClrAlertItem.ctorParameters = () => [
-    { type: AlertIconAndTypesService, },
+    { type: AlertIconAndTypesService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrAlerts {
     /**
@@ -11967,26 +13814,28 @@ ClrAlerts.decorators = [
 ];
 /** @nocollapse */
 ClrAlerts.ctorParameters = () => [
-    { type: MultiAlertService, },
+    { type: MultiAlertService }
 ];
 ClrAlerts.propDecorators = {
-    "allAlerts": [{ type: ContentChildren, args: [ClrAlert,] },],
-    "_inputCurrentIndex": [{ type: Input, args: ['clrCurrentAlertIndex',] },],
-    "currentAlertIndexChange": [{ type: Output, args: ['clrCurrentAlertIndexChange',] },],
-    "currentAlert": [{ type: Input, args: ['clrCurrentAlert',] },],
-    "currentAlertChange": [{ type: Output, args: ['clrCurrentAlertChange',] },],
+    allAlerts: [{ type: ContentChildren, args: [ClrAlert,] }],
+    _inputCurrentIndex: [{ type: Input, args: ['clrCurrentAlertIndex',] }],
+    currentAlertIndexChange: [{ type: Output, args: ['clrCurrentAlertIndexChange',] }],
+    currentAlert: [{ type: Input, args: ['clrCurrentAlert',] }],
+    currentAlertChange: [{ type: Output, args: ['clrCurrentAlertChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrAlertsPager {
     /**
      * @param {?} multiAlertService
+     * @param {?} commonStrings
      */
-    constructor(multiAlertService) {
+    constructor(multiAlertService, commonStrings) {
         this.multiAlertService = multiAlertService;
+        this.commonStrings = commonStrings;
         this.currentAlertChange = new EventEmitter(false);
         this.currentAlertIndexChange = new EventEmitter();
     }
@@ -12060,7 +13909,7 @@ ClrAlertsPager.decorators = [
 <div class="alerts-pager-control">
     <div class="alerts-page-down">
         <button class="alerts-pager-button" (click)="pageDown()">
-            <clr-icon shape="caret left"></clr-icon>
+            <clr-icon shape="caret left" [attr.title]="commonStrings.previous"></clr-icon>
         </button>
     </div>
     <div class="alerts-pager-text">
@@ -12068,7 +13917,7 @@ ClrAlertsPager.decorators = [
     </div>
     <div class="alerts-page-up">
         <button class="alerts-pager-button" (click)="pageUp()">
-            <clr-icon shape="caret right"></clr-icon>
+            <clr-icon shape="caret right" [attr.title]="commonStrings.next"></clr-icon>
         </button>
     </div>
 </div>
@@ -12078,24 +13927,26 @@ ClrAlertsPager.decorators = [
 ];
 /** @nocollapse */
 ClrAlertsPager.ctorParameters = () => [
-    { type: MultiAlertService, },
+    { type: MultiAlertService },
+    { type: ClrCommonStrings }
 ];
 ClrAlertsPager.propDecorators = {
-    "currentAlert": [{ type: Input, args: ['clrCurrentAlert',] },],
-    "currentAlertChange": [{ type: Output, args: ['clrCurrentAlertChange',] },],
-    "currentAlertIndex": [{ type: Input, args: ['clrCurrentAlertIndex',] },],
-    "currentAlertIndexChange": [{ type: Output, args: ['clrCurrentAlertIndexChange',] },],
+    currentAlert: [{ type: Input, args: ['clrCurrentAlert',] }],
+    currentAlertChange: [{ type: Output, args: ['clrCurrentAlertChange',] }],
+    currentAlertIndex: [{ type: Input, args: ['clrCurrentAlertIndex',] }],
+    currentAlertIndexChange: [{ type: Output, args: ['clrCurrentAlertIndexChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_ALERT_DIRECTIVES = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager];
 class ClrAlertModule {
 }
@@ -12109,7 +13960,7 @@ ClrAlertModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrEmphasisModule {
 }
@@ -12119,7 +13970,7 @@ ClrEmphasisModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -12143,7 +13994,7 @@ ResponsiveNavCodes.NAV_CLASS_LEVEL_2 = 'clr-nav-level-2';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -12175,7 +14026,7 @@ class ResponsiveNavControlMessage {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ResponsiveNavigationService {
     constructor() {
@@ -12223,7 +14074,8 @@ class ResponsiveNavigationService {
      * @return {?}
      */
     unregisterNav(navLevel) {
-        const /** @type {?} */ index = this.responsiveNavList.indexOf(navLevel);
+        /** @type {?} */
+        const index = this.responsiveNavList.indexOf(navLevel);
         if (index > -1) {
             this.responsiveNavList.splice(index, 1);
             this.registerNavSubject.next(this.responsiveNavList);
@@ -12235,14 +14087,16 @@ class ResponsiveNavigationService {
      * @return {?}
      */
     sendControlMessage(controlCode, navLevel) {
-        const /** @type {?} */ message = new ResponsiveNavControlMessage(controlCode, navLevel);
+        /** @type {?} */
+        const message = new ResponsiveNavControlMessage(controlCode, navLevel);
         this.controlNavSubject.next(message);
     }
     /**
      * @return {?}
      */
     closeAllNavs() {
-        const /** @type {?} */ message = new ResponsiveNavControlMessage(ResponsiveNavCodes.NAV_CLOSE_ALL, -999);
+        /** @type {?} */
+        const message = new ResponsiveNavControlMessage(ResponsiveNavCodes.NAV_CLOSE_ALL, -999);
         this.controlNavSubject.next(message);
     }
 }
@@ -12254,7 +14108,7 @@ ResponsiveNavigationService.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrMainContainer {
     /**
@@ -12281,7 +14135,8 @@ class ClrMainContainer {
      * @return {?}
      */
     processMessage(message) {
-        let /** @type {?} */ navClass = ResponsiveNavCodes.NAV_CLASS_HAMBURGER_MENU;
+        /** @type {?} */
+        let navClass = ResponsiveNavCodes.NAV_CLASS_HAMBURGER_MENU;
         if (message.controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL) {
             this._classList.remove(ResponsiveNavCodes.NAV_CLASS_HAMBURGER_MENU);
             this._classList.remove(ResponsiveNavCodes.NAV_CLASS_OVERFLOW_MENU);
@@ -12322,19 +14177,20 @@ ClrMainContainer.decorators = [
 ];
 /** @nocollapse */
 ClrMainContainer.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: ResponsiveNavigationService, },
+    { type: ElementRef },
+    { type: ResponsiveNavigationService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_LAYOUT_DIRECTIVES = [ClrMainContainer];
 class ClrMainContainerModule {
 }
@@ -12348,7 +14204,7 @@ ClrMainContainerModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class MainContainerWillyWonka extends WillyWonka {
 }
@@ -12358,7 +14214,7 @@ MainContainerWillyWonka.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class NavDetectionOompaLoompa extends OompaLoompa {
     /**
@@ -12385,14 +14241,14 @@ NavDetectionOompaLoompa.decorators = [
 ];
 /** @nocollapse */
 NavDetectionOompaLoompa.ctorParameters = () => [
-    { type: ChangeDetectorRef, },
-    { type: MainContainerWillyWonka, decorators: [{ type: Optional },] },
-    { type: ResponsiveNavigationService, },
+    { type: ChangeDetectorRef },
+    { type: MainContainerWillyWonka, decorators: [{ type: Optional }] },
+    { type: ResponsiveNavigationService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrHeader {
     /**
@@ -12486,12 +14342,12 @@ ClrHeader.decorators = [
 ];
 /** @nocollapse */
 ClrHeader.ctorParameters = () => [
-    { type: ResponsiveNavigationService, },
+    { type: ResponsiveNavigationService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrNavLevel {
     /**
@@ -12518,7 +14374,8 @@ class ClrNavLevel {
      * @return {?}
      */
     addNavClass(level) {
-        const /** @type {?} */ navHostClassList = this.elementRef.nativeElement.classList;
+        /** @type {?} */
+        const navHostClassList = this.elementRef.nativeElement.classList;
         if (level === ResponsiveNavCodes.NAV_LEVEL_1) {
             navHostClassList.add(ResponsiveNavCodes.NAV_CLASS_LEVEL_1);
         }
@@ -12555,8 +14412,10 @@ class ClrNavLevel {
      * @return {?}
      */
     onMouseClick(target) {
-        let /** @type {?} */ current = target; // Get the element in the DOM on which the mouse was clicked
-        const /** @type {?} */ navHost = this.elementRef.nativeElement; // Get the current nav native HTML element
+        /** @type {?} */
+        let current = target;
+        /** @type {?} */
+        const navHost = this.elementRef.nativeElement; // Get the current nav native HTML element
         // Start checking if current and navHost are equal.
         // If not traverse to the parentNode and check again.
         while (current) {
@@ -12582,17 +14441,17 @@ ClrNavLevel.decorators = [
 ];
 /** @nocollapse */
 ClrNavLevel.ctorParameters = () => [
-    { type: ResponsiveNavigationService, },
-    { type: ElementRef, },
+    { type: ResponsiveNavigationService },
+    { type: ElementRef }
 ];
 ClrNavLevel.propDecorators = {
-    "_level": [{ type: Input, args: ['clr-nav-level',] },],
-    "onMouseClick": [{ type: HostListener, args: ['click', ['$event.target'],] },],
+    _level: [{ type: Input, args: ['clr-nav-level',] }],
+    onMouseClick: [{ type: HostListener, args: ['click', ['$event.target'],] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -12609,13 +14468,14 @@ function ResponsiveNavigationProvider(existing) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_NAVIGATION_DIRECTIVES = [
     ClrHeader,
     ClrNavLevel,
@@ -12642,7 +14502,7 @@ ClrNavigationModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class TemplateRefContainer {
 }
@@ -12655,20 +14515,20 @@ TemplateRefContainer.decorators = [
     `,
             },] },
 ];
-/** @nocollapse */
 TemplateRefContainer.propDecorators = {
-    "template": [{ type: ViewChild, args: [TemplateRef,] },],
+    template: [{ type: ViewChild, args: [TemplateRef,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const TEMPLATE_REF_DIRECTIVES = [TemplateRefContainer];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTemplateRefModule {
 }
@@ -12683,7 +14543,7 @@ ClrTemplateRefModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class TabsWillyWonka extends WillyWonka {
 }
@@ -12693,7 +14553,7 @@ TabsWillyWonka.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ActiveOompaLoompa extends OompaLoompa {
     /**
@@ -12722,15 +14582,15 @@ ActiveOompaLoompa.decorators = [
 ];
 /** @nocollapse */
 ActiveOompaLoompa.ctorParameters = () => [
-    { type: ChangeDetectorRef, },
-    { type: TabsWillyWonka, decorators: [{ type: Optional },] },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: IfActiveService, },
+    { type: ChangeDetectorRef },
+    { type: TabsWillyWonka, decorators: [{ type: Optional }] },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: IfActiveService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class AriaService {
 }
@@ -12740,7 +14600,7 @@ AriaService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class TabsService {
     constructor() {
@@ -12780,7 +14640,8 @@ class TabsService {
      * @return {?}
      */
     unregister(tab) {
-        const /** @type {?} */ index = this.children.indexOf(tab);
+        /** @type {?} */
+        const index = this.children.indexOf(tab);
         if (index > -1) {
             this.children.splice(index, 1);
         }
@@ -12792,8 +14653,9 @@ TabsService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbTabContentComponents = 0;
 class ClrTabContent {
     /**
@@ -12852,20 +14714,22 @@ ClrTabContent.decorators = [
 ];
 /** @nocollapse */
 ClrTabContent.ctorParameters = () => [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: AriaService, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: AriaService }
 ];
 ClrTabContent.propDecorators = {
-    "templateRef": [{ type: ViewChild, args: ['tabContentProjectedRef',] },],
-    "tabContentId": [{ type: Input, args: ['id',] },],
+    templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
+    tabContentId: [{ type: Input, args: ['id',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbTabsComponent = 0;
+/** @type {?} */
 const TABS_ID = new InjectionToken('TABS_ID');
 /**
  * @return {?}
@@ -12873,6 +14737,7 @@ const TABS_ID = new InjectionToken('TABS_ID');
 function tokenFactory$1() {
     return 'clr-tabs-' + nbTabsComponent++;
 }
+/** @type {?} */
 const TABS_ID_PROVIDER = {
     provide: TABS_ID,
     useFactory: tokenFactory$1,
@@ -12880,8 +14745,9 @@ const TABS_ID_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 let nbTabLinkComponents = 0;
 class ClrTabLink {
     /**
@@ -12904,10 +14770,8 @@ class ClrTabLink {
         if (!this.tabLinkId) {
             this.tabLinkId = 'clr-tab-link-' + nbTabLinkComponents++;
         }
-        // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
-        // Here, we create a container so that its template can be used to create embeddedView on the fly.
-        // See TabsService's renderView() method and how it's used in Tabs class for an example.
-        const /** @type {?} */ factory = this.cfr.resolveComponentFactory(TemplateRefContainer);
+        /** @type {?} */
+        const factory = this.cfr.resolveComponentFactory(TemplateRefContainer);
         this.templateRefContainer = this.viewContainerRef.createComponent(factory, 1, undefined, [
             [this.el.nativeElement],
         ]).instance;
@@ -12973,25 +14837,25 @@ ClrTabLink.decorators = [
 ];
 /** @nocollapse */
 ClrTabLink.ctorParameters = () => [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: AriaService, },
-    { type: ElementRef, },
-    { type: ComponentFactoryResolver, },
-    { type: ViewContainerRef, },
-    { type: undefined, decorators: [{ type: Inject, args: [TABS_ID,] },] },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: AriaService },
+    { type: ElementRef },
+    { type: ComponentFactoryResolver },
+    { type: ViewContainerRef },
+    { type: Number, decorators: [{ type: Inject, args: [TABS_ID,] }] }
 ];
 ClrTabLink.propDecorators = {
-    "inOverflow": [{ type: Input, args: ['clrTabLinkInOverflow',] },],
-    "tabLinkId": [{ type: Input, args: ['id',] },],
-    "activate": [{ type: HostListener, args: ['click',] },],
-    "role": [{ type: HostBinding, args: ['attr.role',] },],
-    "type": [{ type: HostBinding, args: ['attr.type',] },],
+    inOverflow: [{ type: Input, args: ['clrTabLinkInOverflow',] }],
+    tabLinkId: [{ type: Input, args: ['id',] }],
+    activate: [{ type: HostListener, args: ['click',] }],
+    role: [{ type: HostBinding, args: ['attr.role',] }],
+    type: [{ type: HostBinding, args: ['attr.type',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTab {
     /**
@@ -13029,18 +14893,18 @@ ClrTab.decorators = [
 ];
 /** @nocollapse */
 ClrTab.ctorParameters = () => [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: TabsService, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: TabsService }
 ];
 ClrTab.propDecorators = {
-    "tabLink": [{ type: ContentChild, args: [ClrTabLink,] },],
-    "tabContent": [{ type: ContentChild, args: [ClrTabContent,] },],
+    tabLink: [{ type: ContentChild, args: [ClrTabLink,] }],
+    tabContent: [{ type: ContentChild, args: [ClrTabContent,] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTabOverflowContent extends AbstractPopover {
     /**
@@ -13067,13 +14931,13 @@ ClrTabOverflowContent.decorators = [
 ];
 /** @nocollapse */
 ClrTabOverflowContent.ctorParameters = () => [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTabs {
     /**
@@ -13081,12 +14945,14 @@ class ClrTabs {
      * @param {?} ifOpenService
      * @param {?} tabsService
      * @param {?} tabsId
+     * @param {?} commonStrings
      */
-    constructor(ifActiveService, ifOpenService, tabsService, tabsId) {
+    constructor(ifActiveService, ifOpenService, tabsService, tabsId, commonStrings) {
         this.ifActiveService = ifActiveService;
         this.ifOpenService = ifOpenService;
         this.tabsService = tabsService;
         this.tabsId = tabsId;
+        this.commonStrings = commonStrings;
     }
     /**
      * @return {?}
@@ -13126,7 +14992,9 @@ ClrTabs.decorators = [
                      (click)="toggleOverflow($event)">
                     <li role="presentation" class="nav-item">
                         <button class="btn btn-link nav-link dropdown-toggle" type="button" [class.active]="activeTabInOverflow">
-                            <clr-icon shape="ellipsis-horizontal" [class.is-info]="ifOpenService.open"></clr-icon>
+                            <clr-icon shape="ellipsis-horizontal"
+                              [class.is-info]="ifOpenService.open"
+                              [attr.title]="commonStrings.more"></clr-icon>
                         </button>
                     </li>
                     <!--tab links in overflow menu-->
@@ -13148,24 +15016,26 @@ ClrTabs.decorators = [
 ];
 /** @nocollapse */
 ClrTabs.ctorParameters = () => [
-    { type: IfActiveService, },
-    { type: IfOpenService, },
-    { type: TabsService, },
-    { type: undefined, decorators: [{ type: Inject, args: [TABS_ID,] },] },
+    { type: IfActiveService },
+    { type: IfOpenService },
+    { type: TabsService },
+    { type: Number, decorators: [{ type: Inject, args: [TABS_ID,] }] },
+    { type: ClrCommonStrings }
 ];
 ClrTabs.propDecorators = {
-    "tabLinkDirectives": [{ type: ContentChildren, args: [ClrTabLink, { descendants: true },] },],
+    tabLinkDirectives: [{ type: ContentChildren, args: [ClrTabLink, { descendants: true },] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_TABS_DIRECTIVES = [
     ClrTabContent,
     ClrTab,
@@ -13187,7 +15057,7 @@ ClrTabsModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13217,7 +15087,7 @@ VerticalNavGroupRegistrationService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13253,7 +15123,7 @@ VerticalNavIconService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13330,7 +15200,7 @@ VerticalNavService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13342,11 +15212,13 @@ class ClrVerticalNav {
      * @param {?} _navService
      * @param {?} _navIconService
      * @param {?} _navGroupRegistrationService
+     * @param {?} commonStrings
      */
-    constructor(_navService, _navIconService, _navGroupRegistrationService) {
+    constructor(_navService, _navIconService, _navGroupRegistrationService, commonStrings) {
         this._navService = _navService;
         this._navIconService = _navIconService;
         this._navGroupRegistrationService = _navGroupRegistrationService;
+        this.commonStrings = commonStrings;
         this._collapsedChanged = new EventEmitter(true);
         this._sub = this._navService.collapsedChanged.subscribe(value => {
             this._collapsedChanged.emit(value);
@@ -13416,7 +15288,10 @@ ClrVerticalNav.decorators = [
         [class.on-collapse]="collapsed"
         (click)="toggleByButton()"
         *ngIf="collapsible">
-    <clr-icon shape="angle-double" class="nav-trigger-icon" [attr.dir]="(this.collapsed) ? 'right' : 'left'"></clr-icon>
+    <clr-icon shape="angle-double"
+              class="nav-trigger-icon"
+              [attr.dir]="(this.collapsed) ? 'right' : 'left'"
+              [attr.title]="(this.collapsed) ? commonStrings.expand : commonStrings.collapse"></clr-icon>
 </button>
 <!-- Click handler on .nav-content is bad but required :-( -->
 <div class="nav-content">
@@ -13435,19 +15310,20 @@ ClrVerticalNav.decorators = [
 ];
 /** @nocollapse */
 ClrVerticalNav.ctorParameters = () => [
-    { type: VerticalNavService, },
-    { type: VerticalNavIconService, },
-    { type: VerticalNavGroupRegistrationService, },
+    { type: VerticalNavService },
+    { type: VerticalNavIconService },
+    { type: VerticalNavGroupRegistrationService },
+    { type: ClrCommonStrings }
 ];
 ClrVerticalNav.propDecorators = {
-    "collapsible": [{ type: Input, args: ['clrVerticalNavCollapsible',] },],
-    "collapsed": [{ type: Input, args: ['clrVerticalNavCollapsed',] },],
-    "_collapsedChanged": [{ type: Output, args: ['clrVerticalNavCollapsedChange',] },],
+    collapsible: [{ type: Input, args: ['clrVerticalNavCollapsible',] }],
+    collapsed: [{ type: Input, args: ['clrVerticalNavCollapsed',] }],
+    _collapsedChanged: [{ type: Output, args: ['clrVerticalNavCollapsedChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13477,14 +15353,16 @@ VerticalNavGroupService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const EXPANDED_STATE = 'expanded';
+/** @type {?} */
 const COLLAPSED_STATE = 'collapsed';
 class ClrVerticalNavGroup {
     /**
@@ -13492,12 +15370,14 @@ class ClrVerticalNavGroup {
      * @param {?} _navGroupRegistrationService
      * @param {?} _navGroupService
      * @param {?} _navService
+     * @param {?} commonStrings
      */
-    constructor(_itemExpand, _navGroupRegistrationService, _navGroupService, _navService) {
+    constructor(_itemExpand, _navGroupRegistrationService, _navGroupService, _navService, commonStrings) {
         this._itemExpand = _itemExpand;
         this._navGroupRegistrationService = _navGroupRegistrationService;
         this._navGroupService = _navGroupService;
         this._navService = _navService;
+        this.commonStrings = commonStrings;
         this.wasExpanded = false;
         this.expandedChange = new EventEmitter(true);
         this._subscriptions = [];
@@ -13664,7 +15544,8 @@ ClrVerticalNavGroup.decorators = [
         </div>
         <clr-icon shape="caret"
                   class="nav-group-trigger-icon"
-                  [attr.dir]="(this.expanded) ? 'down' : 'right'">
+                  [attr.dir]="(this.expanded) ? 'down' : 'right'"
+                  [attr.title]="(this.expanded) ? commonStrings.collapse : commonStrings.expand">
         </clr-icon>
     </button>
 </div>
@@ -13688,20 +15569,21 @@ ClrVerticalNavGroup.decorators = [
 ];
 /** @nocollapse */
 ClrVerticalNavGroup.ctorParameters = () => [
-    { type: Expand, },
-    { type: VerticalNavGroupRegistrationService, },
-    { type: VerticalNavGroupService, },
-    { type: VerticalNavService, },
+    { type: Expand },
+    { type: VerticalNavGroupRegistrationService },
+    { type: VerticalNavGroupService },
+    { type: VerticalNavService },
+    { type: ClrCommonStrings }
 ];
 ClrVerticalNavGroup.propDecorators = {
-    "expanded": [{ type: HostBinding, args: ['class.is-expanded',] },],
-    "userExpandedInput": [{ type: Input, args: ['clrVerticalNavGroupExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrVerticalNavGroupExpandedChange',] },],
+    expanded: [{ type: HostBinding, args: ['class.is-expanded',] }],
+    userExpandedInput: [{ type: Input, args: ['clrVerticalNavGroupExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrVerticalNavGroupExpandedChange',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -13721,7 +15603,7 @@ ClrVerticalNavGroupChildren.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrVerticalNavIcon {
     /**
@@ -13743,12 +15625,12 @@ ClrVerticalNavIcon.decorators = [
 ];
 /** @nocollapse */
 ClrVerticalNavIcon.ctorParameters = () => [
-    { type: VerticalNavIconService, },
+    { type: VerticalNavIconService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrVerticalNavLink {
     /**
@@ -13780,21 +15662,22 @@ ClrVerticalNavLink.decorators = [
 ];
 /** @nocollapse */
 ClrVerticalNavLink.ctorParameters = () => [
-    { type: VerticalNavGroupService, decorators: [{ type: Optional },] },
+    { type: VerticalNavGroupService, decorators: [{ type: Optional }] }
 ];
 ClrVerticalNavLink.propDecorators = {
-    "expandParentNavGroup": [{ type: HostListener, args: ['click',] },],
+    expandParentNavGroup: [{ type: HostListener, args: ['click',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_VERTICAL_NAV_DIRECTIVES = [
     ClrVerticalNav,
     ClrVerticalNavLink,
@@ -13814,7 +15697,7 @@ ClrVerticalNavModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrLayoutModule {
 }
@@ -13824,7 +15707,7 @@ ClrLayoutModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ScrollingService {
     /**
@@ -13853,19 +15736,21 @@ ScrollingService.decorators = [
 ];
 /** @nocollapse */
 ScrollingService.ctorParameters = () => [
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrModal {
     /**
      * @param {?} _scrollingService
+     * @param {?} commonStrings
      */
-    constructor(_scrollingService) {
+    constructor(_scrollingService, commonStrings) {
         this._scrollingService = _scrollingService;
+        this.commonStrings = commonStrings;
         this._open = false;
         this._openChanged = new EventEmitter(false);
         this.closable = true;
@@ -13971,9 +15856,8 @@ ClrModal.decorators = [
 
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" aria-label="Close"
-                    *ngIf="closable" (click)="close()">
-              <clr-icon aria-hidden="true" shape="close"></clr-icon>
+            <button type="button" class="close" *ngIf="closable" (click)="close()">
+              <clr-icon shape="close" [attr.title]="commonStrings.close"></clr-icon>
             </button>
             <ng-content select=".modal-title"></ng-content>
           </div>
@@ -14009,31 +15893,33 @@ ClrModal.decorators = [
 ];
 /** @nocollapse */
 ClrModal.ctorParameters = () => [
-    { type: ScrollingService, },
+    { type: ScrollingService },
+    { type: ClrCommonStrings }
 ];
 ClrModal.propDecorators = {
-    "focusTrap": [{ type: ViewChild, args: [FocusTrapDirective,] },],
-    "_open": [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] },],
-    "_openChanged": [{ type: Output, args: ['clrModalOpenChange',] },],
-    "closable": [{ type: Input, args: ['clrModalClosable',] },],
-    "size": [{ type: Input, args: ['clrModalSize',] },],
-    "staticBackdrop": [{ type: Input, args: ['clrModalStaticBackdrop',] },],
-    "skipAnimation": [{ type: Input, args: ['clrModalSkipAnimation',] },],
-    "bypassScrollService": [{ type: Input, args: ['clrModalOverrideScrollService',] },],
-    "stopClose": [{ type: Input, args: ['clrModalPreventClose',] },],
-    "altClose": [{ type: Output, args: ['clrModalAlternateClose',] },],
-    "close": [{ type: HostListener, args: ['body:keyup.escape',] },],
+    focusTrap: [{ type: ViewChild, args: [FocusTrapDirective,] }],
+    _open: [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] }],
+    _openChanged: [{ type: Output, args: ['clrModalOpenChange',] }],
+    closable: [{ type: Input, args: ['clrModalClosable',] }],
+    size: [{ type: Input, args: ['clrModalSize',] }],
+    staticBackdrop: [{ type: Input, args: ['clrModalStaticBackdrop',] }],
+    skipAnimation: [{ type: Input, args: ['clrModalSkipAnimation',] }],
+    bypassScrollService: [{ type: Input, args: ['clrModalOverrideScrollService',] }],
+    stopClose: [{ type: Input, args: ['clrModalPreventClose',] }],
+    altClose: [{ type: Output, args: ['clrModalAlternateClose',] }],
+    close: [{ type: HostListener, args: ['body:keyup.escape',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_MODAL_DIRECTIVES = [ClrModal];
 class ClrModalModule {
 }
@@ -14047,12 +15933,13 @@ ClrModalModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @record
  */
 
+/** @type {?} */
 const SIGNPOST_POSITIONS = {
     'top-left': { anchorPoint: Point.TOP_CENTER, popoverPoint: Point.BOTTOM_RIGHT, offsetY: -10, offsetX: 0 },
     'top-middle': { anchorPoint: Point.TOP_CENTER, popoverPoint: Point.BOTTOM_CENTER, offsetY: -10, offsetX: 0 },
@@ -14071,9 +15958,9 @@ const SIGNPOST_POSITIONS = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-// aka where the arrow / pointer is at in relation to the anchor
+/** @type {?} */
 const POSITIONS = [
     'top-left',
     'top-middle',
@@ -14092,12 +15979,14 @@ class ClrSignpostContent extends AbstractPopover {
     /**
      * @param {?} injector
      * @param {?} parentHost
+     * @param {?} commonStrings
      */
-    constructor(injector, parentHost) {
+    constructor(injector, parentHost, commonStrings) {
         if (!parentHost) {
             throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
         }
         super(injector, parentHost);
+        this.commonStrings = commonStrings;
         // Defaults
         this.position = 'right-middle';
         this.closeOnOutsideClick = true;
@@ -14161,7 +16050,8 @@ class ClrSignpostContent extends AbstractPopover {
         }
         // Ugh
         this.renderer.addClass(this.el.nativeElement, this.position);
-        const /** @type {?} */ setPosition = SIGNPOST_POSITIONS[this.position];
+        /** @type {?} */
+        const setPosition = SIGNPOST_POSITIONS[this.position];
         this.anchorPoint = setPosition.anchorPoint;
         this.popoverPoint = setPosition.popoverPoint;
         this.popoverOptions.offsetY = setPosition.offsetY;
@@ -14175,8 +16065,8 @@ ClrSignpostContent.decorators = [
         <div class="signpost-flex-wrap">
             <div class="popover-pointer"></div>
             <div class="signpost-content-header">
-                <button type="button" class="signpost-action close" aria-label="Close" (click)="close()">
-                    <clr-icon aria-hidden="true" shape="close"></clr-icon>
+                <button type="button" class="signpost-action close" (click)="close()">
+                    <clr-icon shape="close" [attr.title]="commonStrings.close"></clr-icon>
                 </button>
             </div>
             <div class="signpost-content-body">
@@ -14189,22 +16079,24 @@ ClrSignpostContent.decorators = [
 ];
 /** @nocollapse */
 ClrSignpostContent.ctorParameters = () => [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] },
+    { type: ClrCommonStrings }
 ];
 ClrSignpostContent.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
+    position: [{ type: Input, args: ['clrPosition',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_SIGNPOST_DIRECTIVES = [ClrSignpost, ClrSignpostContent, ClrSignpostTrigger];
 class ClrSignpostModule {
 }
@@ -14219,7 +16111,7 @@ ClrSignpostModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTooltip {
 }
@@ -14238,9 +16130,11 @@ ClrTooltip.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
 const POSITIONS$1 = ['bottom-left', 'bottom-right', 'top-left', 'top-right', 'right', 'left'];
+/** @type {?} */
 const SIZES = ['xs', 'sm', 'md', 'lg'];
 class ClrTooltipContent extends AbstractPopover {
     /**
@@ -14348,17 +16242,17 @@ ClrTooltipContent.decorators = [
 ];
 /** @nocollapse */
 ClrTooltipContent.ctorParameters = () => [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] }
 ];
 ClrTooltipContent.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
-    "size": [{ type: Input, args: ['clrSize',] },],
+    position: [{ type: Input, args: ['clrPosition',] }],
+    size: [{ type: Input, args: ['clrSize',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrTooltipTrigger {
     /**
@@ -14385,22 +16279,23 @@ ClrTooltipTrigger.decorators = [
 ];
 /** @nocollapse */
 ClrTooltipTrigger.ctorParameters = () => [
-    { type: IfOpenService, },
+    { type: IfOpenService }
 ];
 ClrTooltipTrigger.propDecorators = {
-    "showTooltip": [{ type: HostListener, args: ['mouseenter',] }, { type: HostListener, args: ['focus',] },],
-    "hideTooltip": [{ type: HostListener, args: ['mouseleave',] }, { type: HostListener, args: ['blur',] },],
+    showTooltip: [{ type: HostListener, args: ['mouseenter',] }, { type: HostListener, args: ['focus',] }],
+    hideTooltip: [{ type: HostListener, args: ['mouseleave',] }, { type: HostListener, args: ['blur',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_TOOLTIP_DIRECTIVES = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 class ClrTooltipModule {
 }
@@ -14414,7 +16309,7 @@ ClrTooltipModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClrPopoverModule {
 }
@@ -14424,7 +16319,7 @@ ClrPopoverModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -14508,7 +16403,7 @@ ButtonHubService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -14529,7 +16424,7 @@ ButtonHubService.decorators = [
  *
  * \@example
  * export class YourHostComponent {
- *   \@ViewChild("wizard") wizard: Wizard;
+ * \@ViewChild("wizard") wizard: Wizard;
  *   ...
  * }
  *
@@ -14573,7 +16468,8 @@ class PageCollectionService {
      * @return {?}
      */
     get penultimatePage() {
-        const /** @type {?} */ pageCount = this.pagesCount;
+        /** @type {?} */
+        const pageCount = this.pagesCount;
         if (pageCount < 2) {
             return;
         }
@@ -14587,7 +16483,8 @@ class PageCollectionService {
      * @return {?}
      */
     get lastPage() {
-        const /** @type {?} */ pageCount = this.pagesCount;
+        /** @type {?} */
+        const pageCount = this.pagesCount;
         if (pageCount < 1) {
             return;
         }
@@ -14619,7 +16516,8 @@ class PageCollectionService {
      * @return {?}
      */
     getPageById(id) {
-        const /** @type {?} */ foundPages = this.pages.filter((page) => id === page.id);
+        /** @type {?} */
+        const foundPages = this.pages.filter((page) => id === page.id);
         return this.checkResults(foundPages, id);
     }
     /**
@@ -14631,8 +16529,10 @@ class PageCollectionService {
      * @return {?}
      */
     getPageByIndex(index) {
-        const /** @type {?} */ pageCount = this.pagesCount;
-        const /** @type {?} */ pagesLastIndex = pageCount > 1 ? pageCount - 1 : 0;
+        /** @type {?} */
+        const pageCount = this.pagesCount;
+        /** @type {?} */
+        const pagesLastIndex = pageCount > 1 ? pageCount - 1 : 0;
         if (index < 0) {
             throw new Error('Cannot retrieve page with index of ' + index);
         }
@@ -14650,7 +16550,8 @@ class PageCollectionService {
      * @return {?}
      */
     getPageIndex(page) {
-        const /** @type {?} */ index = this.pagesAsArray.indexOf(page);
+        /** @type {?} */
+        const index = this.pagesAsArray.indexOf(page);
         if (index < 0) {
             throw new Error('Requested page cannot be found in collection of pages.');
         }
@@ -14666,7 +16567,8 @@ class PageCollectionService {
      * @return {?}
      */
     checkResults(results, requestedPageId) {
-        const /** @type {?} */ foundPagesCount = results.length || 0;
+        /** @type {?} */
+        const foundPagesCount = results.length || 0;
         if (foundPagesCount > 1) {
             throw new Error('More than one page has the requested id ' + requestedPageId + '.');
         }
@@ -14687,7 +16589,8 @@ class PageCollectionService {
      * @return {?}
      */
     pageRange(start, end) {
-        let /** @type {?} */ pages = [];
+        /** @type {?} */
+        let pages = [];
         if (start < 0 || end < 0) {
             return [];
         }
@@ -14724,10 +16627,14 @@ class PageCollectionService {
      * @return {?}
      */
     getPageRangeFromPages(page, otherPage) {
-        const /** @type {?} */ pageIndex = this.getPageIndex(page);
-        const /** @type {?} */ otherPageIndex = this.getPageIndex(otherPage);
-        let /** @type {?} */ startIndex;
-        let /** @type {?} */ endIndex;
+        /** @type {?} */
+        const pageIndex = this.getPageIndex(page);
+        /** @type {?} */
+        const otherPageIndex = this.getPageIndex(otherPage);
+        /** @type {?} */
+        let startIndex;
+        /** @type {?} */
+        let endIndex;
         if (pageIndex <= otherPageIndex) {
             startIndex = pageIndex;
             endIndex = otherPageIndex;
@@ -14748,8 +16655,10 @@ class PageCollectionService {
      * @return {?}
      */
     getPreviousPage(page) {
-        const /** @type {?} */ myPageIndex = this.getPageIndex(page);
-        const /** @type {?} */ previousPageIndex = myPageIndex - 1;
+        /** @type {?} */
+        const myPageIndex = this.getPageIndex(page);
+        /** @type {?} */
+        const previousPageIndex = myPageIndex - 1;
         if (previousPageIndex < 0) {
             return null;
         }
@@ -14764,7 +16673,8 @@ class PageCollectionService {
      * @return {?}
      */
     previousPageIsCompleted(page) {
-        let /** @type {?} */ previousPage;
+        /** @type {?} */
+        let previousPage;
         if (!page) {
             return false;
         }
@@ -14785,8 +16695,10 @@ class PageCollectionService {
      * @return {?}
      */
     getNextPage(page) {
-        const /** @type {?} */ myPageIndex = this.getPageIndex(page);
-        const /** @type {?} */ nextPageIndex = myPageIndex + 1;
+        /** @type {?} */
+        const myPageIndex = this.getPageIndex(page);
+        /** @type {?} */
+        const nextPageIndex = myPageIndex + 1;
         if (nextPageIndex >= this.pagesAsArray.length) {
             return null;
         }
@@ -14801,8 +16713,10 @@ class PageCollectionService {
      * @return {?}
      */
     getStepItemIdForPage(page) {
-        const /** @type {?} */ pageId = page.id;
-        const /** @type {?} */ pageIdParts = pageId.split('-').reverse();
+        /** @type {?} */
+        const pageId = page.id;
+        /** @type {?} */
+        const pageIdParts = pageId.split('-').reverse();
         pageIdParts[1] = 'step';
         return pageIdParts.reverse().join('-');
     }
@@ -14817,7 +16731,8 @@ class PageCollectionService {
      * @return {?}
      */
     commitPage(page) {
-        const /** @type {?} */ pageHasOverrides = page.stopNext || page.preventDefault;
+        /** @type {?} */
+        const pageHasOverrides = page.stopNext || page.preventDefault;
         page.completed = true;
         if (!pageHasOverrides) {
             // prevent loop of event emission; alternate flows work off
@@ -14860,7 +16775,8 @@ class PageCollectionService {
      * @return {?}
      */
     updateCompletedStates() {
-        const /** @type {?} */ firstIncompleteIndex = this.findFirstIncompletePageIndex();
+        /** @type {?} */
+        const firstIncompleteIndex = this.findFirstIncompletePageIndex();
         if (firstIncompleteIndex === this.pagesAsArray.length - 1) {
             // all complete no need to do anything
             return;
@@ -14878,7 +16794,8 @@ class PageCollectionService {
      * @return {?}
      */
     findFirstIncompletePageIndex() {
-        let /** @type {?} */ returnIndex = null;
+        /** @type {?} */
+        let returnIndex = null;
         this.pagesAsArray.forEach((page, index) => {
             if (null === returnIndex && false === page.completed) {
                 returnIndex = index;
@@ -14894,7 +16811,8 @@ class PageCollectionService {
      * @return {?}
      */
     findFirstIncompletePage() {
-        const /** @type {?} */ myIncompleteIndex = this.findFirstIncompletePageIndex();
+        /** @type {?} */
+        const myIncompleteIndex = this.findFirstIncompletePageIndex();
         return this.pagesAsArray[myIncompleteIndex];
     }
 }
@@ -14904,7 +16822,7 @@ PageCollectionService.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -14925,7 +16843,7 @@ PageCollectionService.decorators = [
  *
  * \@example
  * export class YourHostComponent {
- *   \@ViewChild("wizard") wizard: Wizard;
+ * \@ViewChild("wizard") wizard: Wizard;
  *   ...
  * }
  *
@@ -15021,7 +16939,8 @@ class WizardNavigationService {
          */
         this.wizardDisableStepnav = false;
         this.previousButtonSubscription = this.buttonService.previousBtnClicked.subscribe(() => {
-            const /** @type {?} */ currentPage = this.currentPage;
+            /** @type {?} */
+            const currentPage = this.currentPage;
             if (this.currentPageIsFirst || currentPage.previousStepDisabled) {
                 return;
             }
@@ -15220,8 +17139,10 @@ class WizardNavigationService {
      * @return {?}
      */
     forceNext() {
-        const /** @type {?} */ currentPage = this.currentPage;
-        const /** @type {?} */ nextPage = this.pageCollection.getNextPage(currentPage);
+        /** @type {?} */
+        const currentPage = this.currentPage;
+        /** @type {?} */
+        const nextPage = this.pageCollection.getNextPage(currentPage);
         // catch errant null or undefineds that creep in
         if (!nextPage) {
             throw new Error('The wizard has no next page to go to.');
@@ -15246,13 +17167,20 @@ class WizardNavigationService {
      * @return {?}
      */
     checkAndCommitCurrentPage(buttonType) {
-        const /** @type {?} */ currentPage = this.currentPage;
-        let /** @type {?} */ iAmTheLastPage;
-        let /** @type {?} */ isNext;
-        let /** @type {?} */ isDanger;
-        let /** @type {?} */ isDangerNext;
-        let /** @type {?} */ isDangerFinish;
-        let /** @type {?} */ isFinish;
+        /** @type {?} */
+        const currentPage = this.currentPage;
+        /** @type {?} */
+        let iAmTheLastPage;
+        /** @type {?} */
+        let isNext;
+        /** @type {?} */
+        let isDanger;
+        /** @type {?} */
+        let isDangerNext;
+        /** @type {?} */
+        let isDangerFinish;
+        /** @type {?} */
+        let isFinish;
         if (!currentPage.readyToComplete || this.wizardStopNavigation) {
             return;
         }
@@ -15335,7 +17263,8 @@ class WizardNavigationService {
      * @return {?}
      */
     previous() {
-        let /** @type {?} */ previousPage;
+        /** @type {?} */
+        let previousPage;
         if (this.currentPageIsFirst || this.wizardStopNavigation) {
             return;
         }
@@ -15398,14 +17327,22 @@ class WizardNavigationService {
      * @return {?}
      */
     goTo(pageToGoToOrId, lazyComplete = false) {
-        let /** @type {?} */ pageToGoTo;
-        let /** @type {?} */ currentPage;
-        let /** @type {?} */ myPages;
-        let /** @type {?} */ pagesToCheck;
-        let /** @type {?} */ okayToMove = true;
-        let /** @type {?} */ goingForward;
-        let /** @type {?} */ currentPageIndex;
-        let /** @type {?} */ goToPageIndex;
+        /** @type {?} */
+        let pageToGoTo;
+        /** @type {?} */
+        let currentPage;
+        /** @type {?} */
+        let myPages;
+        /** @type {?} */
+        let pagesToCheck;
+        /** @type {?} */
+        let okayToMove = true;
+        /** @type {?} */
+        let goingForward;
+        /** @type {?} */
+        let currentPageIndex;
+        /** @type {?} */
+        let goToPageIndex;
         myPages = this.pageCollection;
         pageToGoTo = typeof pageToGoToOrId === 'string' ? myPages.getPageById(pageToGoToOrId) : pageToGoToOrId;
         currentPage = this.currentPage;
@@ -15445,16 +17382,18 @@ class WizardNavigationService {
      * @return {?}
      */
     canGoTo(pagesToCheck) {
-        let /** @type {?} */ okayToMove = true;
-        const /** @type {?} */ myPages = this.pageCollection;
-        // previous page can be important when moving because if it's completed it
-        // allows us to move to the page even if it's incomplete...
-        let /** @type {?} */ previousPagePasses;
+        /** @type {?} */
+        let okayToMove = true;
+        /** @type {?} */
+        const myPages = this.pageCollection;
+        /** @type {?} */
+        let previousPagePasses;
         if (!pagesToCheck || pagesToCheck.length < 1) {
             return false;
         }
         pagesToCheck.forEach((page) => {
-            let /** @type {?} */ previousPage;
+            /** @type {?} */
+            let previousPage;
             if (!okayToMove) {
                 return;
             }
@@ -15482,8 +17421,10 @@ class WizardNavigationService {
      * @return {?}
      */
     setLastEnabledPageCurrent() {
-        const /** @type {?} */ allPages = this.pageCollection.pagesAsArray;
-        let /** @type {?} */ lastCompletedPageIndex = null;
+        /** @type {?} */
+        const allPages = this.pageCollection.pagesAsArray;
+        /** @type {?} */
+        let lastCompletedPageIndex = null;
         allPages.forEach((page, index) => {
             if (page.completed) {
                 lastCompletedPageIndex = index;
@@ -15516,8 +17457,10 @@ class WizardNavigationService {
      * @return {?}
      */
     updateNavigation() {
-        let /** @type {?} */ toSetCurrent;
-        let /** @type {?} */ currentPageRemoved;
+        /** @type {?} */
+        let toSetCurrent;
+        /** @type {?} */
+        let currentPageRemoved;
         this.pageCollection.updateCompletedStates();
         currentPageRemoved = this.pageCollection.pagesAsArray.indexOf(this.currentPage) < 0;
         if (currentPageRemoved) {
@@ -15531,13 +17474,13 @@ WizardNavigationService.decorators = [
 ];
 /** @nocollapse */
 WizardNavigationService.ctorParameters = () => [
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
+    { type: PageCollectionService },
+    { type: ButtonHubService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -15555,7 +17498,8 @@ class HeaderActionService {
      * @return {?}
      */
     get wizardHasHeaderActions() {
-        const /** @type {?} */ wizardHdrActions = this.wizardHeaderActions;
+        /** @type {?} */
+        const wizardHdrActions = this.wizardHeaderActions;
         if (!wizardHdrActions) {
             return false;
         }
@@ -15585,18 +17529,19 @@ HeaderActionService.decorators = [
 ];
 /** @nocollapse */
 HeaderActionService.ctorParameters = () => [
-    { type: WizardNavigationService, },
+    { type: WizardNavigationService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 let wizardHeaderActionIndex = 0;
 class ClrWizardHeaderAction {
     constructor() {
@@ -15644,17 +17589,16 @@ ClrWizardHeaderAction.decorators = [
                 host: { class: 'clr-wizard-header-action-wrapper' },
             },] },
 ];
-/** @nocollapse */
 ClrWizardHeaderAction.propDecorators = {
-    "title": [{ type: Input, args: ['title',] },],
-    "_id": [{ type: Input, args: ['id',] },],
-    "disabled": [{ type: Input, args: ['clrWizardHeaderActionDisabled',] },],
-    "headerActionClicked": [{ type: Output, args: ['actionClicked',] },],
+    title: [{ type: Input, args: ['title',] }],
+    _id: [{ type: Input, args: ['id',] }],
+    disabled: [{ type: Input, args: ['clrWizardHeaderActionDisabled',] }],
+    headerActionClicked: [{ type: Output, args: ['actionClicked',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -15674,12 +17618,12 @@ ClrWizardPageButtons.decorators = [
 ];
 /** @nocollapse */
 ClrWizardPageButtons.ctorParameters = () => [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -15699,12 +17643,12 @@ ClrWizardPageHeaderActions.decorators = [
 ];
 /** @nocollapse */
 ClrWizardPageHeaderActions.ctorParameters = () => [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -15724,12 +17668,12 @@ ClrWizardPageNavTitle.decorators = [
 ];
 /** @nocollapse */
 ClrWizardPageNavTitle.ctorParameters = () => [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -15749,18 +17693,19 @@ ClrWizardPageTitle.decorators = [
 ];
 /** @nocollapse */
 ClrWizardPageTitle.ctorParameters = () => [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 let wizardPageIndex = 0;
 /**
  * The ClrWizardPage component is responsible for displaying the content of each step
@@ -16022,7 +17967,8 @@ class ClrWizardPage {
      * @return {?}
      */
     set nextStepDisabled(val) {
-        const /** @type {?} */ valBool = !!val;
+        /** @type {?} */
+        const valBool = !!val;
         if (valBool !== this._nextStepDisabled) {
             this._nextStepDisabled = valBool;
             this.nextStepDisabledChange.emit(valBool);
@@ -16055,7 +18001,8 @@ class ClrWizardPage {
      * @return {?}
      */
     set previousStepDisabled(val) {
-        const /** @type {?} */ valBool = !!val;
+        /** @type {?} */
+        const valBool = !!val;
         if (valBool !== this._previousStepDisabled) {
             this._previousStepDisabled = valBool;
             this.previousStepDisabledChange.emit(valBool);
@@ -16085,7 +18032,8 @@ class ClrWizardPage {
      * @return {?}
      */
     set stopCancel(val) {
-        const /** @type {?} */ valBool = !!val;
+        /** @type {?} */
+        const valBool = !!val;
         if (valBool !== this._stopCancel) {
             this._stopCancel = valBool;
             this.stopCancelChange.emit(valBool);
@@ -16117,7 +18065,8 @@ class ClrWizardPage {
      * @return {?}
      */
     set stopNext(val) {
-        const /** @type {?} */ valBool = !!val;
+        /** @type {?} */
+        const valBool = !!val;
         if (valBool !== this._stopNext) {
             this._stopNext = valBool;
         }
@@ -16136,9 +18085,8 @@ class ClrWizardPage {
      * @return {?}
      */
     get id() {
-        // covers things like null, undefined, false, and empty string
-        // while allowing zero to pass
-        const /** @type {?} */ idIsNonZeroFalsy = !this._id && this._id !== 0;
+        /** @type {?} */
+        const idIsNonZeroFalsy = !this._id && this._id !== 0;
         // in addition to non-zero falsy we also want to make sure _id is not a negative
         // number.
         if (idIsNonZeroFalsy || this._id < 0) {
@@ -16233,7 +18181,8 @@ class ClrWizardPage {
      * @return {?}
      */
     get previousCompleted() {
-        const /** @type {?} */ previousPage = this.pageCollection.getPreviousPage(this);
+        /** @type {?} */
+        const previousPage = this.pageCollection.getPreviousPage(this);
         if (!previousPage) {
             return true;
         }
@@ -16329,7 +18278,8 @@ class ClrWizardPage {
      * @return {?}
      */
     ngOnInit() {
-        const /** @type {?} */ navService = this.navService;
+        /** @type {?} */
+        const navService = this.navService;
         if (!navService.currentPage && !navService.navServiceLoaded) {
             this.makeCurrent();
             this.navService.navServiceLoaded = true;
@@ -16364,38 +18314,38 @@ ClrWizardPage.decorators = [
 ];
 /** @nocollapse */
 ClrWizardPage.ctorParameters = () => [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService },
+    { type: ButtonHubService }
 ];
 ClrWizardPage.propDecorators = {
-    "pageTitle": [{ type: ContentChild, args: [ClrWizardPageTitle,] },],
-    "pageNavTitle": [{ type: ContentChild, args: [ClrWizardPageNavTitle,] },],
-    "_buttons": [{ type: ContentChild, args: [ClrWizardPageButtons,] },],
-    "_headerActions": [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] },],
-    "nextStepDisabled": [{ type: Input, args: ['clrWizardPageNextDisabled',] },],
-    "nextStepDisabledChange": [{ type: Output, args: ['clrWizardPageNextDisabledChange',] },],
-    "previousStepDisabled": [{ type: Input, args: ['clrWizardPagePreviousDisabled',] },],
-    "previousStepDisabledChange": [{ type: Output, args: ['clrWizardPagePreviousDisabledChange',] },],
-    "preventDefault": [{ type: Input, args: ['clrWizardPagePreventDefault',] },],
-    "stopCancel": [{ type: Input, args: ['clrWizardPagePreventDefaultCancel',] },],
-    "stopCancelChange": [{ type: Output, args: ['clrWizardPagePreventDefaultCancelChange',] },],
-    "stopNext": [{ type: Input, args: ['clrWizardPagePreventDefaultNext',] },],
-    "onCommit": [{ type: Output, args: ['clrWizardPageOnCommit',] },],
-    "onLoad": [{ type: Output, args: ['clrWizardPageOnLoad',] },],
-    "pageOnCancel": [{ type: Output, args: ['clrWizardPageOnCancel',] },],
-    "finishButtonClicked": [{ type: Output, args: ['clrWizardPageFinish',] },],
-    "previousButtonClicked": [{ type: Output, args: ['clrWizardPagePrevious',] },],
-    "nextButtonClicked": [{ type: Output, args: ['clrWizardPageNext',] },],
-    "dangerButtonClicked": [{ type: Output, args: ['clrWizardPageDanger',] },],
-    "primaryButtonClicked": [{ type: Output, args: ['clrWizardPagePrimary',] },],
-    "customButtonClicked": [{ type: Output, args: ['clrWizardPageCustomButton',] },],
-    "_id": [{ type: Input, args: ['id',] },],
+    pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle,] }],
+    pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle,] }],
+    _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons,] }],
+    _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] }],
+    nextStepDisabled: [{ type: Input, args: ['clrWizardPageNextDisabled',] }],
+    nextStepDisabledChange: [{ type: Output, args: ['clrWizardPageNextDisabledChange',] }],
+    previousStepDisabled: [{ type: Input, args: ['clrWizardPagePreviousDisabled',] }],
+    previousStepDisabledChange: [{ type: Output, args: ['clrWizardPagePreviousDisabledChange',] }],
+    preventDefault: [{ type: Input, args: ['clrWizardPagePreventDefault',] }],
+    stopCancel: [{ type: Input, args: ['clrWizardPagePreventDefaultCancel',] }],
+    stopCancelChange: [{ type: Output, args: ['clrWizardPagePreventDefaultCancelChange',] }],
+    stopNext: [{ type: Input, args: ['clrWizardPagePreventDefaultNext',] }],
+    onCommit: [{ type: Output, args: ['clrWizardPageOnCommit',] }],
+    onLoad: [{ type: Output, args: ['clrWizardPageOnLoad',] }],
+    pageOnCancel: [{ type: Output, args: ['clrWizardPageOnCancel',] }],
+    finishButtonClicked: [{ type: Output, args: ['clrWizardPageFinish',] }],
+    previousButtonClicked: [{ type: Output, args: ['clrWizardPagePrevious',] }],
+    nextButtonClicked: [{ type: Output, args: ['clrWizardPageNext',] }],
+    dangerButtonClicked: [{ type: Output, args: ['clrWizardPageDanger',] }],
+    primaryButtonClicked: [{ type: Output, args: ['clrWizardPagePrimary',] }],
+    customButtonClicked: [{ type: Output, args: ['clrWizardPageCustomButton',] }],
+    _id: [{ type: Input, args: ['id',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -16742,7 +18692,8 @@ class ClrWizard {
      * @return {?}
      */
     ngDoCheck() {
-        const /** @type {?} */ changes = this.differ.diff(this.pages);
+        /** @type {?} */
+        const changes = this.differ.diff(this.pages);
         if (changes) {
             changes.forEachAddedItem((r) => {
                 this.navService.updateNavigation();
@@ -17023,8 +18974,10 @@ class ClrWizard {
      * @return {?}
      */
     checkAndCancel() {
-        const /** @type {?} */ currentPage = this.currentPage;
-        const /** @type {?} */ currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
+        /** @type {?} */
+        const currentPage = this.currentPage;
+        /** @type {?} */
+        const currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
         if (this.stopNavigation) {
             return;
         }
@@ -17152,43 +19105,44 @@ ClrWizard.decorators = [
 ];
 /** @nocollapse */
 ClrWizard.ctorParameters = () => [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
-    { type: HeaderActionService, },
-    { type: ElementRef, },
-    { type: IterableDiffers, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService },
+    { type: ButtonHubService },
+    { type: HeaderActionService },
+    { type: ElementRef },
+    { type: IterableDiffers }
 ];
 ClrWizard.propDecorators = {
-    "size": [{ type: Input, args: ['clrWizardSize',] },],
-    "forceForward": [{ type: Input, args: ['clrWizardForceForwardNavigation',] },],
-    "closable": [{ type: Input, args: ['clrWizardClosable',] },],
-    "clrWizardOpen": [{ type: Input, args: ['clrWizardOpen',] },],
-    "_openChanged": [{ type: Output, args: ['clrWizardOpenChange',] },],
-    "onCancel": [{ type: Output, args: ['clrWizardOnCancel',] },],
-    "wizardFinished": [{ type: Output, args: ['clrWizardOnFinish',] },],
-    "onReset": [{ type: Output, args: ['clrWizardOnReset',] },],
-    "pages": [{ type: ContentChildren, args: [ClrWizardPage,] },],
-    "headerActions": [{ type: ContentChildren, args: [ClrWizardHeaderAction,] },],
-    "currentPageChanged": [{ type: Output, args: ['clrWizardCurrentPageChanged',] },],
-    "onMoveNext": [{ type: Output, args: ['clrWizardOnNext',] },],
-    "onMovePrevious": [{ type: Output, args: ['clrWizardOnPrevious',] },],
-    "stopNext": [{ type: Input, args: ['clrWizardPreventDefaultNext',] },],
-    "stopCancel": [{ type: Input, args: ['clrWizardPreventDefaultCancel',] },],
-    "stopNavigation": [{ type: Input, args: ['clrWizardPreventNavigation',] },],
-    "disableStepnav": [{ type: Input, args: ['clrWizardDisableStepnav',] },],
-    "_stopModalAnimations": [{ type: Input, args: ['clrWizardPreventModalAnimation',] },],
+    size: [{ type: Input, args: ['clrWizardSize',] }],
+    forceForward: [{ type: Input, args: ['clrWizardForceForwardNavigation',] }],
+    closable: [{ type: Input, args: ['clrWizardClosable',] }],
+    clrWizardOpen: [{ type: Input, args: ['clrWizardOpen',] }],
+    _openChanged: [{ type: Output, args: ['clrWizardOpenChange',] }],
+    onCancel: [{ type: Output, args: ['clrWizardOnCancel',] }],
+    wizardFinished: [{ type: Output, args: ['clrWizardOnFinish',] }],
+    onReset: [{ type: Output, args: ['clrWizardOnReset',] }],
+    pages: [{ type: ContentChildren, args: [ClrWizardPage,] }],
+    headerActions: [{ type: ContentChildren, args: [ClrWizardHeaderAction,] }],
+    currentPageChanged: [{ type: Output, args: ['clrWizardCurrentPageChanged',] }],
+    onMoveNext: [{ type: Output, args: ['clrWizardOnNext',] }],
+    onMovePrevious: [{ type: Output, args: ['clrWizardOnPrevious',] }],
+    stopNext: [{ type: Input, args: ['clrWizardPreventDefaultNext',] }],
+    stopCancel: [{ type: Input, args: ['clrWizardPreventDefaultCancel',] }],
+    stopNavigation: [{ type: Input, args: ['clrWizardPreventNavigation',] }],
+    disableStepnav: [{ type: Input, args: ['clrWizardDisableStepnav',] }],
+    _stopModalAnimations: [{ type: Input, args: ['clrWizardPreventModalAnimation',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const DEFAULT_BUTTON_TYPES = {
     cancel: 'cancel',
     previous: 'previous',
@@ -17196,6 +19150,7 @@ const DEFAULT_BUTTON_TYPES = {
     finish: 'finish',
     danger: 'danger',
 };
+/** @type {?} */
 const CUSTOM_BUTTON_TYPES = {
     cancel: 'custom-cancel',
     previous: 'custom-previous',
@@ -17280,10 +19235,12 @@ class ClrWizardButton {
      * @return {?}
      */
     get isDisabled() {
-        // dealing with negatives here. cognitively easier to think of it like this...
-        const /** @type {?} */ disabled = true;
-        const /** @type {?} */ nav = this.navService;
-        const /** @type {?} */ page = this.navService.currentPage;
+        /** @type {?} */
+        const disabled = true;
+        /** @type {?} */
+        const nav = this.navService;
+        /** @type {?} */
+        const page = this.navService.currentPage;
         // Ensure we don't change the response until buttons are ready to avoid chocolate
         if (!this.buttonService.buttonsReady) {
             return !disabled;
@@ -17312,9 +19269,10 @@ class ClrWizardButton {
      * @return {?}
      */
     get isHidden() {
-        // dealing with negatives here. cognitively easier to think of it like this...
-        const /** @type {?} */ hidden = true;
-        const /** @type {?} */ nav = this.navService;
+        /** @type {?} */
+        const hidden = true;
+        /** @type {?} */
+        const nav = this.navService;
         // Ensure we don't change the response until buttons are ready to avoid chocolate
         if (!this.buttonService.buttonsReady) {
             return !hidden;
@@ -17374,19 +19332,19 @@ ClrWizardButton.decorators = [
 ];
 /** @nocollapse */
 ClrWizardButton.ctorParameters = () => [
-    { type: WizardNavigationService, },
-    { type: ButtonHubService, },
+    { type: WizardNavigationService },
+    { type: ButtonHubService }
 ];
 ClrWizardButton.propDecorators = {
-    "type": [{ type: Input, args: ['type',] },],
-    "disabled": [{ type: Input, args: ['clrWizardButtonDisabled',] },],
-    "hidden": [{ type: Input, args: ['clrWizardButtonHidden',] },],
-    "wasClicked": [{ type: Output, args: ['clrWizardButtonClicked',] },],
+    type: [{ type: Input, args: ['type',] }],
+    disabled: [{ type: Input, args: ['clrWizardButtonDisabled',] }],
+    hidden: [{ type: Input, args: ['clrWizardButtonHidden',] }],
+    wasClicked: [{ type: Output, args: ['clrWizardButtonClicked',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17401,7 +19359,7 @@ ClrWizardCustomTags.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17430,12 +19388,12 @@ ClrWizardStepnav.decorators = [
 ];
 /** @nocollapse */
 ClrWizardStepnav.ctorParameters = () => [
-    { type: PageCollectionService, },
+    { type: PageCollectionService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17530,22 +19488,23 @@ ClrWizardStepnavItem.decorators = [
 ];
 /** @nocollapse */
 ClrWizardStepnavItem.ctorParameters = () => [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService }
 ];
 ClrWizardStepnavItem.propDecorators = {
-    "page": [{ type: Input, args: ['page',] },],
+    page: [{ type: Input, args: ['page',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @type {?} */
 const CLR_WIZARD_DIRECTIVES = [
     ClrWizard,
     ClrWizardPage,
@@ -17571,7 +19530,55 @@ ClrWizardModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+class ClrCommonStringsService {
+    constructor() {
+        this.open = 'Open';
+        this.close = 'Close';
+        this.show = 'Show';
+        this.hide = 'Hide';
+        this.expand = 'Expand';
+        this.collapse = 'Collapse';
+        this.more = 'More';
+        this.select = 'Select';
+        this.selectAll = 'Select All';
+        this.previous = 'Previous';
+        this.next = 'Next';
+        this.current = 'Jump to current';
+        this.info = 'Info';
+        this.success = 'Success';
+        this.warning = 'Warning';
+        this.danger = 'Error';
+        this.rowActions = 'Available actions';
+        this.pickColumns = 'Show or hide columns';
+    }
+}
+ClrCommonStringsService.decorators = [
+    { type: Injectable },
+];
+/**
+ * @param {?=} existing
+ * @return {?}
+ */
+function commonStringsFactory(existing) {
+    /** @type {?} */
+    const defaults = new ClrCommonStringsService();
+    if (existing) {
+        return Object.assign({}, defaults, existing);
+    }
+    return defaults;
+}
+/** @type {?} */
+const COMMON_STRINGS_PROVIDER = {
+    provide: ClrCommonStrings,
+    useFactory: commonStringsFactory,
+    deps: [[new Optional(), new SkipSelf(), ClrCommonStrings]],
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class ClarityModule {
 }
@@ -17592,12 +19599,13 @@ ClarityModule.decorators = [
                     ClrPopoverModule,
                     ClrWizardModule,
                 ],
+                providers: [COMMON_STRINGS_PROVIDER],
             },] },
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17607,7 +19615,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17617,7 +19625,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17627,7 +19635,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17637,7 +19645,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17647,7 +19655,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17657,7 +19665,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17667,7 +19675,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17677,7 +19685,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -17687,394 +19695,7 @@ ClarityModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class NgControlService {
-    constructor() {
-        this._controlChanges = new Subject();
-    }
-    /**
-     * @return {?}
-     */
-    get controlChanges() {
-        return this._controlChanges.asObservable();
-    }
-    /**
-     * @param {?} control
-     * @return {?}
-     */
-    setControl(control) {
-        this._controlChanges.next(control);
-    }
-}
-NgControlService.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class IfErrorService {
-    /**
-     * @param {?} ngControlService
-     */
-    constructor(ngControlService) {
-        this.ngControlService = ngControlService;
-        this._statusChanges = new Subject();
-        this.subscriptions = [];
-        // Wait for the control to be available
-        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
-            this.control = control;
-            this.listenForChanges();
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    get statusChanges() {
-        return this._statusChanges.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    listenForChanges() {
-        this.subscriptions.push(this.control.statusChanges.pipe(filter(() => this.control.touched)).subscribe(() => {
-            this._statusChanges.next(this.control);
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    triggerStatusChange() {
-        if (this.control) {
-            this._statusChanges.next(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscriptions.forEach(sub => sub.unsubscribe());
-    }
-}
-IfErrorService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-IfErrorService.ctorParameters = () => [
-    { type: NgControlService, },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class ClrIfError {
-    /**
-     * @param {?} service
-     * @param {?} template
-     * @param {?} container
-     */
-    constructor(service, template, container) {
-        this.service = service;
-        this.template = template;
-        this.container = container;
-        this.displayed = false;
-        if (!this.service) {
-            throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
-        }
-        else {
-            this.displayError(false);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        this.subscription = this.service.statusChanges.subscribe(control => {
-            // If there is a specific error to track, check it, otherwise check overall validity
-            if (this.error) {
-                this.displayError(control.hasError(this.error));
-            }
-            else {
-                this.displayError(control.invalid);
-            }
-        });
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @param {?} invalid
-     * @return {?}
-     */
-    displayError(invalid) {
-        if (invalid && !this.displayed) {
-            this.container.createEmbeddedView(this.template);
-            this.displayed = true;
-        }
-        else if (!invalid) {
-            this.container.clear();
-            this.displayed = false;
-        }
-    }
-}
-ClrIfError.decorators = [
-    { type: Directive, args: [{ selector: '[clrIfError]' },] },
-];
-/** @nocollapse */
-ClrIfError.ctorParameters = () => [
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-];
-ClrIfError.propDecorators = {
-    "error": [{ type: Input, args: ['clrIfError',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrControlError {
-}
-ClrControlError.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-control-error',
-                template: `
-    <ng-content></ng-content>
-    `,
-                host: { '[class.clr-subtext]': 'true' },
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/** @enum {string} */
-const Layouts = {
-    VERTICAL: 'vertical',
-    HORIZONTAL: 'horizontal',
-    COMPACT: 'compact',
-};
-class LayoutService {
-    constructor() {
-        this.layout = Layouts.VERTICAL;
-        this.layoutValues = Object.keys(Layouts).map(key => Layouts[key]);
-    }
-    /**
-     * @return {?}
-     */
-    isVertical() {
-        return this.layout === Layouts.VERTICAL;
-    }
-    /**
-     * @return {?}
-     */
-    get layoutClass() {
-        return `clr-form-${this.layout}`;
-    }
-    /**
-     * @param {?} layout
-     * @return {?}
-     */
-    isValid(layout) {
-        return this.layoutValues.indexOf(layout) > -1;
-    }
-}
-LayoutService.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrForm {
-}
-ClrForm.decorators = [
-    { type: Directive, args: [{
-                selector: '[clrForm]',
-                providers: [LayoutService],
-                host: { '[class.clr-form]': 'true' },
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrControlHelper {
-}
-ClrControlHelper.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-control-helper',
-                template: `
-    <ng-content></ng-content>
-    `,
-                host: { '[class.clr-subtext]': 'true' },
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class ClrLabel {
-    /**
-     * @param {?} controlIdService
-     * @param {?} layoutService
-     * @param {?} renderer
-     * @param {?} el
-     */
-    constructor(controlIdService, layoutService, renderer, el) {
-        this.controlIdService = controlIdService;
-        this.layoutService = layoutService;
-        this.renderer = renderer;
-        this.el = el;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        // Only add the clr-control-label if it is inside a control container
-        if (this.controlIdService) {
-            this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
-        }
-        // Only set the grid column classes if we are in the right context and if they aren't already set
-        if (this.layoutService &&
-            !this.layoutService.isVertical() &&
-            this.el.nativeElement &&
-            this.el.nativeElement.className.indexOf('clr-col') < 0) {
-            this.renderer.addClass(this.el.nativeElement, 'clr-col-xs-12');
-            this.renderer.addClass(this.el.nativeElement, 'clr-col-md-2');
-        }
-        if (!this.forAttr && this.controlIdService) {
-            this.subscription = this.controlIdService.idChange.subscribe(id => (this.forAttr = id));
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
-}
-ClrLabel.decorators = [
-    { type: Directive, args: [{ selector: 'label' },] },
-];
-/** @nocollapse */
-ClrLabel.ctorParameters = () => [
-    { type: ControlIdService, decorators: [{ type: Optional },] },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-];
-ClrLabel.propDecorators = {
-    "forAttr": [{ type: HostBinding, args: ['attr.for',] }, { type: Input, args: ['for',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrLayout {
-    /**
-     * @param {?} layoutService
-     */
-    constructor(layoutService) {
-        this.layoutService = layoutService;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        // Only set the layout if it is a valid option
-        if (this.layout && this.layoutService.isValid(this.layout)) {
-            this.layoutService.layout = this.layout;
-        }
-    }
-}
-ClrLayout.decorators = [
-    { type: Directive, args: [{
-                selector: '[clrLayout]',
-                host: {
-                    '[class]': 'layoutService.layoutClass',
-                },
-            },] },
-];
-/** @nocollapse */
-ClrLayout.ctorParameters = () => [
-    { type: LayoutService, },
-];
-ClrLayout.propDecorators = {
-    "layout": [{ type: Input, args: ['clrLayout',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrCommonFormsModule {
-}
-ClrCommonFormsModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule],
-                declarations: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
-                exports: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18084,81 +19705,7 @@ ClrCommonFormsModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrCheckboxContainer {
-    constructor() {
-        // Indicates whether the container is dynamically created by the checkbox input itself
-        this._dynamic = false;
-    }
-}
-ClrCheckboxContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-checkbox-container',
-                template: `
-        <!-- We want the checkbox input to be before the label, always -->
-        <ng-content select="[clrCheckbox]"></ng-content>
-        <ng-content></ng-content>
-        <label *ngIf="_dynamic"></label>
-    `,
-                host: { '[class.checkbox]': 'true' },
-                providers: [ControlIdService],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrCheckboxNext extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     */
-    constructor(vcr) {
-        super(ClrCheckboxContainer, vcr);
-    }
-}
-ClrCheckboxNext.decorators = [
-    { type: Directive, args: [{ selector: '[clrCheckbox]' },] },
-];
-/** @nocollapse */
-ClrCheckboxNext.ctorParameters = () => [
-    { type: ViewContainerRef, },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrCheckboxNextModule {
-}
-ClrCheckboxNextModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
-                declarations: [ClrCheckboxNext, ClrCheckboxContainer],
-                exports: [ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer],
-                entryComponents: [ClrCheckboxContainer],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18168,7 +19715,7 @@ ClrCheckboxNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18178,215 +19725,7 @@ ClrCheckboxNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ControlClassService {
-    constructor() {
-        this.className = '';
-    }
-    /**
-     * @param {?=} invalid
-     * @param {?=} grid
-     * @return {?}
-     */
-    controlClass(invalid = false, grid = false) {
-        const /** @type {?} */ controlClasses = [];
-        if (invalid) {
-            controlClasses.push('clr-error');
-        }
-        if (grid && this.className.indexOf('clr-col') === -1) {
-            controlClasses.push('clr-col-md-10 clr-col-xs-12');
-        }
-        return controlClasses.join(' ');
-    }
-}
-ControlClassService.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrInputContainer {
-    /**
-     * @param {?} ifErrorService
-     * @param {?} layoutService
-     * @param {?} controlClassService
-     */
-    constructor(ifErrorService, layoutService, controlClassService) {
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
-            this.invalid = control.invalid;
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    }
-    /**
-     * @return {?}
-     */
-    addGrid() {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.map(sub => sub.unsubscribe());
-        }
-    }
-}
-ClrInputContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-input-container',
-                template: `
-        <ng-content select="label"></ng-content>
-        <label *ngIf="!label && addGrid()"></label>
-        <div class="clr-control-container" [ngClass]="controlClass()">
-            <div class="clr-input-wrapper">
-                <ng-content select="[clrInput]"></ng-content>
-                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
-        </div>
-    `,
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-/** @nocollapse */
-ClrInputContainer.ctorParameters = () => [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-];
-ClrInputContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrInput extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     * @param {?} ngControlService
-     * @param {?} ifErrorService
-     * @param {?} control
-     * @param {?} controlClassService
-     * @param {?} type
-     * @param {?} renderer
-     * @param {?} el
-     */
-    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
-        super(ClrInputContainer, vcr, 1);
-        this.ngControlService = ngControlService;
-        this.ifErrorService = ifErrorService;
-        this.control = control;
-        this.type = type;
-        if (!control) {
-            throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
-        }
-        // Set type if it is missing
-        if (!this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'text');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    onBlur() {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    }
-}
-ClrInput.decorators = [
-    { type: Directive, args: [{ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } },] },
-];
-/** @nocollapse */
-ClrInput.ctorParameters = () => [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: undefined, decorators: [{ type: Attribute, args: ['type',] },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-];
-ClrInput.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrInputModule {
-}
-ClrInputModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrInput, ClrInputContainer],
-                exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
-                entryComponents: [ClrInputContainer],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18396,296 +19735,7 @@ ClrInputModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class FocusService {
-    constructor() {
-        this._focused = new BehaviorSubject(false);
-    }
-    /**
-     * @return {?}
-     */
-    get focusChange() {
-        return this._focused.asObservable();
-    }
-    /**
-     * @param {?} state
-     * @return {?}
-     */
-    set focused(state$$1) {
-        this._focused.next(state$$1);
-    }
-}
-FocusService.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/* tslint:disable-next-line:variable-name */
-const ToggleService = new InjectionToken(undefined);
-/**
- * @return {?}
- */
-function ToggleServiceProvider() {
-    return new BehaviorSubject(false);
-}
-class ClrPasswordContainer {
-    /**
-     * @param {?} ifErrorService
-     * @param {?} layoutService
-     * @param {?} controlClassService
-     * @param {?} focusService
-     * @param {?} toggleService
-     */
-    constructor(ifErrorService, layoutService, controlClassService, focusService, toggleService) {
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.focusService = focusService;
-        this.toggleService = toggleService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.show = false;
-        this.focus = false;
-        this._toggle = true;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
-            this.invalid = control.invalid;
-        }));
-        this.subscriptions.push(this.focusService.focusChange.subscribe(state$$1 => {
-            this.focus = state$$1;
-        }));
-    }
-    /**
-     * @param {?} state
-     * @return {?}
-     */
-    set clrToggle(state$$1) {
-        this._toggle = state$$1;
-        if (!state$$1) {
-            this.show = false;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    get clrToggle() {
-        return this._toggle;
-    }
-    /**
-     * @return {?}
-     */
-    toggle() {
-        this.show = !this.show;
-        this.toggleService.next(this.show);
-    }
-    /**
-     * @return {?}
-     */
-    controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    }
-    /**
-     * @return {?}
-     */
-    addGrid() {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.map(sub => sub.unsubscribe());
-        }
-    }
-}
-ClrPasswordContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-password-container',
-                template: `
-    <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
-    <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
-          <ng-content select="[clrPassword]"></ng-content>
-          <clr-icon shape="eye" *ngIf="!show && clrToggle" class="clr-input-group-icon-action" (click)="toggle()"></clr-icon>
-          <clr-icon shape="eye-hide" *ngIf="show && clrToggle" class="clr-input-group-icon-action" (click)="toggle()"></clr-icon>
-        </div>
-        <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-      </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-      <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
-    </div>
-    `,
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [
-                    IfErrorService,
-                    NgControlService,
-                    ControlIdService,
-                    ControlClassService,
-                    FocusService,
-                    { provide: ToggleService, useFactory: ToggleServiceProvider },
-                ],
-            },] },
-];
-/** @nocollapse */
-ClrPasswordContainer.ctorParameters = () => [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: FocusService, },
-    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] },] },
-];
-ClrPasswordContainer.propDecorators = {
-    "clrToggle": [{ type: Input, args: ['clrToggle',] },],
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrPassword extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     * @param {?} ngControlService
-     * @param {?} ifErrorService
-     * @param {?} control
-     * @param {?} focusService
-     * @param {?} controlClassService
-     * @param {?} type
-     * @param {?} renderer
-     * @param {?} el
-     * @param {?} toggleService
-     */
-    constructor(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
-        super(ClrPasswordContainer, vcr, 1);
-        this.ngControlService = ngControlService;
-        this.ifErrorService = ifErrorService;
-        this.control = control;
-        this.focusService = focusService;
-        this.type = type;
-        this.toggleService = toggleService;
-        if (!this.control) {
-            throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
-        }
-        if (!this.focusService) {
-            throw new Error('clrPassword requires being wrapped in <clr-password-container>');
-        }
-        // Set type if it is missing
-        if (!this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'password');
-        }
-        controlClassService.className = el.nativeElement.className;
-        this.subscription = this.toggleService.subscribe(toggle => {
-            renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
-        });
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @return {?}
-     */
-    onFocus() {
-        if (this.focusService) {
-            this.focusService.focused = true;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    onBlur() {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-        if (this.focusService) {
-            this.focusService.focused = false;
-        }
-    }
-}
-ClrPassword.decorators = [
-    { type: Directive, args: [{ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } },] },
-];
-/** @nocollapse */
-ClrPassword.ctorParameters = () => [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: FocusService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: undefined, decorators: [{ type: Attribute, args: ['type',] },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] },] },
-];
-ClrPassword.propDecorators = {
-    "onFocus": [{ type: HostListener, args: ['focus',] },],
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrPasswordModule {
-}
-ClrPasswordModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrPassword, ClrPasswordContainer],
-                exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
-                entryComponents: [ClrPasswordContainer],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18695,234 +19745,7 @@ ClrPasswordModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrRadioWrapper {
-    /**
-     * @param {?} controlClassService
-     */
-    constructor(controlClassService) {
-        this.controlClassService = controlClassService;
-        // We need both _dynamic for HostWrapper and ContentChild(ClrLabel) in cases where
-        // the user puts a radio inside a wrapper without a label, host wrapping doesn't apply
-        // but we'd still need to insert a label
-        this._dynamic = false;
-        this.hasContainer = false;
-        if (controlClassService) {
-            this.hasContainer = true;
-        }
-    }
-}
-ClrRadioWrapper.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-radio-wrapper',
-                template: `
-    <ng-content select="[clrRadio]"></ng-content>
-    <ng-content select="label"></ng-content>
-    <label *ngIf="!label"></label>
-  `,
-                host: {
-                    '[class.clr-radio-wrapper]': '!hasContainer',
-                },
-                providers: [ControlIdService],
-            },] },
-];
-/** @nocollapse */
-ClrRadioWrapper.ctorParameters = () => [
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-];
-ClrRadioWrapper.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrRadio extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     * @param {?} ngControlService
-     * @param {?} ifErrorService
-     * @param {?} control
-     * @param {?} controlClassService
-     * @param {?} el
-     */
-    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
-        super(ClrRadioWrapper, vcr, 0);
-        this.ngControlService = ngControlService;
-        this.ifErrorService = ifErrorService;
-        this.control = control;
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    onBlur() {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    }
-}
-ClrRadio.decorators = [
-    { type: Directive, args: [{ selector: '[clrRadio]' },] },
-];
-/** @nocollapse */
-ClrRadio.ctorParameters = () => [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: ElementRef, },
-];
-ClrRadio.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrRadioContainer {
-    /**
-     * @param {?} ifErrorService
-     * @param {?} layoutService
-     * @param {?} controlClassService
-     */
-    constructor(ifErrorService, layoutService, controlClassService) {
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this.inline = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
-            this.invalid = control.invalid;
-        }));
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set clrInline(value) {
-        if (!isBoolean(value)) {
-            this.inline = value === 'false' ? false : true;
-        }
-        else {
-            this.inline = !!value;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    get clrInline() {
-        return this.inline;
-    }
-    /**
-     * @return {?}
-     */
-    controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    }
-    /**
-     * @return {?}
-     */
-    addGrid() {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscriptions.map(sub => sub.unsubscribe());
-    }
-}
-ClrRadioContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-radio-container',
-                template: `
-    <ng-content select="label"></ng-content>
-    <label *ngIf="!label && addGrid()"></label>
-    <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-radio-wrapper" [class.clr-radio-inline]="clrInline">
-        <ng-content select="clr-radio-wrapper"></ng-content>
-      </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-      <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-      <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
-    </div>
-    `,
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [NgControlService, ControlClassService, IfErrorService],
-            },] },
-];
-/** @nocollapse */
-ClrRadioContainer.ctorParameters = () => [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-];
-ClrRadioContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-    "clrInline": [{ type: Input },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrRadioModule {
-}
-ClrRadioModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
-                declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-                entryComponents: [ClrRadioWrapper],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -18932,186 +19755,7 @@ ClrRadioModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrSelectContainer {
-    /**
-     * @param {?} ifErrorService
-     * @param {?} layoutService
-     * @param {?} controlClassService
-     * @param {?} ngControlService
-     */
-    constructor(ifErrorService, layoutService, controlClassService, ngControlService) {
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.multi = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
-            this.invalid = control.invalid;
-        }));
-        this.subscriptions.push(ngControlService.controlChanges.subscribe(control => {
-            this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    wrapperClass() {
-        return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
-    }
-    /**
-     * @return {?}
-     */
-    controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    }
-    /**
-     * @return {?}
-     */
-    addGrid() {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.map(sub => sub.unsubscribe());
-        }
-    }
-}
-ClrSelectContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-select-container',
-                template: `    
-        <ng-content select="label"></ng-content>
-        <label *ngIf="!label && addGrid()"></label>
-        <div class="clr-control-container" [ngClass]="controlClass()">
-            <div [ngClass]="wrapperClass()">
-                <ng-content select="[clrSelect]"></ng-content>
-                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
-        </div>
-    `,
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-/** @nocollapse */
-ClrSelectContainer.ctorParameters = () => [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: NgControlService, },
-];
-ClrSelectContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-    "multiple": [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrSelect extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     * @param {?} ngControlService
-     * @param {?} ifErrorService
-     * @param {?} control
-     * @param {?} controlClassService
-     * @param {?} el
-     */
-    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
-        super(ClrSelectContainer, vcr, 1);
-        this.ngControlService = ngControlService;
-        this.ifErrorService = ifErrorService;
-        this.control = control;
-        if (!control) {
-            throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    onBlur() {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    }
-}
-ClrSelect.decorators = [
-    { type: Directive, args: [{ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } },] },
-];
-/** @nocollapse */
-ClrSelect.ctorParameters = () => [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: ElementRef, },
-];
-ClrSelect.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrSelectModule {
-}
-ClrSelectModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrSelect, ClrSelectContainer],
-                exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
-                entryComponents: [ClrSelectContainer],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19121,175 +19765,7 @@ ClrSelectModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrTextareaContainer {
-    /**
-     * @param {?} ifErrorService
-     * @param {?} layoutService
-     * @param {?} controlClassService
-     */
-    constructor(ifErrorService, layoutService, controlClassService) {
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
-            this.invalid = control.invalid;
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    }
-    /**
-     * @return {?}
-     */
-    addGrid() {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.map(sub => sub.unsubscribe());
-        }
-    }
-}
-ClrTextareaContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-textarea-container',
-                template: `
-        <ng-content select="label"></ng-content>
-        <label *ngIf="!label && addGrid()"></label>
-        <div class="clr-control-container" [ngClass]="controlClass()">
-            <div class="clr-textarea-wrapper">
-                <ng-content select="[clrTextarea]"></ng-content>
-                <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-            <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
-        </div>
-    `,
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-/** @nocollapse */
-ClrTextareaContainer.ctorParameters = () => [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-];
-ClrTextareaContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrTextarea extends WrappedFormControl {
-    /**
-     * @param {?} vcr
-     * @param {?} ngControlService
-     * @param {?} ifErrorService
-     * @param {?} control
-     * @param {?} controlClassService
-     * @param {?} renderer
-     * @param {?} el
-     */
-    constructor(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
-        super(ClrTextareaContainer, vcr, 1);
-        this.ngControlService = ngControlService;
-        this.ifErrorService = ifErrorService;
-        this.control = control;
-        if (!control) {
-            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    onBlur() {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    }
-}
-ClrTextarea.decorators = [
-    { type: Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
-];
-/** @nocollapse */
-ClrTextarea.ctorParameters = () => [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-];
-ClrTextarea.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrTextareaModule {
-}
-ClrTextareaModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrTextarea, ClrTextareaContainer],
-                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
-                entryComponents: [ClrTextareaContainer],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19299,34 +19775,7 @@ ClrTextareaModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrFormsNextModule {
-}
-ClrFormsNextModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule],
-                exports: [
-                    ClrCommonFormsModule,
-                    ClrCheckboxNextModule,
-                    ClrDatepickerModule,
-                    ClrInputModule,
-                    ClrPasswordModule,
-                    ClrRadioModule,
-                    ClrSelectModule,
-                    ClrTextareaModule,
-                ],
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19336,7 +19785,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19346,7 +19795,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19356,7 +19805,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19366,7 +19815,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19376,7 +19825,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19386,7 +19835,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19396,7 +19845,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19406,7 +19855,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19416,7 +19865,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19426,7 +19875,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19436,7 +19885,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19446,7 +19895,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19456,7 +19905,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19466,7 +19915,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19476,7 +19925,7 @@ ClrFormsNextModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @return {?}
@@ -19491,7 +19940,7 @@ function collapse() {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19501,7 +19950,7 @@ function collapse() {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @param {?=} opacity
@@ -19516,7 +19965,7 @@ function fade(opacity = 1) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19526,14 +19975,15 @@ function fade(opacity = 1) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @param {?} direction
  * @return {?}
  */
 function fadeSlide(direction) {
-    let /** @type {?} */ transform = null;
+    /** @type {?} */
+    let transform = null;
     if (direction === 'up') {
         transform = 'translate(0, 25%)';
     }
@@ -19557,7 +20007,7 @@ function fadeSlide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19567,14 +20017,15 @@ function fadeSlide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @param {?} direction
  * @return {?}
  */
 function slide(direction) {
-    let /** @type {?} */ transform = null;
+    /** @type {?} */
+    let transform = null;
     if (direction === 'up') {
         transform = 'translate(0, 25%)';
     }
@@ -19598,7 +20049,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19608,7 +20059,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19618,7 +20069,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19628,7 +20079,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19638,7 +20089,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19648,7 +20099,7 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
@@ -19658,11 +20109,11 @@ function slide(direction) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵda, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdv, ControlClassService as ɵdy, ControlIdService as ɵx, FocusService as ɵdz, LayoutService as ɵdx, NgControlService as ɵdw, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdc, ResponsiveNavigationService as ɵdb, ActiveOompaLoompa as ɵdm, TabsWillyWonka as ɵdl, AriaService as ɵdg, TabsService as ɵdk, TABS_ID as ɵdh, TABS_ID_PROVIDER as ɵdj, tokenFactory$1 as ɵdi, VerticalNavGroupRegistrationService as ɵdp, VerticalNavGroupService as ɵdq, VerticalNavIconService as ɵdo, VerticalNavService as ɵdn, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵde, TemplateRefContainer as ɵdf, ClrTemplateRefModule as ɵdd, ButtonHubService as ɵdt, HeaderActionService as ɵdu, PageCollectionService as ɵds, WizardNavigationService as ɵdr };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdg, DatagridRowExpandAnimation as ɵcw, ActionableOompaLoompa as ɵct, DatagridWillyWonka as ɵcr, ExpandableOompaLoompa as ɵcv, ClrDatagridColumnToggleButton as ɵce, ClrDatagridColumnToggleTitle as ɵcd, DatagridDetailRegisterer as ɵcg, ClrDatagridItemsTrackBy as ɵcf, ColumnToggleButtonsService as ɵby, CustomFilter as ɵcb, DragDispatcher as ɵca, FiltersProvider as ɵbp, ExpandableRowsCount as ɵbv, HideableColumnService as ɵbw, Items as ɵbo, Page as ɵbq, RowActionService as ɵbu, Selection as ɵbn, Sort as ɵbs, StateDebouncer as ɵbr, StateProvider as ɵbx, DatagridBodyRenderer as ɵco, DatagridCellRenderer as ɵcq, DatagridColumnResizer as ɵcl, DomAdapter as ɵcj, DatagridHeadRenderer as ɵcn, DatagridHeaderRenderer as ɵck, DatagridMainRenderer as ɵci, domAdapterFactory as ɵch, DatagridRenderOrganizer as ɵbt, DatagridRowRenderer as ɵcp, DatagridTableRenderer as ɵcm, DatagridFilterRegistrar as ɵbz, StackControl as ɵcy, AbstractTreeSelection as ɵcz, clrTreeSelectionProviderFactory as ɵdb, TreeSelectionService as ɵda, AlertIconAndTypesService as ɵo, MultiAlertService as ɵq, IfErrorService as ɵt, ControlClassService as ɵbi, ControlIdService as ɵr, FocusService as ɵbj, LayoutService as ɵs, NgControlService as ɵu, WrappedFormControl as ɵx, DateFormControlService as ɵbc, DateIOService as ɵbe, DateNavigationService as ɵbb, DatepickerEnabledService as ɵbf, DatepickerFocusService as ɵbh, LocaleHelperService as ɵbd, ViewManagerService as ɵbg, ResponsiveNavigationProvider as ɵdi, ResponsiveNavigationService as ɵdh, ActiveOompaLoompa as ɵds, TabsWillyWonka as ɵdr, AriaService as ɵdm, TabsService as ɵdq, TABS_ID as ɵdn, TABS_ID_PROVIDER as ɵdp, tokenFactory$1 as ɵdo, VerticalNavGroupRegistrationService as ɵdv, VerticalNavGroupService as ɵdw, VerticalNavIconService as ɵdu, VerticalNavService as ɵdt, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcu, WillyWonka as ɵcs, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcx, Expand as ɵcc, FocusTrapDirective as ɵba, ClrFocusTrapModule as ɵy, FOCUS_TRAP_DIRECTIVES as ɵz, EmptyAnchor as ɵw, ClrHostWrappingModule as ɵv, ClrCommonStrings as ɵp, COMMON_STRINGS_PROVIDER as ɵec, commonStringsFactory as ɵeb, UNIQUE_ID as ɵdc, UNIQUE_ID_PROVIDER as ɵde, uniqueIdFactory as ɵdd, OUSTIDE_CLICK_DIRECTIVES as ɵbl, OutsideClick as ɵbm, ClrOutsideClickModule as ɵbk, ScrollingService as ɵdf, TEMPLATE_REF_DIRECTIVES as ɵdk, TemplateRefContainer as ɵdl, ClrTemplateRefModule as ɵdj, ButtonHubService as ɵdz, HeaderActionService as ɵea, PageCollectionService as ɵdy, WizardNavigationService as ɵdx };
 //# sourceMappingURL=clr-angular.js.map

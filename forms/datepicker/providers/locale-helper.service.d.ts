@@ -17,25 +17,25 @@ export declare class LocaleHelperService {
     /**
      * Initializes the locale data.
      */
-    private initializeLocaleData();
+    private initializeLocaleData;
     /**
      * Initialize day names in the TranslationWidth.Narrow format based on the locale.
      * eg: [S, M, T...] for en-US.
      */
-    private initializeLocaleDaysNarrow();
+    private initializeLocaleDaysNarrow;
     /**
      * Initializes the array of month names in the TranslationWidth.Abbreviated format.
      * e.g. `[Jan, Feb, ...]` for en-US
      */
-    private initializeLocaleMonthsAbbreviated();
+    private initializeLocaleMonthsAbbreviated;
     /**
      * Initializes the array of month names in the TranslationWidth.Wide format.
      * e.g. `[January, February, ...]` for en-US
      */
-    private initializeLocaleMonthsWide();
+    private initializeLocaleMonthsWide;
     /**
      * Initializes the first day of the week based on the locale.
      */
-    private initializeFirstDayOfWeek();
-    private initializeLocaleDateFormat();
+    private initializeFirstDayOfWeek;
+    private initializeLocaleDateFormat;
 }

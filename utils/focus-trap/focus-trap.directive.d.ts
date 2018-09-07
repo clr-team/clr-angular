@@ -12,9 +12,9 @@ export declare class FocusTrapDirective implements AfterViewInit, OnDestroy {
     private bottomReboundEl;
     constructor(el: ElementRef, injector: Injector, focusTrapsTracker: FocusTrapTracker, renderer: Renderer2, platformId: Object);
     onFocusIn(event: any): void;
-    private createFocusableOffScreenEl();
-    private addReboundEls();
-    private removeReboundEls();
+    private createFocusableOffScreenEl;
+    private addReboundEls;
+    private removeReboundEls;
     setPreviousFocus(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;

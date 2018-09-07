@@ -15,8 +15,8 @@ export declare class DatagridHeaderRenderer implements OnDestroy {
     strictWidth: number;
     private widthSet;
     ngOnDestroy(): void;
-    private clearWidth();
-    private detectStrictWidth();
+    private clearWidth;
+    private detectStrictWidth;
     computeWidth(): number;
     setWidth(width: number): void;
 }

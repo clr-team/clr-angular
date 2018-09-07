@@ -86,9 +86,13 @@ Start changes for Clarity 0.13.0
                                 const re = new RegExp(importedClass[0], 'g');
                                 updated = updated.replace(re, 'CLR_$&');
                             }
+                            // output error for classes that we are no longer formally exporting
                             else if (importedClass[0].search(/menuPositions/g) > -1) {
                                 logMessage('error', 'ACTION REQUIRED: Clarity has removed `menuPositions`, you need to either remove all uses or follow migration instructions.', filePath, '0.13.0-beta.2');
                             }
+                            // If the importedClass name doesn't follow any of the above, we add the `Clr` prefix.
+                            // We look up to see if there's a new name for it and change it to that. If there isn't,
+                            // we simply prepend `Clr` to it.
                             else {
                                 const re = new RegExp(importedClass[0], 'g');
                                 updated = updated.replace(re, getNewClassname(importedClass[0]));

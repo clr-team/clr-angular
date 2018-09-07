@@ -4,14 +4,16 @@ import { DynamicWrapper } from '../../utils/host-wrapping';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     private _ifOpenService;
     private _dateNavigationService;
     private _datepickerEnabledService;
     private dateFormControlService;
+    commonStrings: ClrCommonStrings;
     _dynamic: boolean;
     private _sub;
-    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService);
+    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings);
     /**
      * Returns if the Datepicker is enabled or not. If disabled, hides the datepicker trigger.
      */
@@ -19,7 +21,7 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     /**
      * Processes the user input and Initializes the Calendar everytime the datepicker popover is open.
      */
-    private initializeCalendar();
+    private initializeCalendar;
     /**
      * Toggles the Datepicker Popover.
      */

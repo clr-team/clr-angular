@@ -16,8 +16,8 @@ export declare class ClrCheckboxDeprecated implements ControlValueAccessor {
     private _indeterminate;
     indeterminate: boolean;
     indeterminateChange: EventEmitter<boolean>;
-    private setIndeterminate(value);
-    private setChecked(value);
+    private setIndeterminate;
+    private setChecked;
     change: EventEmitter<boolean>;
     toggle(): void;
     writeValue(value: any): void;

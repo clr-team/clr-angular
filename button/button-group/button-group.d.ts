@@ -1,12 +1,14 @@
 import { ElementRef, QueryList } from '@angular/core';
 import { Point } from '../../popover/common/popover';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 import { ClrButton } from './button';
 export declare class ClrButtonGroup {
     buttonGroupNewService: ButtonInGroupService;
     private elementRef;
+    commonStrings: ClrCommonStrings;
     buttons: QueryList<ClrButton>;
-    constructor(buttonGroupNewService: ButtonInGroupService, elementRef: ElementRef);
+    constructor(buttonGroupNewService: ButtonInGroupService, elementRef: ElementRef, commonStrings: ClrCommonStrings);
     inlineButtons: ClrButton[];
     menuButtons: ClrButton[];
     /**

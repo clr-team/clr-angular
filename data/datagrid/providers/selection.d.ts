@@ -4,7 +4,7 @@ import { Items } from './items';
 export declare enum SelectionType {
     None = 0,
     Single = 1,
-    Multi = 2,
+    Multi = 2
 }
 export declare class Selection<T = any> {
     private _items;
@@ -44,7 +44,7 @@ export declare class Selection<T = any> {
      * The Observable that lets other classes subscribe to selection changes
      */
     private _change;
-    private emitChange();
+    private emitChange;
     readonly change: Observable<T[] | T>;
     /**
      * Checks if an item is currently selected
@@ -53,11 +53,11 @@ export declare class Selection<T = any> {
     /**
      * Selects an item
      */
-    private selectItem(item);
+    private selectItem;
     /**
      * Deselects an item
      */
-    private deselectItem(indexOfItem);
+    private deselectItem;
     /**
      * Selects or deselects an item
      */

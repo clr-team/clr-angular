@@ -98,7 +98,7 @@ export declare class PageCollectionService {
      *
      * @memberof PageCollectionService
      */
-    private checkResults(results, requestedPageId);
+    private checkResults;
     /**
      * Accepts two numeric indexes and returns an array of wizard page objects that include
      * all wizard pages in the page collection from the first index to the second.

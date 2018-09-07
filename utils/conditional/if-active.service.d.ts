@@ -33,16 +33,16 @@ export declare class IfActiveService {
     /*********
      *
      * @description
-     * A getter that returns the current value of this IfActive instance.
-     * @returns
-     */
-    /*********
-     *
-     * @description
      * A setter function that updates the current state of _current for this instance of IfActive structural directive.
      * And, broadcasts the new value to all subscribers.
      *
      * @param value
      */
+    /*********
+    *
+    * @description
+    * A getter that returns the current value of this IfActive instance.
+    * @returns
+    */
     current: number;
 }

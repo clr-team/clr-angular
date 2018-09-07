@@ -4,12 +4,14 @@ import { Expand } from '../../utils/expand/providers/expand';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     private _itemExpand;
     private _navGroupRegistrationService;
     private _navGroupService;
     private _navService;
-    constructor(_itemExpand: Expand, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService);
+    commonStrings: ClrCommonStrings;
+    constructor(_itemExpand: Expand, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStrings);
     private wasExpanded;
     expanded: boolean;
     userExpandedInput: boolean;

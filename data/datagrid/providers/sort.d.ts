@@ -18,7 +18,7 @@ export declare class Sort<T = any> {
      * The Observable that lets other classes subscribe to sort changes
      */
     private _change;
-    private emitChange();
+    private emitChange;
     readonly change: Observable<Sort<T>>;
     /**
      * Sets a comparator as the current one, or toggles reverse if the comparator is already used. The

@@ -1,10 +1,10 @@
-import { __values, __spread, __read, __extends } from 'tslib';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, InjectionToken, Inject, Injector, PLATFORM_ID, NgZone, LOCALE_ID, ComponentFactoryResolver, HostBinding, Self, forwardRef, ChangeDetectorRef, ContentChild, IterableDiffers, Attribute } from '@angular/core';
+import { __values, __extends, __spread, __read } from 'tslib';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, HostBinding, ComponentFactoryResolver, InjectionToken, Inject, Injector, PLATFORM_ID, NgZone, LOCALE_ID, Self, ContentChild, Attribute, ChangeDetectorRef, IterableDiffers, forwardRef } from '@angular/core';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth } from '@angular/common';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
-import { first, map, filter } from 'rxjs/operators';
-import { NgControl, NG_VALUE_ACCESSOR, FormsModule, SelectMultipleControlValueAccessor } from '@angular/forms';
+import { filter, first, map } from 'rxjs/operators';
+import { NgControl, FormsModule, SelectMultipleControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { isBoolean } from 'util';
 
 var ClrIconCustomTag = /** @class */ (function () {
@@ -38,18 +38,18 @@ var Point = {
     LEFT_TOP: 10,
     LEFT_BOTTOM: 11,
 };
-Point[Point.RIGHT_CENTER] = "RIGHT_CENTER";
-Point[Point.RIGHT_TOP] = "RIGHT_TOP";
-Point[Point.RIGHT_BOTTOM] = "RIGHT_BOTTOM";
-Point[Point.TOP_CENTER] = "TOP_CENTER";
-Point[Point.TOP_RIGHT] = "TOP_RIGHT";
-Point[Point.TOP_LEFT] = "TOP_LEFT";
-Point[Point.BOTTOM_CENTER] = "BOTTOM_CENTER";
-Point[Point.BOTTOM_RIGHT] = "BOTTOM_RIGHT";
-Point[Point.BOTTOM_LEFT] = "BOTTOM_LEFT";
-Point[Point.LEFT_CENTER] = "LEFT_CENTER";
-Point[Point.LEFT_TOP] = "LEFT_TOP";
-Point[Point.LEFT_BOTTOM] = "LEFT_BOTTOM";
+Point[Point.RIGHT_CENTER] = 'RIGHT_CENTER';
+Point[Point.RIGHT_TOP] = 'RIGHT_TOP';
+Point[Point.RIGHT_BOTTOM] = 'RIGHT_BOTTOM';
+Point[Point.TOP_CENTER] = 'TOP_CENTER';
+Point[Point.TOP_RIGHT] = 'TOP_RIGHT';
+Point[Point.TOP_LEFT] = 'TOP_LEFT';
+Point[Point.BOTTOM_CENTER] = 'BOTTOM_CENTER';
+Point[Point.BOTTOM_RIGHT] = 'BOTTOM_RIGHT';
+Point[Point.BOTTOM_LEFT] = 'BOTTOM_LEFT';
+Point[Point.LEFT_CENTER] = 'LEFT_CENTER';
+Point[Point.LEFT_TOP] = 'LEFT_TOP';
+Point[Point.LEFT_BOTTOM] = 'LEFT_BOTTOM';
 var POSITION_RELATIVE = 'relative';
 var POSITION_ABSOLUTE = 'absolute';
 var POSITION_FIXED = 'fixed';
@@ -257,16 +257,17 @@ var Popover = /** @class */ (function () {
         }
     };
     Popover.prototype.removeScrollEventListeners = function () {
+        var e_1, _a;
         try {
-            for (var _a = __values(this.scrollableElements), _b = _a.next(); !_b.done; _b = _a.next()) {
-                var elem = _b.value;
+            for (var _b = __values(this.scrollableElements), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var elem = _c.value;
                 elem.removeEventListener('scroll', this.boundOnScrollListener);
             }
         }
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -275,7 +276,6 @@ var Popover = /** @class */ (function () {
             this._scroll.complete();
             delete this._scroll;
         }
-        var e_1, _c;
     };
     Popover.prototype.scrolls = function (container) {
         var computedStyles = getComputedStyle(container);
@@ -359,16 +359,16 @@ PopoverDirectiveOld.decorators = [
     { type: Directive, args: [{ selector: '[clrPopoverOld]' },] },
 ];
 PopoverDirectiveOld.ctorParameters = function () { return [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ]; };
 PopoverDirectiveOld.propDecorators = {
-    "anchorElem": [{ type: Input, args: ['clrPopoverOldAnchor',] },],
-    "anchorPoint": [{ type: Input, args: ['clrPopoverOldAnchorPoint',] },],
-    "popoverPoint": [{ type: Input, args: ['clrPopoverOldPopoverPoint',] },],
-    "popoverOptions": [{ type: Input, args: ['clrPopoverOldOptions',] },],
-    "clrPopoverOldChange": [{ type: Output, args: ['clrPopoverOldChange',] },],
-    "clrPopoverOld": [{ type: Input },],
+    anchorElem: [{ type: Input, args: ['clrPopoverOldAnchor',] }],
+    anchorPoint: [{ type: Input, args: ['clrPopoverOldAnchorPoint',] }],
+    popoverPoint: [{ type: Input, args: ['clrPopoverOldPopoverPoint',] }],
+    popoverOptions: [{ type: Input, args: ['clrPopoverOldOptions',] }],
+    clrPopoverOldChange: [{ type: Output, args: ['clrPopoverOldChange',] }],
+    clrPopoverOld: [{ type: Input }]
 };
 var POPOVER_DIRECTIVES = [PopoverDirectiveOld];
 var ClrCommonPopoverModule = /** @class */ (function () {
@@ -390,10 +390,10 @@ var ClrLoadingState = {
     SUCCESS: 2,
     ERROR: 3,
 };
-ClrLoadingState[ClrLoadingState.DEFAULT] = "DEFAULT";
-ClrLoadingState[ClrLoadingState.LOADING] = "LOADING";
-ClrLoadingState[ClrLoadingState.SUCCESS] = "SUCCESS";
-ClrLoadingState[ClrLoadingState.ERROR] = "ERROR";
+ClrLoadingState[ClrLoadingState.DEFAULT] = 'DEFAULT';
+ClrLoadingState[ClrLoadingState.LOADING] = 'LOADING';
+ClrLoadingState[ClrLoadingState.SUCCESS] = 'SUCCESS';
+ClrLoadingState[ClrLoadingState.ERROR] = 'ERROR';
 var ClrLoading = /** @class */ (function () {
     function ClrLoading(listener) {
         this.listener = listener;
@@ -428,10 +428,10 @@ ClrLoading.decorators = [
     { type: Directive, args: [{ selector: '[clrLoading]' },] },
 ];
 ClrLoading.ctorParameters = function () { return [
-    { type: LoadingListener, decorators: [{ type: Optional },] },
+    { type: LoadingListener, decorators: [{ type: Optional }] }
 ]; };
 ClrLoading.propDecorators = {
-    "loadingState": [{ type: Input, args: ['clrLoading',] },],
+    loadingState: [{ type: Input, args: ['clrLoading',] }]
 };
 var CLR_LOADING_DIRECTIVES = [ClrLoading];
 var ClrLoadingModule = /** @class */ (function () {
@@ -562,16 +562,16 @@ ClrButton.decorators = [
             },] },
 ];
 ClrButton.ctorParameters = function () { return [
-    { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional },] },
+    { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional }] }
 ]; };
 ClrButton.propDecorators = {
-    "templateRef": [{ type: ViewChild, args: ['buttonProjectedRef',] },],
-    "inMenu": [{ type: Input, args: ['clrInMenu',] },],
-    "classNames": [{ type: Input, args: ['class',] },],
-    "name": [{ type: Input, args: ['name',] },],
-    "type": [{ type: Input, args: ['type',] },],
-    "disabled": [{ type: Input, args: ['disabled',] },],
-    "_click": [{ type: Output, args: ['click',] },],
+    templateRef: [{ type: ViewChild, args: ['buttonProjectedRef',] }],
+    inMenu: [{ type: Input, args: ['clrInMenu',] }],
+    classNames: [{ type: Input, args: ['class',] }],
+    name: [{ type: Input, args: ['name',] }],
+    type: [{ type: Input, args: ['type',] }],
+    disabled: [{ type: Input, args: ['disabled',] }],
+    _click: [{ type: Output, args: ['click',] }]
 };
 var CLR_MENU_POSITIONS = [
     'bottom-left',
@@ -583,10 +583,16 @@ var CLR_MENU_POSITIONS = [
     'right-bottom',
     'right-top',
 ];
+var ClrCommonStrings = /** @class */ (function () {
+    function ClrCommonStrings() {
+    }
+    return ClrCommonStrings;
+}());
 var ClrButtonGroup = /** @class */ (function () {
-    function ClrButtonGroup(buttonGroupNewService, elementRef) {
+    function ClrButtonGroup(buttonGroupNewService, elementRef, commonStrings) {
         this.buttonGroupNewService = buttonGroupNewService;
         this.elementRef = elementRef;
+        this.commonStrings = commonStrings;
         this.inlineButtons = [];
         this.menuButtons = [];
         this._openMenu = false;
@@ -734,19 +740,20 @@ var ClrButtonGroup = /** @class */ (function () {
 ClrButtonGroup.decorators = [
     { type: Component, args: [{
                 selector: 'clr-button-group',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-container *ngFor=\"let inlineButton of inlineButtons\">\n    <ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n</ng-container>\n<ng-container *ngIf=\"menuButtons.length > 0\">\n    <div\n        class=\"btn-group-overflow open\"\n        [ngClass]=\"menuPosition\"\n        #anchor>\n        <button\n            class=\"btn dropdown-toggle\"\n            (click)=\"toggleMenu()\">\n            <clr-icon shape=\"ellipsis-horizontal\"></clr-icon>\n        </button>\n        <div\n            class=\"dropdown-menu\"\n            *clrPopoverOld=\"openMenu; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint;\">\n            <ng-template [ngTemplateOutlet]=\"ref\"></ng-template>\n        </div>\n    </div>\n</ng-container>\n<ng-template #ref>\n    <ng-container *ngFor=\"let menuButton of menuButtons\">\n        <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    </ng-container>\n</ng-template>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-container *ngFor=\"let inlineButton of inlineButtons\">\n    <ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n</ng-container>\n<ng-container *ngIf=\"menuButtons.length > 0\">\n    <div\n        class=\"btn-group-overflow open\"\n        [ngClass]=\"menuPosition\"\n        #anchor>\n        <button\n            class=\"btn dropdown-toggle\"\n            (click)=\"toggleMenu()\">\n            <clr-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.more\"></clr-icon>\n        </button>\n        <div\n            class=\"dropdown-menu\"\n            *clrPopoverOld=\"openMenu; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint;\">\n            <ng-template [ngTemplateOutlet]=\"ref\"></ng-template>\n        </div>\n    </div>\n</ng-container>\n<ng-template #ref>\n    <ng-container *ngFor=\"let menuButton of menuButtons\">\n        <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    </ng-container>\n</ng-template>\n",
                 providers: [ButtonInGroupService],
                 host: { '[class.btn-group]': 'true' },
             },] },
 ];
 ClrButtonGroup.ctorParameters = function () { return [
-    { type: ButtonInGroupService, },
-    { type: ElementRef, },
+    { type: ButtonInGroupService },
+    { type: ElementRef },
+    { type: ClrCommonStrings }
 ]; };
 ClrButtonGroup.propDecorators = {
-    "buttons": [{ type: ContentChildren, args: [ClrButton,] },],
-    "menuPosition": [{ type: Input, args: ['clrMenuPosition',] },],
-    "onMouseClick": [{ type: HostListener, args: ['document:click', ['$event.target'],] },],
+    buttons: [{ type: ContentChildren, args: [ClrButton,] }],
+    menuPosition: [{ type: Input, args: ['clrMenuPosition',] }],
+    onMouseClick: [{ type: HostListener, args: ['document:click', ['$event.target'],] }]
 };
 var CLR_BUTTON_GROUP_DIRECTIVES = [ClrButton, ClrButtonGroup];
 var ClrButtonGroupModule = /** @class */ (function () {
@@ -835,12 +842,12 @@ ClrLoadingButton.decorators = [
             },] },
 ];
 ClrLoadingButton.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef },
+    { type: Renderer2 }
 ]; };
 ClrLoadingButton.propDecorators = {
-    "disabled": [{ type: Input, args: ['disabled',] },],
-    "clrLoadingChange": [{ type: Output, args: ['clrLoadingChange',] },],
+    disabled: [{ type: Input, args: ['disabled',] }],
+    clrLoadingChange: [{ type: Output, args: ['clrLoadingChange',] }]
 };
 var CLR_LOADING_BUTTON_DIRECTIVES = [ClrLoadingButton];
 var ClrLoadingButtonModule = /** @class */ (function () {
@@ -863,6 +870,405 @@ var ClrButtonModule = /** @class */ (function () {
 ClrButtonModule.decorators = [
     { type: NgModule, args: [{
                 exports: [ClrLoadingButtonModule, ClrButtonGroupModule],
+            },] },
+];
+var EmptyAnchor = /** @class */ (function () {
+    function EmptyAnchor() {
+    }
+    return EmptyAnchor;
+}());
+EmptyAnchor.decorators = [
+    { type: Component, args: [{
+                template: '',
+            },] },
+];
+var ClrHostWrappingModule = /** @class */ (function () {
+    function ClrHostWrappingModule() {
+    }
+    return ClrHostWrappingModule;
+}());
+ClrHostWrappingModule.decorators = [
+    { type: NgModule, args: [{ declarations: [EmptyAnchor], exports: [EmptyAnchor], entryComponents: [EmptyAnchor] },] },
+];
+var ClrControlError = /** @class */ (function () {
+    function ClrControlError() {
+    }
+    return ClrControlError;
+}());
+ClrControlError.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-control-error',
+                template: "\n    <ng-content></ng-content>\n    ",
+                host: { '[class.clr-subtext]': 'true' },
+            },] },
+];
+var ClrControlHelper = /** @class */ (function () {
+    function ClrControlHelper() {
+    }
+    return ClrControlHelper;
+}());
+ClrControlHelper.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-control-helper',
+                template: "\n    <ng-content></ng-content>\n    ",
+                host: { '[class.clr-subtext]': 'true' },
+            },] },
+];
+var NgControlService = /** @class */ (function () {
+    function NgControlService() {
+        this._controlChanges = new Subject();
+    }
+    Object.defineProperty(NgControlService.prototype, "controlChanges", {
+        get: function () {
+            return this._controlChanges.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NgControlService.prototype.setControl = function (control) {
+        this._controlChanges.next(control);
+    };
+    return NgControlService;
+}());
+NgControlService.decorators = [
+    { type: Injectable },
+];
+var IfErrorService = /** @class */ (function () {
+    function IfErrorService(ngControlService) {
+        var _this = this;
+        this.ngControlService = ngControlService;
+        this._statusChanges = new Subject();
+        this.subscriptions = [];
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
+            _this.listenForChanges();
+        }));
+    }
+    Object.defineProperty(IfErrorService.prototype, "statusChanges", {
+        get: function () {
+            return this._statusChanges.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    IfErrorService.prototype.listenForChanges = function () {
+        var _this = this;
+        this.subscriptions.push(this.control.statusChanges.pipe(filter(function () { return _this.control.touched; })).subscribe(function () {
+            _this._statusChanges.next(_this.control);
+        }));
+    };
+    IfErrorService.prototype.triggerStatusChange = function () {
+        if (this.control) {
+            this._statusChanges.next(this.control);
+        }
+    };
+    IfErrorService.prototype.ngOnDestroy = function () {
+        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
+    };
+    return IfErrorService;
+}());
+IfErrorService.decorators = [
+    { type: Injectable },
+];
+IfErrorService.ctorParameters = function () { return [
+    { type: NgControlService }
+]; };
+var ClrIfError = /** @class */ (function () {
+    function ClrIfError(service, template, container) {
+        this.service = service;
+        this.template = template;
+        this.container = container;
+        this.displayed = false;
+        if (!this.service) {
+            throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
+        }
+        else {
+            this.displayError(false);
+        }
+    }
+    ClrIfError.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this.service.statusChanges.subscribe(function (control) {
+            if (_this.error) {
+                _this.displayError(control.hasError(_this.error));
+            }
+            else {
+                _this.displayError(control.invalid);
+            }
+        });
+    };
+    ClrIfError.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
+    ClrIfError.prototype.displayError = function (invalid) {
+        if (invalid && !this.displayed) {
+            this.container.createEmbeddedView(this.template);
+            this.displayed = true;
+        }
+        else if (!invalid) {
+            this.container.clear();
+            this.displayed = false;
+        }
+    };
+    return ClrIfError;
+}());
+ClrIfError.decorators = [
+    { type: Directive, args: [{ selector: '[clrIfError]' },] },
+];
+ClrIfError.ctorParameters = function () { return [
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
+]; };
+ClrIfError.propDecorators = {
+    error: [{ type: Input, args: ['clrIfError',] }]
+};
+var counter = 0;
+var ControlIdService = /** @class */ (function () {
+    function ControlIdService() {
+        this._id = 'clr-form-control-' + ++counter;
+        this._idChange = new BehaviorSubject(this._id);
+    }
+    Object.defineProperty(ControlIdService.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        set: function (value) {
+            this._id = value;
+            this._idChange.next(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControlIdService.prototype, "idChange", {
+        get: function () {
+            return this._idChange.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ControlIdService;
+}());
+ControlIdService.decorators = [
+    { type: Injectable },
+];
+var Layouts = {
+    VERTICAL: 'vertical',
+    HORIZONTAL: 'horizontal',
+    COMPACT: 'compact',
+};
+var LayoutService = /** @class */ (function () {
+    function LayoutService() {
+        this.layout = Layouts.VERTICAL;
+        this.layoutValues = Object.keys(Layouts).map(function (key) { return Layouts[key]; });
+    }
+    LayoutService.prototype.isVertical = function () {
+        return this.layout === Layouts.VERTICAL;
+    };
+    Object.defineProperty(LayoutService.prototype, "layoutClass", {
+        get: function () {
+            return "clr-form-" + this.layout;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LayoutService.prototype.isValid = function (layout) {
+        return this.layoutValues.indexOf(layout) > -1;
+    };
+    return LayoutService;
+}());
+LayoutService.decorators = [
+    { type: Injectable },
+];
+var ClrLabel = /** @class */ (function () {
+    function ClrLabel(controlIdService, layoutService, renderer, el) {
+        this.controlIdService = controlIdService;
+        this.layoutService = layoutService;
+        this.renderer = renderer;
+        this.el = el;
+    }
+    ClrLabel.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.controlIdService) {
+            this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
+        }
+        if (this.layoutService &&
+            !this.layoutService.isVertical() &&
+            this.el.nativeElement &&
+            this.el.nativeElement.className.indexOf('clr-col') < 0) {
+            this.renderer.addClass(this.el.nativeElement, 'clr-col-xs-12');
+            this.renderer.addClass(this.el.nativeElement, 'clr-col-md-2');
+        }
+        if (!this.forAttr && this.controlIdService) {
+            this.subscription = this.controlIdService.idChange.subscribe(function (id) { return (_this.forAttr = id); });
+        }
+    };
+    ClrLabel.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    return ClrLabel;
+}());
+ClrLabel.decorators = [
+    { type: Directive, args: [{ selector: 'label' },] },
+];
+ClrLabel.ctorParameters = function () { return [
+    { type: ControlIdService, decorators: [{ type: Optional }] },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+]; };
+ClrLabel.propDecorators = {
+    forAttr: [{ type: HostBinding, args: ['attr.for',] }, { type: Input, args: ['for',] }]
+};
+var ClrForm = /** @class */ (function () {
+    function ClrForm() {
+    }
+    return ClrForm;
+}());
+ClrForm.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrForm]',
+                providers: [LayoutService],
+                host: { '[class.clr-form]': 'true' },
+            },] },
+];
+var ClrLayout = /** @class */ (function () {
+    function ClrLayout(layoutService) {
+        this.layoutService = layoutService;
+    }
+    ClrLayout.prototype.ngOnInit = function () {
+        if (this.layout && this.layoutService.isValid(this.layout)) {
+            this.layoutService.layout = this.layout;
+        }
+    };
+    return ClrLayout;
+}());
+ClrLayout.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrLayout]',
+                host: {
+                    '[class]': 'layoutService.layoutClass',
+                },
+            },] },
+];
+ClrLayout.ctorParameters = function () { return [
+    { type: LayoutService }
+]; };
+ClrLayout.propDecorators = {
+    layout: [{ type: Input, args: ['clrLayout',] }]
+};
+var ClrCommonFormsModule = /** @class */ (function () {
+    function ClrCommonFormsModule() {
+    }
+    return ClrCommonFormsModule;
+}());
+ClrCommonFormsModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule],
+                declarations: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
+                exports: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
+            },] },
+];
+var HostWrapper = /** @class */ (function () {
+    function HostWrapper(containerType, vcr, index) {
+        if (index === void 0) { index = 0; }
+        this.injector = vcr.injector;
+        if (!this.injector.get(containerType, null)) {
+            var cfr = this.injector.get(ComponentFactoryResolver);
+            var el = this.injector.get(ElementRef);
+            vcr.createComponent(cfr.resolveComponentFactory(EmptyAnchor));
+            var factory = cfr.resolveComponentFactory(containerType);
+            var element = [];
+            element[index] = [el.nativeElement];
+            var containerRef = vcr.createComponent(factory, undefined, undefined, element);
+            vcr.remove(0);
+            containerRef.instance._dynamic = true;
+            this.injector = containerRef.injector;
+        }
+    }
+    HostWrapper.prototype.get = function (token, notFoundValue) {
+        return this.injector.get(token, notFoundValue);
+    };
+    return HostWrapper;
+}());
+var WrappedFormControl = /** @class */ (function () {
+    function WrappedFormControl(wrapperType, vcr, index) {
+        if (index === void 0) { index = 0; }
+        this.wrapperType = wrapperType;
+        this.vcr = vcr;
+        this.index = index;
+    }
+    Object.defineProperty(WrappedFormControl.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        set: function (value) {
+            this._id = value;
+            if (this.controlIdService) {
+                this.controlIdService.id = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    WrappedFormControl.prototype.getProviderFromContainer = function (token, notFoundValue) {
+        return this._containerInjector.get(token, notFoundValue);
+    };
+    WrappedFormControl.prototype.ngOnInit = function () {
+        this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
+        this.controlIdService = this._containerInjector.get(ControlIdService);
+        if (this._id) {
+            this.controlIdService.id = this._id;
+        }
+        else {
+            this._id = this.controlIdService.id;
+        }
+    };
+    return WrappedFormControl;
+}());
+WrappedFormControl.propDecorators = {
+    id: [{ type: HostBinding }, { type: Input }]
+};
+var ClrCheckboxContainer = /** @class */ (function () {
+    function ClrCheckboxContainer() {
+        this._dynamic = false;
+    }
+    return ClrCheckboxContainer;
+}());
+ClrCheckboxContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-checkbox-container',
+                template: "\n        <!-- We want the checkbox input to be before the label, always -->\n        <ng-content select=\"[clrCheckbox]\"></ng-content>\n        <ng-content></ng-content>\n        <label *ngIf=\"_dynamic\"></label>\n    ",
+                host: { '[class.checkbox]': 'true' },
+                providers: [ControlIdService],
+            },] },
+];
+var ClrCheckboxNext = /** @class */ (function (_super) {
+    __extends(ClrCheckboxNext, _super);
+    function ClrCheckboxNext(vcr) {
+        return _super.call(this, ClrCheckboxContainer, vcr) || this;
+    }
+    return ClrCheckboxNext;
+}(WrappedFormControl));
+ClrCheckboxNext.decorators = [
+    { type: Directive, args: [{ selector: '[clrCheckbox]' },] },
+];
+ClrCheckboxNext.ctorParameters = function () { return [
+    { type: ViewContainerRef }
+]; };
+var ClrCheckboxNextModule = /** @class */ (function () {
+    function ClrCheckboxNextModule() {
+    }
+    return ClrCheckboxNextModule;
+}());
+ClrCheckboxNextModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
+                declarations: [ClrCheckboxNext, ClrCheckboxContainer],
+                exports: [ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer],
+                entryComponents: [ClrCheckboxContainer],
             },] },
 ];
 var activeCounter = 0;
@@ -954,14 +1360,14 @@ ClrIfActive.decorators = [
     { type: Directive, args: [{ selector: '[clrIfActive]' },] },
 ];
 ClrIfActive.ctorParameters = function () { return [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ]; };
 ClrIfActive.propDecorators = {
-    "active": [{ type: Input, args: ['clrIfActive',] },],
-    "activeChange": [{ type: Output, args: ['clrIfActiveChange',] },],
+    active: [{ type: Input, args: ['clrIfActive',] }],
+    activeChange: [{ type: Output, args: ['clrIfActiveChange',] }]
 };
 var IfOpenService = /** @class */ (function () {
     function IfOpenService() {
@@ -1048,13 +1454,13 @@ ClrIfOpen.decorators = [
     { type: Directive, args: [{ selector: '[clrIfOpen]' },] },
 ];
 ClrIfOpen.ctorParameters = function () { return [
-    { type: IfOpenService, },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
+    { type: IfOpenService },
+    { type: TemplateRef },
+    { type: ViewContainerRef }
 ]; };
 ClrIfOpen.propDecorators = {
-    "open": [{ type: Input, args: ['clrIfOpen',] },],
-    "openChange": [{ type: Output, args: ['clrIfOpenChange',] },],
+    open: [{ type: Input, args: ['clrIfOpen',] }],
+    openChange: [{ type: Output, args: ['clrIfOpenChange',] }]
 };
 var CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen];
 var ClrConditionalModule = /** @class */ (function () {
@@ -1157,14 +1563,14 @@ FocusTrapDirective.decorators = [
     { type: Directive, args: [{ selector: '[clrFocusTrap]' },] },
 ];
 FocusTrapDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Injector, },
-    { type: FocusTrapTracker, },
-    { type: Renderer2, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: ElementRef },
+    { type: Injector },
+    { type: FocusTrapTracker },
+    { type: Renderer2 },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ]; };
 FocusTrapDirective.propDecorators = {
-    "onFocusIn": [{ type: HostListener, args: ['document:focusin', ['$event'],] },],
+    onFocusIn: [{ type: HostListener, args: ['document:focusin', ['$event'],] }]
 };
 var FOCUS_TRAP_DIRECTIVES = [FocusTrapDirective];
 var ClrFocusTrapModule = /** @class */ (function () {
@@ -1179,24 +1585,6 @@ ClrFocusTrapModule.decorators = [
                 declarations: [FOCUS_TRAP_DIRECTIVES],
                 exports: [FOCUS_TRAP_DIRECTIVES],
             },] },
-];
-var EmptyAnchor = /** @class */ (function () {
-    function EmptyAnchor() {
-    }
-    return EmptyAnchor;
-}());
-EmptyAnchor.decorators = [
-    { type: Component, args: [{
-                template: '',
-            },] },
-];
-var ClrHostWrappingModule = /** @class */ (function () {
-    function ClrHostWrappingModule() {
-    }
-    return ClrHostWrappingModule;
-}());
-ClrHostWrappingModule.decorators = [
-    { type: NgModule, args: [{ declarations: [EmptyAnchor], exports: [EmptyAnchor], entryComponents: [EmptyAnchor] },] },
 ];
 var UP_ARROW = 38;
 var DOWN_ARROW = 40;
@@ -1584,8 +1972,8 @@ DatepickerFocusService.decorators = [
     { type: Injectable },
 ];
 DatepickerFocusService.ctorParameters = function () { return [
-    { type: NgZone, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ]; };
 var LocaleHelperService = /** @class */ (function () {
     function LocaleHelperService(locale) {
@@ -1662,7 +2050,7 @@ LocaleHelperService.decorators = [
     { type: Injectable },
 ];
 LocaleHelperService.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: Inject, args: [LOCALE_ID,] },] },
+    { type: String, decorators: [{ type: Inject, args: [LOCALE_ID,] }] }
 ]; };
 var ClrCalendar = /** @class */ (function () {
     function ClrCalendar(_localeHelperService, _dateNavigationService, _datepickerFocusService, _elRef) {
@@ -1760,43 +2148,14 @@ ClrCalendar.decorators = [
     { type: Component, args: [{ selector: 'clr-calendar', template: "<table class=\"calendar-table weekdays\">\n    <tr class=\"calendar-row\">\n        <td *ngFor=\"let day of localeDaysNarrow\" class=\"calendar-cell weekday\">\n            {{day}}\n        </td>\n    </tr>\n</table>\n<table\n    class=\"calendar-table calendar-dates\">\n    <tr class=\"calendar-row\" *ngFor=\"let row of calendarViewModel.calendarView\">\n        <td *ngFor=\"let dayView of row\" class=\"calendar-cell\">\n            <clr-day [clrDayView]=\"dayView\"></clr-day>\n        </td>\n    </tr>\n</table>\n" },] },
 ];
 ClrCalendar.ctorParameters = function () { return [
-    { type: LocaleHelperService, },
-    { type: DateNavigationService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: LocaleHelperService },
+    { type: DateNavigationService },
+    { type: DatepickerFocusService },
+    { type: ElementRef }
 ]; };
 ClrCalendar.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
-var counter = 0;
-var ControlIdService = /** @class */ (function () {
-    function ControlIdService() {
-        this._id = 'clr-form-control-' + ++counter;
-        this._idChange = new BehaviorSubject(this._id);
-    }
-    Object.defineProperty(ControlIdService.prototype, "id", {
-        get: function () {
-            return this._id;
-        },
-        set: function (value) {
-            this._id = value;
-            this._idChange.next(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ControlIdService.prototype, "idChange", {
-        get: function () {
-            return this._idChange.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ControlIdService;
-}());
-ControlIdService.decorators = [
-    { type: Injectable },
-];
 var DateFormControlService = /** @class */ (function () {
     function DateFormControlService() {
         this._touchedChange = new Subject();
@@ -1931,7 +2290,7 @@ DateIOService.decorators = [
     { type: Injectable },
 ];
 DateIOService.ctorParameters = function () { return [
-    { type: LocaleHelperService, },
+    { type: LocaleHelperService }
 ]; };
 var DATEPICKER_ENABLE_BREAKPOINT = 768;
 var DatepickerEnabledService = /** @class */ (function () {
@@ -1961,15 +2320,16 @@ DatepickerEnabledService.decorators = [
     { type: Injectable },
 ];
 DatepickerEnabledService.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ]; };
 var ClrDateContainer = /** @class */ (function () {
-    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService) {
+    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings) {
         var _this = this;
         this._ifOpenService = _ifOpenService;
         this._dateNavigationService = _dateNavigationService;
         this._datepickerEnabledService = _datepickerEnabledService;
         this.dateFormControlService = dateFormControlService;
+        this.commonStrings = commonStrings;
         this._dynamic = false;
         this._sub = this._ifOpenService.openChange.subscribe(function (open) {
             if (open) {
@@ -1999,7 +2359,7 @@ var ClrDateContainer = /** @class */ (function () {
 ClrDateContainer.decorators = [
     { type: Component, args: [{
                 selector: 'clr-date-container',
-                template: "\n        <ng-content></ng-content>\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    ",
+                template: "\n        <ng-content></ng-content>\n        <!--\n          Isn't this button supposed to be aria-hidden=\"true\"? \n          I thought we decided screenreaders just typed the date in.\n        -->\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    ",
                 providers: [
                     ControlIdService,
                     IfOpenService,
@@ -2013,71 +2373,12 @@ ClrDateContainer.decorators = [
             },] },
 ];
 ClrDateContainer.ctorParameters = function () { return [
-    { type: IfOpenService, },
-    { type: DateNavigationService, },
-    { type: DatepickerEnabledService, },
-    { type: DateFormControlService, },
+    { type: IfOpenService },
+    { type: DateNavigationService },
+    { type: DatepickerEnabledService },
+    { type: DateFormControlService },
+    { type: ClrCommonStrings }
 ]; };
-var HostWrapper = /** @class */ (function () {
-    function HostWrapper(containerType, vcr, index) {
-        if (index === void 0) { index = 0; }
-        this.injector = vcr.injector;
-        if (!this.injector.get(containerType, null)) {
-            var cfr = this.injector.get(ComponentFactoryResolver);
-            var el = this.injector.get(ElementRef);
-            vcr.createComponent(cfr.resolveComponentFactory(EmptyAnchor));
-            var factory = cfr.resolveComponentFactory(containerType);
-            var element = [];
-            element[index] = [el.nativeElement];
-            var containerRef = vcr.createComponent(factory, undefined, undefined, element);
-            vcr.remove(0);
-            containerRef.instance._dynamic = true;
-            this.injector = containerRef.injector;
-        }
-    }
-    HostWrapper.prototype.get = function (token, notFoundValue) {
-        return this.injector.get(token, notFoundValue);
-    };
-    return HostWrapper;
-}());
-var WrappedFormControl = /** @class */ (function () {
-    function WrappedFormControl(wrapperType, vcr, index) {
-        if (index === void 0) { index = 0; }
-        this.wrapperType = wrapperType;
-        this.vcr = vcr;
-        this.index = index;
-    }
-    Object.defineProperty(WrappedFormControl.prototype, "id", {
-        get: function () {
-            return this._id;
-        },
-        set: function (value) {
-            this._id = value;
-            if (this.controlIdService) {
-                this.controlIdService.id = value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    WrappedFormControl.prototype.getProviderFromContainer = function (token, notFoundValue) {
-        return this._containerInjector.get(token, notFoundValue);
-    };
-    WrappedFormControl.prototype.ngOnInit = function () {
-        this._containerInjector = new HostWrapper(this.wrapperType, this.vcr, this.index);
-        this.controlIdService = this._containerInjector.get(ControlIdService);
-        if (this._id) {
-            this.controlIdService.id = this._id;
-        }
-        else {
-            this._id = this.controlIdService.id;
-        }
-    };
-    return WrappedFormControl;
-}());
-WrappedFormControl.propDecorators = {
-    "id": [{ type: HostBinding }, { type: Input },],
-};
 var ClrDateInput = /** @class */ (function (_super) {
     __extends(ClrDateInput, _super);
     function ClrDateInput(container, vcr, elRef, renderer, _ngControl, _dateIOService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, platformId) {
@@ -2252,24 +2553,24 @@ ClrDateInput.decorators = [
     { type: Directive, args: [{ selector: '[clrDate]', host: { '[class.date-input]': 'true' } },] },
 ];
 ClrDateInput.ctorParameters = function () { return [
-    { type: ClrDateContainer, decorators: [{ type: Optional },] },
-    { type: ViewContainerRef, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: NgControl, decorators: [{ type: Self }, { type: Optional },] },
-    { type: DateIOService, decorators: [{ type: Optional },] },
-    { type: DateNavigationService, decorators: [{ type: Optional },] },
-    { type: DatepickerEnabledService, decorators: [{ type: Optional },] },
-    { type: DateFormControlService, decorators: [{ type: Optional },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: ClrDateContainer, decorators: [{ type: Optional }] },
+    { type: ViewContainerRef },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: NgControl, decorators: [{ type: Self }, { type: Optional }] },
+    { type: DateIOService, decorators: [{ type: Optional }] },
+    { type: DateNavigationService, decorators: [{ type: Optional }] },
+    { type: DatepickerEnabledService, decorators: [{ type: Optional }] },
+    { type: DateFormControlService, decorators: [{ type: Optional }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ]; };
 ClrDateInput.propDecorators = {
-    "date": [{ type: Input, args: ['clrDate',] },],
-    "placeholder": [{ type: Input },],
-    "placeholderText": [{ type: HostBinding, args: ['attr.placeholder',] },],
-    "inputType": [{ type: HostBinding, args: ['attr.type',] },],
-    "_dateUpdated": [{ type: Output, args: ['clrDateChange',] },],
-    "onValueChange": [{ type: HostListener, args: ['change', ['$event.target'],] },],
+    date: [{ type: Input, args: ['clrDate',] }],
+    placeholder: [{ type: Input }],
+    placeholderText: [{ type: HostBinding, args: ['attr.placeholder',] }],
+    inputType: [{ type: HostBinding, args: ['attr.type',] }],
+    _dateUpdated: [{ type: Output, args: ['clrDateChange',] }],
+    onValueChange: [{ type: HostListener, args: ['change', ['$event.target'],] }]
 };
 var AbstractPopover = /** @class */ (function () {
     function AbstractPopover(injector, parentHost) {
@@ -2383,11 +2684,11 @@ AbstractPopover.decorators = [
     { type: Injectable },
 ];
 AbstractPopover.ctorParameters = function () { return [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] }
 ]; };
 AbstractPopover.propDecorators = {
-    "isOffScreen": [{ type: HostBinding, args: ['class.is-off-screen',] },],
+    isOffScreen: [{ type: HostBinding, args: ['class.is-off-screen',] }]
 };
 var ViewManagerService = /** @class */ (function () {
     function ViewManagerService() {
@@ -2473,9 +2774,9 @@ ClrDatepickerViewManager.decorators = [
             },] },
 ];
 ClrDatepickerViewManager.ctorParameters = function () { return [
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
-    { type: Injector, },
-    { type: ViewManagerService, },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] },
+    { type: Injector },
+    { type: ViewManagerService }
 ]; };
 var ClrDay = /** @class */ (function () {
     function ClrDay(_dateNavigationService, _ifOpenService, dateFormControlService) {
@@ -2502,18 +2803,19 @@ ClrDay.decorators = [
             },] },
 ];
 ClrDay.ctorParameters = function () { return [
-    { type: DateNavigationService, },
-    { type: IfOpenService, },
-    { type: DateFormControlService, },
+    { type: DateNavigationService },
+    { type: IfOpenService },
+    { type: DateFormControlService }
 ]; };
 ClrDay.propDecorators = {
-    "dayView": [{ type: Input, args: ['clrDayView',] },],
+    dayView: [{ type: Input, args: ['clrDayView',] }]
 };
 var ClrDaypicker = /** @class */ (function () {
-    function ClrDaypicker(_viewManagerService, _dateNavigationService, _localeHelperService) {
+    function ClrDaypicker(_viewManagerService, _dateNavigationService, _localeHelperService, commonStrings) {
         this._viewManagerService = _viewManagerService;
         this._dateNavigationService = _dateNavigationService;
         this._localeHelperService = _localeHelperService;
+        this.commonStrings = commonStrings;
     }
     ClrDaypicker.prototype.changeToMonthView = function () {
         this._viewManagerService.changeToMonthView();
@@ -2547,12 +2849,13 @@ var ClrDaypicker = /** @class */ (function () {
     return ClrDaypicker;
 }());
 ClrDaypicker.decorators = [
-    { type: Component, args: [{ selector: 'clr-daypicker', template: "<div class=\"calendar-header\">\n    <div class=\"calendar-pickers\">\n        <button class=\"calendar-btn monthpicker-trigger\" type=\"button\" (click)=\"changeToMonthView()\">\n            {{calendarMonth}}\n        </button>\n        <button class=\"calendar-btn yearpicker-trigger\" type=\"button\" (click)=\"changeToYearView()\">\n            {{calendarYear}}\n        </button>\n    </div>\n    <div class=\"calendar-switchers\">\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"previousMonth()\">\n            <clr-icon shape=\"angle\" dir=\"left\"></clr-icon>\n        </button>\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"currentMonth()\">\n            <clr-icon shape=\"event\"></clr-icon>\n        </button>\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"nextMonth()\">\n            <clr-icon shape=\"angle\" dir=\"right\"></clr-icon>\n        </button>\n    </div>\n</div>\n<clr-calendar></clr-calendar>\n", host: { '[class.daypicker]': 'true' } },] },
+    { type: Component, args: [{ selector: 'clr-daypicker', template: "<div class=\"calendar-header\">\n    <div class=\"calendar-pickers\">\n        <button class=\"calendar-btn monthpicker-trigger\" type=\"button\" (click)=\"changeToMonthView()\">\n            {{calendarMonth}}\n        </button>\n        <button class=\"calendar-btn yearpicker-trigger\" type=\"button\" (click)=\"changeToYearView()\">\n            {{calendarYear}}\n        </button>\n    </div>\n    <div class=\"calendar-switchers\">\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"previousMonth()\">\n            <clr-icon shape=\"angle\" dir=\"left\" [attr.title]=\"commonStrings.previous\"></clr-icon>\n        </button>\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"currentMonth()\">\n            <clr-icon shape=\"event\" [attr.title]=\"commonStrings.current\"></clr-icon>\n        </button>\n        <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"nextMonth()\">\n            <clr-icon shape=\"angle\" dir=\"right\" [attr.title]=\"commonStrings.next\"></clr-icon>\n        </button>\n    </div>\n</div>\n<clr-calendar></clr-calendar>\n", host: { '[class.daypicker]': 'true' } },] },
 ];
 ClrDaypicker.ctorParameters = function () { return [
-    { type: ViewManagerService, },
-    { type: DateNavigationService, },
-    { type: LocaleHelperService, },
+    { type: ViewManagerService },
+    { type: DateNavigationService },
+    { type: LocaleHelperService },
+    { type: ClrCommonStrings }
 ]; };
 var ClrMonthpicker = /** @class */ (function () {
     function ClrMonthpicker(_viewManagerService, _localeHelperService, _dateNavigationService, _datepickerFocusService, _elRef) {
@@ -2624,14 +2927,14 @@ ClrMonthpicker.decorators = [
             },] },
 ];
 ClrMonthpicker.ctorParameters = function () { return [
-    { type: ViewManagerService, },
-    { type: LocaleHelperService, },
-    { type: DateNavigationService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: ViewManagerService },
+    { type: LocaleHelperService },
+    { type: DateNavigationService },
+    { type: DatepickerFocusService },
+    { type: ElementRef }
 ]; };
 ClrMonthpicker.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
 var YEARS_TO_DISPLAY = 10;
 var YearRangeModel = /** @class */ (function () {
@@ -2671,11 +2974,12 @@ var YearRangeModel = /** @class */ (function () {
     return YearRangeModel;
 }());
 var ClrYearpicker = /** @class */ (function () {
-    function ClrYearpicker(_dateNavigationService, _viewManagerService, _datepickerFocusService, _elRef) {
+    function ClrYearpicker(_dateNavigationService, _viewManagerService, _datepickerFocusService, _elRef, commonStrings) {
         this._dateNavigationService = _dateNavigationService;
         this._viewManagerService = _viewManagerService;
         this._datepickerFocusService = _datepickerFocusService;
         this._elRef = _elRef;
+        this.commonStrings = commonStrings;
         this.yearRangeModel = new YearRangeModel(this.calendarYear);
         this._focusedYear = this.calendarYear;
     }
@@ -2754,20 +3058,21 @@ var ClrYearpicker = /** @class */ (function () {
 ClrYearpicker.decorators = [
     { type: Component, args: [{
                 selector: 'clr-yearpicker',
-                template: "\n        <div class=\"year-switchers\">\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"previousDecade()\">\n                <clr-icon shape=\"angle\" dir=\"left\"></clr-icon>\n            </button>\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"currentDecade()\">\n                <clr-icon shape=\"event\"></clr-icon>\n            </button>\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"nextDecade()\">\n                <clr-icon shape=\"angle\" dir=\"right\"></clr-icon>\n            </button>\n        </div>\n        <div class=\"years\">\n            <button\n                *ngFor=\"let year of yearRangeModel.yearRange\"\n                type=\"button\"\n                class=\"calendar-btn year\"\n                [attr.tabindex]=\"getTabIndex(year)\"\n                [class.is-selected]=\"year === calendarYear\"\n                (click)=\"changeYear(year)\">\n                {{year}}\n            </button>\n        </div>\n    ",
+                template: "\n        <div class=\"year-switchers\">\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"previousDecade()\">\n                <clr-icon shape=\"angle\" dir=\"left\" [attr.title]=\"commonStrings.previous\"></clr-icon>\n            </button>\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"currentDecade()\">\n                <clr-icon shape=\"event\" [attr.title]=\"commonStrings.current\"></clr-icon>\n            </button>\n            <button class=\"calendar-btn switcher\" type=\"button\" (click)=\"nextDecade()\">\n                <clr-icon shape=\"angle\" dir=\"right\" [attr.title]=\"commonStrings.next\"></clr-icon>\n            </button>\n        </div>\n        <div class=\"years\">\n            <button\n                *ngFor=\"let year of yearRangeModel.yearRange\"\n                type=\"button\"\n                class=\"calendar-btn year\"\n                [attr.tabindex]=\"getTabIndex(year)\"\n                [class.is-selected]=\"year === calendarYear\"\n                (click)=\"changeYear(year)\">\n                {{year}}\n            </button>\n        </div>\n    ",
                 host: {
                     '[class.yearpicker]': 'true',
                 },
             },] },
 ];
 ClrYearpicker.ctorParameters = function () { return [
-    { type: DateNavigationService, },
-    { type: ViewManagerService, },
-    { type: DatepickerFocusService, },
-    { type: ElementRef, },
+    { type: DateNavigationService },
+    { type: ViewManagerService },
+    { type: DatepickerFocusService },
+    { type: ElementRef },
+    { type: ClrCommonStrings }
 ]; };
 ClrYearpicker.propDecorators = {
-    "onKeyDown": [{ type: HostListener, args: ['keydown', ['$event'],] },],
+    onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }]
 };
 var CLR_DATEPICKER_DIRECTIVES = [
     ClrDay,
@@ -2792,129 +3097,705 @@ ClrDatepickerModule.decorators = [
                 entryComponents: [ClrDateContainer],
             },] },
 ];
-var latestId = 0;
-var ClrCheckboxDeprecated = /** @class */ (function () {
-    function ClrCheckboxDeprecated() {
-        this._id = (latestId++).toString();
-        this.clrAriaLabeledBy = null;
-        this.name = null;
-        this.disabled = false;
-        this.inline = false;
-        this._checked = false;
-        this._indeterminate = false;
-        this.indeterminateChange = new EventEmitter(false);
-        this.change = new EventEmitter(false);
-        this.onChangeCallback = function (_) { };
-        this.onTouchedCallback = function () { };
+var ControlClassService = /** @class */ (function () {
+    function ControlClassService() {
+        this.className = '';
     }
-    Object.defineProperty(ClrCheckboxDeprecated.prototype, "id", {
-        get: function () {
-            return "clr-checkbox-" + this._id;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClrCheckboxDeprecated.prototype, "checked", {
-        get: function () {
-            return this._checked;
-        },
-        set: function (value) {
-            if (value !== this._checked) {
-                if (this._indeterminate) {
-                    this.setIndeterminate(false);
-                }
-                this.setChecked(value);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClrCheckboxDeprecated.prototype, "indeterminate", {
-        get: function () {
-            return this._indeterminate;
-        },
-        set: function (value) {
-            if (this._indeterminate !== value) {
-                if (this._checked) {
-                    this.setChecked(false);
-                }
-                this.setIndeterminate(value);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClrCheckboxDeprecated.prototype.setIndeterminate = function (value) {
-        this._indeterminate = value;
-        this.indeterminateChange.emit(this._indeterminate);
-    };
-    ClrCheckboxDeprecated.prototype.setChecked = function (value) {
-        this._checked = value;
-        this.change.emit(this._checked);
-    };
-    ClrCheckboxDeprecated.prototype.toggle = function () {
-        this.checked = !this.checked;
-        this.onChangeCallback(this.checked);
-    };
-    ClrCheckboxDeprecated.prototype.writeValue = function (value) {
-        if (value === null) {
-            value = false;
+    ControlClassService.prototype.controlClass = function (invalid, grid) {
+        if (invalid === void 0) { invalid = false; }
+        if (grid === void 0) { grid = false; }
+        var controlClasses = [];
+        if (invalid) {
+            controlClasses.push('clr-error');
         }
-        if (value !== this.checked) {
-            this.checked = value;
+        if (grid && this.className.indexOf('clr-col') === -1) {
+            controlClasses.push('clr-col-md-10 clr-col-xs-12');
         }
+        return controlClasses.join(' ');
     };
-    ClrCheckboxDeprecated.prototype.registerOnChange = function (onChange) {
-        this.onChangeCallback = onChange;
-    };
-    ClrCheckboxDeprecated.prototype.registerOnTouched = function (onTouched) {
-        this.onTouchedCallback = onTouched;
-    };
-    ClrCheckboxDeprecated.prototype.touch = function () {
-        this.onTouchedCallback();
-    };
-    ClrCheckboxDeprecated.prototype.checkIndeterminateState = function () {
-        if (!this.disabled) {
-            this.toggle();
-        }
-    };
-    return ClrCheckboxDeprecated;
+    return ControlClassService;
 }());
-ClrCheckboxDeprecated.decorators = [
+ControlClassService.decorators = [
+    { type: Injectable },
+];
+var ClrInputContainer = /** @class */ (function () {
+    function ClrInputContainer(ifErrorService, layoutService, controlClassService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+    }
+    ClrInputContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrInputContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrInputContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrInputContainer;
+}());
+ClrInputContainer.decorators = [
     { type: Component, args: [{
-                selector: 'clr-checkbox',
-                template: "\n        <!--\n            FIXME: We are not subscribed to the change event but the click event here.\n            The reason for that is because checkboxes behave differently on IE & Edge.\n            https://stackoverflow.com/a/19447939\n            \n            To fix that, we listen to every click event and then toggle the checkbox manually\n            to make it behave the same way across the browsers we support.\n            \n            This works for cases when users toggle the checkbox using the keyboard too:\n            https://stackoverflow.com/questions/27878940/spacebar-triggering-click-event-on-checkbox\n        -->\n        <input type=\"checkbox\" [attr.aria-labelledby]=\"clrAriaLabeledBy\"\n               [id]=\"id\" [name]=\"name\" [checked]=\"checked\"\n               [indeterminate]=\"indeterminate\" [disabled]=\"disabled\"\n               (blur)=\"touch()\" (click)=\"checkIndeterminateState()\">\n        <label [attr.for]=\"id\">\n            <ng-content></ng-content>\n        </label>\n    ",
-                host: { '[class.checkbox]': '!inline', '[class.checkbox-inline]': 'inline', '[class.disabled]': 'disabled' },
-                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(function () { return ClrCheckboxDeprecated; }), multi: true }],
+                selector: 'clr-input-container',
+                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-input-wrapper\">\n                <ng-content select=\"[clrInput]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
             },] },
 ];
-ClrCheckboxDeprecated.propDecorators = {
-    "_id": [{ type: Input, args: ['id',] },],
-    "clrAriaLabeledBy": [{ type: Input, args: ['clrAriaLabeledBy',] },],
-    "name": [{ type: Input, args: ['name',] },],
-    "disabled": [{ type: Input, args: ['clrDisabled',] },],
-    "inline": [{ type: Input, args: ['clrInline',] },],
-    "checked": [{ type: Input, args: ['clrChecked',] },],
-    "indeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
-    "indeterminateChange": [{ type: Output, args: ['clrIndeterminateChange',] },],
-    "change": [{ type: Output, args: ['clrCheckedChange',] },],
+ClrInputContainer.ctorParameters = function () { return [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+]; };
+ClrInputContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
 };
-var CLR_CHECKBOX_DIRECTIVES = [ClrCheckboxDeprecated];
-var ClrCheckboxModule = /** @class */ (function () {
-    function ClrCheckboxModule() {
+var ClrInput = /** @class */ (function (_super) {
+    __extends(ClrInput, _super);
+    function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
+        var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        _this.type = type;
+        if (!control) {
+            throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
+        }
+        if (!_this.type) {
+            renderer.setAttribute(el.nativeElement, 'type', 'text');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
     }
-    return ClrCheckboxModule;
-}());
-ClrCheckboxModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
+    ClrInput.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrInput.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
+    return ClrInput;
+}(WrappedFormControl));
+ClrInput.decorators = [
+    { type: Directive, args: [{ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } },] },
 ];
-var ClrFormsModule = /** @class */ (function () {
-    function ClrFormsModule() {
+ClrInput.ctorParameters = function () { return [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+]; };
+ClrInput.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+var ClrInputModule = /** @class */ (function () {
+    function ClrInputModule() {
     }
-    return ClrFormsModule;
+    return ClrInputModule;
 }());
-ClrFormsModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], exports: [ClrCheckboxModule, ClrDatepickerModule] },] },
+ClrInputModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrInput, ClrInputContainer],
+                exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
+                entryComponents: [ClrInputContainer],
+            },] },
+];
+var FocusService = /** @class */ (function () {
+    function FocusService() {
+        this._focused = new BehaviorSubject(false);
+    }
+    Object.defineProperty(FocusService.prototype, "focusChange", {
+        get: function () {
+            return this._focused.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FocusService.prototype, "focused", {
+        set: function (state$$1) {
+            this._focused.next(state$$1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FocusService;
+}());
+FocusService.decorators = [
+    { type: Injectable },
+];
+var ToggleService = new InjectionToken(undefined);
+function ToggleServiceProvider() {
+    return new BehaviorSubject(false);
+}
+var ClrPasswordContainer = /** @class */ (function () {
+    function ClrPasswordContainer(ifErrorService, layoutService, controlClassService, focusService, toggleService, commonStrings) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.focusService = focusService;
+        this.toggleService = toggleService;
+        this.commonStrings = commonStrings;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.show = false;
+        this.focus = false;
+        this._toggle = true;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
+            _this.focus = state$$1;
+        }));
+    }
+    Object.defineProperty(ClrPasswordContainer.prototype, "clrToggle", {
+        get: function () {
+            return this._toggle;
+        },
+        set: function (state$$1) {
+            this._toggle = state$$1;
+            if (!state$$1) {
+                this.show = false;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrPasswordContainer.prototype.toggle = function () {
+        this.show = !this.show;
+        this.toggleService.next(this.show);
+    };
+    ClrPasswordContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrPasswordContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrPasswordContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrPasswordContainer;
+}());
+ClrPasswordContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-password-container',
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-input-wrapper\">\n        <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n          <ng-content select=\"[clrPassword]\"></ng-content>\n          <clr-icon *ngIf=\"!show && clrToggle\"\n            shape=\"eye\" \n            class=\"clr-input-group-icon-action\"\n            [attr.title]=\"commonStrings.show\"\n            (click)=\"toggle()\"></clr-icon>\n          <clr-icon *ngIf=\"show && clrToggle\" \n            shape=\"eye-hide\"\n            class=\"clr-input-group-icon-action\"\n            [attr.title]=\"commonStrings.hide\"\n            (click)=\"toggle()\"></clr-icon>\n        </div>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [
+                    IfErrorService,
+                    NgControlService,
+                    ControlIdService,
+                    ControlClassService,
+                    FocusService,
+                    { provide: ToggleService, useFactory: ToggleServiceProvider },
+                ],
+            },] },
+];
+ClrPasswordContainer.ctorParameters = function () { return [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: FocusService },
+    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] },
+    { type: ClrCommonStrings }
+]; };
+ClrPasswordContainer.propDecorators = {
+    clrToggle: [{ type: Input, args: ['clrToggle',] }],
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+var ClrPassword = /** @class */ (function (_super) {
+    __extends(ClrPassword, _super);
+    function ClrPassword(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
+        var _this = _super.call(this, ClrPasswordContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        _this.focusService = focusService;
+        _this.type = type;
+        _this.toggleService = toggleService;
+        if (!_this.control) {
+            throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
+        }
+        if (!_this.focusService) {
+            throw new Error('clrPassword requires being wrapped in <clr-password-container>');
+        }
+        if (!_this.type) {
+            renderer.setAttribute(el.nativeElement, 'type', 'password');
+        }
+        controlClassService.className = el.nativeElement.className;
+        _this.subscription = _this.toggleService.subscribe(function (toggle) {
+            renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
+        });
+        return _this;
+    }
+    ClrPassword.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrPassword.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
+    ClrPassword.prototype.onFocus = function () {
+        if (this.focusService) {
+            this.focusService.focused = true;
+        }
+    };
+    ClrPassword.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+        if (this.focusService) {
+            this.focusService.focused = false;
+        }
+    };
+    return ClrPassword;
+}(WrappedFormControl));
+ClrPassword.decorators = [
+    { type: Directive, args: [{ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } },] },
+];
+ClrPassword.ctorParameters = function () { return [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: FocusService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
+    { type: Renderer2 },
+    { type: ElementRef },
+    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] }
+]; };
+ClrPassword.propDecorators = {
+    onFocus: [{ type: HostListener, args: ['focus',] }],
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+var ClrPasswordModule = /** @class */ (function () {
+    function ClrPasswordModule() {
+    }
+    return ClrPasswordModule;
+}());
+ClrPasswordModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrPassword, ClrPasswordContainer],
+                exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
+                entryComponents: [ClrPasswordContainer],
+            },] },
+];
+var ClrRadioWrapper = /** @class */ (function () {
+    function ClrRadioWrapper(controlClassService) {
+        this.controlClassService = controlClassService;
+        this._dynamic = false;
+        this.hasContainer = false;
+        if (controlClassService) {
+            this.hasContainer = true;
+        }
+    }
+    return ClrRadioWrapper;
+}());
+ClrRadioWrapper.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-radio-wrapper',
+                template: "\n    <ng-content select=\"[clrRadio]\"></ng-content>\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label\"></label>\n  ",
+                host: {
+                    '[class.clr-radio-wrapper]': '!hasContainer',
+                },
+                providers: [ControlIdService],
+            },] },
+];
+ClrRadioWrapper.ctorParameters = function () { return [
+    { type: ControlClassService, decorators: [{ type: Optional }] }
+]; };
+ClrRadioWrapper.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+var ClrRadio = /** @class */ (function (_super) {
+    __extends(ClrRadio, _super);
+    function ClrRadio(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        var _this = _super.call(this, ClrRadioWrapper, vcr, 0) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
+    }
+    ClrRadio.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrRadio.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
+    return ClrRadio;
+}(WrappedFormControl));
+ClrRadio.decorators = [
+    { type: Directive, args: [{ selector: '[clrRadio]' },] },
+];
+ClrRadio.ctorParameters = function () { return [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: ElementRef }
+]; };
+ClrRadio.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+var ClrRadioContainer = /** @class */ (function () {
+    function ClrRadioContainer(ifErrorService, layoutService, controlClassService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this.inline = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+    }
+    Object.defineProperty(ClrRadioContainer.prototype, "clrInline", {
+        get: function () {
+            return this.inline;
+        },
+        set: function (value) {
+            if (!isBoolean(value)) {
+                this.inline = value === 'false' ? false : true;
+            }
+            else {
+                this.inline = !!value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrRadioContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrRadioContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrRadioContainer.prototype.ngOnDestroy = function () {
+        this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+    };
+    return ClrRadioContainer;
+}());
+ClrRadioContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-radio-container',
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-radio-wrapper\" [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [NgControlService, ControlClassService, IfErrorService],
+            },] },
+];
+ClrRadioContainer.ctorParameters = function () { return [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+]; };
+ClrRadioContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    clrInline: [{ type: Input }]
+};
+var ClrRadioModule = /** @class */ (function () {
+    function ClrRadioModule() {
+    }
+    return ClrRadioModule;
+}());
+ClrRadioModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
+                declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
+                entryComponents: [ClrRadioWrapper],
+            },] },
+];
+var ClrSelectContainer = /** @class */ (function () {
+    function ClrSelectContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.multi = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(ngControlService.controlChanges.subscribe(function (control) {
+            _this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
+        }));
+    }
+    ClrSelectContainer.prototype.wrapperClass = function () {
+        return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
+    };
+    ClrSelectContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrSelectContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrSelectContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrSelectContainer;
+}());
+ClrSelectContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-select-container',
+                template: "    \n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div [ngClass]=\"wrapperClass()\">\n                <ng-content select=\"[clrSelect]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+ClrSelectContainer.ctorParameters = function () { return [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService },
+    { type: NgControlService }
+]; };
+ClrSelectContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] }]
+};
+var ClrSelect = /** @class */ (function (_super) {
+    __extends(ClrSelect, _super);
+    function ClrSelect(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+        var _this = _super.call(this, ClrSelectContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        if (!control) {
+            throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
+    }
+    ClrSelect.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrSelect.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
+    return ClrSelect;
+}(WrappedFormControl));
+ClrSelect.decorators = [
+    { type: Directive, args: [{ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } },] },
+];
+ClrSelect.ctorParameters = function () { return [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: ElementRef }
+]; };
+ClrSelect.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+var ClrSelectModule = /** @class */ (function () {
+    function ClrSelectModule() {
+    }
+    return ClrSelectModule;
+}());
+ClrSelectModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrSelect, ClrSelectContainer],
+                exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
+                entryComponents: [ClrSelectContainer],
+            },] },
+];
+var ClrTextareaContainer = /** @class */ (function () {
+    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
+        var _this = this;
+        this.ifErrorService = ifErrorService;
+        this.layoutService = layoutService;
+        this.controlClassService = controlClassService;
+        this.subscriptions = [];
+        this.invalid = false;
+        this._dynamic = false;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+    }
+    ClrTextareaContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrTextareaContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
+    ClrTextareaContainer.prototype.ngOnDestroy = function () {
+        if (this.subscriptions) {
+            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
+        }
+    };
+    return ClrTextareaContainer;
+}());
+ClrTextareaContainer.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-textarea-container',
+                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-textarea-wrapper\">\n                <ng-content select=\"[clrTextarea]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
+                host: {
+                    '[class.clr-form-control]': 'true',
+                    '[class.clr-row]': 'addGrid()',
+                },
+                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+            },] },
+];
+ClrTextareaContainer.ctorParameters = function () { return [
+    { type: IfErrorService },
+    { type: LayoutService, decorators: [{ type: Optional }] },
+    { type: ControlClassService }
+]; };
+ClrTextareaContainer.propDecorators = {
+    label: [{ type: ContentChild, args: [ClrLabel,] }]
+};
+var ClrTextarea = /** @class */ (function (_super) {
+    __extends(ClrTextarea, _super);
+    function ClrTextarea(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
+        var _this = _super.call(this, ClrTextareaContainer, vcr, 1) || this;
+        _this.ngControlService = ngControlService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        if (!control) {
+            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
+        }
+        if (controlClassService) {
+            controlClassService.className = el.nativeElement.className;
+        }
+        return _this;
+    }
+    ClrTextarea.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService) {
+            this.ngControlService.setControl(this.control);
+        }
+    };
+    ClrTextarea.prototype.onBlur = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+    };
+    return ClrTextarea;
+}(WrappedFormControl));
+ClrTextarea.decorators = [
+    { type: Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
+];
+ClrTextarea.ctorParameters = function () { return [
+    { type: ViewContainerRef },
+    { type: NgControlService, decorators: [{ type: Optional }] },
+    { type: IfErrorService, decorators: [{ type: Optional }] },
+    { type: NgControl, decorators: [{ type: Optional }] },
+    { type: ControlClassService, decorators: [{ type: Optional }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+]; };
+ClrTextarea.propDecorators = {
+    onBlur: [{ type: HostListener, args: ['blur',] }]
+};
+var ClrTextareaModule = /** @class */ (function () {
+    function ClrTextareaModule() {
+    }
+    return ClrTextareaModule;
+}());
+ClrTextareaModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
+                declarations: [ClrTextarea, ClrTextareaContainer],
+                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
+                entryComponents: [ClrTextareaContainer],
+            },] },
+];
+var ClrFormsNextModule = /** @class */ (function () {
+    function ClrFormsNextModule() {
+    }
+    return ClrFormsNextModule;
+}());
+ClrFormsNextModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule],
+                exports: [
+                    ClrCommonFormsModule,
+                    ClrCheckboxNextModule,
+                    ClrDatepickerModule,
+                    ClrInputModule,
+                    ClrPasswordModule,
+                    ClrRadioModule,
+                    ClrSelectModule,
+                    ClrTextareaModule,
+                ],
+            },] },
 ];
 var Expand = /** @class */ (function () {
     function Expand() {
@@ -3035,13 +3916,13 @@ ClrIfExpanded.decorators = [
     { type: Directive, args: [{ selector: '[clrIfExpanded]' },] },
 ];
 ClrIfExpanded.ctorParameters = function () { return [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-    { type: Expand, },
+    { type: TemplateRef },
+    { type: ViewContainerRef },
+    { type: Expand }
 ]; };
 ClrIfExpanded.propDecorators = {
-    "expanded": [{ type: Input, args: ['clrIfExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrIfExpandedChange',] },],
+    expanded: [{ type: Input, args: ['clrIfExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrIfExpandedChange',] }]
 };
 var EXPAND_DIRECTIVES = [ClrIfExpanded];
 var ClrIfExpandModule = /** @class */ (function () {
@@ -3075,12 +3956,12 @@ OutsideClick.decorators = [
     { type: Directive, args: [{ selector: '[clrOutsideClick]' },] },
 ];
 OutsideClick.ctorParameters = function () { return [
-    { type: ElementRef, },
+    { type: ElementRef }
 ]; };
 OutsideClick.propDecorators = {
-    "strict": [{ type: Input, args: ['clrStrict',] },],
-    "outsideClick": [{ type: Output, args: ['clrOutsideClick',] },],
-    "documentClick": [{ type: HostListener, args: ['document:click', ['$event'],] },],
+    strict: [{ type: Input, args: ['clrStrict',] }],
+    outsideClick: [{ type: Output, args: ['clrOutsideClick',] }],
+    documentClick: [{ type: HostListener, args: ['document:click', ['$event'],] }]
 };
 var OUSTIDE_CLICK_DIRECTIVES = [OutsideClick];
 var ClrOutsideClickModule = /** @class */ (function () {
@@ -3268,11 +4149,11 @@ DatagridRowExpandAnimation.decorators = [
     { type: Directive, args: [{ selector: 'clr-dg-row' },] },
 ];
 DatagridRowExpandAnimation.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: DomAdapter, },
-    { type: Renderer2, },
-    { type: Expand, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: DomAdapter },
+    { type: Renderer2 },
+    { type: Expand },
+    { type: DatagridRenderOrganizer }
 ]; };
 var CustomFilter = /** @class */ (function () {
     function CustomFilter() {
@@ -3435,7 +4316,7 @@ Page.decorators = [
     { type: Injectable },
 ];
 Page.ctorParameters = function () { return [
-    { type: StateDebouncer, },
+    { type: StateDebouncer }
 ]; };
 var FiltersProvider = /** @class */ (function () {
     function FiltersProvider(_page, stateDebouncer) {
@@ -3452,9 +4333,10 @@ var FiltersProvider = /** @class */ (function () {
         configurable: true
     });
     FiltersProvider.prototype.hasActiveFilters = function () {
+        var e_2, _a;
         try {
-            for (var _a = __values(this._all), _b = _a.next(); !_b.done; _b = _a.next()) {
-                var filter$$1 = _b.value.filter;
+            for (var _b = __values(this._all), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var filter$$1 = _c.value.filter;
                 if (filter$$1 && filter$$1.isActive()) {
                     return true;
                 }
@@ -3463,18 +4345,18 @@ var FiltersProvider = /** @class */ (function () {
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
         finally {
             try {
-                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
             finally { if (e_2) throw e_2.error; }
         }
         return false;
-        var e_2, _c;
     };
     FiltersProvider.prototype.getActiveFilters = function () {
+        var e_3, _a;
         var ret = [];
         try {
-            for (var _a = __values(this._all), _b = _a.next(); !_b.done; _b = _a.next()) {
-                var filter$$1 = _b.value.filter;
+            for (var _b = __values(this._all), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var filter$$1 = _c.value.filter;
                 if (filter$$1 && filter$$1.isActive()) {
                     ret.push(filter$$1);
                 }
@@ -3483,12 +4365,11 @@ var FiltersProvider = /** @class */ (function () {
         catch (e_3_1) { e_3 = { error: e_3_1 }; }
         finally {
             try {
-                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
             finally { if (e_3) throw e_3.error; }
         }
         return ret;
-        var e_3, _c;
     };
     FiltersProvider.prototype.add = function (filter$$1) {
         var _this = this;
@@ -3513,9 +4394,10 @@ var FiltersProvider = /** @class */ (function () {
         return registered;
     };
     FiltersProvider.prototype.accepts = function (item) {
+        var e_4, _a;
         try {
-            for (var _a = __values(this._all), _b = _a.next(); !_b.done; _b = _a.next()) {
-                var filter$$1 = _b.value.filter;
+            for (var _b = __values(this._all), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var filter$$1 = _c.value.filter;
                 if (filter$$1 && filter$$1.isActive() && !filter$$1.accepts(item)) {
                     return false;
                 }
@@ -3524,12 +4406,11 @@ var FiltersProvider = /** @class */ (function () {
         catch (e_4_1) { e_4 = { error: e_4_1 }; }
         finally {
             try {
-                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
             finally { if (e_4) throw e_4.error; }
         }
         return true;
-        var e_4, _c;
     };
     FiltersProvider.prototype.resetPageAndEmitFilterChange = function (filters) {
         this.stateDebouncer.changeStart();
@@ -3543,8 +4424,8 @@ FiltersProvider.decorators = [
     { type: Injectable },
 ];
 FiltersProvider.ctorParameters = function () { return [
-    { type: Page, },
-    { type: StateDebouncer, },
+    { type: Page },
+    { type: StateDebouncer }
 ]; };
 var RegisteredFilter = /** @class */ (function () {
     function RegisteredFilter(filter$$1, unregister) {
@@ -3586,8 +4467,9 @@ var DatagridFilterRegistrar = /** @class */ (function () {
 }());
 var ClrDatagridFilter = /** @class */ (function (_super) {
     __extends(ClrDatagridFilter, _super);
-    function ClrDatagridFilter(_filters) {
+    function ClrDatagridFilter(_filters, commonStrings) {
         var _this = _super.call(this, _filters) || this;
+        _this.commonStrings = commonStrings;
         _this.anchorPoint = Point.RIGHT_BOTTOM;
         _this.popoverPoint = Point.RIGHT_TOP;
         _this.popoverOptions = { allowMultipleOpen: true };
@@ -3632,16 +4514,17 @@ ClrDatagridFilter.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-filter',
                 providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }],
-                template: "\n        <button #anchor class=\"datagrid-filter-toggle\" (click)=\"toggle()\"\n            [class.datagrid-filter-open]=\"open\" [class.datagrid-filtered]=\"active\"\n            type=\"button\"></button>\n\n        <ng-template [(clrPopoverOld)]=\"open\" [clrPopoverOldAnchor]=\"anchor\" [clrPopoverOldAnchorPoint]=\"anchorPoint\"\n             [clrPopoverOldPopoverPoint]=\"popoverPoint\" [clrPopoverOldOptions]=\"popoverOptions\">\n            <div class=\"datagrid-filter\">\n                <!-- FIXME: this whole filter part needs a final design before we can try to have a cleaner DOM -->\n                <div class=\"datagrid-filter-close-wrapper\">\n                    <button type=\"button\" class=\"close\" \n                        aria-label=\"Close\" (click)=\"open = false\"\n                        type=\"button\">\n                        <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n                    </button>\n                </div>\n    \n                <ng-content></ng-content>\n            </div>\n        </ng-template>\n    ",
+                template: "\n        <button #anchor class=\"datagrid-filter-toggle\" (click)=\"toggle()\"\n            [class.datagrid-filter-open]=\"open\" [class.datagrid-filtered]=\"active\"\n            type=\"button\"></button>\n\n        <ng-template [(clrPopoverOld)]=\"open\" [clrPopoverOldAnchor]=\"anchor\" [clrPopoverOldAnchorPoint]=\"anchorPoint\"\n             [clrPopoverOldPopoverPoint]=\"popoverPoint\" [clrPopoverOldOptions]=\"popoverOptions\">\n            <div class=\"datagrid-filter\">\n                <!-- FIXME: this whole filter part needs a final design before we can try to have a cleaner DOM -->\n                <div class=\"datagrid-filter-close-wrapper\">\n                    <button type=\"button\" class=\"close\" (click)=\"open = false\">\n                        <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n                    </button>\n                </div>\n    \n                <ng-content></ng-content>\n            </div>\n        </ng-template>\n    ",
             },] },
 ];
 ClrDatagridFilter.ctorParameters = function () { return [
-    { type: FiltersProvider, },
+    { type: FiltersProvider },
+    { type: ClrCommonStrings }
 ]; };
 ClrDatagridFilter.propDecorators = {
-    "open": [{ type: Input, args: ['clrDgFilterOpen',] },],
-    "openChanged": [{ type: Output, args: ['clrDgFilterOpenChange',] },],
-    "customFilter": [{ type: Input, args: ['clrDgFilter',] },],
+    open: [{ type: Input, args: ['clrDgFilterOpen',] }],
+    openChanged: [{ type: Output, args: ['clrDgFilterOpenChange',] }],
+    customFilter: [{ type: Input, args: ['clrDgFilter',] }]
 };
 var DatagridStringFilterImpl = /** @class */ (function () {
     function DatagridStringFilterImpl(filterFn) {
@@ -3752,15 +4635,15 @@ DatagridStringFilter.decorators = [
             },] },
 ];
 DatagridStringFilter.ctorParameters = function () { return [
-    { type: FiltersProvider, },
-    { type: DomAdapter, },
+    { type: FiltersProvider },
+    { type: DomAdapter }
 ]; };
 DatagridStringFilter.propDecorators = {
-    "customStringFilter": [{ type: Input, args: ['clrDgStringFilter',] },],
-    "input": [{ type: ViewChild, args: ['input',] },],
-    "filterContainer": [{ type: ViewChild, args: [ClrDatagridFilter,] },],
-    "value": [{ type: Input, args: ['clrFilterValue',] },],
-    "filterValueChange": [{ type: Output, args: ['clrFilterValueChange',] },],
+    customStringFilter: [{ type: Input, args: ['clrDgStringFilter',] }],
+    input: [{ type: ViewChild, args: ['input',] }],
+    filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter,] }],
+    value: [{ type: Input, args: ['clrFilterValue',] }],
+    filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
 var OompaLoompa = /** @class */ (function () {
     function OompaLoompa(cdr, willyWonka) {
@@ -3851,9 +4734,9 @@ ActionableOompaLoompa.decorators = [
     { type: Directive, args: [{ selector: 'clr-datagrid, clr-dg-row' },] },
 ];
 ActionableOompaLoompa.ctorParameters = function () { return [
-    { type: ChangeDetectorRef, },
-    { type: DatagridWillyWonka, decorators: [{ type: Optional },] },
-    { type: RowActionService, },
+    { type: ChangeDetectorRef },
+    { type: DatagridWillyWonka, decorators: [{ type: Optional }] },
+    { type: RowActionService }
 ]; };
 var ExpandableRowsCount = /** @class */ (function () {
     function ExpandableRowsCount() {
@@ -3901,9 +4784,9 @@ ExpandableOompaLoompa.decorators = [
     { type: Directive, args: [{ selector: 'clr-datagrid, clr-dg-row' },] },
 ];
 ExpandableOompaLoompa.ctorParameters = function () { return [
-    { type: ChangeDetectorRef, },
-    { type: DatagridWillyWonka, decorators: [{ type: Optional },] },
-    { type: ExpandableRowsCount, },
+    { type: ChangeDetectorRef },
+    { type: DatagridWillyWonka, decorators: [{ type: Optional }] },
+    { type: ExpandableRowsCount }
 ]; };
 var NestedProperty = /** @class */ (function () {
     function NestedProperty(prop) {
@@ -3913,11 +4796,12 @@ var NestedProperty = /** @class */ (function () {
         }
     }
     NestedProperty.prototype.getPropValue = function (item) {
+        var e_5, _a;
         if (this.splitProp) {
             var value = item;
             try {
-                for (var _a = __values(this.splitProp), _b = _a.next(); !_b.done; _b = _a.next()) {
-                    var nestedProp = _b.value;
+                for (var _b = __values(this.splitProp), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var nestedProp = _c.value;
                     if (value == null || typeof value === 'undefined' || typeof value[nestedProp] === 'undefined') {
                         return undefined;
                     }
@@ -3927,7 +4811,7 @@ var NestedProperty = /** @class */ (function () {
             catch (e_5_1) { e_5 = { error: e_5_1 }; }
             finally {
                 try {
-                    if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
                 finally { if (e_5) throw e_5.error; }
             }
@@ -3936,7 +4820,6 @@ var NestedProperty = /** @class */ (function () {
         else {
             return item[this.prop];
         }
-        var e_5, _c;
     };
     return NestedProperty;
 }());
@@ -4005,9 +4888,9 @@ var ClrDatagridSortOrder = {
     ASC: 1,
     DESC: -1,
 };
-ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED] = "UNSORTED";
-ClrDatagridSortOrder[ClrDatagridSortOrder.ASC] = "ASC";
-ClrDatagridSortOrder[ClrDatagridSortOrder.DESC] = "DESC";
+ClrDatagridSortOrder[ClrDatagridSortOrder.UNSORTED] = 'UNSORTED';
+ClrDatagridSortOrder[ClrDatagridSortOrder.ASC] = 'ASC';
+ClrDatagridSortOrder[ClrDatagridSortOrder.DESC] = 'DESC';
 var DragDispatcher = /** @class */ (function () {
     function DragDispatcher(_ngZone, _renderer) {
         this._ngZone = _ngZone;
@@ -4082,8 +4965,8 @@ DragDispatcher.decorators = [
     { type: Injectable },
 ];
 DragDispatcher.ctorParameters = function () { return [
-    { type: NgZone, },
-    { type: Renderer2, },
+    { type: NgZone },
+    { type: Renderer2 }
 ]; };
 var Sort = /** @class */ (function () {
     function Sort(stateDebouncer) {
@@ -4151,7 +5034,7 @@ Sort.decorators = [
     { type: Injectable },
 ];
 Sort.ctorParameters = function () { return [
-    { type: StateDebouncer, },
+    { type: StateDebouncer }
 ]; };
 var nbCount = 0;
 var ClrDatagridColumn = /** @class */ (function (_super) {
@@ -4397,24 +5280,24 @@ ClrDatagridColumn.decorators = [
             },] },
 ];
 ClrDatagridColumn.ctorParameters = function () { return [
-    { type: Sort, },
-    { type: FiltersProvider, },
-    { type: DragDispatcher, },
+    { type: Sort },
+    { type: FiltersProvider },
+    { type: DragDispatcher }
 ]; };
 ClrDatagridColumn.propDecorators = {
-    "handleElRef": [{ type: ViewChild, args: ['columnHandle',] },],
-    "handleTrackerElRef": [{ type: ViewChild, args: ['columnHandleTracker',] },],
-    "field": [{ type: Input, args: ['clrDgField',] },],
-    "sortBy": [{ type: Input, args: ['clrDgSortBy',] },],
-    "sorted": [{ type: Input, args: ['clrDgSorted',] },],
-    "sortedChange": [{ type: Output, args: ['clrDgSortedChange',] },],
-    "sortOrder": [{ type: Input, args: ['clrDgSortOrder',] },],
-    "sortOrderChange": [{ type: Output, args: ['clrDgSortOrderChange',] },],
-    "asc": [{ type: HostBinding, args: ['class.asc',] },],
-    "desc": [{ type: HostBinding, args: ['class.desc',] },],
-    "projectedFilter": [{ type: ContentChild, args: [CustomFilter,] },],
-    "updateFilterValue": [{ type: Input, args: ['clrFilterValue',] },],
-    "filterValueChange": [{ type: Output, args: ['clrFilterValueChange',] },],
+    handleElRef: [{ type: ViewChild, args: ['columnHandle',] }],
+    handleTrackerElRef: [{ type: ViewChild, args: ['columnHandleTracker',] }],
+    field: [{ type: Input, args: ['clrDgField',] }],
+    sortBy: [{ type: Input, args: ['clrDgSortBy',] }],
+    sorted: [{ type: Input, args: ['clrDgSorted',] }],
+    sortedChange: [{ type: Output, args: ['clrDgSortedChange',] }],
+    sortOrder: [{ type: Input, args: ['clrDgSortOrder',] }],
+    sortOrderChange: [{ type: Output, args: ['clrDgSortOrderChange',] }],
+    asc: [{ type: HostBinding, args: ['class.asc',] }],
+    desc: [{ type: HostBinding, args: ['class.desc',] }],
+    projectedFilter: [{ type: ContentChild, args: [CustomFilter,] }],
+    updateFilterValue: [{ type: Input, args: ['clrFilterValue',] }],
+    filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
 var Items = /** @class */ (function () {
     function Items(_filters, _sort, _page) {
@@ -4559,9 +5442,9 @@ Items.decorators = [
     { type: Injectable },
 ];
 Items.ctorParameters = function () { return [
-    { type: FiltersProvider, },
-    { type: Sort, },
-    { type: Page, },
+    { type: FiltersProvider },
+    { type: Sort },
+    { type: Page }
 ]; };
 var ClrDatagridItems = /** @class */ (function () {
     function ClrDatagridItems(template, _differs, _items) {
@@ -4608,13 +5491,13 @@ ClrDatagridItems.decorators = [
             },] },
 ];
 ClrDatagridItems.ctorParameters = function () { return [
-    { type: TemplateRef, },
-    { type: IterableDiffers, },
-    { type: Items, },
+    { type: TemplateRef },
+    { type: IterableDiffers },
+    { type: Items }
 ]; };
 ClrDatagridItems.propDecorators = {
-    "rawItems": [{ type: Input, args: ['clrDgItemsOf',] },],
-    "trackBy": [{ type: Input, args: ['clrDgItemsTrackBy',] },],
+    rawItems: [{ type: Input, args: ['clrDgItemsOf',] }],
+    trackBy: [{ type: Input, args: ['clrDgItemsTrackBy',] }]
 };
 var ClrDatagridPlaceholder = /** @class */ (function () {
     function ClrDatagridPlaceholder(items) {
@@ -4637,7 +5520,7 @@ ClrDatagridPlaceholder.decorators = [
             },] },
 ];
 ClrDatagridPlaceholder.ctorParameters = function () { return [
-    { type: Items, },
+    { type: Items }
 ]; };
 var POPOVER_HOST_ANCHOR = new InjectionToken('POPOVER_HOST_ANCHOR');
 var ClrSignpostTrigger = /** @class */ (function () {
@@ -4668,15 +5551,16 @@ ClrSignpostTrigger.decorators = [
     { type: Directive, args: [{ selector: '[clrSignpostTrigger]', host: { class: 'signpost-trigger' } },] },
 ];
 ClrSignpostTrigger.ctorParameters = function () { return [
-    { type: IfOpenService, },
-    { type: Renderer2, },
-    { type: ElementRef, },
+    { type: IfOpenService },
+    { type: Renderer2 },
+    { type: ElementRef }
 ]; };
 ClrSignpostTrigger.propDecorators = {
-    "onSignpostTriggerClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+    onSignpostTriggerClick: [{ type: HostListener, args: ['click', ['$event'],] }]
 };
 var ClrSignpost = /** @class */ (function () {
-    function ClrSignpost() {
+    function ClrSignpost(commonStrings) {
+        this.commonStrings = commonStrings;
         this.useCustomTrigger = false;
     }
     Object.defineProperty(ClrSignpost.prototype, "customTrigger", {
@@ -4691,13 +5575,16 @@ var ClrSignpost = /** @class */ (function () {
 ClrSignpost.decorators = [
     { type: Component, args: [{
                 selector: 'clr-signpost',
-                template: "\n        <ng-container *ngIf=\"!useCustomTrigger\">\n            <button\n                type=\"button\"\n                class=\"signpost-action btn btn-small btn-link\"\n                clrSignpostTrigger>\n                <clr-icon shape=\"info\"></clr-icon>\n            </button>\n        </ng-container>\n        \n        <ng-content></ng-content>\n    ",
+                template: "\n        <ng-container *ngIf=\"!useCustomTrigger\">\n            <button\n                type=\"button\"\n                class=\"signpost-action btn btn-small btn-link\"\n                clrSignpostTrigger>\n                <clr-icon shape=\"info\" [attr.title]=\"commonStrings.info\"></clr-icon>\n            </button>\n        </ng-container>\n        \n        <ng-content></ng-content>\n    ",
                 host: { '[class.signpost]': 'true' },
                 providers: [IfOpenService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
             },] },
 ];
+ClrSignpost.ctorParameters = function () { return [
+    { type: ClrCommonStrings }
+]; };
 ClrSignpost.propDecorators = {
-    "customTrigger": [{ type: ContentChild, args: [ClrSignpostTrigger,] },],
+    customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger,] }]
 };
 var HideableColumnService = /** @class */ (function () {
     function HideableColumnService() {
@@ -4823,12 +5710,12 @@ ClrDatagridCell.decorators = [
             },] },
 ];
 ClrDatagridCell.ctorParameters = function () { return [
-    { type: HideableColumnService, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: HideableColumnService },
+    { type: ElementRef },
+    { type: Renderer2 }
 ]; };
 ClrDatagridCell.propDecorators = {
-    "signpost": [{ type: ContentChildren, args: [ClrSignpost,] },],
+    signpost: [{ type: ContentChildren, args: [ClrSignpost,] }]
 };
 var nbSelection = 0;
 var SelectionType = {
@@ -4836,9 +5723,9 @@ var SelectionType = {
     Single: 1,
     Multi: 2,
 };
-SelectionType[SelectionType.None] = "None";
-SelectionType[SelectionType.Single] = "Single";
-SelectionType[SelectionType.Multi] = "Multi";
+SelectionType[SelectionType.None] = 'None';
+SelectionType[SelectionType.Single] = 'Single';
+SelectionType[SelectionType.Multi] = 'Multi';
 var Selection = /** @class */ (function () {
     function Selection(_items, _filters) {
         var _this = this;
@@ -5099,17 +5986,18 @@ Selection.decorators = [
     { type: Injectable },
 ];
 Selection.ctorParameters = function () { return [
-    { type: Items, },
-    { type: FiltersProvider, },
+    { type: Items },
+    { type: FiltersProvider }
 ]; };
 var nbRow = 0;
 var ClrDatagridRow = /** @class */ (function () {
-    function ClrDatagridRow(selection, rowActionService, globalExpandable, expand, hideableColumnService) {
+    function ClrDatagridRow(selection, rowActionService, globalExpandable, expand, hideableColumnService, commonStrings) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.globalExpandable = globalExpandable;
         this.expand = expand;
         this.hideableColumnService = hideableColumnService;
+        this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         this._selected = false;
         this.selectedChanged = new EventEmitter(false);
@@ -5192,7 +6080,7 @@ var ClrDatagridRow = /** @class */ (function () {
 ClrDatagridRow.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-row',
-                template: "\n    <!--\n      We need to wrap the #rowContent in label element if we are in rowSelectionMode.\n      Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.\n    -->\n    <label class=\"datagrid-row-clickable\" *ngIf=\"selection.rowSelectionMode\">\n      <ng-template [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    </label>\n    \n    <ng-template *ngIf=\"!selection.rowSelectionMode\" [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    \n    <ng-template *ngIf=\"!expand.replace && expand.expanded && !expand.loading\"\n                 [ngTemplateOutlet]=\"detail\"></ng-template>\n    <!-- \n        We need the \"project into template\" hack because we need this in 2 different places\n        depending on whether the details replace the row or not.\n    -->\n    <ng-template #detail>\n        <ng-content select=\"clr-dg-row-detail\"></ng-content>\n    </ng-template>\n\n    <ng-template #rowContent>\n      <div role=\"row\" [id]=\"id\" class=\"datagrid-row-master datagrid-row-flex\">\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <clr-checkbox [clrChecked]=\"selected\" (clrCheckedChange)=\"toggle($event)\"></clr-checkbox>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <div class=\"radio\">\n            <input type=\"radio\" [id]=\"radioId\" [name]=\"selection.id + '-radio'\" [value]=\"item\"\n                   [(ngModel)]=\"selection.currentSingle\" [checked]=\"selection.currentSingle === item\">\n            <label for=\"{{radioId}}\"></label>\n          </div>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"rowActionService.hasActionableRow\"\n                     class=\"datagrid-row-actions datagrid-fixed-column\">\n          <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"globalExpandable.hasExpandableRow\"\n                     class=\"datagrid-expandable-caret datagrid-fixed-column\">\n          <ng-container *ngIf=\"expand.expandable\">\n            <button (click)=\"toggleExpand()\" *ngIf=\"!expand.loading\" type=\"button\" class=\"datagrid-expandable-caret-button\">\n              <clr-icon shape=\"caret\" [attr.dir]=\"expand.expanded?'down':'right'\" class=\"datagrid-expandable-caret-icon\"></clr-icon>\n            </button>\n            <div class=\"spinner spinner-sm\" *ngIf=\"expand.loading\"></div>\n          </ng-container>\n        </clr-dg-cell>\n        <ng-content *ngIf=\"!expand.replace || !expand.expanded || expand.loading\"></ng-content>\n\n        <ng-template *ngIf=\"expand.replace && expand.expanded && !expand.loading\"\n                     [ngTemplateOutlet]=\"detail\"></ng-template>\n      </div>\n    </ng-template>\n\n    ",
+                template: "\n    <!--\n      We need to wrap the #rowContent in label element if we are in rowSelectionMode.\n      Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.\n    -->\n    <label class=\"datagrid-row-clickable\" *ngIf=\"selection.rowSelectionMode\">\n      <ng-template [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    </label>\n    \n    <ng-template *ngIf=\"!selection.rowSelectionMode\" [ngTemplateOutlet]=\"rowContent\"></ng-template>\n    \n    <ng-template *ngIf=\"!expand.replace && expand.expanded && !expand.loading\"\n                 [ngTemplateOutlet]=\"detail\"></ng-template>\n    <!-- \n        We need the \"project into template\" hack because we need this in 2 different places\n        depending on whether the details replace the row or not.\n    -->\n    <ng-template #detail>\n        <ng-content select=\"clr-dg-row-detail\"></ng-content>\n    </ng-template>\n\n    <ng-template #rowContent>\n      <div role=\"row\" [id]=\"id\" class=\"datagrid-row-master datagrid-row-flex\">\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <input clrCheckbox type=\"checkbox\" [ngModel]=\"selected\" (ngModelChange)=\"toggle($event)\"\n            [attr.aria-label]=\"commonStrings.select\">\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n                     class=\"datagrid-select datagrid-fixed-column\">\n          <div class=\"radio\">\n            <!-- TODO: it would be better if in addition to the generic \"Select\" label, we could add aria-labelledby\n            to label the radio by the first cell in the row (typically an id or name).\n             It's pretty easy to label it with the whole row since we already have an id for it, but in most\n             cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->\n            <input type=\"radio\" [id]=\"radioId\" [name]=\"selection.id + '-radio'\" [value]=\"item\"\n                   [(ngModel)]=\"selection.currentSingle\" [checked]=\"selection.currentSingle === item\"\n                   [attr.aria-label]=\"commonStrings.select\">\n            <label for=\"{{radioId}}\"></label>\n          </div>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"rowActionService.hasActionableRow\"\n                     class=\"datagrid-row-actions datagrid-fixed-column\">\n          <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n        </clr-dg-cell>\n        <clr-dg-cell *ngIf=\"globalExpandable.hasExpandableRow\"\n                     class=\"datagrid-expandable-caret datagrid-fixed-column\">\n          <ng-container *ngIf=\"expand.expandable\">\n            <button (click)=\"toggleExpand()\" *ngIf=\"!expand.loading\" type=\"button\" class=\"datagrid-expandable-caret-button\">\n              <clr-icon shape=\"caret\" \n                class=\"datagrid-expandable-caret-icon\"\n                [attr.dir]=\"expand.expanded ? 'down' : 'right'\"\n                [attr.title]=\"expand.expanded ? commonStrings.collapse : commonStrings.expand\"></clr-icon>\n            </button>\n            <div class=\"spinner spinner-sm\" *ngIf=\"expand.loading\"></div>\n          </ng-container>\n        </clr-dg-cell>\n        <ng-content *ngIf=\"!expand.replace || !expand.expanded || expand.loading\"></ng-content>\n\n        <ng-template *ngIf=\"expand.replace && expand.expanded && !expand.loading\"\n                     [ngTemplateOutlet]=\"detail\"></ng-template>\n      </div>\n    </ng-template>\n\n    ",
                 host: {
                     '[class.datagrid-row]': 'true',
                     '[class.datagrid-selected]': 'selected',
@@ -5203,19 +6091,20 @@ ClrDatagridRow.decorators = [
             },] },
 ];
 ClrDatagridRow.ctorParameters = function () { return [
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: ExpandableRowsCount, },
-    { type: Expand, },
-    { type: HideableColumnService, },
+    { type: Selection },
+    { type: RowActionService },
+    { type: ExpandableRowsCount },
+    { type: Expand },
+    { type: HideableColumnService },
+    { type: ClrCommonStrings }
 ]; };
 ClrDatagridRow.propDecorators = {
-    "item": [{ type: Input, args: ['clrDgItem',] },],
-    "selected": [{ type: Input, args: ['clrDgSelected',] },],
-    "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
-    "expanded": [{ type: Input, args: ['clrDgExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrDgExpandedChange',] },],
-    "dgCells": [{ type: ContentChildren, args: [ClrDatagridCell,] },],
+    item: [{ type: Input, args: ['clrDgItem',] }],
+    selected: [{ type: Input, args: ['clrDgSelected',] }],
+    selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
+    expanded: [{ type: Input, args: ['clrDgExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrDgExpandedChange',] }],
+    dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }]
 };
 var ColumnToggleButtonsService = /** @class */ (function () {
     function ColumnToggleButtonsService() {
@@ -5251,6 +6140,7 @@ var StateProvider = /** @class */ (function () {
     }
     Object.defineProperty(StateProvider.prototype, "state", {
         get: function () {
+            var e_6, _a;
             var state$$1 = {};
             if (this.page.size > 0) {
                 state$$1.page = { from: this.page.firstItem, to: this.page.lastItem, size: this.page.size };
@@ -5291,7 +6181,6 @@ var StateProvider = /** @class */ (function () {
                 }
             }
             return state$$1;
-            var e_6, _a;
         },
         enumerable: true,
         configurable: true
@@ -5302,13 +6191,13 @@ StateProvider.decorators = [
     { type: Injectable },
 ];
 StateProvider.ctorParameters = function () { return [
-    { type: FiltersProvider, },
-    { type: Sort, },
-    { type: Page, },
-    { type: StateDebouncer, },
+    { type: FiltersProvider },
+    { type: Sort },
+    { type: Page },
+    { type: StateDebouncer }
 ]; };
 var ClrDatagrid = /** @class */ (function () {
-    function ClrDatagrid(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider) {
+    function ClrDatagrid(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider, commonStrings) {
         this.columnService = columnService;
         this.organizer = organizer;
         this.items = items;
@@ -5316,6 +6205,7 @@ var ClrDatagrid = /** @class */ (function () {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.stateProvider = stateProvider;
+        this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         this.refresh = new EventEmitter(false);
         this.selectedChanged = new EventEmitter(false);
@@ -5424,7 +6314,7 @@ var ClrDatagrid = /** @class */ (function () {
 ClrDatagrid.decorators = [
     { type: Component, args: [{
                 selector: 'clr-datagrid',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-overlay-wrapper\">\n    <div class=\"datagrid-scroll-wrapper\">\n        <div class=\"datagrid\" #datagrid>\n            <clr-dg-table-wrapper class=\"datagrid-table-wrapper\" role=\"grid\">\n                <div clrDgHead class=\"datagrid-head\" role=\"rowgroup\">\n                    <div role=\"row\" class=\"datagrid-row datagrid-row-flex\">\n                        <!-- header for datagrid where you can select multiple rows -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\">\n                        <span class=\"datagrid-column-title\">\n                            <clr-checkbox [(ngModel)]=\"allSelected\"></clr-checkbox>\n                        </span>\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for datagrid where you can select one row only -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for single row action; only display if we have at least one actionable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                             *ngIf=\"rowActionService.hasActionableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for carets; only display if we have at least one expandable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                             *ngIf=\"expandableRows.hasExpandableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <ng-content select=\"clr-dg-column\"></ng-content>\n                    </div>\n                </div>\n\n                <ng-template *ngIf=\"iterator\"\n                             ngFor [ngForOf]=\"items.displayed\" [ngForTrackBy]=\"items.trackBy\"\n                             [ngForTemplate]=\"iterator.template\"></ng-template>\n                <ng-content *ngIf=\"!iterator\"></ng-content>\n\n                <!-- Custom placeholder overrides the default empty one -->\n                <ng-content select=\"clr-dg-placeholder\"></ng-content>\n                <clr-dg-placeholder *ngIf=\"!placeholder\"></clr-dg-placeholder>\n            </clr-dg-table-wrapper>\n\n            <!--\n                This is not inside the table because there is no good way of having a single column span\n                everything when using custom elements with display:table-cell.\n            -->\n            <ng-content select=\"clr-dg-footer\"></ng-content>\n        </div>\n    </div>\n    <div class=\"datagrid-spinner\" *ngIf=\"loading\">\n        <div class=\"spinner\">Loading...</div>\n    </div>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-overlay-wrapper\">\n    <div class=\"datagrid-scroll-wrapper\">\n        <div class=\"datagrid\" #datagrid>\n            <clr-dg-table-wrapper class=\"datagrid-table-wrapper\" role=\"grid\">\n                <div clrDgHead class=\"datagrid-head\" role=\"rowgroup\">\n                    <div role=\"row\" class=\"datagrid-row datagrid-row-flex\">\n                        <!-- header for datagrid where you can select multiple rows -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\">\n                        <span class=\"datagrid-column-title\">\n                            <input clrCheckbox type=\"checkbox\" [(ngModel)]=\"allSelected\"\n                                   [attr.aria-label]=\"commonStrings.selectAll\">\n                        </span>\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for datagrid where you can select one row only -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                             *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for single row action; only display if we have at least one actionable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                             *ngIf=\"rowActionService.hasActionableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <!-- header for carets; only display if we have at least one expandable row in datagrid -->\n                        <div role=\"columnheader\" class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                             *ngIf=\"expandableRows.hasExpandableRow\">\n                            <div class=\"datagrid-column-separator\"></div>\n                        </div>\n                        <ng-content select=\"clr-dg-column\"></ng-content>\n                    </div>\n                </div>\n\n                <ng-template *ngIf=\"iterator\"\n                             ngFor [ngForOf]=\"items.displayed\" [ngForTrackBy]=\"items.trackBy\"\n                             [ngForTemplate]=\"iterator.template\"></ng-template>\n                <ng-content *ngIf=\"!iterator\"></ng-content>\n\n                <!-- Custom placeholder overrides the default empty one -->\n                <ng-content select=\"clr-dg-placeholder\"></ng-content>\n                <clr-dg-placeholder *ngIf=\"!placeholder\"></clr-dg-placeholder>\n            </clr-dg-table-wrapper>\n\n            <!--\n                This is not inside the table because there is no good way of having a single column span\n                everything when using custom elements with display:table-cell.\n            -->\n            <ng-content select=\"clr-dg-footer\"></ng-content>\n        </div>\n    </div>\n    <div class=\"datagrid-spinner\" *ngIf=\"loading\">\n        <div class=\"spinner\">Loading...</div>\n    </div>\n</div>\n",
                 providers: [
                     Selection,
                     Sort,
@@ -5443,27 +6333,28 @@ ClrDatagrid.decorators = [
             },] },
 ];
 ClrDatagrid.ctorParameters = function () { return [
-    { type: HideableColumnService, },
-    { type: DatagridRenderOrganizer, },
-    { type: Items, },
-    { type: ExpandableRowsCount, },
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: StateProvider, },
+    { type: HideableColumnService },
+    { type: DatagridRenderOrganizer },
+    { type: Items },
+    { type: ExpandableRowsCount },
+    { type: Selection },
+    { type: RowActionService },
+    { type: StateProvider },
+    { type: ClrCommonStrings }
 ]; };
 ClrDatagrid.propDecorators = {
-    "loading": [{ type: Input, args: ['clrDgLoading',] },],
-    "refresh": [{ type: Output, args: ['clrDgRefresh',] },],
-    "iterator": [{ type: ContentChild, args: [ClrDatagridItems,] },],
-    "selected": [{ type: Input, args: ['clrDgSelected',] },],
-    "selectedChanged": [{ type: Output, args: ['clrDgSelectedChange',] },],
-    "singleSelected": [{ type: Input, args: ['clrDgSingleSelected',] },],
-    "singleSelectedChanged": [{ type: Output, args: ['clrDgSingleSelectedChange',] },],
-    "rowSelectionMode": [{ type: Input, args: ['clrDgRowSelection',] },],
-    "rowSelectionModeDeprecated": [{ type: Input, args: ['clDgRowSelection',] },],
-    "placeholder": [{ type: ContentChild, args: [ClrDatagridPlaceholder,] },],
-    "columns": [{ type: ContentChildren, args: [ClrDatagridColumn,] },],
-    "rows": [{ type: ContentChildren, args: [ClrDatagridRow,] },],
+    loading: [{ type: Input, args: ['clrDgLoading',] }],
+    refresh: [{ type: Output, args: ['clrDgRefresh',] }],
+    iterator: [{ type: ContentChild, args: [ClrDatagridItems,] }],
+    selected: [{ type: Input, args: ['clrDgSelected',] }],
+    selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
+    singleSelected: [{ type: Input, args: ['clrDgSingleSelected',] }],
+    singleSelectedChanged: [{ type: Output, args: ['clrDgSingleSelectedChange',] }],
+    rowSelectionMode: [{ type: Input, args: ['clrDgRowSelection',] }],
+    rowSelectionModeDeprecated: [{ type: Input, args: ['clDgRowSelection',] }],
+    placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
+    columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
+    rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }]
 };
 var ClrDatagridActionBar = /** @class */ (function () {
     function ClrDatagridActionBar() {
@@ -5478,8 +6369,9 @@ ClrDatagridActionBar.decorators = [
             },] },
 ];
 var ClrDatagridActionOverflow = /** @class */ (function () {
-    function ClrDatagridActionOverflow(rowActionService) {
+    function ClrDatagridActionOverflow(rowActionService, commonStrings) {
         this.rowActionService = rowActionService;
+        this.commonStrings = commonStrings;
         this.anchorPoint = Point.RIGHT_CENTER;
         this.popoverPoint = Point.LEFT_CENTER;
         this._open = false;
@@ -5519,15 +6411,16 @@ var ClrDatagridActionOverflow = /** @class */ (function () {
 ClrDatagridActionOverflow.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-action-overflow',
-                template: "\n        <button (click)=\"toggle($event)\" type=\"button\" class=\"datagrid-action-toggle\" #anchor>\n            <clr-icon shape=\"ellipsis-vertical\"></clr-icon>\n        </button>\n        <ng-template [(clrPopoverOld)]=\"open\" [clrPopoverOldAnchor]=\"anchor\" [clrPopoverOldAnchorPoint]=\"anchorPoint\"\n                     [clrPopoverOldPopoverPoint]=\"popoverPoint\">\n            <div #menu class=\"datagrid-action-overflow\" (clrOutsideClick)=\"close($event)\" [clrStrict]=\"true\">\n                <ng-content></ng-content>\n            </div>\n        </ng-template>\n    ",
+                template: "\n        <button (click)=\"toggle($event)\" type=\"button\" class=\"datagrid-action-toggle\" #anchor>\n            <clr-icon shape=\"ellipsis-vertical\" [attr.title]=\"commonStrings.rowActions\"></clr-icon>\n        </button>\n        <ng-template [(clrPopoverOld)]=\"open\" [clrPopoverOldAnchor]=\"anchor\" [clrPopoverOldAnchorPoint]=\"anchorPoint\"\n                     [clrPopoverOldPopoverPoint]=\"popoverPoint\">\n            <div #menu class=\"datagrid-action-overflow\" (clrOutsideClick)=\"close($event)\" [clrStrict]=\"true\">\n                <ng-content></ng-content>\n            </div>\n        </ng-template>\n    ",
             },] },
 ];
 ClrDatagridActionOverflow.ctorParameters = function () { return [
-    { type: RowActionService, },
+    { type: RowActionService },
+    { type: ClrCommonStrings }
 ]; };
 ClrDatagridActionOverflow.propDecorators = {
-    "open": [{ type: Input, args: ['clrDgActionOverflowOpen',] },],
-    "openChanged": [{ type: Output, args: ['clrDgActionOverflowOpenChange',] },],
+    open: [{ type: Input, args: ['clrDgActionOverflowOpen',] }],
+    openChanged: [{ type: Output, args: ['clrDgActionOverflowOpenChange',] }]
 };
 var ClrDatagridColumnToggleButton = /** @class */ (function () {
     function ClrDatagridColumnToggleButton(toggleButtons) {
@@ -5546,10 +6439,10 @@ ClrDatagridColumnToggleButton.decorators = [
             },] },
 ];
 ClrDatagridColumnToggleButton.ctorParameters = function () { return [
-    { type: ColumnToggleButtonsService, },
+    { type: ColumnToggleButtonsService }
 ]; };
 ClrDatagridColumnToggleButton.propDecorators = {
-    "clrType": [{ type: Input },],
+    clrType: [{ type: Input }]
 };
 var ClrDatagridColumnToggleTitle = /** @class */ (function () {
     function ClrDatagridColumnToggleTitle() {
@@ -5563,9 +6456,10 @@ ClrDatagridColumnToggleTitle.decorators = [
             },] },
 ];
 var ClrDatagridColumnToggle = /** @class */ (function () {
-    function ClrDatagridColumnToggle(hideableColumnService, columnToggleButtons) {
+    function ClrDatagridColumnToggle(hideableColumnService, columnToggleButtons, commonStrings) {
         this.hideableColumnService = hideableColumnService;
         this.columnToggleButtons = columnToggleButtons;
+        this.commonStrings = commonStrings;
         this.subscriptions = [];
         this.anchorPoint = Point.TOP_LEFT;
         this.popoverPoint = Point.LEFT_BOTTOM;
@@ -5620,17 +6514,18 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
 ClrDatagridColumnToggle.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-column-toggle',
-                template: "\n        <button\n                #anchor\n                (click)=\"toggleUI()\"\n                class=\"btn btn-sm btn-link column-toggle--action\"\n                type=\"button\">\n            <clr-icon shape=\"view-columns\"></clr-icon>\n        </button>\n        <div class=\"column-switch\"\n             *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n            <div class=\"switch-header\">\n                <ng-container *ngIf=\"!title\">Show Columns</ng-container>\n                <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n                <button\n                    class=\"btn btn-sm btn-link\"\n                    (click)=\"toggleUI()\"\n                    type=\"button\">\n                    <clr-icon\n                            shape=\"close\"></clr-icon>\n                </button>\n            </div>\n            <ul class=\"switch-content list-unstyled\">\n                <li *ngFor=\"let column of columns\">\n                    <clr-checkbox [clrChecked]=\"!column.hidden\"\n                                  [clrDisabled]=\"column.lastVisibleColumn\"\n                                  (clrCheckedChange)=\"toggleColumn($event, column)\">\n                        <ng-template [ngTemplateOutlet]=\"column.template\"></ng-template>\n                    </clr-checkbox>\n                </li>\n            </ul>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length > 0\">\n                <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n            </div>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length === 0\">\n                <div>\n                    <button\n                            class=\"btn btn-sm btn-link p6 text-uppercase\"\n                            [disabled]=\"allColumnsVisible\"\n                            (click)=\"selectAll()\"\n                            type=\"button\">Select All\n                    </button>\n                </div>\n            </div>\n        </div>\n    ",
+                template: "\n        <button\n                #anchor\n                (click)=\"toggleUI()\"\n                class=\"btn btn-sm btn-link column-toggle--action\"\n                type=\"button\">\n            <clr-icon shape=\"view-columns\" [attr.title]=\"commonStrings.pickColumns\"></clr-icon>\n        </button>\n        <div class=\"column-switch\"\n             *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n            <div class=\"switch-header\">\n                <ng-container *ngIf=\"!title\">Show Columns</ng-container>\n                <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n                <button\n                    class=\"btn btn-sm btn-link\"\n                    (click)=\"toggleUI()\"\n                    type=\"button\">\n                    <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n                </button>\n            </div>\n            <ul class=\"switch-content list-unstyled\">\n                <li *ngFor=\"let column of columns\">\n                    <clr-checkbox-container>\n                        <input clrCheckbox type=\"checkbox\"\n                          [disabled]=\"column.lastVisibleColumn\"\n                          [ngModel]=\"!column.hidden\" \n                          (ngModelChange)=\"toggleColumn($event, column)\">\n                        <label><ng-template [ngTemplateOutlet]=\"column.template\"></ng-template></label>\n                    </clr-checkbox-container>\n                </li>\n            </ul>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length > 0\">\n                <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n            </div>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length === 0\">\n                <div>\n                    <button\n                            class=\"btn btn-sm btn-link p6 text-uppercase\"\n                            [disabled]=\"allColumnsVisible\"\n                            (click)=\"selectAll()\"\n                            type=\"button\">Select All\n                    </button>\n                </div>\n            </div>\n        </div>\n    ",
                 host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'open' },
             },] },
 ];
 ClrDatagridColumnToggle.ctorParameters = function () { return [
-    { type: HideableColumnService, },
-    { type: ColumnToggleButtonsService, },
+    { type: HideableColumnService },
+    { type: ColumnToggleButtonsService },
+    { type: ClrCommonStrings }
 ]; };
 ClrDatagridColumnToggle.propDecorators = {
-    "title": [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] },],
-    "buttons": [{ type: ContentChildren, args: [ClrDatagridColumnToggleButton,] },],
+    title: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
+    buttons: [{ type: ContentChildren, args: [ClrDatagridColumnToggleButton,] }]
 };
 var DatagridDetailRegisterer = /** @class */ (function () {
     function DatagridDetailRegisterer(expandableRowsCount) {
@@ -5650,7 +6545,7 @@ DatagridDetailRegisterer.decorators = [
     { type: Directive, args: [{ selector: '[clrIfExpanded]' },] },
 ];
 DatagridDetailRegisterer.ctorParameters = function () { return [
-    { type: ExpandableRowsCount, decorators: [{ type: Optional },] },
+    { type: ExpandableRowsCount, decorators: [{ type: Optional }] }
 ]; };
 var ClrDatagridFooter = /** @class */ (function () {
     function ClrDatagridFooter(selection, hideableColumnService, cdr) {
@@ -5683,19 +6578,19 @@ var ClrDatagridFooter = /** @class */ (function () {
 ClrDatagridFooter.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-footer',
-                template: "\n        <ng-container\n            *ngIf=\"(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)\">\n            <clr-checkbox [clrDisabled]=\"true\" [clrChecked]=\"true\" class=\"datagrid-foot-select\">\n                {{selection.current.length}}\n            </clr-checkbox>\n        </ng-container>\n        <ng-content select=\"clr-dg-column-toggle\"></ng-content>\n        <clr-dg-column-toggle *ngIf=\"!toggle && activeToggler\"></clr-dg-column-toggle>\n        <div class=\"datagrid-foot-description\">\n            <ng-content></ng-content>\n        </div>\n        <ng-content select=\"clr-dg-pagination\"></ng-content>\n    ",
+                template: "\n        <ng-container\n            *ngIf=\"(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)\">\n            <clr-checkbox-container class=\"datagrid-foot-select disabled\">\n                <input clrCheckbox type=\"checkbox\" checked=\"checked\" disabled>\n                <label>{{selection.current.length}}</label>\n            </clr-checkbox-container>\n        </ng-container>\n        <ng-content select=\"clr-dg-column-toggle\"></ng-content>\n        <clr-dg-column-toggle *ngIf=\"!toggle && activeToggler\"></clr-dg-column-toggle>\n        <div class=\"datagrid-foot-description\">\n            <ng-content></ng-content>\n        </div>\n        <ng-content select=\"clr-dg-pagination\"></ng-content>\n    ",
                 host: {
                     '[class.datagrid-foot]': 'true',
                 },
             },] },
 ];
 ClrDatagridFooter.ctorParameters = function () { return [
-    { type: Selection, },
-    { type: HideableColumnService, },
-    { type: ChangeDetectorRef, },
+    { type: Selection },
+    { type: HideableColumnService },
+    { type: ChangeDetectorRef }
 ]; };
 ClrDatagridFooter.propDecorators = {
-    "toggle": [{ type: ContentChild, args: [ClrDatagridColumnToggle,] },],
+    toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle,] }]
 };
 var DatagridHideableColumnModel = /** @class */ (function () {
     function DatagridHideableColumnModel(_template, _id, _hidden) {
@@ -5768,12 +6663,12 @@ ClrDatagridHideableColumn.decorators = [
     { type: Directive, args: [{ selector: '[clrDgHideableColumn]' },] },
 ];
 ClrDatagridHideableColumn.ctorParameters = function () { return [
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-    { type: ClrDatagridColumn, },
+    { type: TemplateRef },
+    { type: ViewContainerRef },
+    { type: ClrDatagridColumn }
 ]; };
 ClrDatagridHideableColumn.propDecorators = {
-    "clrDgHideableColumn": [{ type: Input, args: ['clrDgHideableColumn',] },],
+    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }]
 };
 var ClrDatagridItemsTrackBy = /** @class */ (function () {
     function ClrDatagridItemsTrackBy(_items) {
@@ -5796,10 +6691,10 @@ ClrDatagridItemsTrackBy.decorators = [
             },] },
 ];
 ClrDatagridItemsTrackBy.ctorParameters = function () { return [
-    { type: Items, decorators: [{ type: Optional },] },
+    { type: Items, decorators: [{ type: Optional }] }
 ]; };
 ClrDatagridItemsTrackBy.propDecorators = {
-    "trackBy": [{ type: Input, args: ['ngForTrackBy',] },],
+    trackBy: [{ type: Input, args: ['ngForTrackBy',] }]
 };
 var ClrDatagridPagination = /** @class */ (function () {
     function ClrDatagridPagination(page) {
@@ -5910,14 +6805,14 @@ ClrDatagridPagination.decorators = [
             },] },
 ];
 ClrDatagridPagination.ctorParameters = function () { return [
-    { type: Page, },
+    { type: Page }
 ]; };
 ClrDatagridPagination.propDecorators = {
-    "pageSize": [{ type: Input, args: ['clrDgPageSize',] },],
-    "totalItems": [{ type: Input, args: ['clrDgTotalItems',] },],
-    "lastPage": [{ type: Input, args: ['clrDgLastPage',] },],
-    "currentPage": [{ type: Input, args: ['clrDgPage',] },],
-    "currentChanged": [{ type: Output, args: ['clrDgPageChange',] },],
+    pageSize: [{ type: Input, args: ['clrDgPageSize',] }],
+    totalItems: [{ type: Input, args: ['clrDgTotalItems',] }],
+    lastPage: [{ type: Input, args: ['clrDgLastPage',] }],
+    currentPage: [{ type: Input, args: ['clrDgPage',] }],
+    currentChanged: [{ type: Output, args: ['clrDgPageChange',] }]
 };
 var ClrDatagridRowDetail = /** @class */ (function () {
     function ClrDatagridRowDetail(selection, rowActionService, expand, hideableColumnService) {
@@ -5979,14 +6874,14 @@ ClrDatagridRowDetail.decorators = [
             },] },
 ];
 ClrDatagridRowDetail.ctorParameters = function () { return [
-    { type: Selection, },
-    { type: RowActionService, },
-    { type: Expand, },
-    { type: HideableColumnService, },
+    { type: Selection },
+    { type: RowActionService },
+    { type: Expand },
+    { type: HideableColumnService }
 ]; };
 ClrDatagridRowDetail.propDecorators = {
-    "cells": [{ type: ContentChildren, args: [ClrDatagridCell,] },],
-    "replace": [{ type: Input, args: ['clrDgReplace',] },],
+    cells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
+    replace: [{ type: Input, args: ['clrDgReplace',] }]
 };
 var DatagridBodyRenderer = /** @class */ (function () {
     function DatagridBodyRenderer(el, organizer, domAdapter) {
@@ -6008,9 +6903,9 @@ DatagridBodyRenderer.decorators = [
     { type: Directive, args: [{ selector: '[clrDgBody]' },] },
 ];
 DatagridBodyRenderer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
+    { type: ElementRef },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter }
 ]; };
 var NO_LAYOUT_CLASS = 'datagrid-no-layout';
 var COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
@@ -6044,9 +6939,9 @@ DatagridCellRenderer.decorators = [
     { type: Directive, args: [{ selector: 'clr-dg-cell' },] },
 ];
 DatagridCellRenderer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ]; };
 var DatagridColumnResizer = /** @class */ (function () {
     function DatagridColumnResizer(el, renderer, organizer, domAdapter, dragDispatcher) {
@@ -6128,14 +7023,14 @@ DatagridColumnResizer.decorators = [
     { type: Directive, args: [{ selector: 'clr-dg-column', providers: [DragDispatcher] },] },
 ];
 DatagridColumnResizer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
-    { type: DragDispatcher, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter },
+    { type: DragDispatcher }
 ]; };
 DatagridColumnResizer.propDecorators = {
-    "resizeEmitter": [{ type: Output, args: ['clrDgColumnResize',] },],
+    resizeEmitter: [{ type: Output, args: ['clrDgColumnResize',] }]
 };
 var DatagridHeadRenderer = /** @class */ (function () {
     function DatagridHeadRenderer(el, renderer, organizer) {
@@ -6156,9 +7051,9 @@ DatagridHeadRenderer.decorators = [
     { type: Directive, args: [{ selector: '[clrDgHead]' },] },
 ];
 DatagridHeadRenderer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ]; };
 var DatagridHeaderRenderer = /** @class */ (function () {
     function DatagridHeaderRenderer(el, renderer, organizer, domAdapter, columnResizer) {
@@ -6215,11 +7110,11 @@ DatagridHeaderRenderer.decorators = [
     { type: Directive, args: [{ selector: 'clr-dg-column' },] },
 ];
 DatagridHeaderRenderer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
-    { type: DomAdapter, },
-    { type: DatagridColumnResizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer },
+    { type: DomAdapter },
+    { type: DatagridColumnResizer }
 ]; };
 var NoopDomAdapter = /** @class */ (function () {
     function NoopDomAdapter() {
@@ -6359,15 +7254,15 @@ DatagridMainRenderer.decorators = [
             },] },
 ];
 DatagridMainRenderer.ctorParameters = function () { return [
-    { type: DatagridRenderOrganizer, },
-    { type: Items, },
-    { type: Page, },
-    { type: DomAdapter, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: DatagridRenderOrganizer },
+    { type: Items },
+    { type: Page },
+    { type: DomAdapter },
+    { type: ElementRef },
+    { type: Renderer2 }
 ]; };
 DatagridMainRenderer.propDecorators = {
-    "headers": [{ type: ContentChildren, args: [DatagridHeaderRenderer,] },],
+    headers: [{ type: ContentChildren, args: [DatagridHeaderRenderer,] }]
 };
 var DatagridRowRenderer = /** @class */ (function () {
     function DatagridRowRenderer(organizer) {
@@ -6403,10 +7298,10 @@ DatagridRowRenderer.decorators = [
     { type: Directive, args: [{ selector: 'clr-dg-row, clr-dg-row-detail' },] },
 ];
 DatagridRowRenderer.ctorParameters = function () { return [
-    { type: DatagridRenderOrganizer, },
+    { type: DatagridRenderOrganizer }
 ]; };
 DatagridRowRenderer.propDecorators = {
-    "cells": [{ type: ContentChildren, args: [DatagridCellRenderer,] },],
+    cells: [{ type: ContentChildren, args: [DatagridCellRenderer,] }]
 };
 var DatagridTableRenderer = /** @class */ (function () {
     function DatagridTableRenderer(el, renderer, organizer) {
@@ -6450,14 +7345,14 @@ DatagridTableRenderer.decorators = [
             },] },
 ];
 DatagridTableRenderer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: DatagridRenderOrganizer, },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: DatagridRenderOrganizer }
 ]; };
 DatagridTableRenderer.propDecorators = {
-    "projected": [{ type: ViewChild, args: ['head',] },],
-    "outsideContainer": [{ type: ViewChild, args: ['outside', { read: ViewContainerRef },] },],
-    "insideContainer": [{ type: ViewChild, args: ['inside', { read: ViewContainerRef },] },],
+    projected: [{ type: ViewChild, args: ['head',] }],
+    outsideContainer: [{ type: ViewChild, args: ['outside', { read: ViewContainerRef },] }],
+    insideContainer: [{ type: ViewChild, args: ['inside', { read: ViewContainerRef },] }]
 };
 var CLR_DATAGRID_DIRECTIVES = [
     ClrDatagrid,
@@ -6502,7 +7397,7 @@ ClrDatagridModule.decorators = [
                 imports: [
                     CommonModule,
                     ClrIconModule,
-                    ClrFormsModule,
+                    ClrFormsNextModule,
                     FormsModule,
                     ClrCommonPopoverModule,
                     ClrLoadingModule,
@@ -6513,8 +7408,9 @@ ClrDatagridModule.decorators = [
             },] },
 ];
 var ClrStackBlock = /** @class */ (function () {
-    function ClrStackBlock(parent) {
+    function ClrStackBlock(parent, commonStrings) {
         this.parent = parent;
+        this.commonStrings = commonStrings;
         this.expanded = false;
         this.expandedChange = new EventEmitter(false);
         this.expandable = false;
@@ -6567,6 +7463,13 @@ var ClrStackBlock = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrStackBlock.prototype, "caretTitle", {
+        get: function () {
+            return this.expanded ? this.commonStrings.collapse : this.commonStrings.expand;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClrStackBlock.prototype, "role", {
         get: function () {
             return this.expandable ? 'button' : null;
@@ -6605,7 +7508,7 @@ var ClrStackBlock = /** @class */ (function () {
 ClrStackBlock.decorators = [
     { type: Component, args: [{
                 selector: 'clr-stack-block',
-                template: "\n    <dt class=\"stack-block-label\"\n        (click)=\"toggleExpand()\"\n        (keyup.enter)=\"toggleExpand()\"\n        (keyup.space)=\"toggleExpand()\"\n        (focus)=\"focused = true\"\n        (blur)=\"focused = false\"\n        [attr.role]=\"role\"\n        [attr.tabindex]=\"tabIndex\"\n        [attr.aria-expanded]=\"ariaExpanded\">\n      <clr-icon shape=\"caret\"\n                class=\"stack-block-caret\"\n                *ngIf=\"expandable\"\n                [attr.dir]=\"caretDirection\"></clr-icon>\n      <ng-content select=\"clr-stack-label\"></ng-content>\n    </dt>\n    <dd class=\"stack-block-content\">\n      <ng-content></ng-content>\n    </dd>\n    <!-- FIXME: remove this string concatenation when boolean states are supported -->\n    <div [@collapse]=\"''+!expanded\" class=\"stack-children\" >\n      <ng-content select=\"clr-stack-block\"></ng-content>\n    </div>\n  ",
+                template: "\n    <dt class=\"stack-block-label\"\n        (click)=\"toggleExpand()\"\n        (keyup.enter)=\"toggleExpand()\"\n        (keyup.space)=\"toggleExpand()\"\n        (focus)=\"focused = true\"\n        (blur)=\"focused = false\"\n        [attr.role]=\"role\"\n        [attr.tabindex]=\"tabIndex\"\n        [attr.aria-expanded]=\"ariaExpanded\">\n      <clr-icon shape=\"caret\"\n                class=\"stack-block-caret\"\n                *ngIf=\"expandable\"\n                [attr.dir]=\"caretDirection\"\n                [attr.title]=\"caretTitle\"></clr-icon>\n      <ng-content select=\"clr-stack-label\"></ng-content>\n    </dt>\n    <dd class=\"stack-block-content\">\n      <ng-content></ng-content>\n    </dd>\n    <!-- FIXME: remove this string concatenation when boolean states are supported -->\n    <div [@collapse]=\"''+!expanded\" class=\"stack-children\" >\n      <ng-content select=\"clr-stack-block\"></ng-content>\n    </div>\n  ",
                 styles: [
                     "\n        :host { display: block; }\n    ",
                 ],
@@ -6620,15 +7523,16 @@ ClrStackBlock.decorators = [
             },] },
 ];
 ClrStackBlock.ctorParameters = function () { return [
-    { type: ClrStackBlock, decorators: [{ type: SkipSelf }, { type: Optional },] },
+    { type: ClrStackBlock, decorators: [{ type: SkipSelf }, { type: Optional }] },
+    { type: ClrCommonStrings }
 ]; };
 ClrStackBlock.propDecorators = {
-    "expanded": [{ type: HostBinding, args: ['class.stack-block-expanded',] }, { type: Input, args: ['clrSbExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrSbExpandedChange',] },],
-    "expandable": [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] },],
-    "getChangedValue": [{ type: HostBinding, args: ['class.stack-block-changed',] },],
-    "setChangedValue": [{ type: Input, args: ['clrSbNotifyChange',] },],
-    "onStackLabelFocus": [{ type: HostBinding, args: ['class.on-focus',] },],
+    expanded: [{ type: HostBinding, args: ['class.stack-block-expanded',] }, { type: Input, args: ['clrSbExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrSbExpandedChange',] }],
+    expandable: [{ type: HostBinding, args: ['class.stack-block-expandable',] }, { type: Input, args: ['clrSbExpandable',] }],
+    getChangedValue: [{ type: HostBinding, args: ['class.stack-block-changed',] }],
+    setChangedValue: [{ type: Input, args: ['clrSbNotifyChange',] }],
+    onStackLabelFocus: [{ type: HostBinding, args: ['class.on-focus',] }]
 };
 var ClrStackView = /** @class */ (function () {
     function ClrStackView() {
@@ -6665,7 +7569,7 @@ ClrStackView.decorators = [
             },] },
 ];
 ClrStackView.propDecorators = {
-    "save": [{ type: Output, args: ['clrStackSave',] },],
+    save: [{ type: Output, args: ['clrStackSave',] }]
 };
 var ClrStackHeader = /** @class */ (function () {
     function ClrStackHeader(stackView) {
@@ -6683,7 +7587,7 @@ ClrStackHeader.decorators = [
             },] },
 ];
 ClrStackHeader.ctorParameters = function () { return [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ]; };
 var StackControl = /** @class */ (function () {
     function StackControl(stackView) {
@@ -6718,7 +7622,7 @@ ClrStackInput.decorators = [
             },] },
 ];
 ClrStackInput.ctorParameters = function () { return [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ]; };
 var ClrStackSelect = /** @class */ (function (_super) {
     __extends(ClrStackSelect, _super);
@@ -6738,7 +7642,7 @@ ClrStackSelect.decorators = [
             },] },
 ];
 ClrStackSelect.ctorParameters = function () { return [
-    { type: ClrStackView, },
+    { type: ClrStackView }
 ]; };
 var ClrStackViewCustomTags = /** @class */ (function () {
     function ClrStackViewCustomTags() {
@@ -6767,6 +7671,130 @@ ClrStackViewModule.decorators = [
                 declarations: [CLR_STACK_VIEW_DIRECTIVES],
                 exports: [CLR_STACK_VIEW_DIRECTIVES],
             },] },
+];
+var latestId = 0;
+var ClrCheckboxDeprecated = /** @class */ (function () {
+    function ClrCheckboxDeprecated() {
+        this._id = (latestId++).toString();
+        this.clrAriaLabeledBy = null;
+        this.name = null;
+        this.disabled = false;
+        this.inline = false;
+        this._checked = false;
+        this._indeterminate = false;
+        this.indeterminateChange = new EventEmitter(false);
+        this.change = new EventEmitter(false);
+        this.onChangeCallback = function (_) { };
+        this.onTouchedCallback = function () { };
+    }
+    Object.defineProperty(ClrCheckboxDeprecated.prototype, "id", {
+        get: function () {
+            return "clr-checkbox-" + this._id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrCheckboxDeprecated.prototype, "checked", {
+        get: function () {
+            return this._checked;
+        },
+        set: function (value) {
+            if (value !== this._checked) {
+                if (this._indeterminate) {
+                    this.setIndeterminate(false);
+                }
+                this.setChecked(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrCheckboxDeprecated.prototype, "indeterminate", {
+        get: function () {
+            return this._indeterminate;
+        },
+        set: function (value) {
+            if (this._indeterminate !== value) {
+                if (this._checked) {
+                    this.setChecked(false);
+                }
+                this.setIndeterminate(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrCheckboxDeprecated.prototype.setIndeterminate = function (value) {
+        this._indeterminate = value;
+        this.indeterminateChange.emit(this._indeterminate);
+    };
+    ClrCheckboxDeprecated.prototype.setChecked = function (value) {
+        this._checked = value;
+        this.change.emit(this._checked);
+    };
+    ClrCheckboxDeprecated.prototype.toggle = function () {
+        this.checked = !this.checked;
+        this.onChangeCallback(this.checked);
+    };
+    ClrCheckboxDeprecated.prototype.writeValue = function (value) {
+        if (value === null) {
+            value = false;
+        }
+        if (value !== this.checked) {
+            this.checked = value;
+        }
+    };
+    ClrCheckboxDeprecated.prototype.registerOnChange = function (onChange) {
+        this.onChangeCallback = onChange;
+    };
+    ClrCheckboxDeprecated.prototype.registerOnTouched = function (onTouched) {
+        this.onTouchedCallback = onTouched;
+    };
+    ClrCheckboxDeprecated.prototype.touch = function () {
+        this.onTouchedCallback();
+    };
+    ClrCheckboxDeprecated.prototype.checkIndeterminateState = function () {
+        if (!this.disabled) {
+            this.toggle();
+        }
+    };
+    return ClrCheckboxDeprecated;
+}());
+ClrCheckboxDeprecated.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-checkbox',
+                template: "\n        <!--\n            FIXME: We are not subscribed to the change event but the click event here.\n            The reason for that is because checkboxes behave differently on IE & Edge.\n            https://stackoverflow.com/a/19447939\n            \n            To fix that, we listen to every click event and then toggle the checkbox manually\n            to make it behave the same way across the browsers we support.\n            \n            This works for cases when users toggle the checkbox using the keyboard too:\n            https://stackoverflow.com/questions/27878940/spacebar-triggering-click-event-on-checkbox\n        -->\n        <input type=\"checkbox\" [attr.aria-labelledby]=\"clrAriaLabeledBy\"\n               [id]=\"id\" [name]=\"name\" [checked]=\"checked\"\n               [indeterminate]=\"indeterminate\" [disabled]=\"disabled\"\n               (blur)=\"touch()\" (click)=\"checkIndeterminateState()\">\n        <label [attr.for]=\"id\">\n            <ng-content></ng-content>\n        </label>\n    ",
+                host: { '[class.checkbox]': '!inline', '[class.checkbox-inline]': 'inline', '[class.disabled]': 'disabled' },
+                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(function () { return ClrCheckboxDeprecated; }), multi: true }],
+            },] },
+];
+ClrCheckboxDeprecated.propDecorators = {
+    _id: [{ type: Input, args: ['id',] }],
+    clrAriaLabeledBy: [{ type: Input, args: ['clrAriaLabeledBy',] }],
+    name: [{ type: Input, args: ['name',] }],
+    disabled: [{ type: Input, args: ['clrDisabled',] }],
+    inline: [{ type: Input, args: ['clrInline',] }],
+    checked: [{ type: Input, args: ['clrChecked',] }],
+    indeterminate: [{ type: Input, args: ['clrIndeterminate',] }],
+    indeterminateChange: [{ type: Output, args: ['clrIndeterminateChange',] }],
+    change: [{ type: Output, args: ['clrCheckedChange',] }]
+};
+var CLR_CHECKBOX_DIRECTIVES = [ClrCheckboxDeprecated];
+var ClrCheckboxModule = /** @class */ (function () {
+    function ClrCheckboxModule() {
+    }
+    return ClrCheckboxModule;
+}());
+ClrCheckboxModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
+];
+var ClrFormsModule = /** @class */ (function () {
+    function ClrFormsModule() {
+    }
+    return ClrFormsModule;
+}());
+ClrFormsModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], exports: [ClrCheckboxModule, ClrDatepickerModule] },] },
 ];
 var NB_INSTANCES = 0;
 var UNIQUE_ID = new InjectionToken('UNIQUE_ID');
@@ -6814,14 +7842,15 @@ var AbstractTreeSelection = /** @class */ (function () {
         configurable: true
     });
     AbstractTreeSelection.prototype.childChanged = function () {
+        var e_7, _a;
         var oneSelectedChild = false;
         var previousSelectedValue = this._selected;
         var previousIndeterminateValue = this._indeterminate;
         this._selected = true;
         this._indeterminate = false;
         try {
-            for (var _a = __values(this.children), _b = _a.next(); !_b.done; _b = _a.next()) {
-                var child = _b.value;
+            for (var _b = __values(this.children), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var child = _c.value;
                 if (child.indeterminate) {
                     this._selected = false;
                     this._indeterminate = true;
@@ -6846,7 +7875,7 @@ var AbstractTreeSelection = /** @class */ (function () {
         catch (e_7_1) { e_7 = { error: e_7_1 }; }
         finally {
             try {
-                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             }
             finally { if (e_7) throw e_7.error; }
         }
@@ -6860,7 +7889,6 @@ var AbstractTreeSelection = /** @class */ (function () {
         if (this.indeterminate !== previousIndeterminateValue) {
             this.indeterminateChanged();
         }
-        var e_7, _c;
     };
     AbstractTreeSelection.prototype.parentChanged = function (selected) {
         if (selected && !this.selected) {
@@ -6893,12 +7921,13 @@ function clrTreeSelectionProviderFactory(existing) {
 var ɵ0 = clrTreeSelectionProviderFactory;
 var ClrTreeNode = /** @class */ (function (_super) {
     __extends(ClrTreeNode, _super);
-    function ClrTreeNode(nodeExpand, parent, treeSelectionService, nodeId) {
+    function ClrTreeNode(nodeExpand, parent, treeSelectionService, nodeId, commonStrings) {
         var _this = _super.call(this, parent) || this;
         _this.nodeExpand = nodeExpand;
         _this.parent = parent;
         _this.treeSelectionService = treeSelectionService;
         _this.nodeId = nodeId;
+        _this.commonStrings = commonStrings;
         _this._children = [];
         _this.nodeSelectedChange = new EventEmitter(true);
         _this.nodeIndeterminateChanged = new EventEmitter(true);
@@ -6985,6 +8014,13 @@ var ClrTreeNode = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrTreeNode.prototype, "caretTitle", {
+        get: function () {
+            return this.nodeExpand.expanded ? this.commonStrings.collapse : this.commonStrings.expand;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClrTreeNode.prototype, "expanded", {
         get: function () {
             return this.nodeExpand.expanded;
@@ -7048,7 +8084,7 @@ var ClrTreeNode = /** @class */ (function (_super) {
 ClrTreeNode.decorators = [
     { type: Component, args: [{
                 selector: 'clr-tree-node',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"clr-tree-node-content-container\">\n    <button\n        type=\"button\"\n        class=\"clr-treenode-caret\"\n        (click)=\"toggleExpand()\"\n        *ngIf=\"nodeExpand.expandable && !nodeExpand.loading\"\n        [attr.aria-expanded]=\"nodeExpand.expanded\">\n        <clr-icon\n            class=\"clr-treenode-caret-icon\"\n            shape=\"caret\"\n            [attr.dir]=\"caretDirection\"></clr-icon>\n    </button>\n    <div class=\"clr-treenode-spinner-container\" *ngIf=\"nodeExpand.expandable && nodeExpand.loading\">\n        <span class=\"clr-treenode-spinner spinner\">\n            Loading...\n        </span>\n    </div>\n    <clr-checkbox\n        class=\"clr-treenode-checkbox\"\n        *ngIf=\"selectable\"\n        [(ngModel)]=\"selected\"\n        [(clrIndeterminate)]=\"indeterminate\"\n        [clrAriaLabeledBy]=\"nodeId\"></clr-checkbox>\n    <div class=\"clr-treenode-content\" [id]=\"nodeId\">\n        <ng-content></ng-content>\n    </div>\n</div>\n<!-- FIXME: remove this string concatenation when boolean states are supported -->\n<div\n    class=\"clr-treenode-children\"\n    [@childNodesState]=\"state\"\n    [attr.role]=\"ariaTreeNodeChildrenRole\">\n    <ng-content select=\"clr-tree-node\"></ng-content>\n    <ng-content select=\"[clrIfExpanded]\"></ng-content>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"clr-tree-node-content-container\">\n    <button\n        type=\"button\"\n        class=\"clr-treenode-caret\"\n        (click)=\"toggleExpand()\"\n        *ngIf=\"nodeExpand.expandable && !nodeExpand.loading\"\n        [attr.aria-expanded]=\"nodeExpand.expanded\">\n        <clr-icon\n            class=\"clr-treenode-caret-icon\"\n            shape=\"caret\"\n            [attr.dir]=\"caretDirection\"\n            [attr.title]=\"caretTitle\"></clr-icon>\n    </button>\n    <div class=\"clr-treenode-spinner-container\" *ngIf=\"nodeExpand.expandable && nodeExpand.loading\">\n        <span class=\"clr-treenode-spinner spinner\">\n            Loading...\n        </span>\n    </div>\n    <!-- TODO: Move this to new checkboxes. But the indeterminate two-way binding makes it hard. -->\n    <clr-checkbox\n        class=\"clr-treenode-checkbox\"\n        *ngIf=\"selectable\"\n        [(ngModel)]=\"selected\"\n        [(clrIndeterminate)]=\"indeterminate\"\n        [clrAriaLabeledBy]=\"nodeId\"></clr-checkbox>\n    <div class=\"clr-treenode-content\" [id]=\"nodeId\">\n        <ng-content></ng-content>\n    </div>\n</div>\n<!-- FIXME: remove this string concatenation when boolean states are supported -->\n<div\n    class=\"clr-treenode-children\"\n    [@childNodesState]=\"state\"\n    [attr.role]=\"ariaTreeNodeChildrenRole\">\n    <ng-content select=\"clr-tree-node\"></ng-content>\n    <ng-content select=\"[clrIfExpanded]\"></ng-content>\n</div>\n",
                 providers: [
                     Expand,
                     { provide: LoadingListener, useExisting: Expand },
@@ -7070,19 +8106,20 @@ ClrTreeNode.decorators = [
             },] },
 ];
 ClrTreeNode.ctorParameters = function () { return [
-    { type: Expand, },
-    { type: ClrTreeNode, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: TreeSelectionService, },
-    { type: undefined, decorators: [{ type: Inject, args: [UNIQUE_ID,] },] },
+    { type: Expand },
+    { type: ClrTreeNode, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: TreeSelectionService },
+    { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] },
+    { type: ClrCommonStrings }
 ]; };
 ClrTreeNode.propDecorators = {
-    "nodeSelected": [{ type: Input, args: ['clrSelected',] },],
-    "nodeSelectedChange": [{ type: Output, args: ['clrSelectedChange',] },],
-    "nodeIndeterminate": [{ type: Input, args: ['clrIndeterminate',] },],
-    "nodeIndeterminateChanged": [{ type: Output, args: ['clrIndeterminateChange',] },],
-    "treeNodeRole": [{ type: HostBinding, args: ['attr.role',] },],
-    "rootAriaMultiSelectable": [{ type: HostBinding, args: ['attr.aria-multiselectable',] },],
-    "ariaSelected": [{ type: HostBinding, args: ['attr.aria-selected',] },],
+    nodeSelected: [{ type: Input, args: ['clrSelected',] }],
+    nodeSelectedChange: [{ type: Output, args: ['clrSelectedChange',] }],
+    nodeIndeterminate: [{ type: Input, args: ['clrIndeterminate',] }],
+    nodeIndeterminateChanged: [{ type: Output, args: ['clrIndeterminateChange',] }],
+    treeNodeRole: [{ type: HostBinding, args: ['attr.role',] }],
+    rootAriaMultiSelectable: [{ type: HostBinding, args: ['attr.aria-multiselectable',] }],
+    ariaSelected: [{ type: HostBinding, args: ['attr.aria-selected',] }]
 };
 var CLR_TREE_VIEW_DIRECTIVES = [ClrTreeNode];
 var ClrTreeViewModule = /** @class */ (function () {
@@ -7157,12 +8194,12 @@ ClrDropdown.decorators = [
             },] },
 ];
 ClrDropdown.ctorParameters = function () { return [
-    { type: ClrDropdown, decorators: [{ type: SkipSelf }, { type: Optional },] },
-    { type: IfOpenService, },
-    { type: RootDropdownService, },
+    { type: ClrDropdown, decorators: [{ type: SkipSelf }, { type: Optional }] },
+    { type: IfOpenService },
+    { type: RootDropdownService }
 ]; };
 ClrDropdown.propDecorators = {
-    "isMenuClosable": [{ type: Input, args: ['clrCloseMenuOnItemClick',] },],
+    isMenuClosable: [{ type: Input, args: ['clrCloseMenuOnItemClick',] }]
 };
 var ClrDropdownItem = /** @class */ (function () {
     function ClrDropdownItem(dropdown, el, _dropdownService, renderer) {
@@ -7186,10 +8223,10 @@ ClrDropdownItem.decorators = [
     { type: Directive, args: [{ selector: '[clrDropdownItem]', host: { '[class.dropdown-item]': 'true' } },] },
 ];
 ClrDropdownItem.ctorParameters = function () { return [
-    { type: ClrDropdown, },
-    { type: ElementRef, },
-    { type: RootDropdownService, },
-    { type: Renderer2, },
+    { type: ClrDropdown },
+    { type: ElementRef },
+    { type: RootDropdownService },
+    { type: Renderer2 }
 ]; };
 var ClrDropdownMenu = /** @class */ (function (_super) {
     __extends(ClrDropdownMenu, _super);
@@ -7267,12 +8304,12 @@ ClrDropdownMenu.decorators = [
             },] },
 ];
 ClrDropdownMenu.ctorParameters = function () { return [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
-    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] },
+    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf }] }
 ]; };
 ClrDropdownMenu.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
+    position: [{ type: Input, args: ['clrPosition',] }]
 };
 var ClrDropdownTrigger = /** @class */ (function () {
     function ClrDropdownTrigger(dropdown, ifOpenService) {
@@ -7306,11 +8343,11 @@ ClrDropdownTrigger.decorators = [
             },] },
 ];
 ClrDropdownTrigger.ctorParameters = function () { return [
-    { type: ClrDropdown, },
-    { type: IfOpenService, },
+    { type: ClrDropdown },
+    { type: IfOpenService }
 ]; };
 ClrDropdownTrigger.propDecorators = {
-    "onDropdownTriggerClick": [{ type: HostListener, args: ['click', ['$event'],] },],
+    onDropdownTriggerClick: [{ type: HostListener, args: ['click', ['$event'],] }]
 };
 var CLR_DROPDOWN_DIRECTIVES = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 var ClrDropdownModule = /** @class */ (function () {
@@ -7336,7 +8373,8 @@ var ALERT_TYPES = [
     'success',
 ];
 var AlertIconAndTypesService = /** @class */ (function () {
-    function AlertIconAndTypesService() {
+    function AlertIconAndTypesService(commonStrings) {
+        this.commonStrings = commonStrings;
         this.defaultIconShape = 'info-circle';
         this._alertIconShape = '';
         this._alertType = 'info';
@@ -7371,28 +8409,39 @@ var AlertIconAndTypesService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(AlertIconAndTypesService.prototype, "alertIconTitle", {
+        get: function () {
+            return this.iconInfoFromType(this._alertType).title;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AlertIconAndTypesService.prototype.iconInfoFromType = function (type, classOrShape) {
         if (classOrShape === void 0) { classOrShape = 'shape'; }
-        var returnObj = { shape: '', cssClass: '' };
+        var returnObj = { shape: '', cssClass: '', title: '' };
         switch (type) {
             case 'warning':
             case 'alert-warning':
                 returnObj.shape = 'exclamation-triangle';
                 returnObj.cssClass = 'alert-warning';
+                returnObj.title = this.commonStrings.warning;
                 break;
             case 'danger':
             case 'alert-danger':
                 returnObj.shape = 'exclamation-circle';
                 returnObj.cssClass = 'alert-danger';
+                returnObj.title = this.commonStrings.danger;
                 break;
             case 'success':
             case 'alert-success':
                 returnObj.shape = 'check-circle';
                 returnObj.cssClass = 'alert-success';
+                returnObj.title = this.commonStrings.success;
                 break;
             default:
                 returnObj.shape = this.defaultIconShape;
                 returnObj.cssClass = 'alert-info';
+                returnObj.title = this.commonStrings.info;
                 break;
         }
         return returnObj;
@@ -7402,6 +8451,9 @@ var AlertIconAndTypesService = /** @class */ (function () {
 AlertIconAndTypesService.decorators = [
     { type: Injectable },
 ];
+AlertIconAndTypesService.ctorParameters = function () { return [
+    { type: ClrCommonStrings }
+]; };
 var MultiAlertService = /** @class */ (function () {
     function MultiAlertService() {
         this.allAlerts = new QueryList();
@@ -7473,10 +8525,11 @@ MultiAlertService.decorators = [
     { type: Injectable },
 ];
 var ClrAlert = /** @class */ (function () {
-    function ClrAlert(iconService, cdr, multiAlertService) {
+    function ClrAlert(iconService, cdr, multiAlertService, commonStrings) {
         this.iconService = iconService;
         this.cdr = cdr;
         this.multiAlertService = multiAlertService;
+        this.commonStrings = commonStrings;
         this.isSmall = false;
         this.closable = true;
         this.isAppLevel = false;
@@ -7552,21 +8605,27 @@ var ClrAlert = /** @class */ (function () {
     return ClrAlert;
 }());
 ClrAlert.decorators = [
-    { type: Component, args: [{ selector: 'clr-alert', providers: [AlertIconAndTypesService], template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n    *ngIf=\"!_closed\"\n    class=\"alert\"\n    [ngClass]=\"alertClass\"\n    [class.alert-hidden]=\"isHidden\"\n    [class.alert-sm]=\"isSmall\"\n    [class.alert-app-level]=\"isAppLevel\">\n    <div class=\"alert-items\">\n        <ng-content></ng-content>\n    </div>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" *ngIf=\"closable\" (click)=\"close()\">\n        <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n    </button>\n</div>\n" },] },
+    { type: Component, args: [{
+                selector: 'clr-alert',
+                providers: [AlertIconAndTypesService],
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n    *ngIf=\"!_closed\"\n    class=\"alert\"\n    [ngClass]=\"alertClass\"\n    [class.alert-hidden]=\"isHidden\"\n    [class.alert-sm]=\"isSmall\"\n    [class.alert-app-level]=\"isAppLevel\">\n    <div class=\"alert-items\">\n        <ng-content></ng-content>\n    </div>\n    <button type=\"button\" class=\"close\" *ngIf=\"closable\" (click)=\"close()\">\n        <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n    </button>\n</div>\n",
+                styles: [':host { display: block; }'],
+            },] },
 ];
 ClrAlert.ctorParameters = function () { return [
-    { type: AlertIconAndTypesService, },
-    { type: ChangeDetectorRef, },
-    { type: MultiAlertService, decorators: [{ type: Optional },] },
+    { type: AlertIconAndTypesService },
+    { type: ChangeDetectorRef },
+    { type: MultiAlertService, decorators: [{ type: Optional }] },
+    { type: ClrCommonStrings }
 ]; };
 ClrAlert.propDecorators = {
-    "isSmall": [{ type: Input, args: ['clrAlertSizeSmall',] },],
-    "closable": [{ type: Input, args: ['clrAlertClosable',] },],
-    "isAppLevel": [{ type: Input, args: ['clrAlertAppLevel',] },],
-    "_closed": [{ type: Input, args: ['clrAlertClosed',] },],
-    "_closedChanged": [{ type: Output, args: ['clrAlertClosedChange',] },],
-    "alertType": [{ type: Input, args: ['clrAlertType',] },],
-    "alertIconShape": [{ type: Input, args: ['clrAlertIcon',] },],
+    isSmall: [{ type: Input, args: ['clrAlertSizeSmall',] }],
+    closable: [{ type: Input, args: ['clrAlertClosable',] }],
+    isAppLevel: [{ type: Input, args: ['clrAlertAppLevel',] }],
+    _closed: [{ type: Input, args: ['clrAlertClosed',] }],
+    _closedChanged: [{ type: Output, args: ['clrAlertClosedChange',] }],
+    alertType: [{ type: Input, args: ['clrAlertType',] }],
+    alertIconShape: [{ type: Input, args: ['clrAlertIcon',] }]
 };
 var ClrAlertItem = /** @class */ (function () {
     function ClrAlertItem(iconService) {
@@ -7577,12 +8636,12 @@ var ClrAlertItem = /** @class */ (function () {
 ClrAlertItem.decorators = [
     { type: Component, args: [{
                 selector: '.alert-item:not(.static), clr-alert-item',
-                template: "\n        <div class=\"alert-icon-wrapper\">\n            <clr-icon class=\"alert-icon\" [attr.shape]=\"iconService.alertIconShape\"></clr-icon>\n        </div>\n        <ng-content></ng-content>\n    ",
+                template: "\n        <div class=\"alert-icon-wrapper\">\n            <clr-icon class=\"alert-icon\" \n              [attr.shape]=\"iconService.alertIconShape\" \n              [attr.title]=\"iconService.alertIconTitle\"></clr-icon>\n        </div>\n        <ng-content></ng-content>\n    ",
                 host: { class: 'alert-item' },
             },] },
 ];
 ClrAlertItem.ctorParameters = function () { return [
-    { type: AlertIconAndTypesService, },
+    { type: AlertIconAndTypesService }
 ]; };
 var ClrAlerts = /** @class */ (function () {
     function ClrAlerts(multiAlertService) {
@@ -7666,18 +8725,19 @@ ClrAlerts.decorators = [
             },] },
 ];
 ClrAlerts.ctorParameters = function () { return [
-    { type: MultiAlertService, },
+    { type: MultiAlertService }
 ]; };
 ClrAlerts.propDecorators = {
-    "allAlerts": [{ type: ContentChildren, args: [ClrAlert,] },],
-    "_inputCurrentIndex": [{ type: Input, args: ['clrCurrentAlertIndex',] },],
-    "currentAlertIndexChange": [{ type: Output, args: ['clrCurrentAlertIndexChange',] },],
-    "currentAlert": [{ type: Input, args: ['clrCurrentAlert',] },],
-    "currentAlertChange": [{ type: Output, args: ['clrCurrentAlertChange',] },],
+    allAlerts: [{ type: ContentChildren, args: [ClrAlert,] }],
+    _inputCurrentIndex: [{ type: Input, args: ['clrCurrentAlertIndex',] }],
+    currentAlertIndexChange: [{ type: Output, args: ['clrCurrentAlertIndexChange',] }],
+    currentAlert: [{ type: Input, args: ['clrCurrentAlert',] }],
+    currentAlertChange: [{ type: Output, args: ['clrCurrentAlertChange',] }]
 };
 var ClrAlertsPager = /** @class */ (function () {
-    function ClrAlertsPager(multiAlertService) {
+    function ClrAlertsPager(multiAlertService, commonStrings) {
         this.multiAlertService = multiAlertService;
+        this.commonStrings = commonStrings;
         this.currentAlertChange = new EventEmitter(false);
         this.currentAlertIndexChange = new EventEmitter();
     }
@@ -7724,18 +8784,19 @@ var ClrAlertsPager = /** @class */ (function () {
 ClrAlertsPager.decorators = [
     { type: Component, args: [{
                 selector: 'clr-alerts-pager',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n    <div class=\"alerts-page-down\">\n        <button class=\"alerts-pager-button\" (click)=\"pageDown()\">\n            <clr-icon shape=\"caret left\"></clr-icon>\n        </button>\n    </div>\n    <div class=\"alerts-pager-text\">\n        {{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}\n    </div>\n    <div class=\"alerts-page-up\">\n        <button class=\"alerts-pager-button\" (click)=\"pageUp()\">\n            <clr-icon shape=\"caret right\"></clr-icon>\n        </button>\n    </div>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n    <div class=\"alerts-page-down\">\n        <button class=\"alerts-pager-button\" (click)=\"pageDown()\">\n            <clr-icon shape=\"caret left\" [attr.title]=\"commonStrings.previous\"></clr-icon>\n        </button>\n    </div>\n    <div class=\"alerts-pager-text\">\n        {{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}\n    </div>\n    <div class=\"alerts-page-up\">\n        <button class=\"alerts-pager-button\" (click)=\"pageUp()\">\n            <clr-icon shape=\"caret right\" [attr.title]=\"commonStrings.next\"></clr-icon>\n        </button>\n    </div>\n</div>\n",
                 host: { '[class.alerts-pager]': 'true' },
             },] },
 ];
 ClrAlertsPager.ctorParameters = function () { return [
-    { type: MultiAlertService, },
+    { type: MultiAlertService },
+    { type: ClrCommonStrings }
 ]; };
 ClrAlertsPager.propDecorators = {
-    "currentAlert": [{ type: Input, args: ['clrCurrentAlert',] },],
-    "currentAlertChange": [{ type: Output, args: ['clrCurrentAlertChange',] },],
-    "currentAlertIndex": [{ type: Input, args: ['clrCurrentAlertIndex',] },],
-    "currentAlertIndexChange": [{ type: Output, args: ['clrCurrentAlertIndexChange',] },],
+    currentAlert: [{ type: Input, args: ['clrCurrentAlert',] }],
+    currentAlertChange: [{ type: Output, args: ['clrCurrentAlertChange',] }],
+    currentAlertIndex: [{ type: Input, args: ['clrCurrentAlertIndex',] }],
+    currentAlertIndexChange: [{ type: Output, args: ['clrCurrentAlertIndexChange',] }]
 };
 var CLR_ALERT_DIRECTIVES = [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager];
 var ClrAlertModule = /** @class */ (function () {
@@ -7900,8 +8961,8 @@ ClrMainContainer.decorators = [
     { type: Directive, args: [{ selector: 'clr-main-container', host: { '[class.main-container]': 'true' } },] },
 ];
 ClrMainContainer.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: ResponsiveNavigationService, },
+    { type: ElementRef },
+    { type: ResponsiveNavigationService }
 ]; };
 var CLR_LAYOUT_DIRECTIVES = [ClrMainContainer];
 var ClrMainContainerModule = /** @class */ (function () {
@@ -7950,9 +9011,9 @@ NavDetectionOompaLoompa.decorators = [
     { type: Directive, args: [{ selector: 'clr-header' },] },
 ];
 NavDetectionOompaLoompa.ctorParameters = function () { return [
-    { type: ChangeDetectorRef, },
-    { type: MainContainerWillyWonka, decorators: [{ type: Optional },] },
-    { type: ResponsiveNavigationService, },
+    { type: ChangeDetectorRef },
+    { type: MainContainerWillyWonka, decorators: [{ type: Optional }] },
+    { type: ResponsiveNavigationService }
 ]; };
 var ClrHeader = /** @class */ (function () {
     function ClrHeader(responsiveNavService) {
@@ -8012,7 +9073,7 @@ ClrHeader.decorators = [
             },] },
 ];
 ClrHeader.ctorParameters = function () { return [
-    { type: ResponsiveNavigationService, },
+    { type: ResponsiveNavigationService }
 ]; };
 var ClrNavLevel = /** @class */ (function () {
     function ClrNavLevel(responsiveNavService, elementRef) {
@@ -8079,12 +9140,12 @@ ClrNavLevel.decorators = [
     { type: Directive, args: [{ selector: '[clr-nav-level]' },] },
 ];
 ClrNavLevel.ctorParameters = function () { return [
-    { type: ResponsiveNavigationService, },
-    { type: ElementRef, },
+    { type: ResponsiveNavigationService },
+    { type: ElementRef }
 ]; };
 ClrNavLevel.propDecorators = {
-    "_level": [{ type: Input, args: ['clr-nav-level',] },],
-    "onMouseClick": [{ type: HostListener, args: ['click', ['$event.target'],] },],
+    _level: [{ type: Input, args: ['clr-nav-level',] }],
+    onMouseClick: [{ type: HostListener, args: ['click', ['$event.target'],] }]
 };
 function ResponsiveNavigationProvider(existing) {
     return existing || new ResponsiveNavigationService();
@@ -8126,7 +9187,7 @@ TemplateRefContainer.decorators = [
             },] },
 ];
 TemplateRefContainer.propDecorators = {
-    "template": [{ type: ViewChild, args: [TemplateRef,] },],
+    template: [{ type: ViewChild, args: [TemplateRef,] }]
 };
 var TEMPLATE_REF_DIRECTIVES = [TemplateRefContainer];
 var ClrTemplateRefModule = /** @class */ (function () {
@@ -8177,10 +9238,10 @@ ActiveOompaLoompa.decorators = [
     { type: Directive, args: [{ selector: '[clrTabLink], clr-tab-content' },] },
 ];
 ActiveOompaLoompa.ctorParameters = function () { return [
-    { type: ChangeDetectorRef, },
-    { type: TabsWillyWonka, decorators: [{ type: Optional },] },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: IfActiveService, },
+    { type: ChangeDetectorRef },
+    { type: TabsWillyWonka, decorators: [{ type: Optional }] },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: IfActiveService }
 ]; };
 var AriaService = /** @class */ (function () {
     function AriaService() {
@@ -8283,13 +9344,13 @@ ClrTabContent.decorators = [
             },] },
 ];
 ClrTabContent.ctorParameters = function () { return [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: AriaService, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: AriaService }
 ]; };
 ClrTabContent.propDecorators = {
-    "templateRef": [{ type: ViewChild, args: ['tabContentProjectedRef',] },],
-    "tabContentId": [{ type: Input, args: ['id',] },],
+    templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
+    tabContentId: [{ type: Input, args: ['id',] }]
 };
 var nbTabsComponent = 0;
 var TABS_ID = new InjectionToken('TABS_ID');
@@ -8377,20 +9438,20 @@ ClrTabLink.decorators = [
             },] },
 ];
 ClrTabLink.ctorParameters = function () { return [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: AriaService, },
-    { type: ElementRef, },
-    { type: ComponentFactoryResolver, },
-    { type: ViewContainerRef, },
-    { type: undefined, decorators: [{ type: Inject, args: [TABS_ID,] },] },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: AriaService },
+    { type: ElementRef },
+    { type: ComponentFactoryResolver },
+    { type: ViewContainerRef },
+    { type: Number, decorators: [{ type: Inject, args: [TABS_ID,] }] }
 ]; };
 ClrTabLink.propDecorators = {
-    "inOverflow": [{ type: Input, args: ['clrTabLinkInOverflow',] },],
-    "tabLinkId": [{ type: Input, args: ['id',] },],
-    "activate": [{ type: HostListener, args: ['click',] },],
-    "role": [{ type: HostBinding, args: ['attr.role',] },],
-    "type": [{ type: HostBinding, args: ['attr.type',] },],
+    inOverflow: [{ type: Input, args: ['clrTabLinkInOverflow',] }],
+    tabLinkId: [{ type: Input, args: ['id',] }],
+    activate: [{ type: HostListener, args: ['click',] }],
+    role: [{ type: HostBinding, args: ['attr.role',] }],
+    type: [{ type: HostBinding, args: ['attr.type',] }]
 };
 var ClrTab = /** @class */ (function () {
     function ClrTab(ifActiveService, id, tabsService) {
@@ -8419,13 +9480,13 @@ ClrTab.decorators = [
             },] },
 ];
 ClrTab.ctorParameters = function () { return [
-    { type: IfActiveService, },
-    { type: undefined, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] },] },
-    { type: TabsService, },
+    { type: IfActiveService },
+    { type: Number, decorators: [{ type: Inject, args: [IF_ACTIVE_ID,] }] },
+    { type: TabsService }
 ]; };
 ClrTab.propDecorators = {
-    "tabLink": [{ type: ContentChild, args: [ClrTabLink,] },],
-    "tabContent": [{ type: ContentChild, args: [ClrTabContent,] },],
+    tabLink: [{ type: ContentChild, args: [ClrTabLink,] }],
+    tabContent: [{ type: ContentChild, args: [ClrTabContent,] }]
 };
 var ClrTabOverflowContent = /** @class */ (function (_super) {
     __extends(ClrTabOverflowContent, _super);
@@ -8448,15 +9509,16 @@ ClrTabOverflowContent.decorators = [
             },] },
 ];
 ClrTabOverflowContent.ctorParameters = function () { return [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: SkipSelf },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: SkipSelf }] }
 ]; };
 var ClrTabs = /** @class */ (function () {
-    function ClrTabs(ifActiveService, ifOpenService, tabsService, tabsId) {
+    function ClrTabs(ifActiveService, ifOpenService, tabsService, tabsId, commonStrings) {
         this.ifActiveService = ifActiveService;
         this.ifOpenService = ifOpenService;
         this.tabsService = tabsService;
         this.tabsId = tabsId;
+        this.commonStrings = commonStrings;
     }
     Object.defineProperty(ClrTabs.prototype, "activeTabInOverflow", {
         get: function () {
@@ -8478,18 +9540,19 @@ var ClrTabs = /** @class */ (function () {
 ClrTabs.decorators = [
     { type: Component, args: [{
                 selector: 'clr-tabs',
-                template: "\n        <ul class=\"nav\" role=\"tablist\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\"\n                              [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\" [class.is-info]=\"ifOpenService.open\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <!--tab content-->\n        <ng-content></ng-content>\n    ",
+                template: "\n        <ul class=\"nav\" role=\"tablist\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\"\n                              [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <!--tab content-->\n        <ng-content></ng-content>\n    ",
                 providers: [IfActiveService, IfOpenService, TabsService, TABS_ID_PROVIDER],
             },] },
 ];
 ClrTabs.ctorParameters = function () { return [
-    { type: IfActiveService, },
-    { type: IfOpenService, },
-    { type: TabsService, },
-    { type: undefined, decorators: [{ type: Inject, args: [TABS_ID,] },] },
+    { type: IfActiveService },
+    { type: IfOpenService },
+    { type: TabsService },
+    { type: Number, decorators: [{ type: Inject, args: [TABS_ID,] }] },
+    { type: ClrCommonStrings }
 ]; };
 ClrTabs.propDecorators = {
-    "tabLinkDirectives": [{ type: ContentChildren, args: [ClrTabLink, { descendants: true },] },],
+    tabLinkDirectives: [{ type: ContentChildren, args: [ClrTabLink, { descendants: true },] }]
 };
 var CLR_TABS_DIRECTIVES = [
     ClrTabContent,
@@ -8610,11 +9673,12 @@ VerticalNavService.decorators = [
     { type: Injectable },
 ];
 var ClrVerticalNav = /** @class */ (function () {
-    function ClrVerticalNav(_navService, _navIconService, _navGroupRegistrationService) {
+    function ClrVerticalNav(_navService, _navIconService, _navGroupRegistrationService, commonStrings) {
         var _this = this;
         this._navService = _navService;
         this._navIconService = _navIconService;
         this._navGroupRegistrationService = _navGroupRegistrationService;
+        this.commonStrings = commonStrings;
         this._collapsedChanged = new EventEmitter(true);
         this._sub = this._navService.collapsedChanged.subscribe(function (value) {
             _this._collapsedChanged.emit(value);
@@ -8665,7 +9729,7 @@ var ClrVerticalNav = /** @class */ (function () {
 ClrVerticalNav.decorators = [
     { type: Component, args: [{
                 selector: 'clr-vertical-nav',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<button type=\"button\" class=\"nav-trigger\"\n        [class.on-collapse]=\"collapsed\"\n        (click)=\"toggleByButton()\"\n        *ngIf=\"collapsible\">\n    <clr-icon shape=\"angle-double\" class=\"nav-trigger-icon\" [attr.dir]=\"(this.collapsed) ? 'right' : 'left'\"></clr-icon>\n</button>\n<!-- Click handler on .nav-content is bad but required :-( -->\n<div class=\"nav-content\">\n    <ng-content></ng-content>\n    <button (click)=\"collapsed = false\" class=\"nav-btn\" *ngIf=\"collapsible && collapsed\"></button>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<button type=\"button\" class=\"nav-trigger\"\n        [class.on-collapse]=\"collapsed\"\n        (click)=\"toggleByButton()\"\n        *ngIf=\"collapsible\">\n    <clr-icon shape=\"angle-double\"\n              class=\"nav-trigger-icon\"\n              [attr.dir]=\"(this.collapsed) ? 'right' : 'left'\"\n              [attr.title]=\"(this.collapsed) ? commonStrings.expand : commonStrings.collapse\"></clr-icon>\n</button>\n<!-- Click handler on .nav-content is bad but required :-( -->\n<div class=\"nav-content\">\n    <ng-content></ng-content>\n    <button (click)=\"collapsed = false\" class=\"nav-btn\" *ngIf=\"collapsible && collapsed\"></button>\n</div>\n",
                 providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
                 host: {
                     class: 'clr-vertical-nav',
@@ -8676,14 +9740,15 @@ ClrVerticalNav.decorators = [
             },] },
 ];
 ClrVerticalNav.ctorParameters = function () { return [
-    { type: VerticalNavService, },
-    { type: VerticalNavIconService, },
-    { type: VerticalNavGroupRegistrationService, },
+    { type: VerticalNavService },
+    { type: VerticalNavIconService },
+    { type: VerticalNavGroupRegistrationService },
+    { type: ClrCommonStrings }
 ]; };
 ClrVerticalNav.propDecorators = {
-    "collapsible": [{ type: Input, args: ['clrVerticalNavCollapsible',] },],
-    "collapsed": [{ type: Input, args: ['clrVerticalNavCollapsed',] },],
-    "_collapsedChanged": [{ type: Output, args: ['clrVerticalNavCollapsedChange',] },],
+    collapsible: [{ type: Input, args: ['clrVerticalNavCollapsible',] }],
+    collapsed: [{ type: Input, args: ['clrVerticalNavCollapsed',] }],
+    _collapsedChanged: [{ type: Output, args: ['clrVerticalNavCollapsedChange',] }]
 };
 var VerticalNavGroupService = /** @class */ (function () {
     function VerticalNavGroupService() {
@@ -8707,12 +9772,13 @@ VerticalNavGroupService.decorators = [
 var EXPANDED_STATE = 'expanded';
 var COLLAPSED_STATE = 'collapsed';
 var ClrVerticalNavGroup = /** @class */ (function () {
-    function ClrVerticalNavGroup(_itemExpand, _navGroupRegistrationService, _navGroupService, _navService) {
+    function ClrVerticalNavGroup(_itemExpand, _navGroupRegistrationService, _navGroupService, _navService, commonStrings) {
         var _this = this;
         this._itemExpand = _itemExpand;
         this._navGroupRegistrationService = _navGroupRegistrationService;
         this._navGroupService = _navGroupService;
         this._navService = _navService;
+        this.commonStrings = commonStrings;
         this.wasExpanded = false;
         this.expandedChange = new EventEmitter(true);
         this._subscriptions = [];
@@ -8818,7 +9884,7 @@ var ClrVerticalNavGroup = /** @class */ (function () {
 ClrVerticalNavGroup.decorators = [
     { type: Component, args: [{
                 selector: 'clr-vertical-nav-group',
-                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n    <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n    <button\n        class=\"nav-group-trigger\"\n        type=\"button\"\n        (click)=\"toggleExpand()\">\n        <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n        <div class=\"nav-group-text\">\n            <ng-content></ng-content>\n        </div>\n        <clr-icon shape=\"caret\"\n                  class=\"nav-group-trigger-icon\"\n                  [attr.dir]=\"(this.expanded) ? 'down' : 'right'\">\n        </clr-icon>\n    </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\"\n     [@clrExpand]=\"expandAnimationState\"\n     (@clrExpand.done)=\"expandAnimationDone($event)\">\n    <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n",
+                template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n    <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n    <button\n        class=\"nav-group-trigger\"\n        type=\"button\"\n        (click)=\"toggleExpand()\">\n        <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n        <div class=\"nav-group-text\">\n            <ng-content></ng-content>\n        </div>\n        <clr-icon shape=\"caret\"\n                  class=\"nav-group-trigger-icon\"\n                  [attr.dir]=\"(this.expanded) ? 'down' : 'right'\"\n                  [attr.title]=\"(this.expanded) ? commonStrings.collapse : commonStrings.expand\">\n        </clr-icon>\n    </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\"\n     [@clrExpand]=\"expandAnimationState\"\n     (@clrExpand.done)=\"expandAnimationDone($event)\">\n    <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n",
                 providers: [Expand, VerticalNavGroupService],
                 animations: [
                     trigger('clrExpand', [
@@ -8831,15 +9897,16 @@ ClrVerticalNavGroup.decorators = [
             },] },
 ];
 ClrVerticalNavGroup.ctorParameters = function () { return [
-    { type: Expand, },
-    { type: VerticalNavGroupRegistrationService, },
-    { type: VerticalNavGroupService, },
-    { type: VerticalNavService, },
+    { type: Expand },
+    { type: VerticalNavGroupRegistrationService },
+    { type: VerticalNavGroupService },
+    { type: VerticalNavService },
+    { type: ClrCommonStrings }
 ]; };
 ClrVerticalNavGroup.propDecorators = {
-    "expanded": [{ type: HostBinding, args: ['class.is-expanded',] },],
-    "userExpandedInput": [{ type: Input, args: ['clrVerticalNavGroupExpanded',] },],
-    "expandedChange": [{ type: Output, args: ['clrVerticalNavGroupExpandedChange',] },],
+    expanded: [{ type: HostBinding, args: ['class.is-expanded',] }],
+    userExpandedInput: [{ type: Input, args: ['clrVerticalNavGroupExpanded',] }],
+    expandedChange: [{ type: Output, args: ['clrVerticalNavGroupExpandedChange',] }]
 };
 var ClrVerticalNavGroupChildren = /** @class */ (function () {
     function ClrVerticalNavGroupChildren() {
@@ -8866,7 +9933,7 @@ ClrVerticalNavIcon.decorators = [
     { type: Directive, args: [{ selector: '[clrVerticalNavIcon]', host: { class: 'nav-icon' } },] },
 ];
 ClrVerticalNavIcon.ctorParameters = function () { return [
-    { type: VerticalNavIconService, },
+    { type: VerticalNavIconService }
 ]; };
 var ClrVerticalNavLink = /** @class */ (function () {
     function ClrVerticalNavLink(_navGroupService) {
@@ -8887,10 +9954,10 @@ ClrVerticalNavLink.decorators = [
             },] },
 ];
 ClrVerticalNavLink.ctorParameters = function () { return [
-    { type: VerticalNavGroupService, decorators: [{ type: Optional },] },
+    { type: VerticalNavGroupService, decorators: [{ type: Optional }] }
 ]; };
 ClrVerticalNavLink.propDecorators = {
-    "expandParentNavGroup": [{ type: HostListener, args: ['click',] },],
+    expandParentNavGroup: [{ type: HostListener, args: ['click',] }]
 };
 var CLR_VERTICAL_NAV_DIRECTIVES = [
     ClrVerticalNav,
@@ -8937,11 +10004,12 @@ ScrollingService.decorators = [
     { type: Injectable },
 ];
 ScrollingService.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ]; };
 var ClrModal = /** @class */ (function () {
-    function ClrModal(_scrollingService) {
+    function ClrModal(_scrollingService, commonStrings) {
         this._scrollingService = _scrollingService;
+        this.commonStrings = commonStrings;
         this._open = false;
         this._openChanged = new EventEmitter(false);
         this.closable = true;
@@ -9006,7 +10074,7 @@ ClrModal.decorators = [
     { type: Component, args: [{
                 selector: 'clr-modal',
                 viewProviders: [ScrollingService],
-                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n      <div class=\"modal-content-wrapper\">\n        <!-- only used in wizards -->\n        <ng-content select=\".modal-nav\"></ng-content>\n\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" aria-label=\"Close\"\n                    *ngIf=\"closable\" (click)=\"close()\">\n              <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n            </button>\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <ng-content select=\".modal-body\"></ng-content>\n          <ng-content select=\".modal-footer\"></ng-content>\n        </div>\n      </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
+                template: "\n<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div clrFocusTrap class=\"modal\" *ngIf=\"_open\">\n    <!--fixme: revisit when ngClass works with exit animation-->\n    <div [@fadeDown]=\"skipAnimation\" (@fadeDown.done)=\"fadeDone($event)\"\n         class=\"modal-dialog\"\n         [class.modal-sm]=\"size == 'sm'\"\n         [class.modal-lg]=\"size == 'lg'\"\n         [class.modal-xl]=\"size == 'xl'\"\n         role=\"dialog\" [attr.aria-hidden]=\"!_open\">\n\n      <div class=\"modal-content-wrapper\">\n        <!-- only used in wizards -->\n        <ng-content select=\".modal-nav\"></ng-content>\n\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" *ngIf=\"closable\" (click)=\"close()\">\n              <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n            </button>\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <ng-content select=\".modal-body\"></ng-content>\n          <ng-content select=\".modal-footer\"></ng-content>\n        </div>\n      </div>\n    </div>\n\n    <div [@fade] class=\"modal-backdrop\"\n         aria-hidden=\"true\"\n         (click)=\"staticBackdrop || close()\"></div>\n</div>\n\n",
                 styles: [
                     "\n        :host { display: none; }\n        :host.open { display: inline; }\n    ",
                 ],
@@ -9023,20 +10091,21 @@ ClrModal.decorators = [
             },] },
 ];
 ClrModal.ctorParameters = function () { return [
-    { type: ScrollingService, },
+    { type: ScrollingService },
+    { type: ClrCommonStrings }
 ]; };
 ClrModal.propDecorators = {
-    "focusTrap": [{ type: ViewChild, args: [FocusTrapDirective,] },],
-    "_open": [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] },],
-    "_openChanged": [{ type: Output, args: ['clrModalOpenChange',] },],
-    "closable": [{ type: Input, args: ['clrModalClosable',] },],
-    "size": [{ type: Input, args: ['clrModalSize',] },],
-    "staticBackdrop": [{ type: Input, args: ['clrModalStaticBackdrop',] },],
-    "skipAnimation": [{ type: Input, args: ['clrModalSkipAnimation',] },],
-    "bypassScrollService": [{ type: Input, args: ['clrModalOverrideScrollService',] },],
-    "stopClose": [{ type: Input, args: ['clrModalPreventClose',] },],
-    "altClose": [{ type: Output, args: ['clrModalAlternateClose',] },],
-    "close": [{ type: HostListener, args: ['body:keyup.escape',] },],
+    focusTrap: [{ type: ViewChild, args: [FocusTrapDirective,] }],
+    _open: [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] }],
+    _openChanged: [{ type: Output, args: ['clrModalOpenChange',] }],
+    closable: [{ type: Input, args: ['clrModalClosable',] }],
+    size: [{ type: Input, args: ['clrModalSize',] }],
+    staticBackdrop: [{ type: Input, args: ['clrModalStaticBackdrop',] }],
+    skipAnimation: [{ type: Input, args: ['clrModalSkipAnimation',] }],
+    bypassScrollService: [{ type: Input, args: ['clrModalOverrideScrollService',] }],
+    stopClose: [{ type: Input, args: ['clrModalPreventClose',] }],
+    altClose: [{ type: Output, args: ['clrModalAlternateClose',] }],
+    close: [{ type: HostListener, args: ['body:keyup.escape',] }]
 };
 var CLR_MODAL_DIRECTIVES = [ClrModal];
 var ClrModalModule = /** @class */ (function () {
@@ -9082,12 +10151,13 @@ var POSITIONS = [
 ];
 var ClrSignpostContent = /** @class */ (function (_super) {
     __extends(ClrSignpostContent, _super);
-    function ClrSignpostContent(injector, parentHost) {
+    function ClrSignpostContent(injector, parentHost, commonStrings) {
         var _this = this;
         if (!parentHost) {
             throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
         }
         _this = _super.call(this, injector, parentHost) || this;
+        _this.commonStrings = commonStrings;
         _this.position = 'right-middle';
         _this.closeOnOutsideClick = true;
         return _this;
@@ -9122,16 +10192,17 @@ var ClrSignpostContent = /** @class */ (function (_super) {
 ClrSignpostContent.decorators = [
     { type: Component, args: [{
                 selector: 'clr-signpost-content',
-                template: "\n        <div class=\"signpost-flex-wrap\">\n            <div class=\"popover-pointer\"></div>\n            <div class=\"signpost-content-header\">\n                <button type=\"button\" class=\"signpost-action close\" aria-label=\"Close\" (click)=\"close()\">\n                    <clr-icon aria-hidden=\"true\" shape=\"close\"></clr-icon>\n                </button>\n            </div>\n            <div class=\"signpost-content-body\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
+                template: "\n        <div class=\"signpost-flex-wrap\">\n            <div class=\"popover-pointer\"></div>\n            <div class=\"signpost-content-header\">\n                <button type=\"button\" class=\"signpost-action close\" (click)=\"close()\">\n                    <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n                </button>\n            </div>\n            <div class=\"signpost-content-body\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
                 host: { '[class.signpost-content]': 'true' },
             },] },
 ];
 ClrSignpostContent.ctorParameters = function () { return [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] },
+    { type: ClrCommonStrings }
 ]; };
 ClrSignpostContent.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
+    position: [{ type: Input, args: ['clrPosition',] }]
 };
 var CLR_SIGNPOST_DIRECTIVES = [ClrSignpost, ClrSignpostContent, ClrSignpostTrigger];
 var ClrSignpostModule = /** @class */ (function () {
@@ -9253,12 +10324,12 @@ ClrTooltipContent.decorators = [
             },] },
 ];
 ClrTooltipContent.ctorParameters = function () { return [
-    { type: Injector, },
-    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] },] },
+    { type: Injector },
+    { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] }
 ]; };
 ClrTooltipContent.propDecorators = {
-    "position": [{ type: Input, args: ['clrPosition',] },],
-    "size": [{ type: Input, args: ['clrSize',] },],
+    position: [{ type: Input, args: ['clrPosition',] }],
+    size: [{ type: Input, args: ['clrSize',] }]
 };
 var ClrTooltipTrigger = /** @class */ (function () {
     function ClrTooltipTrigger(ifOpenService) {
@@ -9276,11 +10347,11 @@ ClrTooltipTrigger.decorators = [
     { type: Directive, args: [{ selector: '[clrTooltipTrigger]', host: { '[attr.tabindex]': '0', '[class.tooltip-trigger]': 'true' } },] },
 ];
 ClrTooltipTrigger.ctorParameters = function () { return [
-    { type: IfOpenService, },
+    { type: IfOpenService }
 ]; };
 ClrTooltipTrigger.propDecorators = {
-    "showTooltip": [{ type: HostListener, args: ['mouseenter',] }, { type: HostListener, args: ['focus',] },],
-    "hideTooltip": [{ type: HostListener, args: ['mouseleave',] }, { type: HostListener, args: ['blur',] },],
+    showTooltip: [{ type: HostListener, args: ['mouseenter',] }, { type: HostListener, args: ['focus',] }],
+    hideTooltip: [{ type: HostListener, args: ['mouseleave',] }, { type: HostListener, args: ['blur',] }]
 };
 var CLR_TOOLTIP_DIRECTIVES = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 var ClrTooltipModule = /** @class */ (function () {
@@ -9920,8 +10991,8 @@ WizardNavigationService.decorators = [
     { type: Injectable },
 ];
 WizardNavigationService.ctorParameters = function () { return [
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
+    { type: PageCollectionService },
+    { type: ButtonHubService }
 ]; };
 var HeaderActionService = /** @class */ (function () {
     function HeaderActionService(navService) {
@@ -9965,7 +11036,7 @@ HeaderActionService.decorators = [
     { type: Injectable },
 ];
 HeaderActionService.ctorParameters = function () { return [
-    { type: WizardNavigationService, },
+    { type: WizardNavigationService }
 ]; };
 var wizardHeaderActionIndex = 0;
 var ClrWizardHeaderAction = /** @class */ (function () {
@@ -9998,10 +11069,10 @@ ClrWizardHeaderAction.decorators = [
             },] },
 ];
 ClrWizardHeaderAction.propDecorators = {
-    "title": [{ type: Input, args: ['title',] },],
-    "_id": [{ type: Input, args: ['id',] },],
-    "disabled": [{ type: Input, args: ['clrWizardHeaderActionDisabled',] },],
-    "headerActionClicked": [{ type: Output, args: ['actionClicked',] },],
+    title: [{ type: Input, args: ['title',] }],
+    _id: [{ type: Input, args: ['id',] }],
+    disabled: [{ type: Input, args: ['clrWizardHeaderActionDisabled',] }],
+    headerActionClicked: [{ type: Output, args: ['actionClicked',] }]
 };
 var ClrWizardPageButtons = /** @class */ (function () {
     function ClrWizardPageButtons(pageButtonsTemplateRef) {
@@ -10013,7 +11084,7 @@ ClrWizardPageButtons.decorators = [
     { type: Directive, args: [{ selector: '[clrPageButtons]' },] },
 ];
 ClrWizardPageButtons.ctorParameters = function () { return [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ]; };
 var ClrWizardPageHeaderActions = /** @class */ (function () {
     function ClrWizardPageHeaderActions(pageHeaderActionsTemplateRef) {
@@ -10025,7 +11096,7 @@ ClrWizardPageHeaderActions.decorators = [
     { type: Directive, args: [{ selector: '[clrPageHeaderActions]' },] },
 ];
 ClrWizardPageHeaderActions.ctorParameters = function () { return [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ]; };
 var ClrWizardPageNavTitle = /** @class */ (function () {
     function ClrWizardPageNavTitle(pageNavTitleTemplateRef) {
@@ -10037,7 +11108,7 @@ ClrWizardPageNavTitle.decorators = [
     { type: Directive, args: [{ selector: '[clrPageNavTitle]' },] },
 ];
 ClrWizardPageNavTitle.ctorParameters = function () { return [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ]; };
 var ClrWizardPageTitle = /** @class */ (function () {
     function ClrWizardPageTitle(pageTitleTemplateRef) {
@@ -10049,7 +11120,7 @@ ClrWizardPageTitle.decorators = [
     { type: Directive, args: [{ selector: '[clrPageTitle]' },] },
 ];
 ClrWizardPageTitle.ctorParameters = function () { return [
-    { type: TemplateRef, },
+    { type: TemplateRef }
 ]; };
 var wizardPageIndex = 0;
 var ClrWizardPage = /** @class */ (function () {
@@ -10277,33 +11348,33 @@ ClrWizardPage.decorators = [
             },] },
 ];
 ClrWizardPage.ctorParameters = function () { return [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService },
+    { type: ButtonHubService }
 ]; };
 ClrWizardPage.propDecorators = {
-    "pageTitle": [{ type: ContentChild, args: [ClrWizardPageTitle,] },],
-    "pageNavTitle": [{ type: ContentChild, args: [ClrWizardPageNavTitle,] },],
-    "_buttons": [{ type: ContentChild, args: [ClrWizardPageButtons,] },],
-    "_headerActions": [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] },],
-    "nextStepDisabled": [{ type: Input, args: ['clrWizardPageNextDisabled',] },],
-    "nextStepDisabledChange": [{ type: Output, args: ['clrWizardPageNextDisabledChange',] },],
-    "previousStepDisabled": [{ type: Input, args: ['clrWizardPagePreviousDisabled',] },],
-    "previousStepDisabledChange": [{ type: Output, args: ['clrWizardPagePreviousDisabledChange',] },],
-    "preventDefault": [{ type: Input, args: ['clrWizardPagePreventDefault',] },],
-    "stopCancel": [{ type: Input, args: ['clrWizardPagePreventDefaultCancel',] },],
-    "stopCancelChange": [{ type: Output, args: ['clrWizardPagePreventDefaultCancelChange',] },],
-    "stopNext": [{ type: Input, args: ['clrWizardPagePreventDefaultNext',] },],
-    "onCommit": [{ type: Output, args: ['clrWizardPageOnCommit',] },],
-    "onLoad": [{ type: Output, args: ['clrWizardPageOnLoad',] },],
-    "pageOnCancel": [{ type: Output, args: ['clrWizardPageOnCancel',] },],
-    "finishButtonClicked": [{ type: Output, args: ['clrWizardPageFinish',] },],
-    "previousButtonClicked": [{ type: Output, args: ['clrWizardPagePrevious',] },],
-    "nextButtonClicked": [{ type: Output, args: ['clrWizardPageNext',] },],
-    "dangerButtonClicked": [{ type: Output, args: ['clrWizardPageDanger',] },],
-    "primaryButtonClicked": [{ type: Output, args: ['clrWizardPagePrimary',] },],
-    "customButtonClicked": [{ type: Output, args: ['clrWizardPageCustomButton',] },],
-    "_id": [{ type: Input, args: ['id',] },],
+    pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle,] }],
+    pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle,] }],
+    _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons,] }],
+    _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] }],
+    nextStepDisabled: [{ type: Input, args: ['clrWizardPageNextDisabled',] }],
+    nextStepDisabledChange: [{ type: Output, args: ['clrWizardPageNextDisabledChange',] }],
+    previousStepDisabled: [{ type: Input, args: ['clrWizardPagePreviousDisabled',] }],
+    previousStepDisabledChange: [{ type: Output, args: ['clrWizardPagePreviousDisabledChange',] }],
+    preventDefault: [{ type: Input, args: ['clrWizardPagePreventDefault',] }],
+    stopCancel: [{ type: Input, args: ['clrWizardPagePreventDefaultCancel',] }],
+    stopCancelChange: [{ type: Output, args: ['clrWizardPagePreventDefaultCancelChange',] }],
+    stopNext: [{ type: Input, args: ['clrWizardPagePreventDefaultNext',] }],
+    onCommit: [{ type: Output, args: ['clrWizardPageOnCommit',] }],
+    onLoad: [{ type: Output, args: ['clrWizardPageOnLoad',] }],
+    pageOnCancel: [{ type: Output, args: ['clrWizardPageOnCancel',] }],
+    finishButtonClicked: [{ type: Output, args: ['clrWizardPageFinish',] }],
+    previousButtonClicked: [{ type: Output, args: ['clrWizardPagePrevious',] }],
+    nextButtonClicked: [{ type: Output, args: ['clrWizardPageNext',] }],
+    dangerButtonClicked: [{ type: Output, args: ['clrWizardPageDanger',] }],
+    primaryButtonClicked: [{ type: Output, args: ['clrWizardPagePrimary',] }],
+    customButtonClicked: [{ type: Output, args: ['clrWizardPageCustomButton',] }],
+    _id: [{ type: Input, args: ['id',] }]
 };
 var ClrWizard = /** @class */ (function () {
     function ClrWizard(navService, pageCollection, buttonService, headerActionService, elementRef, differs) {
@@ -10597,32 +11668,32 @@ ClrWizard.decorators = [
             },] },
 ];
 ClrWizard.ctorParameters = function () { return [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
-    { type: ButtonHubService, },
-    { type: HeaderActionService, },
-    { type: ElementRef, },
-    { type: IterableDiffers, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService },
+    { type: ButtonHubService },
+    { type: HeaderActionService },
+    { type: ElementRef },
+    { type: IterableDiffers }
 ]; };
 ClrWizard.propDecorators = {
-    "size": [{ type: Input, args: ['clrWizardSize',] },],
-    "forceForward": [{ type: Input, args: ['clrWizardForceForwardNavigation',] },],
-    "closable": [{ type: Input, args: ['clrWizardClosable',] },],
-    "clrWizardOpen": [{ type: Input, args: ['clrWizardOpen',] },],
-    "_openChanged": [{ type: Output, args: ['clrWizardOpenChange',] },],
-    "onCancel": [{ type: Output, args: ['clrWizardOnCancel',] },],
-    "wizardFinished": [{ type: Output, args: ['clrWizardOnFinish',] },],
-    "onReset": [{ type: Output, args: ['clrWizardOnReset',] },],
-    "pages": [{ type: ContentChildren, args: [ClrWizardPage,] },],
-    "headerActions": [{ type: ContentChildren, args: [ClrWizardHeaderAction,] },],
-    "currentPageChanged": [{ type: Output, args: ['clrWizardCurrentPageChanged',] },],
-    "onMoveNext": [{ type: Output, args: ['clrWizardOnNext',] },],
-    "onMovePrevious": [{ type: Output, args: ['clrWizardOnPrevious',] },],
-    "stopNext": [{ type: Input, args: ['clrWizardPreventDefaultNext',] },],
-    "stopCancel": [{ type: Input, args: ['clrWizardPreventDefaultCancel',] },],
-    "stopNavigation": [{ type: Input, args: ['clrWizardPreventNavigation',] },],
-    "disableStepnav": [{ type: Input, args: ['clrWizardDisableStepnav',] },],
-    "_stopModalAnimations": [{ type: Input, args: ['clrWizardPreventModalAnimation',] },],
+    size: [{ type: Input, args: ['clrWizardSize',] }],
+    forceForward: [{ type: Input, args: ['clrWizardForceForwardNavigation',] }],
+    closable: [{ type: Input, args: ['clrWizardClosable',] }],
+    clrWizardOpen: [{ type: Input, args: ['clrWizardOpen',] }],
+    _openChanged: [{ type: Output, args: ['clrWizardOpenChange',] }],
+    onCancel: [{ type: Output, args: ['clrWizardOnCancel',] }],
+    wizardFinished: [{ type: Output, args: ['clrWizardOnFinish',] }],
+    onReset: [{ type: Output, args: ['clrWizardOnReset',] }],
+    pages: [{ type: ContentChildren, args: [ClrWizardPage,] }],
+    headerActions: [{ type: ContentChildren, args: [ClrWizardHeaderAction,] }],
+    currentPageChanged: [{ type: Output, args: ['clrWizardCurrentPageChanged',] }],
+    onMoveNext: [{ type: Output, args: ['clrWizardOnNext',] }],
+    onMovePrevious: [{ type: Output, args: ['clrWizardOnPrevious',] }],
+    stopNext: [{ type: Input, args: ['clrWizardPreventDefaultNext',] }],
+    stopCancel: [{ type: Input, args: ['clrWizardPreventDefaultCancel',] }],
+    stopNavigation: [{ type: Input, args: ['clrWizardPreventNavigation',] }],
+    disableStepnav: [{ type: Input, args: ['clrWizardDisableStepnav',] }],
+    _stopModalAnimations: [{ type: Input, args: ['clrWizardPreventModalAnimation',] }]
 };
 var DEFAULT_BUTTON_TYPES = {
     cancel: 'cancel',
@@ -10785,14 +11856,14 @@ ClrWizardButton.decorators = [
             },] },
 ];
 ClrWizardButton.ctorParameters = function () { return [
-    { type: WizardNavigationService, },
-    { type: ButtonHubService, },
+    { type: WizardNavigationService },
+    { type: ButtonHubService }
 ]; };
 ClrWizardButton.propDecorators = {
-    "type": [{ type: Input, args: ['type',] },],
-    "disabled": [{ type: Input, args: ['clrWizardButtonDisabled',] },],
-    "hidden": [{ type: Input, args: ['clrWizardButtonHidden',] },],
-    "wasClicked": [{ type: Output, args: ['clrWizardButtonClicked',] },],
+    type: [{ type: Input, args: ['type',] }],
+    disabled: [{ type: Input, args: ['clrWizardButtonDisabled',] }],
+    hidden: [{ type: Input, args: ['clrWizardButtonHidden',] }],
+    wasClicked: [{ type: Output, args: ['clrWizardButtonClicked',] }]
 };
 var ClrWizardCustomTags = /** @class */ (function () {
     function ClrWizardCustomTags() {
@@ -10816,7 +11887,7 @@ ClrWizardStepnav.decorators = [
             },] },
 ];
 ClrWizardStepnav.ctorParameters = function () { return [
-    { type: PageCollectionService, },
+    { type: PageCollectionService }
 ]; };
 var ClrWizardStepnavItem = /** @class */ (function () {
     function ClrWizardStepnavItem(navService, pageCollection) {
@@ -10896,11 +11967,11 @@ ClrWizardStepnavItem.decorators = [
             },] },
 ];
 ClrWizardStepnavItem.ctorParameters = function () { return [
-    { type: WizardNavigationService, },
-    { type: PageCollectionService, },
+    { type: WizardNavigationService },
+    { type: PageCollectionService }
 ]; };
 ClrWizardStepnavItem.propDecorators = {
-    "page": [{ type: Input, args: ['page',] },],
+    page: [{ type: Input, args: ['page',] }]
 };
 var CLR_WIZARD_DIRECTIVES = [
     ClrWizard,
@@ -10927,6 +11998,44 @@ ClrWizardModule.decorators = [
                 exports: [CLR_WIZARD_DIRECTIVES],
             },] },
 ];
+var ClrCommonStringsService = /** @class */ (function () {
+    function ClrCommonStringsService() {
+        this.open = 'Open';
+        this.close = 'Close';
+        this.show = 'Show';
+        this.hide = 'Hide';
+        this.expand = 'Expand';
+        this.collapse = 'Collapse';
+        this.more = 'More';
+        this.select = 'Select';
+        this.selectAll = 'Select All';
+        this.previous = 'Previous';
+        this.next = 'Next';
+        this.current = 'Jump to current';
+        this.info = 'Info';
+        this.success = 'Success';
+        this.warning = 'Warning';
+        this.danger = 'Error';
+        this.rowActions = 'Available actions';
+        this.pickColumns = 'Show or hide columns';
+    }
+    return ClrCommonStringsService;
+}());
+ClrCommonStringsService.decorators = [
+    { type: Injectable },
+];
+function commonStringsFactory(existing) {
+    var defaults = new ClrCommonStringsService();
+    if (existing) {
+        return Object.assign({}, defaults, existing);
+    }
+    return defaults;
+}
+var COMMON_STRINGS_PROVIDER = {
+    provide: ClrCommonStrings,
+    useFactory: commonStringsFactory,
+    deps: [[new Optional(), new SkipSelf(), ClrCommonStrings]],
+};
 var ClarityModule = /** @class */ (function () {
     function ClarityModule() {
     }
@@ -10949,996 +12058,7 @@ ClarityModule.decorators = [
                     ClrPopoverModule,
                     ClrWizardModule,
                 ],
-            },] },
-];
-var NgControlService = /** @class */ (function () {
-    function NgControlService() {
-        this._controlChanges = new Subject();
-    }
-    Object.defineProperty(NgControlService.prototype, "controlChanges", {
-        get: function () {
-            return this._controlChanges.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    NgControlService.prototype.setControl = function (control) {
-        this._controlChanges.next(control);
-    };
-    return NgControlService;
-}());
-NgControlService.decorators = [
-    { type: Injectable },
-];
-var IfErrorService = /** @class */ (function () {
-    function IfErrorService(ngControlService) {
-        var _this = this;
-        this.ngControlService = ngControlService;
-        this._statusChanges = new Subject();
-        this.subscriptions = [];
-        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
-            _this.control = control;
-            _this.listenForChanges();
-        }));
-    }
-    Object.defineProperty(IfErrorService.prototype, "statusChanges", {
-        get: function () {
-            return this._statusChanges.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    IfErrorService.prototype.listenForChanges = function () {
-        var _this = this;
-        this.subscriptions.push(this.control.statusChanges.pipe(filter(function () { return _this.control.touched; })).subscribe(function () {
-            _this._statusChanges.next(_this.control);
-        }));
-    };
-    IfErrorService.prototype.triggerStatusChange = function () {
-        if (this.control) {
-            this._statusChanges.next(this.control);
-        }
-    };
-    IfErrorService.prototype.ngOnDestroy = function () {
-        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
-    };
-    return IfErrorService;
-}());
-IfErrorService.decorators = [
-    { type: Injectable },
-];
-IfErrorService.ctorParameters = function () { return [
-    { type: NgControlService, },
-]; };
-var ClrIfError = /** @class */ (function () {
-    function ClrIfError(service, template, container) {
-        this.service = service;
-        this.template = template;
-        this.container = container;
-        this.displayed = false;
-        if (!this.service) {
-            throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
-        }
-        else {
-            this.displayError(false);
-        }
-    }
-    ClrIfError.prototype.ngOnInit = function () {
-        var _this = this;
-        this.subscription = this.service.statusChanges.subscribe(function (control) {
-            if (_this.error) {
-                _this.displayError(control.hasError(_this.error));
-            }
-            else {
-                _this.displayError(control.invalid);
-            }
-        });
-    };
-    ClrIfError.prototype.ngOnDestroy = function () {
-        this.subscription.unsubscribe();
-    };
-    ClrIfError.prototype.displayError = function (invalid) {
-        if (invalid && !this.displayed) {
-            this.container.createEmbeddedView(this.template);
-            this.displayed = true;
-        }
-        else if (!invalid) {
-            this.container.clear();
-            this.displayed = false;
-        }
-    };
-    return ClrIfError;
-}());
-ClrIfError.decorators = [
-    { type: Directive, args: [{ selector: '[clrIfError]' },] },
-];
-ClrIfError.ctorParameters = function () { return [
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: TemplateRef, },
-    { type: ViewContainerRef, },
-]; };
-ClrIfError.propDecorators = {
-    "error": [{ type: Input, args: ['clrIfError',] },],
-};
-var ClrControlError = /** @class */ (function () {
-    function ClrControlError() {
-    }
-    return ClrControlError;
-}());
-ClrControlError.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-control-error',
-                template: "\n    <ng-content></ng-content>\n    ",
-                host: { '[class.clr-subtext]': 'true' },
-            },] },
-];
-var Layouts = {
-    VERTICAL: 'vertical',
-    HORIZONTAL: 'horizontal',
-    COMPACT: 'compact',
-};
-var LayoutService = /** @class */ (function () {
-    function LayoutService() {
-        this.layout = Layouts.VERTICAL;
-        this.layoutValues = Object.keys(Layouts).map(function (key) { return Layouts[key]; });
-    }
-    LayoutService.prototype.isVertical = function () {
-        return this.layout === Layouts.VERTICAL;
-    };
-    Object.defineProperty(LayoutService.prototype, "layoutClass", {
-        get: function () {
-            return "clr-form-" + this.layout;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    LayoutService.prototype.isValid = function (layout) {
-        return this.layoutValues.indexOf(layout) > -1;
-    };
-    return LayoutService;
-}());
-LayoutService.decorators = [
-    { type: Injectable },
-];
-var ClrForm = /** @class */ (function () {
-    function ClrForm() {
-    }
-    return ClrForm;
-}());
-ClrForm.decorators = [
-    { type: Directive, args: [{
-                selector: '[clrForm]',
-                providers: [LayoutService],
-                host: { '[class.clr-form]': 'true' },
-            },] },
-];
-var ClrControlHelper = /** @class */ (function () {
-    function ClrControlHelper() {
-    }
-    return ClrControlHelper;
-}());
-ClrControlHelper.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-control-helper',
-                template: "\n    <ng-content></ng-content>\n    ",
-                host: { '[class.clr-subtext]': 'true' },
-            },] },
-];
-var ClrLabel = /** @class */ (function () {
-    function ClrLabel(controlIdService, layoutService, renderer, el) {
-        this.controlIdService = controlIdService;
-        this.layoutService = layoutService;
-        this.renderer = renderer;
-        this.el = el;
-    }
-    ClrLabel.prototype.ngOnInit = function () {
-        var _this = this;
-        if (this.controlIdService) {
-            this.renderer.addClass(this.el.nativeElement, 'clr-control-label');
-        }
-        if (this.layoutService &&
-            !this.layoutService.isVertical() &&
-            this.el.nativeElement &&
-            this.el.nativeElement.className.indexOf('clr-col') < 0) {
-            this.renderer.addClass(this.el.nativeElement, 'clr-col-xs-12');
-            this.renderer.addClass(this.el.nativeElement, 'clr-col-md-2');
-        }
-        if (!this.forAttr && this.controlIdService) {
-            this.subscription = this.controlIdService.idChange.subscribe(function (id) { return (_this.forAttr = id); });
-        }
-    };
-    ClrLabel.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return ClrLabel;
-}());
-ClrLabel.decorators = [
-    { type: Directive, args: [{ selector: 'label' },] },
-];
-ClrLabel.ctorParameters = function () { return [
-    { type: ControlIdService, decorators: [{ type: Optional },] },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-]; };
-ClrLabel.propDecorators = {
-    "forAttr": [{ type: HostBinding, args: ['attr.for',] }, { type: Input, args: ['for',] },],
-};
-var ClrLayout = /** @class */ (function () {
-    function ClrLayout(layoutService) {
-        this.layoutService = layoutService;
-    }
-    ClrLayout.prototype.ngOnInit = function () {
-        if (this.layout && this.layoutService.isValid(this.layout)) {
-            this.layoutService.layout = this.layout;
-        }
-    };
-    return ClrLayout;
-}());
-ClrLayout.decorators = [
-    { type: Directive, args: [{
-                selector: '[clrLayout]',
-                host: {
-                    '[class]': 'layoutService.layoutClass',
-                },
-            },] },
-];
-ClrLayout.ctorParameters = function () { return [
-    { type: LayoutService, },
-]; };
-ClrLayout.propDecorators = {
-    "layout": [{ type: Input, args: ['clrLayout',] },],
-};
-var ClrCommonFormsModule = /** @class */ (function () {
-    function ClrCommonFormsModule() {
-    }
-    return ClrCommonFormsModule;
-}());
-ClrCommonFormsModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule],
-                declarations: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
-                exports: [ClrLabel, ClrControlError, ClrControlHelper, ClrIfError, ClrForm, ClrLayout],
-            },] },
-];
-var ClrCheckboxContainer = /** @class */ (function () {
-    function ClrCheckboxContainer() {
-        this._dynamic = false;
-    }
-    return ClrCheckboxContainer;
-}());
-ClrCheckboxContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-checkbox-container',
-                template: "\n        <!-- We want the checkbox input to be before the label, always -->\n        <ng-content select=\"[clrCheckbox]\"></ng-content>\n        <ng-content></ng-content>\n        <label *ngIf=\"_dynamic\"></label>\n    ",
-                host: { '[class.checkbox]': 'true' },
-                providers: [ControlIdService],
-            },] },
-];
-var ClrCheckboxNext = /** @class */ (function (_super) {
-    __extends(ClrCheckboxNext, _super);
-    function ClrCheckboxNext(vcr) {
-        return _super.call(this, ClrCheckboxContainer, vcr) || this;
-    }
-    return ClrCheckboxNext;
-}(WrappedFormControl));
-ClrCheckboxNext.decorators = [
-    { type: Directive, args: [{ selector: '[clrCheckbox]' },] },
-];
-ClrCheckboxNext.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-]; };
-var ClrCheckboxNextModule = /** @class */ (function () {
-    function ClrCheckboxNextModule() {
-    }
-    return ClrCheckboxNextModule;
-}());
-ClrCheckboxNextModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule],
-                declarations: [ClrCheckboxNext, ClrCheckboxContainer],
-                exports: [ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer],
-                entryComponents: [ClrCheckboxContainer],
-            },] },
-];
-var ControlClassService = /** @class */ (function () {
-    function ControlClassService() {
-        this.className = '';
-    }
-    ControlClassService.prototype.controlClass = function (invalid, grid) {
-        if (invalid === void 0) { invalid = false; }
-        if (grid === void 0) { grid = false; }
-        var controlClasses = [];
-        if (invalid) {
-            controlClasses.push('clr-error');
-        }
-        if (grid && this.className.indexOf('clr-col') === -1) {
-            controlClasses.push('clr-col-md-10 clr-col-xs-12');
-        }
-        return controlClasses.join(' ');
-    };
-    return ControlClassService;
-}());
-ControlClassService.decorators = [
-    { type: Injectable },
-];
-var ClrInputContainer = /** @class */ (function () {
-    function ClrInputContainer(ifErrorService, layoutService, controlClassService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        }));
-    }
-    ClrInputContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrInputContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrInputContainer.prototype.ngOnDestroy = function () {
-        if (this.subscriptions) {
-            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
-        }
-    };
-    return ClrInputContainer;
-}());
-ClrInputContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-input-container',
-                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-input-wrapper\">\n                <ng-content select=\"[clrInput]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-ClrInputContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-]; };
-ClrInputContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-var ClrInput = /** @class */ (function (_super) {
-    __extends(ClrInput, _super);
-    function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
-        var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
-        _this.ngControlService = ngControlService;
-        _this.ifErrorService = ifErrorService;
-        _this.control = control;
-        _this.type = type;
-        if (!control) {
-            throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
-        }
-        if (!_this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'text');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        return _this;
-    }
-    ClrInput.prototype.ngOnInit = function () {
-        _super.prototype.ngOnInit.call(this);
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    };
-    ClrInput.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrInput;
-}(WrappedFormControl));
-ClrInput.decorators = [
-    { type: Directive, args: [{ selector: '[clrInput]', host: { '[class.clr-input]': 'true' } },] },
-];
-ClrInput.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: undefined, decorators: [{ type: Attribute, args: ['type',] },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-]; };
-ClrInput.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrInputModule = /** @class */ (function () {
-    function ClrInputModule() {
-    }
-    return ClrInputModule;
-}());
-ClrInputModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrInput, ClrInputContainer],
-                exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
-                entryComponents: [ClrInputContainer],
-            },] },
-];
-var FocusService = /** @class */ (function () {
-    function FocusService() {
-        this._focused = new BehaviorSubject(false);
-    }
-    Object.defineProperty(FocusService.prototype, "focusChange", {
-        get: function () {
-            return this._focused.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FocusService.prototype, "focused", {
-        set: function (state$$1) {
-            this._focused.next(state$$1);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return FocusService;
-}());
-FocusService.decorators = [
-    { type: Injectable },
-];
-var ToggleService = new InjectionToken(undefined);
-function ToggleServiceProvider() {
-    return new BehaviorSubject(false);
-}
-var ClrPasswordContainer = /** @class */ (function () {
-    function ClrPasswordContainer(ifErrorService, layoutService, controlClassService, focusService, toggleService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.focusService = focusService;
-        this.toggleService = toggleService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.show = false;
-        this.focus = false;
-        this._toggle = true;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        }));
-        this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
-            _this.focus = state$$1;
-        }));
-    }
-    Object.defineProperty(ClrPasswordContainer.prototype, "clrToggle", {
-        get: function () {
-            return this._toggle;
-        },
-        set: function (state$$1) {
-            this._toggle = state$$1;
-            if (!state$$1) {
-                this.show = false;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClrPasswordContainer.prototype.toggle = function () {
-        this.show = !this.show;
-        this.toggleService.next(this.show);
-    };
-    ClrPasswordContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrPasswordContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrPasswordContainer.prototype.ngOnDestroy = function () {
-        if (this.subscriptions) {
-            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
-        }
-    };
-    return ClrPasswordContainer;
-}());
-ClrPasswordContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-password-container',
-                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-input-wrapper\">\n        <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n          <ng-content select=\"[clrPassword]\"></ng-content>\n          <clr-icon shape=\"eye\" *ngIf=\"!show && clrToggle\" class=\"clr-input-group-icon-action\" (click)=\"toggle()\"></clr-icon>\n          <clr-icon shape=\"eye-hide\" *ngIf=\"show && clrToggle\" class=\"clr-input-group-icon-action\" (click)=\"toggle()\"></clr-icon>\n        </div>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [
-                    IfErrorService,
-                    NgControlService,
-                    ControlIdService,
-                    ControlClassService,
-                    FocusService,
-                    { provide: ToggleService, useFactory: ToggleServiceProvider },
-                ],
-            },] },
-];
-ClrPasswordContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: FocusService, },
-    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] },] },
-]; };
-ClrPasswordContainer.propDecorators = {
-    "clrToggle": [{ type: Input, args: ['clrToggle',] },],
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-var ClrPassword = /** @class */ (function (_super) {
-    __extends(ClrPassword, _super);
-    function ClrPassword(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
-        var _this = _super.call(this, ClrPasswordContainer, vcr, 1) || this;
-        _this.ngControlService = ngControlService;
-        _this.ifErrorService = ifErrorService;
-        _this.control = control;
-        _this.focusService = focusService;
-        _this.type = type;
-        _this.toggleService = toggleService;
-        if (!_this.control) {
-            throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
-        }
-        if (!_this.focusService) {
-            throw new Error('clrPassword requires being wrapped in <clr-password-container>');
-        }
-        if (!_this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'password');
-        }
-        controlClassService.className = el.nativeElement.className;
-        _this.subscription = _this.toggleService.subscribe(function (toggle) {
-            renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
-        });
-        return _this;
-    }
-    ClrPassword.prototype.ngOnInit = function () {
-        _super.prototype.ngOnInit.call(this);
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    };
-    ClrPassword.prototype.ngOnDestroy = function () {
-        this.subscription.unsubscribe();
-    };
-    ClrPassword.prototype.onFocus = function () {
-        if (this.focusService) {
-            this.focusService.focused = true;
-        }
-    };
-    ClrPassword.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-        if (this.focusService) {
-            this.focusService.focused = false;
-        }
-    };
-    return ClrPassword;
-}(WrappedFormControl));
-ClrPassword.decorators = [
-    { type: Directive, args: [{ selector: '[clrPassword]', host: { '[class.clr-input]': 'true' } },] },
-];
-ClrPassword.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: FocusService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: undefined, decorators: [{ type: Attribute, args: ['type',] },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-    { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] },] },
-]; };
-ClrPassword.propDecorators = {
-    "onFocus": [{ type: HostListener, args: ['focus',] },],
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrPasswordModule = /** @class */ (function () {
-    function ClrPasswordModule() {
-    }
-    return ClrPasswordModule;
-}());
-ClrPasswordModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrPassword, ClrPasswordContainer],
-                exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer],
-                entryComponents: [ClrPasswordContainer],
-            },] },
-];
-var ClrRadioWrapper = /** @class */ (function () {
-    function ClrRadioWrapper(controlClassService) {
-        this.controlClassService = controlClassService;
-        this._dynamic = false;
-        this.hasContainer = false;
-        if (controlClassService) {
-            this.hasContainer = true;
-        }
-    }
-    return ClrRadioWrapper;
-}());
-ClrRadioWrapper.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-radio-wrapper',
-                template: "\n    <ng-content select=\"[clrRadio]\"></ng-content>\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label\"></label>\n  ",
-                host: {
-                    '[class.clr-radio-wrapper]': '!hasContainer',
-                },
-                providers: [ControlIdService],
-            },] },
-];
-ClrRadioWrapper.ctorParameters = function () { return [
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-]; };
-ClrRadioWrapper.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-var ClrRadio = /** @class */ (function (_super) {
-    __extends(ClrRadio, _super);
-    function ClrRadio(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
-        var _this = _super.call(this, ClrRadioWrapper, vcr, 0) || this;
-        _this.ngControlService = ngControlService;
-        _this.ifErrorService = ifErrorService;
-        _this.control = control;
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        return _this;
-    }
-    ClrRadio.prototype.ngOnInit = function () {
-        _super.prototype.ngOnInit.call(this);
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    };
-    ClrRadio.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrRadio;
-}(WrappedFormControl));
-ClrRadio.decorators = [
-    { type: Directive, args: [{ selector: '[clrRadio]' },] },
-];
-ClrRadio.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: ElementRef, },
-]; };
-ClrRadio.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrRadioContainer = /** @class */ (function () {
-    function ClrRadioContainer(ifErrorService, layoutService, controlClassService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this.inline = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        }));
-    }
-    Object.defineProperty(ClrRadioContainer.prototype, "clrInline", {
-        get: function () {
-            return this.inline;
-        },
-        set: function (value) {
-            if (!isBoolean(value)) {
-                this.inline = value === 'false' ? false : true;
-            }
-            else {
-                this.inline = !!value;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClrRadioContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrRadioContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrRadioContainer.prototype.ngOnDestroy = function () {
-        this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
-    };
-    return ClrRadioContainer;
-}());
-ClrRadioContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-radio-container',
-                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-radio-wrapper\" [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [NgControlService, ControlClassService, IfErrorService],
-            },] },
-];
-ClrRadioContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-]; };
-ClrRadioContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-    "clrInline": [{ type: Input },],
-};
-var ClrRadioModule = /** @class */ (function () {
-    function ClrRadioModule() {
-    }
-    return ClrRadioModule;
-}());
-ClrRadioModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
-                declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-                exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper],
-                entryComponents: [ClrRadioWrapper],
-            },] },
-];
-var ClrSelectContainer = /** @class */ (function () {
-    function ClrSelectContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.multi = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        }));
-        this.subscriptions.push(ngControlService.controlChanges.subscribe(function (control) {
-            _this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
-        }));
-    }
-    ClrSelectContainer.prototype.wrapperClass = function () {
-        return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
-    };
-    ClrSelectContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrSelectContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrSelectContainer.prototype.ngOnDestroy = function () {
-        if (this.subscriptions) {
-            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
-        }
-    };
-    return ClrSelectContainer;
-}());
-ClrSelectContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-select-container',
-                template: "    \n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div [ngClass]=\"wrapperClass()\">\n                <ng-content select=\"[clrSelect]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-ClrSelectContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-    { type: NgControlService, },
-]; };
-ClrSelectContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-    "multiple": [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] },],
-};
-var ClrSelect = /** @class */ (function (_super) {
-    __extends(ClrSelect, _super);
-    function ClrSelect(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
-        var _this = _super.call(this, ClrSelectContainer, vcr, 1) || this;
-        _this.ngControlService = ngControlService;
-        _this.ifErrorService = ifErrorService;
-        _this.control = control;
-        if (!control) {
-            throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        return _this;
-    }
-    ClrSelect.prototype.ngOnInit = function () {
-        _super.prototype.ngOnInit.call(this);
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    };
-    ClrSelect.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrSelect;
-}(WrappedFormControl));
-ClrSelect.decorators = [
-    { type: Directive, args: [{ selector: '[clrSelect]', host: { '[class.clr-select]': 'true' } },] },
-];
-ClrSelect.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: ElementRef, },
-]; };
-ClrSelect.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrSelectModule = /** @class */ (function () {
-    function ClrSelectModule() {
-    }
-    return ClrSelectModule;
-}());
-ClrSelectModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrSelect, ClrSelectContainer],
-                exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer],
-                entryComponents: [ClrSelectContainer],
-            },] },
-];
-var ClrTextareaContainer = /** @class */ (function () {
-    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
-        var _this = this;
-        this.ifErrorService = ifErrorService;
-        this.layoutService = layoutService;
-        this.controlClassService = controlClassService;
-        this.subscriptions = [];
-        this.invalid = false;
-        this._dynamic = false;
-        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
-            _this.invalid = control.invalid;
-        }));
-    }
-    ClrTextareaContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
-    };
-    ClrTextareaContainer.prototype.addGrid = function () {
-        if (this.layoutService && !this.layoutService.isVertical()) {
-            return true;
-        }
-        return false;
-    };
-    ClrTextareaContainer.prototype.ngOnDestroy = function () {
-        if (this.subscriptions) {
-            this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
-        }
-    };
-    return ClrTextareaContainer;
-}());
-ClrTextareaContainer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-textarea-container',
-                template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-textarea-wrapper\">\n                <ng-content select=\"[clrTextarea]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
-                host: {
-                    '[class.clr-form-control]': 'true',
-                    '[class.clr-row]': 'addGrid()',
-                },
-                providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
-            },] },
-];
-ClrTextareaContainer.ctorParameters = function () { return [
-    { type: IfErrorService, },
-    { type: LayoutService, decorators: [{ type: Optional },] },
-    { type: ControlClassService, },
-]; };
-ClrTextareaContainer.propDecorators = {
-    "label": [{ type: ContentChild, args: [ClrLabel,] },],
-};
-var ClrTextarea = /** @class */ (function (_super) {
-    __extends(ClrTextarea, _super);
-    function ClrTextarea(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
-        var _this = _super.call(this, ClrTextareaContainer, vcr, 1) || this;
-        _this.ngControlService = ngControlService;
-        _this.ifErrorService = ifErrorService;
-        _this.control = control;
-        if (!control) {
-            throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
-        }
-        if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
-        }
-        return _this;
-    }
-    ClrTextarea.prototype.ngOnInit = function () {
-        _super.prototype.ngOnInit.call(this);
-        if (this.ngControlService) {
-            this.ngControlService.setControl(this.control);
-        }
-    };
-    ClrTextarea.prototype.onBlur = function () {
-        if (this.ifErrorService) {
-            this.ifErrorService.triggerStatusChange();
-        }
-    };
-    return ClrTextarea;
-}(WrappedFormControl));
-ClrTextarea.decorators = [
-    { type: Directive, args: [{ selector: '[clrTextarea]', host: { '[class.clr-textarea]': 'true' } },] },
-];
-ClrTextarea.ctorParameters = function () { return [
-    { type: ViewContainerRef, },
-    { type: NgControlService, decorators: [{ type: Optional },] },
-    { type: IfErrorService, decorators: [{ type: Optional },] },
-    { type: NgControl, decorators: [{ type: Optional },] },
-    { type: ControlClassService, decorators: [{ type: Optional },] },
-    { type: Renderer2, },
-    { type: ElementRef, },
-]; };
-ClrTextarea.propDecorators = {
-    "onBlur": [{ type: HostListener, args: ['blur',] },],
-};
-var ClrTextareaModule = /** @class */ (function () {
-    function ClrTextareaModule() {
-    }
-    return ClrTextareaModule;
-}());
-ClrTextareaModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
-                declarations: [ClrTextarea, ClrTextareaContainer],
-                exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer],
-                entryComponents: [ClrTextareaContainer],
-            },] },
-];
-var ClrFormsNextModule = /** @class */ (function () {
-    function ClrFormsNextModule() {
-    }
-    return ClrFormsNextModule;
-}());
-ClrFormsNextModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CommonModule],
-                exports: [
-                    ClrCommonFormsModule,
-                    ClrCheckboxNextModule,
-                    ClrDatepickerModule,
-                    ClrInputModule,
-                    ClrPasswordModule,
-                    ClrRadioModule,
-                    ClrSelectModule,
-                    ClrTextareaModule,
-                ],
+                providers: [COMMON_STRINGS_PROVIDER],
             },] },
 ];
 function collapse() {
@@ -12000,5 +12120,5 @@ function slide(direction) {
     ];
 }
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleService, ToggleServiceProvider, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵda, DatagridRowExpandAnimation as ɵcq, ActionableOompaLoompa as ɵcn, DatagridWillyWonka as ɵcl, ExpandableOompaLoompa as ɵcp, ClrDatagridColumnToggleButton as ɵby, ClrDatagridColumnToggleTitle as ɵbx, DatagridDetailRegisterer as ɵca, ClrDatagridItemsTrackBy as ɵbz, ColumnToggleButtonsService as ɵbs, CustomFilter as ɵbv, DragDispatcher as ɵbu, FiltersProvider as ɵbj, ExpandableRowsCount as ɵbp, HideableColumnService as ɵbq, Items as ɵbi, Page as ɵbk, RowActionService as ɵbo, Selection as ɵbh, Sort as ɵbm, StateDebouncer as ɵbl, StateProvider as ɵbr, DatagridBodyRenderer as ɵci, DatagridCellRenderer as ɵck, DatagridColumnResizer as ɵcf, DomAdapter as ɵcd, DatagridHeadRenderer as ɵch, DatagridHeaderRenderer as ɵce, DatagridMainRenderer as ɵcc, domAdapterFactory as ɵcb, DatagridRenderOrganizer as ɵbn, DatagridRowRenderer as ɵcj, DatagridTableRenderer as ɵcg, DatagridFilterRegistrar as ɵbt, StackControl as ɵcs, AbstractTreeSelection as ɵct, clrTreeSelectionProviderFactory as ɵcv, TreeSelectionService as ɵcu, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵdv, ControlClassService as ɵdy, ControlIdService as ɵx, FocusService as ɵdz, LayoutService as ɵdx, NgControlService as ɵdw, WrappedFormControl as ɵbb, DateFormControlService as ɵw, DateIOService as ɵz, DateNavigationService as ɵv, DatepickerEnabledService as ɵba, DatepickerFocusService as ɵbd, LocaleHelperService as ɵy, ViewManagerService as ɵbc, ResponsiveNavigationProvider as ɵdc, ResponsiveNavigationService as ɵdb, ActiveOompaLoompa as ɵdm, TabsWillyWonka as ɵdl, AriaService as ɵdg, TabsService as ɵdk, TABS_ID as ɵdh, TABS_ID_PROVIDER as ɵdj, tokenFactory$1 as ɵdi, VerticalNavGroupRegistrationService as ɵdp, VerticalNavGroupService as ɵdq, VerticalNavIconService as ɵdo, VerticalNavService as ɵdn, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵco, WillyWonka as ɵcm, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcr, Expand as ɵbw, FocusTrapDirective as ɵu, ClrFocusTrapModule as ɵs, FOCUS_TRAP_DIRECTIVES as ɵt, EmptyAnchor as ɵr, ClrHostWrappingModule as ɵq, UNIQUE_ID as ɵcw, UNIQUE_ID_PROVIDER as ɵcy, uniqueIdFactory as ɵcx, OUSTIDE_CLICK_DIRECTIVES as ɵbf, OutsideClick as ɵbg, ClrOutsideClickModule as ɵbe, ScrollingService as ɵcz, TEMPLATE_REF_DIRECTIVES as ɵde, TemplateRefContainer as ɵdf, ClrTemplateRefModule as ɵdd, ButtonHubService as ɵdt, HeaderActionService as ɵdu, PageCollectionService as ɵds, WizardNavigationService as ɵdr };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdg, DatagridRowExpandAnimation as ɵcw, ActionableOompaLoompa as ɵct, DatagridWillyWonka as ɵcr, ExpandableOompaLoompa as ɵcv, ClrDatagridColumnToggleButton as ɵce, ClrDatagridColumnToggleTitle as ɵcd, DatagridDetailRegisterer as ɵcg, ClrDatagridItemsTrackBy as ɵcf, ColumnToggleButtonsService as ɵby, CustomFilter as ɵcb, DragDispatcher as ɵca, FiltersProvider as ɵbp, ExpandableRowsCount as ɵbv, HideableColumnService as ɵbw, Items as ɵbo, Page as ɵbq, RowActionService as ɵbu, Selection as ɵbn, Sort as ɵbs, StateDebouncer as ɵbr, StateProvider as ɵbx, DatagridBodyRenderer as ɵco, DatagridCellRenderer as ɵcq, DatagridColumnResizer as ɵcl, DomAdapter as ɵcj, DatagridHeadRenderer as ɵcn, DatagridHeaderRenderer as ɵck, DatagridMainRenderer as ɵci, domAdapterFactory as ɵch, DatagridRenderOrganizer as ɵbt, DatagridRowRenderer as ɵcp, DatagridTableRenderer as ɵcm, DatagridFilterRegistrar as ɵbz, StackControl as ɵcy, AbstractTreeSelection as ɵcz, clrTreeSelectionProviderFactory as ɵdb, TreeSelectionService as ɵda, AlertIconAndTypesService as ɵo, MultiAlertService as ɵq, IfErrorService as ɵt, ControlClassService as ɵbi, ControlIdService as ɵr, FocusService as ɵbj, LayoutService as ɵs, NgControlService as ɵu, WrappedFormControl as ɵx, DateFormControlService as ɵbc, DateIOService as ɵbe, DateNavigationService as ɵbb, DatepickerEnabledService as ɵbf, DatepickerFocusService as ɵbh, LocaleHelperService as ɵbd, ViewManagerService as ɵbg, ResponsiveNavigationProvider as ɵdi, ResponsiveNavigationService as ɵdh, ActiveOompaLoompa as ɵds, TabsWillyWonka as ɵdr, AriaService as ɵdm, TabsService as ɵdq, TABS_ID as ɵdn, TABS_ID_PROVIDER as ɵdp, tokenFactory$1 as ɵdo, VerticalNavGroupRegistrationService as ɵdv, VerticalNavGroupService as ɵdw, VerticalNavIconService as ɵdu, VerticalNavService as ɵdt, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcu, WillyWonka as ɵcs, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcx, Expand as ɵcc, FocusTrapDirective as ɵba, ClrFocusTrapModule as ɵy, FOCUS_TRAP_DIRECTIVES as ɵz, EmptyAnchor as ɵw, ClrHostWrappingModule as ɵv, ClrCommonStrings as ɵp, COMMON_STRINGS_PROVIDER as ɵec, commonStringsFactory as ɵeb, UNIQUE_ID as ɵdc, UNIQUE_ID_PROVIDER as ɵde, uniqueIdFactory as ɵdd, OUSTIDE_CLICK_DIRECTIVES as ɵbl, OutsideClick as ɵbm, ClrOutsideClickModule as ɵbk, ScrollingService as ɵdf, TEMPLATE_REF_DIRECTIVES as ɵdk, TemplateRefContainer as ɵdl, ClrTemplateRefModule as ɵdj, ButtonHubService as ɵdz, HeaderActionService as ɵea, PageCollectionService as ɵdy, WizardNavigationService as ɵdx };
 //# sourceMappingURL=clr-angular.js.map

@@ -1,7 +1,7 @@
 export declare abstract class AbstractTreeSelection {
     parent: AbstractTreeSelection;
     constructor(parent: AbstractTreeSelection);
-    readonly abstract children: AbstractTreeSelection[];
+    abstract readonly children: AbstractTreeSelection[];
     abstract selectedChanged(): void;
     abstract indeterminateChanged(): void;
     private _selected;

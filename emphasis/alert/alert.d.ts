@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, EventEmitter } from '@angular/core';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrAlert {
     iconService: AlertIconAndTypesService;
     cdr: ChangeDetectorRef;
     multiAlertService: MultiAlertService;
-    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService);
+    commonStrings: ClrCommonStrings;
+    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStrings);
     isSmall: boolean;
     closable: boolean;
     isAppLevel: boolean;
@@ -16,7 +18,7 @@ export declare class ClrAlert {
     readonly alertClass: string;
     private previouslyHidden;
     private hidden;
-    private detectChangesIfNeeded();
+    private detectChangesIfNeeded;
     readonly isHidden: boolean;
     close(): void;
     open(): void;

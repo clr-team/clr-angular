@@ -32,7 +32,7 @@ export declare class FiltersProvider<T = any> {
      * Accepts an item if it is accepted by all currently active filters
      */
     accepts(item: T): boolean;
-    private resetPageAndEmitFilterChange(filters);
+    private resetPageAndEmitFilterChange;
 }
 export declare class RegisteredFilter<T, F extends ClrDatagridFilterInterface<T>> {
     filter: F;

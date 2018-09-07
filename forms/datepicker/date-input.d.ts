@@ -22,7 +22,7 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private _subscriptions;
     private previousOutputInitializedFlag;
     private previousOutput;
-    private initializePreviousOutput(dayModel);
+    private initializePreviousOutput;
     constructor(container: ClrDateContainer, vcr: ViewContainerRef, elRef: ElementRef, renderer: Renderer2, _ngControl: NgControl, _dateIOService: DateIOService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object);
     /**
      * 1. Populate services if the date container is not present.
@@ -34,7 +34,7 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
      * Process the inputs initialized by the user which were missed
      * because of late subscriptions or lifecycle method calls.
      */
-    private processInitialInputs();
+    private processInitialInputs;
     /**
      * Write the initial input set by the user on to the input field.
      */
@@ -46,11 +46,11 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     /**
      * Populates the services from the container component.
      */
-    private populateContainerServices();
+    private populateContainerServices;
     /**
      * Writes the date string value to the input field
      */
-    private writeDateStrToInputField(value);
+    private writeDateStrToInputField;
     private initialLoad;
     private dateValueOnInitialLoad;
     /**
@@ -60,8 +60,8 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     /**
      * Processes a date object to check if its valid or not.
      */
-    private processUserDateObject(value);
-    private updateInputValue(dateStr);
+    private processUserDateObject;
+    private updateInputValue;
     placeholder: string;
     /**
      * Returns the date format for the placeholder according to which the input should be entered by the user.
@@ -73,7 +73,7 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
      */
     readonly inputType: string;
     _dateUpdated: EventEmitter<Date>;
-    private emitDateOutput(dayModel);
+    private emitDateOutput;
     /**
      * Fires this method when the user changes the input focuses out of the input field.
      */
@@ -81,5 +81,5 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     /**
      * Initialize DateIO Subscriptions
      */
-    private initializeSubscriptions();
+    private initializeSubscriptions;
 }

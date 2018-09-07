@@ -6,7 +6,7 @@ export declare class ClrWizardStepnavItem {
     pageCollection: PageCollectionService;
     page: ClrWizardPage;
     constructor(navService: WizardNavigationService, pageCollection: PageCollectionService);
-    private pageGuard();
+    private pageGuard;
     readonly id: string;
     readonly isDisabled: boolean;
     readonly isCurrent: boolean;

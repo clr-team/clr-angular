@@ -11,6 +11,6 @@ export declare class DatagridRowExpandAnimation {
     constructor(el: ElementRef, domAdapter: DomAdapter, renderer: Renderer2, expand: Expand, renderOrganizer: DatagridRenderOrganizer);
     private running;
     private oldHeight;
-    private animate();
-    private run();
+    private animate;
+    private run;
 }

@@ -1,8 +1,10 @@
 import { EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrAlertsPager implements OnInit, OnDestroy {
     multiAlertService: MultiAlertService;
+    commonStrings: ClrCommonStrings;
     private multiAlertServiceChanges;
     /**
      * Input/Output to support two way binding on current alert instance
@@ -14,7 +16,7 @@ export declare class ClrAlertsPager implements OnInit, OnDestroy {
      */
     currentAlertIndex: number;
     currentAlertIndexChange: EventEmitter<number>;
-    constructor(multiAlertService: MultiAlertService);
+    constructor(multiAlertService: MultiAlertService, commonStrings: ClrCommonStrings);
     ngOnInit(): void;
     pageUp(): void;
     pageDown(): void;

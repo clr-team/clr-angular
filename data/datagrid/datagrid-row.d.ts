@@ -6,12 +6,14 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { HideableColumnService } from './providers/hideable-column.service';
 import { RowActionService } from './providers/row-action-service';
 import { Selection, SelectionType } from './providers/selection';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrDatagridRow<T = any> implements AfterContentInit {
     selection: Selection<T>;
     rowActionService: RowActionService;
     globalExpandable: ExpandableRowsCount;
     expand: Expand;
     hideableColumnService: HideableColumnService;
+    commonStrings: ClrCommonStrings;
     id: string;
     radioId: string;
     SELECTION_TYPE: typeof SelectionType;
@@ -19,7 +21,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit {
      * Model of the row, to use for selection
      */
     item: T;
-    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, hideableColumnService: HideableColumnService);
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, hideableColumnService: HideableColumnService, commonStrings: ClrCommonStrings);
     private _selected;
     /**
      * Indicates if the row is selected

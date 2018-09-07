@@ -30,11 +30,11 @@ export declare class ClrCalendar implements OnDestroy {
      * 2. update the focusable day in the calendar view model.
      * 3. focus on the focusable day in the calendar.
      */
-    private initializeSubscriptions();
+    private initializeSubscriptions;
     /**
      * Generates the Calendar View based on the calendar retrieved from the DateNavigationService.
      */
-    private generateCalendarView();
+    private generateCalendarView;
     /**
      * Delegates Keyboard arrow navigation to the DateNavigationService.
      */

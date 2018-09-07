@@ -8,5 +8,5 @@ export declare class DatagridBodyRenderer implements OnDestroy {
     constructor(el: ElementRef, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter);
     private subscription;
     ngOnDestroy(): void;
-    private computeScrollbarWidth();
+    private computeScrollbarWidth;
 }

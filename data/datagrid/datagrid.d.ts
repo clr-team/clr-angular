@@ -11,6 +11,7 @@ import { RowActionService } from './providers/row-action-service';
 import { Selection, SelectionType } from './providers/selection';
 import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
     private columnService;
     private organizer;
@@ -19,7 +20,8 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     selection: Selection<T>;
     rowActionService: RowActionService;
     private stateProvider;
-    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>);
+    commonStrings: ClrCommonStrings;
+    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, commonStrings: ClrCommonStrings);
     SELECTION_TYPE: typeof SelectionType;
     /**
      * Freezes the datagrid while data is loading
@@ -60,9 +62,9 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      * Indicates if all currently displayed items are selected
      */
     /**
-     * Selects/deselects all currently displayed items
-     * @param value
-     */
+    * Selects/deselects all currently displayed items
+    * @param value
+    */
     allSelected: boolean;
     /**
      * Custom placeholder detection

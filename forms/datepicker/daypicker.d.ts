@@ -1,11 +1,13 @@
 import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrDaypicker {
     private _viewManagerService;
     private _dateNavigationService;
     private _localeHelperService;
-    constructor(_viewManagerService: ViewManagerService, _dateNavigationService: DateNavigationService, _localeHelperService: LocaleHelperService);
+    commonStrings: ClrCommonStrings;
+    constructor(_viewManagerService: ViewManagerService, _dateNavigationService: DateNavigationService, _localeHelperService: LocaleHelperService, commonStrings: ClrCommonStrings);
     /**
      * Calls the ViewManagerService to change to the monthpicker view.
      */

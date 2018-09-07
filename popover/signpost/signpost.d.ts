@@ -1,5 +1,8 @@
 import { ClrSignpostTrigger } from './signpost-trigger';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrSignpost {
+    commonStrings: ClrCommonStrings;
+    constructor(commonStrings: ClrCommonStrings);
     /**********
      * @property useCustomTrigger
      *

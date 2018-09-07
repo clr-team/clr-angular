@@ -10,11 +10,11 @@ export declare class YearRangeModel {
      * Generates the year range based on the year parameter.
      * eg: If 2018 is passed the output will be [2010, 2011, ..., 2019]
      */
-    private generateYearRange();
+    private generateYearRange;
     /**
      * Function which generate a range of numbers from floor to ceil.
      */
-    private generateRange(floor, ceil);
+    private generateRange;
     /**
      * Generates the YearRangeModel for the next decade.
      */

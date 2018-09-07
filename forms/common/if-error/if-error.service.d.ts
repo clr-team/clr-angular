@@ -9,7 +9,7 @@ export declare class IfErrorService implements OnDestroy {
     private subscriptions;
     private control;
     constructor(ngControlService: NgControlService);
-    private listenForChanges();
+    private listenForChanges;
     triggerStatusChange(): void;
     ngOnDestroy(): void;
 }

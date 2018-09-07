@@ -7,7 +7,7 @@ export declare class CalendarModel {
     /**
      * Populates the days array with the DayModels in the current Calendar.
      */
-    private initializeDaysInCalendar();
+    private initializeDaysInCalendar;
     /**
      * Checks if the calendar passed is equal to the current calendar.
      */

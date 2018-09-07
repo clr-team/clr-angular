@@ -10,5 +10,5 @@ export declare class ClrIfError {
     private displayed;
     ngOnInit(): void;
     ngOnDestroy(): void;
-    private displayError(invalid);
+    private displayError;
 }

@@ -2,12 +2,14 @@ import { EventEmitter, OnDestroy } from '@angular/core';
 import { Expand } from '../../utils/expand/providers/expand';
 import { AbstractTreeSelection } from './abstract-tree-selection';
 import { TreeSelectionService } from './providers/tree-selection.service';
+import { ClrCommonStrings } from '../../utils/i18n';
 export declare class ClrTreeNode extends AbstractTreeSelection implements OnDestroy {
     nodeExpand: Expand;
     parent: ClrTreeNode;
     treeSelectionService: TreeSelectionService;
     nodeId: string;
-    constructor(nodeExpand: Expand, parent: ClrTreeNode, treeSelectionService: TreeSelectionService, nodeId: string);
+    commonStrings: ClrCommonStrings;
+    constructor(nodeExpand: Expand, parent: ClrTreeNode, treeSelectionService: TreeSelectionService, nodeId: string, commonStrings: ClrCommonStrings);
     private _children;
     readonly children: ClrTreeNode[];
     checkIfChildNodeRegistered(node: ClrTreeNode): boolean;
@@ -23,6 +25,7 @@ export declare class ClrTreeNode extends AbstractTreeSelection implements OnDest
     indeterminateChanged(): void;
     toggleExpand(): void;
     readonly caretDirection: string;
+    readonly caretTitle: string;
     expanded: boolean;
     readonly state: string;
     readonly treeNodeRole: string;

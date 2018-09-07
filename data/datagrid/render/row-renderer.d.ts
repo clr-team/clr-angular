@@ -7,7 +7,7 @@ export declare class DatagridRowRenderer implements AfterContentInit, OnDestroy 
     private subscription;
     ngOnDestroy(): void;
     cells: QueryList<DatagridCellRenderer>;
-    private setWidths();
+    private setWidths;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
 }
