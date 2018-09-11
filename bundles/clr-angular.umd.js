@@ -5894,7 +5894,7 @@ var Selection = /** @class */ (function () {
                 delete this.current;
             }
             else {
-                this.current = [];
+                this.updateCurrent([], false);
             }
         },
         enumerable: true,
@@ -5936,15 +5936,20 @@ var Selection = /** @class */ (function () {
             return this._current;
         },
         set: function (value) {
-            var _this = this;
-            this._current = value;
-            this.emitChange();
-            this.debounce = true;
-            setTimeout(function () { return (_this.debounce = false); });
+            this.updateCurrent(value, true);
         },
         enumerable: true,
         configurable: true
     });
+    Selection.prototype.updateCurrent = function (value, emit) {
+        var _this = this;
+        this._current = value;
+        if (emit) {
+            this.emitChange();
+            this.debounce = true;
+            setTimeout(function () { return (_this.debounce = false); });
+        }
+    };
     Selection.prototype.emitChange = function () {
         if (this._selectionType === SelectionType.Single) {
             this._change.next(this.currentSingle);
@@ -6291,7 +6296,7 @@ var ClrDatagrid = /** @class */ (function () {
             else {
                 this.selection.selectionType = SelectionType.None;
             }
-            this.selection.current = value;
+            this.selection.updateCurrent(value, false);
         },
         enumerable: true,
         configurable: true

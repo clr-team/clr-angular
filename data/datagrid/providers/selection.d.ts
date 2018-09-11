@@ -40,6 +40,7 @@ export declare class Selection<T = any> {
      */
     private _current;
     current: T[];
+    updateCurrent(value: T[], emit: boolean): void;
     /**
      * The Observable that lets other classes subscribe to selection changes
      */

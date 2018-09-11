@@ -9256,7 +9256,7 @@ class Selection {
             delete this.current;
         }
         else {
-            this.current = [];
+            this.updateCurrent([], false);
         }
     }
     /**
@@ -9309,12 +9309,22 @@ class Selection {
      * @return {?}
      */
     set current(value) {
+        this.updateCurrent(value, true);
+    }
+    /**
+     * @param {?} value
+     * @param {?} emit
+     * @return {?}
+     */
+    updateCurrent(value, emit) {
         this._current = value;
-        this.emitChange();
-        // Ignore items changes in the same change detection cycle.
-        // @TODO This can likely be removed!
-        this.debounce = true;
-        setTimeout(() => (this.debounce = false));
+        if (emit) {
+            this.emitChange();
+            // Ignore items changes in the same change detection cycle.
+            // @TODO This can likely be removed!
+            this.debounce = true;
+            setTimeout(() => (this.debounce = false));
+        }
     }
     /**
      * @return {?}
@@ -9879,7 +9889,7 @@ class ClrDatagrid {
         else {
             this.selection.selectionType = SelectionType.None;
         }
-        this.selection.current = value;
+        this.selection.updateCurrent(value, false);
     }
     /**
      * Selected item in single-select mode
