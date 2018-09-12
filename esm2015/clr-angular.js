@@ -9499,8 +9499,9 @@ class ClrDatagridRow {
         this._selected = false;
         this.selectedChanged = new EventEmitter(false);
         this.expandedChange = new EventEmitter(false);
-        this.id = 'clr-dg-row' + nbRow++;
-        this.radioId = 'clr-dg-row-rd' + nbRow++;
+        nbRow++;
+        this.id = 'clr-dg-row' + nbRow;
+        this.radioId = 'clr-dg-row-rd' + nbRow;
     }
     /**
      * Indicates if the row is selected

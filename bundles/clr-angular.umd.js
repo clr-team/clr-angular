@@ -6065,8 +6065,9 @@ var ClrDatagridRow = /** @class */ (function () {
         this._selected = false;
         this.selectedChanged = new core.EventEmitter(false);
         this.expandedChange = new core.EventEmitter(false);
-        this.id = 'clr-dg-row' + nbRow++;
-        this.radioId = 'clr-dg-row-rd' + nbRow++;
+        nbRow++;
+        this.id = 'clr-dg-row' + nbRow;
+        this.radioId = 'clr-dg-row-rd' + nbRow;
     }
     Object.defineProperty(ClrDatagridRow.prototype, "selected", {
         get: function () {
