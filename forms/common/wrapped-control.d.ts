@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { InjectionToken, OnInit, Type, ViewContainerRef } from '@angular/core';
-import { DynamicWrapper } from '../../utils/host-wrapping';
+import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ControlIdService } from './providers/control-id.service';
 export declare class WrappedFormControl<W extends DynamicWrapper> implements OnInit {
     protected wrapperType: Type<W>;

@@ -1,5 +1,5 @@
 import { EventEmitter, TemplateRef } from '@angular/core';
-import { ClrLoadingState } from '../../utils/loading';
+import { ClrLoadingState } from '../../utils/loading/loading';
 import { LoadingListener } from '../../utils/loading/loading-listener';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
 export declare class ClrButton implements LoadingListener {

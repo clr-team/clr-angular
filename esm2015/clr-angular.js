@@ -564,28 +564,6 @@ ClrLoading.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-const CLR_LOADING_DIRECTIVES = [ClrLoading];
-class ClrLoadingModule {
-}
-ClrLoadingModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -1770,16 +1748,6 @@ class HostWrapper {
         return this.injector.get(token, notFoundValue);
     }
 }
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 /**
  * @fileoverview added by tsickle
@@ -6345,6 +6313,18 @@ class ClrIfExpandModule {
 }
 ClrIfExpandModule.decorators = [
     { type: NgModule, args: [{ imports: [CommonModule], declarations: [EXPAND_DIRECTIVES], exports: [EXPAND_DIRECTIVES] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const CLR_LOADING_DIRECTIVES = [ClrLoading];
+class ClrLoadingModule {
+}
+ClrLoadingModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
 ];
 
 /**
@@ -20048,6 +20028,16 @@ function slide(direction) {
         transition('* => void', [animate('0.2s ease-in-out', style({ transform: transform }))]),
     ];
 }
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /**
  * @fileoverview added by tsickle

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { LoadingListener } from '../../../utils/loading/loading-listener';
-import { ClrLoadingState } from '../../loading';
+import { ClrLoadingState } from '../../loading/loading';
 export declare class Expand implements LoadingListener {
     expandable: number;
     replace: boolean;

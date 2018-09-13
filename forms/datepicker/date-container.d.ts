@@ -1,6 +1,6 @@
 import { OnDestroy } from '@angular/core';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
-import { DynamicWrapper } from '../../utils/host-wrapping';
+import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';

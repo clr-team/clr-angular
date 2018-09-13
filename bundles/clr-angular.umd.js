@@ -491,15 +491,6 @@ ClrLoading.ctorParameters = function () { return [
 ClrLoading.propDecorators = {
     loadingState: [{ type: core.Input, args: ['clrLoading',] }]
 };
-var CLR_LOADING_DIRECTIVES = [ClrLoading];
-var ClrLoadingModule = /** @class */ (function () {
-    function ClrLoadingModule() {
-    }
-    return ClrLoadingModule;
-}());
-ClrLoadingModule.decorators = [
-    { type: core.NgModule, args: [{ imports: [common.CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
-];
 var ButtonInGroupService = /** @class */ (function () {
     function ButtonInGroupService() {
         this._changes = new rxjs.Subject();
@@ -3990,6 +3981,15 @@ var ClrIfExpandModule = /** @class */ (function () {
 }());
 ClrIfExpandModule.decorators = [
     { type: core.NgModule, args: [{ imports: [common.CommonModule], declarations: [EXPAND_DIRECTIVES], exports: [EXPAND_DIRECTIVES] },] },
+];
+var CLR_LOADING_DIRECTIVES = [ClrLoading];
+var ClrLoadingModule = /** @class */ (function () {
+    function ClrLoadingModule() {
+    }
+    return ClrLoadingModule;
+}());
+ClrLoadingModule.decorators = [
+    { type: core.NgModule, args: [{ imports: [common.CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
 ];
 var OutsideClick = /** @class */ (function () {
     function OutsideClick(el) {

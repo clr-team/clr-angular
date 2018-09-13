@@ -433,15 +433,6 @@ ClrLoading.ctorParameters = function () { return [
 ClrLoading.propDecorators = {
     loadingState: [{ type: Input, args: ['clrLoading',] }]
 };
-var CLR_LOADING_DIRECTIVES = [ClrLoading];
-var ClrLoadingModule = /** @class */ (function () {
-    function ClrLoadingModule() {
-    }
-    return ClrLoadingModule;
-}());
-ClrLoadingModule.decorators = [
-    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
-];
 var ButtonInGroupService = /** @class */ (function () {
     function ButtonInGroupService() {
         this._changes = new Subject();
@@ -3932,6 +3923,15 @@ var ClrIfExpandModule = /** @class */ (function () {
 }());
 ClrIfExpandModule.decorators = [
     { type: NgModule, args: [{ imports: [CommonModule], declarations: [EXPAND_DIRECTIVES], exports: [EXPAND_DIRECTIVES] },] },
+];
+var CLR_LOADING_DIRECTIVES = [ClrLoading];
+var ClrLoadingModule = /** @class */ (function () {
+    function ClrLoadingModule() {
+    }
+    return ClrLoadingModule;
+}());
+ClrLoadingModule.decorators = [
+    { type: NgModule, args: [{ imports: [CommonModule], declarations: [CLR_LOADING_DIRECTIVES], exports: [CLR_LOADING_DIRECTIVES] },] },
 ];
 var OutsideClick = /** @class */ (function () {
     function OutsideClick(el) {
