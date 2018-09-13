@@ -2,7 +2,7 @@ import { AnimationEvent } from '@angular/animations';
 import { EventEmitter, OnChanges, OnDestroy, SimpleChange } from '@angular/core';
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ScrollingService } from '../utils/scrolling/scrolling-service';
-import { ClrCommonStrings } from '../utils/i18n';
+import { ClrCommonStrings } from '../utils/i18n/common-strings.interface';
 export declare class ClrModal implements OnChanges, OnDestroy {
     private _scrollingService;
     commonStrings: ClrCommonStrings;

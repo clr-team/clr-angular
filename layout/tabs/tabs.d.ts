@@ -3,7 +3,7 @@ import { IfActiveService } from '../../utils/conditional/if-active.service';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabLink } from './tab-link.directive';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrTabs implements AfterContentInit {
     ifActiveService: IfActiveService;
     ifOpenService: IfOpenService;

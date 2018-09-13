@@ -2,7 +2,7 @@ import { OnDestroy } from '@angular/core';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrVerticalNav implements OnDestroy {
     private _navService;
     private _navIconService;

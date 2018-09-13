@@ -1,6 +1,6 @@
 import { ElementRef, Injector } from '@angular/core';
 import { AbstractPopover } from '../common/abstract-popover';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrSignpostContent extends AbstractPopover {
     constructor(injector: Injector, parentHost: ElementRef, commonStrings: ClrCommonStrings);
     commonStrings: ClrCommonStrings;

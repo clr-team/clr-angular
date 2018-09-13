@@ -2,7 +2,7 @@ import { EventEmitter, OnDestroy } from '@angular/core';
 import { Expand } from '../../utils/expand/providers/expand';
 import { AbstractTreeSelection } from './abstract-tree-selection';
 import { TreeSelectionService } from './providers/tree-selection.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrTreeNode extends AbstractTreeSelection implements OnDestroy {
     nodeExpand: Expand;
     parent: ClrTreeNode;

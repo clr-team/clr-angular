@@ -1,5 +1,5 @@
 import { EventEmitter, OnInit } from '@angular/core';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrStackBlock implements OnInit {
     private parent;
     commonStrings: ClrCommonStrings;

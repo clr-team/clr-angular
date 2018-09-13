@@ -132,8 +132,9 @@ function default_1(options) {
                 console.info(`Could not update CLI config file to add scripts and styles. You'll have to add them manually.`);
                 return;
             }
-            const scripts = json.projects[project].architect.build.options.scripts;
-            const styles = json.projects[project].architect.build.options.styles;
+            const target = json.projects[project].targets ? json.projects[project].targets : json.projects[project].architect;
+            const scripts = target.build.options.scripts;
+            const styles = target.build.options.styles;
             const scriptsSearch = scripts.join('|');
             const stylesSearch = styles.join('|');
             const pathPrefix = json.apps ? '../' : '';

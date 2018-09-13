@@ -4,7 +4,7 @@ import { DynamicWrapper } from '../../utils/host-wrapping';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     private _ifOpenService;
     private _dateNavigationService;

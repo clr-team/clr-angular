@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, EventEmitter } from '@angular/core';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrAlert {
     iconService: AlertIconAndTypesService;
     cdr: ChangeDetectorRef;

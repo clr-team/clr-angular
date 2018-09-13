@@ -11,7 +11,7 @@ import { RowActionService } from './providers/row-action-service';
 import { Selection, SelectionType } from './providers/selection';
 import { StateProvider } from './providers/state.provider';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
     private columnService;
     private organizer;

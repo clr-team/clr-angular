@@ -1,5 +1,5 @@
 import { ClrSignpostTrigger } from './signpost-trigger';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrSignpost {
     commonStrings: ClrCommonStrings;
     constructor(commonStrings: ClrCommonStrings);

@@ -1,7 +1,7 @@
 import { EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrAlertsPager implements OnInit, OnDestroy {
     multiAlertService: MultiAlertService;
     commonStrings: ClrCommonStrings;

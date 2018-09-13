@@ -1,7 +1,7 @@
 import { EventEmitter, OnDestroy } from '@angular/core';
 import { Point } from '../../popover/common/popover';
 import { RowActionService } from './providers/row-action-service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrDatagridActionOverflow implements OnDestroy {
     private rowActionService;
     commonStrings: ClrCommonStrings;

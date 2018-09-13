@@ -1,5 +1,5 @@
 import { AlertInfoObject } from '../utils/alert-info-object';
-import { ClrCommonStrings } from '../../../utils/i18n';
+import { ClrCommonStrings } from '../../../utils/i18n/common-strings.interface';
 export declare class AlertIconAndTypesService {
     private commonStrings;
     constructor(commonStrings: ClrCommonStrings);

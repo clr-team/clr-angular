@@ -12,7 +12,7 @@ import { ClrLabel } from '../common/label';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare const ToggleService: InjectionToken<any>;
 export declare function ToggleServiceProvider(): BehaviorSubject<boolean>;
 export declare class ClrPasswordContainer implements DynamicWrapper, OnDestroy {

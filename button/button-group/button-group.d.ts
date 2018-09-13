@@ -1,7 +1,7 @@
 import { ElementRef, QueryList } from '@angular/core';
 import { Point } from '../../popover/common/popover';
 import { ButtonInGroupService } from '../providers/button-in-group.service';
-import { ClrCommonStrings } from '../../utils/i18n';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 import { ClrButton } from './button';
 export declare class ClrButtonGroup {
     buttonGroupNewService: ButtonInGroupService;
