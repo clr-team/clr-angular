@@ -1,6 +1,6 @@
 import { Optional } from '@angular/core';
 import { ClrCommonStrings } from './common-strings.interface';
-export declare class ClrCommonStringsService implements Required<ClrCommonStrings> {
+export declare class ClrCommonStringsService implements ClrCommonStrings {
     open: string;
     close: string;
     show: string;

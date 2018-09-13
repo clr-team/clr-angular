@@ -19531,6 +19531,9 @@ ClrWizardModule.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+// @TODO Put the Required type back in when our minimumly supported version of Angular uses
+// TS 2.8 or greater (should be Angular 7)
+// export class ClrCommonStringsService implements Required<ClrCommonStrings> {
 class ClrCommonStringsService {
     constructor() {
         this.open = 'Open';
