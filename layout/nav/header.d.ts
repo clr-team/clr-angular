@@ -6,8 +6,8 @@ export declare class ClrHeader implements OnDestroy {
     private _subscription;
     isNavLevel1OnPage: boolean;
     isNavLevel2OnPage: boolean;
+    responsiveNavCodes: typeof ResponsiveNavCodes;
     constructor(responsiveNavService: ResponsiveNavigationService);
-    readonly responsiveNavCodes: ResponsiveNavCodes;
     resetNavTriggers(): void;
     initializeNavTriggers(navList: number[]): void;
     closeOpenNav(): void;

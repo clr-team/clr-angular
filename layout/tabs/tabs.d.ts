@@ -13,6 +13,7 @@ export declare class ClrTabs implements AfterContentInit {
     tabLinkDirectives: QueryList<ClrTabLink>;
     constructor(ifActiveService: IfActiveService, ifOpenService: IfOpenService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStrings);
     readonly activeTabInOverflow: boolean;
+    readonly tabIds: string;
     ngAfterContentInit(): void;
     toggleOverflow(event: any): void;
 }

@@ -9085,19 +9085,13 @@ var ClrHeader = /** @class */ (function () {
         this.responsiveNavService = responsiveNavService;
         this.isNavLevel1OnPage = false;
         this.isNavLevel2OnPage = false;
+        this.responsiveNavCodes = ResponsiveNavCodes;
         this._subscription = this.responsiveNavService.registeredNavs.subscribe({
             next: function (navLevelList) {
                 _this.initializeNavTriggers(navLevelList);
             },
         });
     }
-    Object.defineProperty(ClrHeader.prototype, "responsiveNavCodes", {
-        get: function () {
-            return ResponsiveNavCodes;
-        },
-        enumerable: true,
-        configurable: true
-    });
     ClrHeader.prototype.resetNavTriggers = function () {
         this.isNavLevel1OnPage = false;
         this.isNavLevel2OnPage = false;
@@ -9402,6 +9396,7 @@ ClrTabContent.decorators = [
                     '[id]': 'tabContentId',
                     '[attr.aria-labelledby]': 'ariaLabelledBy',
                     '[attr.aria-hidden]': '!active',
+                    '[attr.aria-expanded]': 'active',
                     '[attr.data-hidden]': '!active',
                     role: 'tabpanel',
                 },
@@ -9470,20 +9465,6 @@ var ClrTabLink = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClrTabLink.prototype, "role", {
-        get: function () {
-            return 'presentation';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClrTabLink.prototype, "type", {
-        get: function () {
-            return 'button';
-        },
-        enumerable: true,
-        configurable: true
-    });
     return ClrTabLink;
 }());
 ClrTabLink.decorators = [
@@ -9492,12 +9473,15 @@ ClrTabLink.decorators = [
                 host: {
                     '[id]': 'tabLinkId',
                     '[attr.aria-selected]': 'active',
+                    '[attr.aria-hidden]': 'false',
                     '[attr.aria-controls]': 'ariaControls',
                     '[class.btn]': 'true',
                     '[class.btn-link]': '!inOverflow',
                     '[class.nav-link]': '!inOverflow',
                     '[class.nav-item]': '!inOverflow',
                     '[class.active]': 'active',
+                    role: 'tab',
+                    type: 'button',
                 },
             },] },
 ];
@@ -9513,9 +9497,7 @@ ClrTabLink.ctorParameters = function () { return [
 ClrTabLink.propDecorators = {
     inOverflow: [{ type: core.Input, args: ['clrTabLinkInOverflow',] }],
     tabLinkId: [{ type: core.Input, args: ['id',] }],
-    activate: [{ type: core.HostListener, args: ['click',] }],
-    role: [{ type: core.HostBinding, args: ['attr.role',] }],
-    type: [{ type: core.HostBinding, args: ['attr.type',] }]
+    activate: [{ type: core.HostListener, args: ['click',] }]
 };
 var ClrTab = /** @class */ (function () {
     function ClrTab(ifActiveService, id, tabsService) {
@@ -9591,6 +9573,13 @@ var ClrTabs = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClrTabs.prototype, "tabIds", {
+        get: function () {
+            return this.tabsService.children.map(function (tab) { return tab.tabLink.tabLinkId; }).join(' ');
+        },
+        enumerable: true,
+        configurable: true
+    });
     ClrTabs.prototype.ngAfterContentInit = function () {
         if (typeof this.ifActiveService.current === 'undefined') {
             this.tabLinkDirectives.first.activate();
@@ -9604,7 +9593,7 @@ var ClrTabs = /** @class */ (function () {
 ClrTabs.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-tabs',
-                template: "\n        <ul class=\"nav\" role=\"tablist\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\"\n                              [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <!--tab content-->\n        <ng-content></ng-content>\n    ",
+                template: "\n        <ul class=\"nav\" role=\"tablist\" [attr.aria-owns]=\"tabIds\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\"\n                              [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <!--tab content-->\n        <ng-content></ng-content>\n    ",
                 providers: [IfActiveService, IfOpenService, TabsService, TABS_ID_PROVIDER],
             },] },
 ];
@@ -12020,7 +12009,7 @@ ClrWizardStepnavItem.decorators = [
                     '[id]': 'id',
                     '[attr.aria-selected]': 'isCurrent',
                     '[attr.aria-controls]': 'id',
-                    role: 'presentation',
+                    role: 'tab',
                     '[class.clr-nav-link]': 'true',
                     '[class.nav-item]': 'true',
                     '[class.active]': 'isCurrent',

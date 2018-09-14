@@ -14237,17 +14237,12 @@ class ClrHeader {
         this.responsiveNavService = responsiveNavService;
         this.isNavLevel1OnPage = false;
         this.isNavLevel2OnPage = false;
+        this.responsiveNavCodes = ResponsiveNavCodes;
         this._subscription = this.responsiveNavService.registeredNavs.subscribe({
             next: (navLevelList) => {
                 this.initializeNavTriggers(navLevelList);
             },
         });
-    }
-    /**
-     * @return {?}
-     */
-    get responsiveNavCodes() {
-        return ResponsiveNavCodes;
     }
     /**
      * @return {?}
@@ -14686,6 +14681,7 @@ ClrTabContent.decorators = [
                     '[id]': 'tabContentId',
                     '[attr.aria-labelledby]': 'ariaLabelledBy',
                     '[attr.aria-hidden]': '!active',
+                    '[attr.aria-expanded]': 'active',
                     '[attr.data-hidden]': '!active',
                     role: 'tabpanel',
                 },
@@ -14786,18 +14782,6 @@ class ClrTabLink {
     get active() {
         return this.ifActiveService.current === this.id;
     }
-    /**
-     * @return {?}
-     */
-    get role() {
-        return 'presentation';
-    }
-    /**
-     * @return {?}
-     */
-    get type() {
-        return 'button';
-    }
 }
 ClrTabLink.decorators = [
     { type: Directive, args: [{
@@ -14805,12 +14789,15 @@ ClrTabLink.decorators = [
                 host: {
                     '[id]': 'tabLinkId',
                     '[attr.aria-selected]': 'active',
+                    '[attr.aria-hidden]': 'false',
                     '[attr.aria-controls]': 'ariaControls',
                     '[class.btn]': 'true',
                     '[class.btn-link]': '!inOverflow',
                     '[class.nav-link]': '!inOverflow',
                     '[class.nav-item]': '!inOverflow',
                     '[class.active]': 'active',
+                    role: 'tab',
+                    type: 'button',
                 },
             },] },
 ];
@@ -14827,9 +14814,7 @@ ClrTabLink.ctorParameters = () => [
 ClrTabLink.propDecorators = {
     inOverflow: [{ type: Input, args: ['clrTabLinkInOverflow',] }],
     tabLinkId: [{ type: Input, args: ['id',] }],
-    activate: [{ type: HostListener, args: ['click',] }],
-    role: [{ type: HostBinding, args: ['attr.role',] }],
-    type: [{ type: HostBinding, args: ['attr.type',] }]
+    activate: [{ type: HostListener, args: ['click',] }]
 };
 
 /**
@@ -14942,6 +14927,12 @@ class ClrTabs {
     /**
      * @return {?}
      */
+    get tabIds() {
+        return this.tabsService.children.map(tab => tab.tabLink.tabLinkId).join(' ');
+    }
+    /**
+     * @return {?}
+     */
     ngAfterContentInit() {
         if (typeof this.ifActiveService.current === 'undefined') {
             this.tabLinkDirectives.first.activate();
@@ -14959,7 +14950,7 @@ ClrTabs.decorators = [
     { type: Component, args: [{
                 selector: 'clr-tabs',
                 template: `
-        <ul class="nav" role="tablist">
+        <ul class="nav" role="tablist" [attr.aria-owns]="tabIds">
             <!--tab links-->
             <ng-container *ngFor="let link of tabLinkDirectives">
                 <ng-container *ngIf="link.tabsId === tabsId && !link.inOverflow"
@@ -19455,7 +19446,7 @@ ClrWizardStepnavItem.decorators = [
                     '[id]': 'id',
                     '[attr.aria-selected]': 'isCurrent',
                     '[attr.aria-controls]': 'id',
-                    role: 'presentation',
+                    role: 'tab',
                     '[class.clr-nav-link]': 'true',
                     '[class.nav-item]': 'true',
                     '[class.active]': 'isCurrent',

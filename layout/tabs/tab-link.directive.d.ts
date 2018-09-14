@@ -17,6 +17,4 @@ export declare class ClrTabLink {
     tabLinkId: string;
     activate(): void;
     readonly active: boolean;
-    readonly role: string;
-    readonly type: string;
 }
