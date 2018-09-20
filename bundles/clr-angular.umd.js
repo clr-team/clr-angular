@@ -632,11 +632,49 @@ var CLR_MENU_POSITIONS = [
     'right-bottom',
     'right-top',
 ];
+var ClrCommonStringsService = /** @class */ (function () {
+    function ClrCommonStringsService() {
+        this.open = 'Open';
+        this.close = 'Close';
+        this.show = 'Show';
+        this.hide = 'Hide';
+        this.expand = 'Expand';
+        this.collapse = 'Collapse';
+        this.more = 'More';
+        this.select = 'Select';
+        this.selectAll = 'Select All';
+        this.previous = 'Previous';
+        this.next = 'Next';
+        this.current = 'Jump to current';
+        this.info = 'Info';
+        this.success = 'Success';
+        this.warning = 'Warning';
+        this.danger = 'Error';
+        this.rowActions = 'Available actions';
+        this.pickColumns = 'Show or hide columns';
+    }
+    return ClrCommonStringsService;
+}());
+function commonStringsFactory(existing) {
+    var defaults = new ClrCommonStringsService();
+    if (existing) {
+        return Object.assign({}, defaults, existing);
+    }
+    return defaults;
+}
+var COMMON_STRINGS_PROVIDER = {
+    useFactory: commonStringsFactory,
+    deps: [[new core.Optional(), new core.SkipSelf(), core.forwardRef(function () { return ClrCommonStrings; })]],
+};
 var ClrCommonStrings = /** @class */ (function () {
     function ClrCommonStrings() {
     }
     return ClrCommonStrings;
 }());
+ClrCommonStrings.decorators = [
+    { type: core.Injectable, args: [Object.assign({ providedIn: 'root' }, COMMON_STRINGS_PROVIDER),] },
+];
+ClrCommonStrings.ngInjectableDef = core.defineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
 var ClrButtonGroup = /** @class */ (function () {
     function ClrButtonGroup(buttonGroupNewService, elementRef, commonStrings) {
         this.buttonGroupNewService = buttonGroupNewService;
@@ -3485,7 +3523,7 @@ ClrRadioWrapper.decorators = [
                 selector: 'clr-radio-wrapper',
                 template: "\n    <ng-content select=\"[clrRadio]\"></ng-content>\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label\"></label>\n  ",
                 host: {
-                    '[class.clr-radio-wrapper]': '!hasContainer',
+                    '[class.clr-radio-wrapper]': 'true',
                 },
                 providers: [ControlIdService],
             },] },
@@ -3580,7 +3618,7 @@ var ClrRadioContainer = /** @class */ (function () {
 ClrRadioContainer.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-radio-container',
-                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-radio-wrapper\" [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
                     '[class.clr-row]': 'addGrid()',
@@ -8234,15 +8272,18 @@ var ROOT_DROPDOWN_PROVIDER = {
     deps: [[new core.Optional(), new core.SkipSelf(), RootDropdownService]],
 };
 var ClrDropdown = /** @class */ (function () {
-    function ClrDropdown(parent, ifOpenService, dropdownService) {
+    function ClrDropdown(parent, ifOpenService, cdr, dropdownService) {
         var _this = this;
         this.parent = parent;
         this.ifOpenService = ifOpenService;
+        this.cdr = cdr;
+        this.subscriptions = [];
         this.isMenuClosable = true;
-        this._subscription = dropdownService.changes.subscribe(function (value) { return (_this.ifOpenService.open = value); });
+        this.subscriptions.push(dropdownService.changes.subscribe(function (value) { return (_this.ifOpenService.open = value); }));
+        this.subscriptions.push(ifOpenService.openChange.subscribe(function (value) { return _this.cdr.markForCheck(); }));
     }
     ClrDropdown.prototype.ngOnDestroy = function () {
-        this._subscription.unsubscribe();
+        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
     };
     return ClrDropdown;
 }());
@@ -8260,6 +8301,7 @@ ClrDropdown.decorators = [
 ClrDropdown.ctorParameters = function () { return [
     { type: ClrDropdown, decorators: [{ type: core.SkipSelf }, { type: core.Optional }] },
     { type: IfOpenService },
+    { type: core.ChangeDetectorRef },
     { type: RootDropdownService }
 ]; };
 ClrDropdown.propDecorators = {
@@ -12051,44 +12093,6 @@ ClrWizardModule.decorators = [
                 exports: [CLR_WIZARD_DIRECTIVES],
             },] },
 ];
-var ClrCommonStringsService = /** @class */ (function () {
-    function ClrCommonStringsService() {
-        this.open = 'Open';
-        this.close = 'Close';
-        this.show = 'Show';
-        this.hide = 'Hide';
-        this.expand = 'Expand';
-        this.collapse = 'Collapse';
-        this.more = 'More';
-        this.select = 'Select';
-        this.selectAll = 'Select All';
-        this.previous = 'Previous';
-        this.next = 'Next';
-        this.current = 'Jump to current';
-        this.info = 'Info';
-        this.success = 'Success';
-        this.warning = 'Warning';
-        this.danger = 'Error';
-        this.rowActions = 'Available actions';
-        this.pickColumns = 'Show or hide columns';
-    }
-    return ClrCommonStringsService;
-}());
-ClrCommonStringsService.decorators = [
-    { type: core.Injectable },
-];
-function commonStringsFactory(existing) {
-    var defaults = new ClrCommonStringsService();
-    if (existing) {
-        return Object.assign({}, defaults, existing);
-    }
-    return defaults;
-}
-var COMMON_STRINGS_PROVIDER = {
-    provide: ClrCommonStrings,
-    useFactory: commonStringsFactory,
-    deps: [[new core.Optional(), new core.SkipSelf(), ClrCommonStrings]],
-};
 var ClarityModule = /** @class */ (function () {
     function ClarityModule() {
     }
@@ -12111,7 +12115,6 @@ ClarityModule.decorators = [
                     ClrPopoverModule,
                     ClrWizardModule,
                 ],
-                providers: [COMMON_STRINGS_PROVIDER],
             },] },
 ];
 function collapse() {
@@ -12433,8 +12436,6 @@ exports.ɵx = ClrFocusTrapModule;
 exports.ɵy = FOCUS_TRAP_DIRECTIVES;
 exports.ɵv = EmptyAnchor;
 exports.ɵu = ClrHostWrappingModule;
-exports.ɵeb = COMMON_STRINGS_PROVIDER;
-exports.ɵea = commonStringsFactory;
 exports.ɵdb = UNIQUE_ID;
 exports.ɵdd = UNIQUE_ID_PROVIDER;
 exports.ɵdc = uniqueIdFactory;

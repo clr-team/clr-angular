@@ -1,4 +1,4 @@
-import { Optional } from '@angular/core';
+import { InjectableProvider } from '@angular/core';
 import { ClrCommonStrings } from './common-strings.interface';
 export declare class ClrCommonStringsService implements ClrCommonStrings {
     open: string;
@@ -21,8 +21,4 @@ export declare class ClrCommonStringsService implements ClrCommonStrings {
     pickColumns: string;
 }
 export declare function commonStringsFactory(existing?: ClrCommonStrings): ClrCommonStrings;
-export declare const COMMON_STRINGS_PROVIDER: {
-    provide: typeof ClrCommonStrings;
-    useFactory: typeof commonStringsFactory;
-    deps: Optional[][];
-};
+export declare const COMMON_STRINGS_PROVIDER: InjectableProvider;

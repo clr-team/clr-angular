@@ -84,7 +84,6 @@ export { ClrFocusTrapModule as ɵx } from './utils/focus-trap/focus-trap.module'
 export { FOCUS_TRAP_DIRECTIVES as ɵy } from './utils/focus-trap/index';
 export { EmptyAnchor as ɵv } from './utils/host-wrapping/empty-anchor';
 export { ClrHostWrappingModule as ɵu } from './utils/host-wrapping/host-wrapping.module';
-export { COMMON_STRINGS_PROVIDER as ɵeb, commonStringsFactory as ɵea } from './utils/i18n/common-strings.service';
 export { UNIQUE_ID as ɵdb, UNIQUE_ID_PROVIDER as ɵdd, uniqueIdFactory as ɵdc } from './utils/id-generator/id-generator.service';
 export { OUSTIDE_CLICK_DIRECTIVES as ɵbk } from './utils/outside-click/index';
 export { OutsideClick as ɵbl } from './utils/outside-click/outside-click';
