@@ -14,8 +14,7 @@ export declare class ClrInput extends WrappedFormControl<ClrInputContainer> impl
     private ngControlService;
     private ifErrorService;
     private control;
-    type: string;
-    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, type: string, renderer: Renderer2, el: ElementRef);
+    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, renderer: Renderer2, el: ElementRef);
     ngOnInit(): void;
     onBlur(): void;
 }

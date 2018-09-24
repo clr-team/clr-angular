@@ -1,5 +1,5 @@
 import { __values, __extends, __spread, __read } from 'tslib';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, HostBinding, ComponentFactoryResolver, Inject, InjectionToken, Injector, PLATFORM_ID, NgZone, LOCALE_ID, Self, Attribute, ContentChild, ChangeDetectorRef, IterableDiffers, defineInjectable } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, HostBinding, ComponentFactoryResolver, Inject, InjectionToken, Injector, PLATFORM_ID, NgZone, LOCALE_ID, Self, ContentChild, ChangeDetectorRef, IterableDiffers, defineInjectable } from '@angular/core';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth } from '@angular/common';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
@@ -3142,6 +3142,17 @@ var ControlClassService = /** @class */ (function () {
         }
         return controlClasses.join(' ');
     };
+    ControlClassService.prototype.initControlClass = function (renderer, element) {
+        if (element && element.className) {
+            this.className = element.className;
+            var klasses = element.className.split(' ');
+            klasses.forEach(function (klass) {
+                if (klass.startsWith('clr-col')) {
+                    renderer.removeClass(element, klass);
+                }
+            });
+        }
+    };
     return ControlClassService;
 }());
 ControlClassService.decorators = [
@@ -3197,20 +3208,16 @@ ClrInputContainer.propDecorators = {
 };
 var ClrInput = /** @class */ (function (_super) {
     __extends(ClrInput, _super);
-    function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, type, renderer, el) {
+    function ClrInput(vcr, ngControlService, ifErrorService, control, controlClassService, renderer, el) {
         var _this = _super.call(this, ClrInputContainer, vcr, 1) || this;
         _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
         _this.control = control;
-        _this.type = type;
         if (!control) {
             throw new Error('clrInput can only be used within an Angular form control, add ngModel or formControl to the input');
         }
-        if (!_this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'text');
-        }
         if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
+            controlClassService.initControlClass(renderer, el.nativeElement);
         }
         return _this;
     }
@@ -3236,7 +3243,6 @@ ClrInput.ctorParameters = function () { return [
     { type: IfErrorService, decorators: [{ type: Optional }] },
     { type: NgControl, decorators: [{ type: Optional }] },
     { type: ControlClassService, decorators: [{ type: Optional }] },
-    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
     { type: Renderer2 },
     { type: ElementRef }
 ]; };
@@ -3370,13 +3376,12 @@ ClrPasswordContainer.propDecorators = {
 };
 var ClrPassword = /** @class */ (function (_super) {
     __extends(ClrPassword, _super);
-    function ClrPassword(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, type, renderer, el, toggleService) {
+    function ClrPassword(vcr, ngControlService, ifErrorService, control, focusService, controlClassService, renderer, el, toggleService) {
         var _this = _super.call(this, ClrPasswordContainer, vcr, 1) || this;
         _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
         _this.control = control;
         _this.focusService = focusService;
-        _this.type = type;
         _this.toggleService = toggleService;
         if (!_this.control) {
             throw new Error('clrPassword can only be used within an Angular form control, add ngModel or formControl to the input');
@@ -3384,10 +3389,9 @@ var ClrPassword = /** @class */ (function (_super) {
         if (!_this.focusService) {
             throw new Error('clrPassword requires being wrapped in <clr-password-container>');
         }
-        if (!_this.type) {
-            renderer.setAttribute(el.nativeElement, 'type', 'password');
+        if (controlClassService) {
+            controlClassService.initControlClass(renderer, el.nativeElement);
         }
-        controlClassService.className = el.nativeElement.className;
         _this.subscription = _this.toggleService.subscribe(function (toggle) {
             renderer.setProperty(el.nativeElement, 'type', toggle ? 'text' : 'password');
         });
@@ -3427,7 +3431,6 @@ ClrPassword.ctorParameters = function () { return [
     { type: NgControl, decorators: [{ type: Optional }] },
     { type: FocusService, decorators: [{ type: Optional }] },
     { type: ControlClassService },
-    { type: String, decorators: [{ type: Attribute, args: ['type',] }] },
     { type: Renderer2 },
     { type: ElementRef },
     { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] }
@@ -3478,13 +3481,13 @@ ClrRadioWrapper.propDecorators = {
 };
 var ClrRadio = /** @class */ (function (_super) {
     __extends(ClrRadio, _super);
-    function ClrRadio(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+    function ClrRadio(vcr, ngControlService, ifErrorService, control, controlClassService, el, renderer) {
         var _this = _super.call(this, ClrRadioWrapper, vcr, 0) || this;
         _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
         _this.control = control;
         if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
+            controlClassService.initControlClass(renderer, el.nativeElement);
         }
         return _this;
     }
@@ -3510,7 +3513,8 @@ ClrRadio.ctorParameters = function () { return [
     { type: IfErrorService, decorators: [{ type: Optional }] },
     { type: NgControl, decorators: [{ type: Optional }] },
     { type: ControlClassService, decorators: [{ type: Optional }] },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Renderer2 }
 ]; };
 ClrRadio.propDecorators = {
     onBlur: [{ type: HostListener, args: ['blur',] }]
@@ -3649,7 +3653,7 @@ ClrSelectContainer.propDecorators = {
 };
 var ClrSelect = /** @class */ (function (_super) {
     __extends(ClrSelect, _super);
-    function ClrSelect(vcr, ngControlService, ifErrorService, control, controlClassService, el) {
+    function ClrSelect(vcr, ngControlService, ifErrorService, control, controlClassService, el, renderer) {
         var _this = _super.call(this, ClrSelectContainer, vcr, 1) || this;
         _this.ngControlService = ngControlService;
         _this.ifErrorService = ifErrorService;
@@ -3658,7 +3662,7 @@ var ClrSelect = /** @class */ (function (_super) {
             throw new Error('clrSelect can only be used within an Angular form control, add ngModel or formControl to the select');
         }
         if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
+            controlClassService.initControlClass(renderer, el.nativeElement);
         }
         return _this;
     }
@@ -3684,7 +3688,8 @@ ClrSelect.ctorParameters = function () { return [
     { type: IfErrorService, decorators: [{ type: Optional }] },
     { type: NgControl, decorators: [{ type: Optional }] },
     { type: ControlClassService, decorators: [{ type: Optional }] },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Renderer2 }
 ]; };
 ClrSelect.propDecorators = {
     onBlur: [{ type: HostListener, args: ['blur',] }]
@@ -3761,7 +3766,7 @@ var ClrTextarea = /** @class */ (function (_super) {
             throw new Error('clrTextarea can only be used within an Angular form control, add ngModel or formControl to the textarea');
         }
         if (controlClassService) {
-            controlClassService.className = el.nativeElement.className;
+            controlClassService.initControlClass(renderer, el.nativeElement);
         }
         return _this;
     }

@@ -17,10 +17,9 @@ export declare class ClrPassword extends WrappedFormControl<ClrPasswordContainer
     private ifErrorService;
     private control;
     private focusService;
-    type: string;
     private toggleService;
     subscription: Subscription;
-    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, focusService: FocusService, controlClassService: ControlClassService, type: string, renderer: Renderer2, el: ElementRef, toggleService: BehaviorSubject<boolean>);
+    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, focusService: FocusService, controlClassService: ControlClassService, renderer: Renderer2, el: ElementRef, toggleService: BehaviorSubject<boolean>);
     ngOnInit(): void;
     ngOnDestroy(): void;
     onFocus(): void;
