@@ -1,7 +1,7 @@
 import { AfterContentInit, AfterViewChecked, ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
-import { DomAdapter } from './dom-adapter';
+import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';

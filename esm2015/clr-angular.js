@@ -6493,22 +6493,17 @@ class DomAdapter {
      * @param {?} element
      * @return {?}
      */
-    clientRectHeight(element) {
-        return parseInt(element.getBoundingClientRect().height, 10);
-    }
-    /**
-     * @param {?} element
-     * @return {?}
-     */
-    clientRectRight(element) {
-        return parseInt(element.getBoundingClientRect().right, 10);
-    }
-    /**
-     * @param {?} element
-     * @return {?}
-     */
-    clientRectWidth(element) {
-        return parseInt(element.getBoundingClientRect().width, 10);
+    clientRect(element) {
+        /** @type {?} */
+        const elementClientRect = element.getBoundingClientRect();
+        return {
+            top: parseInt(elementClientRect.top, 10),
+            bottom: parseInt(elementClientRect.bottom, 10),
+            left: parseInt(elementClientRect.left, 10),
+            right: parseInt(elementClientRect.right, 10),
+            width: parseInt(elementClientRect.width, 10),
+            height: parseInt(elementClientRect.height, 10),
+        };
     }
     /**
      * @param {?} element
@@ -11255,8 +11250,8 @@ class DatagridColumnResizer {
         this.renderer.setStyle(this.handleTrackerEl, 'display', 'block');
         this.renderer.setStyle(document.body, 'cursor', 'col-resize');
         this.dragDistancePositionX = 0;
-        this.columnRectWidth = this.domAdapter.clientRectWidth(this.columnEl);
-        this.pageStartPositionX = this.domAdapter.clientRectRight(this.columnEl);
+        this.columnRectWidth = this.domAdapter.clientRect(this.columnEl).width;
+        this.pageStartPositionX = this.domAdapter.clientRect(this.columnEl).right;
     }
     /**
      * @param {?} moveEvent
@@ -11498,22 +11493,15 @@ class NoopDomAdapter {
      * @param {?} element
      * @return {?}
      */
-    clientRectHeight(element) {
-        return 0;
-    }
-    /**
-     * @param {?} element
-     * @return {?}
-     */
-    clientRectRight(element) {
-        return 0;
-    }
-    /**
-     * @param {?} element
-     * @return {?}
-     */
-    clientRectWidth(element) {
-        return 0;
+    clientRect(element) {
+        return {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: 0,
+            height: 0,
+        };
     }
     /**
      * @param {?} element
@@ -11628,7 +11616,7 @@ class DatagridMainRenderer {
      */
     computeDatagridHeight() {
         /** @type {?} */
-        const value = this.domAdapter.clientRectHeight(this.el.nativeElement);
+        const value = this.domAdapter.clientRect(this.el.nativeElement).height;
         this.renderer.setStyle(this.el.nativeElement, 'height', value + 'px');
         this._heightSet = true;
     }
@@ -13046,6 +13034,1135 @@ class ClrDataModule {
 }
 ClrDataModule.decorators = [
     { type: NgModule, args: [{ exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class ClrDragEvent {
+    /**
+     * @param {?} dragEvent
+     */
+    constructor(dragEvent) {
+        this.dragPosition = dragEvent.dragPosition;
+        this.group = dragEvent.group;
+        this.dragDataTransfer = dragEvent.dragDataTransfer;
+        this.dropPointPosition = dragEvent.dropPointPosition;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @enum {number} */
+const DragEventType = {
+    DRAG_START: 0,
+    DRAG_MOVE: 1,
+    DRAG_END: 2,
+    DRAG_ENTER: 3,
+    DRAG_LEAVE: 4,
+    DROP: 5,
+};
+DragEventType[DragEventType.DRAG_START] = 'DRAG_START';
+DragEventType[DragEventType.DRAG_MOVE] = 'DRAG_MOVE';
+DragEventType[DragEventType.DRAG_END] = 'DRAG_END';
+DragEventType[DragEventType.DRAG_ENTER] = 'DRAG_ENTER';
+DragEventType[DragEventType.DRAG_LEAVE] = 'DRAG_LEAVE';
+DragEventType[DragEventType.DROP] = 'DROP';
+/**
+ * @record
+ * @template T
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class DragAndDropEventBusService {
+    constructor() {
+        this.dragStart = new Subject();
+        this.dragMove = new Subject();
+        this.dragEnd = new Subject();
+        this.drop = new Subject();
+    }
+    /**
+     * @return {?}
+     */
+    get dragStarted() {
+        return this.dragStart.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    get dragMoved() {
+        return this.dragMove.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    get dragEnded() {
+        return this.dragEnd.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    get dropped() {
+        return this.drop.asObservable();
+    }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    broadcast(event) {
+        switch (event.type) {
+            case DragEventType.DRAG_START:
+                this.dragStart.next(event);
+                break;
+            case DragEventType.DRAG_MOVE:
+                this.dragMove.next(event);
+                break;
+            case DragEventType.DRAG_END:
+                this.dragEnd.next(event);
+                break;
+            case DragEventType.DROP:
+                this.drop.next(event);
+                break;
+            default:
+                break;
+        }
+    }
+}
+DragAndDropEventBusService.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class DragEventListenerService {
+    /**
+     * @param {?} ngZone
+     * @param {?} renderer
+     * @param {?} eventBus
+     */
+    constructor(ngZone, renderer, eventBus) {
+        this.ngZone = ngZone;
+        this.renderer = renderer;
+        this.eventBus = eventBus;
+        this.dragStart = new Subject();
+        this.dragMove = new Subject();
+        this.dragEnd = new Subject();
+        this.hasDragStarted = false;
+    }
+    /**
+     * @return {?}
+     */
+    get dragStarted() {
+        return this.dragStart.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    get dragMoved() {
+        return this.dragMove.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    get dragEnded() {
+        return this.dragEnd.asObservable();
+    }
+    /**
+     * @param {?} draggableEl
+     * @return {?}
+     */
+    attachDragListeners(draggableEl) {
+        this.draggableEl = draggableEl;
+        this.listeners = [
+            this.customDragEvent(this.draggableEl, 'mousedown', 'mousemove', 'mouseup'),
+            this.customDragEvent(this.draggableEl, 'touchstart', 'touchmove', 'touchend'),
+        ];
+    }
+    /**
+     * @return {?}
+     */
+    detachDragListeners() {
+        if (this.listeners) {
+            this.listeners.map(event => event());
+        }
+        // In most cases, once users start dragging with mousedown/touchstart events,
+        // they will end dragging at one point with mouseup/touchend.
+        // However, there might be a few cases where mousedown/touchstart events get registered,
+        // but the draggable element gets removed before user ends dragging.
+        // In that case, we need to remove the attached listeners that happened during the mousedown/touchstart events.
+        if (this.nestedListeners) {
+            this.nestedListeners.map(event => event());
+        }
+    }
+    /**
+     * @param {?} element
+     * @param {?} startOnEvent
+     * @param {?} moveOnEvent
+     * @param {?} endOnEvent
+     * @return {?}
+     */
+    customDragEvent(element, startOnEvent, moveOnEvent, endOnEvent) {
+        return this.renderer.listen(element, startOnEvent, () => {
+            // Initialize nested listeners' property with a new empty array;
+            this.nestedListeners = [];
+            // This is needed to disable selection during dragging (especially in EDGE/IE11).
+            this.nestedListeners.push(this.renderer.listen('document', 'selectstart', (selectEvent) => {
+                selectEvent.preventDefault();
+                selectEvent.stopImmediatePropagation();
+            }));
+            // Listen to mousemove/touchmove events outside of angular zone.
+            this.nestedListeners.push(this.ngZone.runOutsideAngular(() => {
+                return this.renderer.listen('document', moveOnEvent, (moveEvent) => {
+                    // Event.stopImmediatePropagation() is needed here to prevent nested draggables from getting dragged
+                    // altogether. We shouldn't use Event.stopPropagation() here as we are listening to the events
+                    // on the global element level.
+                    // With Event.stopImmediatePropagation(), it registers the events sent from the inner most draggable
+                    // first. Then immediately after that, it stops listening to the same type of events on the same
+                    // element. So this will help us to not register the same events that would come from the parent
+                    // level draggables eventually.
+                    moveEvent.stopImmediatePropagation();
+                    if (!this.hasDragStarted) {
+                        this.hasDragStarted = true;
+                        // Fire "dragstart"
+                        this.broadcast(moveEvent, DragEventType.DRAG_START);
+                    }
+                    else {
+                        // Fire "dragmove"
+                        this.broadcast(moveEvent, DragEventType.DRAG_MOVE);
+                    }
+                });
+            }));
+            // Listen to mouseup/touchend events.
+            this.nestedListeners.push(this.renderer.listen('document', endOnEvent, (endEvent) => {
+                if (this.hasDragStarted) {
+                    // Fire "dragend" only if dragstart is registered
+                    this.hasDragStarted = false;
+                    this.broadcast(endEvent, DragEventType.DRAG_END);
+                }
+                // We must remove the the nested listeners every time drag completes.
+                if (this.nestedListeners) {
+                    this.nestedListeners.map(event => event());
+                }
+            }));
+        });
+    }
+    /**
+     * @param {?} event
+     * @param {?} eventType
+     * @return {?}
+     */
+    broadcast(event, eventType) {
+        /** @type {?} */
+        const dragEvent = this.generateDragEvent(event, eventType);
+        switch (dragEvent.type) {
+            case DragEventType.DRAG_START:
+                this.dragStart.next(dragEvent);
+                break;
+            case DragEventType.DRAG_MOVE:
+                this.dragMove.next(dragEvent);
+                break;
+            case DragEventType.DRAG_END:
+                this.dragEnd.next(dragEvent);
+                break;
+            default:
+                break;
+        }
+        // The following properties are set after they are broadcasted to the DraggableGhost component.
+        dragEvent.ghostElement = this.ghostElement;
+        dragEvent.dropPointPosition = this.dropPointPosition;
+        this.eventBus.broadcast(dragEvent);
+    }
+    /**
+     * @param {?} event
+     * @param {?} eventType
+     * @return {?}
+     */
+    generateDragEvent(event, eventType) {
+        /** @type {?} */
+        let nativeEvent;
+        if ((/** @type {?} */ (event)).hasOwnProperty('changedTouches')) {
+            nativeEvent = (/** @type {?} */ (event)).changedTouches[0];
+        }
+        else {
+            nativeEvent = event;
+        }
+        return {
+            type: eventType,
+            dragPosition: { pageX: nativeEvent.pageX, pageY: nativeEvent.pageY },
+            group: this.group,
+            dragDataTransfer: this.dragDataTransfer,
+            ghostElement: this.ghostElement,
+        };
+    }
+}
+DragEventListenerService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+DragEventListenerService.ctorParameters = () => [
+    { type: NgZone },
+    { type: Renderer2 },
+    { type: DragAndDropEventBusService }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class DraggableSnapshotService {
+    /**
+     * @param {?} domAdapter
+     */
+    constructor(domAdapter) {
+        this.domAdapter = domAdapter;
+    }
+    /**
+     * @param {?} el
+     * @param {?} event
+     * @return {?}
+     */
+    capture(el, event) {
+        this.draggableElClientRect = this.domAdapter.clientRect(el);
+        this.snapshotDragEvent = event;
+    }
+    /**
+     * @return {?}
+     */
+    discard() {
+        delete this.draggableElClientRect;
+        delete this.snapshotDragEvent;
+    }
+    /**
+     * @return {?}
+     */
+    get hasDraggableState() {
+        return !!this.snapshotDragEvent && !!this.draggableElClientRect;
+    }
+    /**
+     * @return {?}
+     */
+    get clientRect() {
+        return this.draggableElClientRect;
+    }
+    /**
+     * @return {?}
+     */
+    get dragEvent() {
+        return this.snapshotDragEvent;
+    }
+}
+DraggableSnapshotService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+DraggableSnapshotService.ctorParameters = () => [
+    { type: DomAdapter }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class ClrDraggableGhost {
+    /**
+     * @param {?} el
+     * @param {?} dragEventListener
+     * @param {?} draggableSnapshot
+     * @param {?} renderer
+     * @param {?} ngZone
+     */
+    constructor(el, dragEventListener, draggableSnapshot, renderer, ngZone) {
+        this.el = el;
+        this.dragEventListener = dragEventListener;
+        this.draggableSnapshot = draggableSnapshot;
+        this.renderer = renderer;
+        this.ngZone = ngZone;
+        this.subscriptions = [];
+        this.leaveAnimConfig = { value: 0, params: { top: '0px', left: '0px' } };
+        if (!this.dragEventListener || !this.draggableSnapshot) {
+            throw new Error('The clr-draggable-ghost component can only be used inside of a clrDraggable directive.');
+        }
+        this.draggableGhostEl = this.el.nativeElement;
+        // Need to use Renderer2 as it runs outside of NgZone
+        this.renderer.addClass(this.draggableGhostEl, 'draggable-ghost');
+        // Register the ghost element in DragEventListener to pass in a ClrDragEvent.
+        this.dragEventListener.ghostElement = this.draggableGhostEl;
+        // Default ghost size gets the size of ClrDraggable element.
+        this.setDefaultGhostSize(this.draggableGhostEl);
+        /** @type {?} */
+        const offset = {
+            top: this.draggableSnapshot.hasDraggableState
+                ? this.draggableSnapshot.dragEvent.dragPosition.pageY - this.draggableSnapshot.clientRect.top
+                : 0,
+            left: this.draggableSnapshot.hasDraggableState
+                ? this.draggableSnapshot.dragEvent.dragPosition.pageX - this.draggableSnapshot.clientRect.left
+                : 0,
+        };
+        /** @type {?} */
+        let isAnimationConfigured = false;
+        this.subscriptions.push(this.dragEventListener.dragMoved.subscribe((event) => {
+            // On the first drag move event, we configure the animation as it's dependent on the first drag event.
+            if (!isAnimationConfigured) {
+                if (this.draggableSnapshot.hasDraggableState) {
+                    this.animateToOnLeave(`${this.draggableSnapshot.clientRect.top}px`, `${this.draggableSnapshot.clientRect.left}px`);
+                }
+                else {
+                    this.animateToOnLeave(`${event.dragPosition.pageY}px`, `${event.dragPosition.pageX}px`);
+                }
+                isAnimationConfigured = true;
+            }
+            /** @type {?} */
+            const topLeftPosition = this.findTopLeftPosition(event.dragPosition, offset);
+            this.setPositionStyle(this.draggableGhostEl, topLeftPosition.pageX, topLeftPosition.pageY);
+            this.dragEventListener.dropPointPosition = this.findDropPointPosition(topLeftPosition);
+        }));
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    setDefaultGhostSize(el) {
+        if (this.draggableSnapshot.hasDraggableState) {
+            this.setSizeStyle(el, this.draggableSnapshot.clientRect.width, this.draggableSnapshot.clientRect.height);
+        }
+    }
+    /**
+     * @param {?} top
+     * @param {?} left
+     * @return {?}
+     */
+    animateToOnLeave(top, left) {
+        this.ngZone.run(() => {
+            this.leaveAnimConfig = { value: 0, params: { top: top, left: left } };
+        });
+    }
+    /**
+     * @param {?} dragPosition
+     * @param {?} offset
+     * @return {?}
+     */
+    findTopLeftPosition(dragPosition, offset) {
+        return { pageX: dragPosition.pageX - offset.left, pageY: dragPosition.pageY - offset.top };
+    }
+    /**
+     * @param {?} topLeftPosition
+     * @return {?}
+     */
+    findDropPointPosition(topLeftPosition) {
+        if (this.draggableSnapshot.hasDraggableState) {
+            return {
+                pageX: topLeftPosition.pageX + this.draggableSnapshot.clientRect.width / 2,
+                pageY: topLeftPosition.pageY + this.draggableSnapshot.clientRect.height / 2,
+            };
+        }
+        else {
+            return topLeftPosition;
+        }
+    }
+    /**
+     * @param {?} el
+     * @param {?} width
+     * @param {?} height
+     * @return {?}
+     */
+    setSizeStyle(el, width, height) {
+        this.renderer.setStyle(el, 'width', `${width}px`);
+        this.renderer.setStyle(el, 'height', `${height}px`);
+    }
+    /**
+     * @param {?} el
+     * @param {?} left
+     * @param {?} top
+     * @return {?}
+     */
+    setPositionStyle(el, left, top) {
+        this.renderer.setStyle(el, 'left', `${left}px`);
+        this.renderer.setStyle(el, 'top', `${top}px`);
+        this.renderer.setStyle(el, 'visibility', 'visible');
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+}
+ClrDraggableGhost.decorators = [
+    { type: Component, args: [{
+                selector: 'clr-draggable-ghost',
+                template: `<ng-content></ng-content>`,
+                animations: [
+                    trigger('leaveAnimation', [
+                        transition(':leave', [
+                            style({ left: '*', top: '*' }),
+                            animate('0.2s ease-in-out', style({ top: '{{top}}', left: '{{left}}' })),
+                        ]),
+                    ]),
+                ],
+            },] },
+];
+/** @nocollapse */
+ClrDraggableGhost.ctorParameters = () => [
+    { type: ElementRef },
+    { type: DragEventListenerService, decorators: [{ type: Optional }] },
+    { type: DraggableSnapshotService, decorators: [{ type: Optional }] },
+    { type: Renderer2 },
+    { type: NgZone }
+];
+ClrDraggableGhost.propDecorators = {
+    leaveAnimConfig: [{ type: HostBinding, args: ['@leaveAnimation',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class ClrIfDragged {
+    /**
+     * @param {?} template
+     * @param {?} container
+     * @param {?} dragEventListener
+     */
+    constructor(template, container, dragEventListener) {
+        this.template = template;
+        this.container = container;
+        this.dragEventListener = dragEventListener;
+        this.subscriptions = [];
+        if (!this.dragEventListener || !this.container) {
+            throw new Error('The *clrIfDragged directive can only be used inside of a clrDraggable directive.');
+        }
+        this.subscriptions.push(this.dragEventListener.dragStarted.subscribe((event) => {
+            this.container.createEmbeddedView(this.template);
+        }));
+        this.subscriptions.push(this.dragEventListener.dragEnded.subscribe((event) => {
+            this.container.clear();
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+}
+ClrIfDragged.decorators = [
+    { type: Directive, args: [{ selector: '[clrIfDragged]' },] },
+];
+/** @nocollapse */
+ClrIfDragged.ctorParameters = () => [
+    { type: TemplateRef },
+    { type: ViewContainerRef, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: DragEventListenerService, decorators: [{ type: Optional }] }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class DragHandleRegistrarService {
+    /**
+     * @param {?} dragEventListener
+     * @param {?} renderer
+     */
+    constructor(dragEventListener, renderer) {
+        this.dragEventListener = dragEventListener;
+        this.renderer = renderer;
+    }
+    /**
+     * @return {?}
+     */
+    get defaultHandleEl() {
+        return this._defaultHandleEl;
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    set defaultHandleEl(el) {
+        this._defaultHandleEl = el; // defaultHandleEl will be usually the clrDraggable element.
+        // If the customHandleEl has been registered,
+        // don't make the defaultHandleEl the drag handle yet until the customHandleEl is unregistered.
+        if (!this._customHandleEl) {
+            this.makeElementHandle(this._defaultHandleEl);
+        }
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    makeElementHandle(el) {
+        if (this._defaultHandleEl && this._defaultHandleEl !== el) {
+            // Before making an element the custom handle element,
+            // we should remove the existing drag-handle class from the draggable element.
+            this.renderer.removeClass(this._defaultHandleEl, 'drag-handle');
+        }
+        this.dragEventListener.attachDragListeners(el);
+        this.renderer.addClass(el, 'drag-handle');
+    }
+    /**
+     * @return {?}
+     */
+    get customHandleEl() {
+        return this._customHandleEl;
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    registerCustomHandle(el) {
+        this.dragEventListener.detachDragListeners(); // removes the existing listeners
+        this._customHandleEl = el;
+        this.makeElementHandle(this._customHandleEl);
+    }
+    /**
+     * @return {?}
+     */
+    unregisterCustomHandle() {
+        this.dragEventListener.detachDragListeners(); // removes the existing listeners
+        this.renderer.removeClass(this._customHandleEl, 'drag-handle');
+        delete this._customHandleEl;
+        // if default handle is set, make that handle
+        if (this._defaultHandleEl) {
+            this.makeElementHandle(this._defaultHandleEl);
+        }
+    }
+}
+DragHandleRegistrarService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+DragHandleRegistrarService.ctorParameters = () => [
+    { type: DragEventListenerService },
+    { type: Renderer2 }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+class GlobalDragModeService {
+    /**
+     * @param {?} renderer
+     */
+    constructor(renderer) {
+        this.renderer = renderer;
+    }
+    /**
+     * @return {?}
+     */
+    enter() {
+        this.renderer.addClass(document.body, 'in-drag');
+    }
+    /**
+     * @return {?}
+     */
+    exit() {
+        this.renderer.removeClass(document.body, 'in-drag');
+    }
+}
+GlobalDragModeService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+GlobalDragModeService.ctorParameters = () => [
+    { type: Renderer2 }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class ClrDraggable {
+    /**
+     * @param {?} el
+     * @param {?} dragEventListener
+     * @param {?} dragHandleRegistrar
+     * @param {?} viewContainerRef
+     * @param {?} cfr
+     * @param {?} injector
+     * @param {?} draggableSnapshot
+     * @param {?} globalDragMode
+     */
+    constructor(el, dragEventListener, dragHandleRegistrar, viewContainerRef, cfr, injector, draggableSnapshot, globalDragMode) {
+        this.el = el;
+        this.dragEventListener = dragEventListener;
+        this.dragHandleRegistrar = dragHandleRegistrar;
+        this.viewContainerRef = viewContainerRef;
+        this.cfr = cfr;
+        this.injector = injector;
+        this.draggableSnapshot = draggableSnapshot;
+        this.globalDragMode = globalDragMode;
+        this.subscriptions = [];
+        this.dragOn = false;
+        this.dragStartEmitter = new EventEmitter();
+        this.dragMoveEmitter = new EventEmitter();
+        this.dragEndEmitter = new EventEmitter();
+        this.draggableEl = this.el.nativeElement;
+        this.componentFactory = this.cfr.resolveComponentFactory(ClrDraggableGhost);
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set dataTransfer(value) {
+        this.dragEventListener.dragDataTransfer = value;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set group(value) {
+        this.dragEventListener.group = value;
+    }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    createDefaultGhost(event) {
+        this.draggableSnapshot.capture(this.draggableEl, event);
+        // NOTE: The default ghost element will appear
+        // next to the clrDraggable in the DOM as a sibling element.
+        this.viewContainerRef.createComponent(this.componentFactory, 0, this.injector, [
+            [this.draggableEl.cloneNode(true)],
+        ]);
+    }
+    /**
+     * @return {?}
+     */
+    destroyDefaultGhost() {
+        this.viewContainerRef.clear();
+        this.draggableSnapshot.discard();
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterContentInit() {
+        this.dragHandleRegistrar.defaultHandleEl = this.draggableEl;
+        this.subscriptions.push(this.dragEventListener.dragStarted.subscribe((event) => {
+            this.globalDragMode.enter();
+            this.dragOn = true;
+            if (!this.customGhost) {
+                this.createDefaultGhost(event);
+            }
+            this.dragStartEmitter.emit(new ClrDragEvent(event));
+        }));
+        this.subscriptions.push(this.dragEventListener.dragMoved.subscribe((event) => {
+            this.dragMoveEmitter.emit(new ClrDragEvent(event));
+        }));
+        this.subscriptions.push(this.dragEventListener.dragEnded.subscribe((event) => {
+            this.globalDragMode.exit();
+            this.dragOn = false;
+            if (!this.customGhost) {
+                this.destroyDefaultGhost();
+            }
+            this.dragEndEmitter.emit(new ClrDragEvent(event));
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
+        this.dragEventListener.detachDragListeners();
+    }
+}
+ClrDraggable.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrDraggable]',
+                providers: [
+                    DragEventListenerService,
+                    DragHandleRegistrarService,
+                    DraggableSnapshotService,
+                    GlobalDragModeService,
+                    DomAdapter,
+                ],
+                host: { '[class.draggable]': 'true', '[class.being-dragged]': 'dragOn' },
+            },] },
+];
+/** @nocollapse */
+ClrDraggable.ctorParameters = () => [
+    { type: ElementRef },
+    { type: DragEventListenerService },
+    { type: DragHandleRegistrarService },
+    { type: ViewContainerRef },
+    { type: ComponentFactoryResolver },
+    { type: Injector },
+    { type: DraggableSnapshotService },
+    { type: GlobalDragModeService }
+];
+ClrDraggable.propDecorators = {
+    customGhost: [{ type: ContentChild, args: [ClrIfDragged,] }],
+    dataTransfer: [{ type: Input, args: ['clrDraggable',] }],
+    group: [{ type: Input, args: ['clrGroup',] }],
+    dragStartEmitter: [{ type: Output, args: ['clrDragStart',] }],
+    dragMoveEmitter: [{ type: Output, args: ['clrDragMove',] }],
+    dragEndEmitter: [{ type: Output, args: ['clrDragEnd',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ */
+class ClrDroppable {
+    /**
+     * @param {?} el
+     * @param {?} eventBus
+     * @param {?} domAdapter
+     * @param {?} renderer
+     */
+    constructor(el, eventBus, domAdapter, renderer) {
+        this.el = el;
+        this.eventBus = eventBus;
+        this.domAdapter = domAdapter;
+        this.renderer = renderer;
+        this.isDraggableMatch = false;
+        this._isDraggableOver = false;
+        this._dropTolerance = { top: 0, right: 0, bottom: 0, left: 0 };
+        this.dragStartEmitter = new EventEmitter();
+        this.dragMoveEmitter = new EventEmitter();
+        this.dragEndEmitter = new EventEmitter();
+        this.dragLeaveEmitter = new EventEmitter();
+        this.dragEnterEmitter = new EventEmitter();
+        this.dropEmitter = new EventEmitter();
+        this.droppableEl = this.el.nativeElement;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set isDraggableOver(value) {
+        // We need to add/remove this draggable-over class via Renderer2
+        // because isDraggableOver is set outside of NgZone.
+        if (value) {
+            this.renderer.addClass(this.droppableEl, 'draggable-over');
+        }
+        else {
+            this.renderer.removeClass(this.droppableEl, 'draggable-over');
+        }
+        this._isDraggableOver = value;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set group(value) {
+        this._group = value;
+    }
+    /**
+     * @param {?=} top
+     * @param {?=} right
+     * @param {?=} bottom
+     * @param {?=} left
+     * @return {?}
+     */
+    dropToleranceGenerator(top = 0, right = top, bottom = top, left = right) {
+        return { top, right, bottom, left };
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set dropTolerance(value) {
+        // If user provides an object here and wants to manipulate/update properties individually,
+        // the object must be immutable as we generate new object based user's given object.
+        if (typeof value === 'number') {
+            this._dropTolerance = this.dropToleranceGenerator(value);
+        }
+        else if (typeof value === 'string') {
+            /** @type {?} */
+            const toleranceValues = value
+                .trim()
+                .split(/\s+/)
+                .map(tolerance => parseInt(tolerance, 10));
+            this._dropTolerance = this.dropToleranceGenerator(...toleranceValues);
+        }
+        else if (value) {
+            // The value could be passed in as {left: 20, top: 30 }
+            // In this case, the rest of the direction properties should be 0.
+            // That's why we initialize properties with 0 first, then override with user's given value.
+            this._dropTolerance = Object.assign({}, this.dropToleranceGenerator(0), value);
+        }
+    }
+    /**
+     * @param {?} subscription
+     * @return {?}
+     */
+    unsubscribeFrom(subscription) {
+        if (subscription) {
+            subscription.unsubscribe();
+        }
+    }
+    /**
+     * @param {?} draggableGroup
+     * @return {?}
+     */
+    checkGroupMatch(draggableGroup) {
+        // Both Draggable and Droppable have clrGroup input.
+        // The clrGroup input can be both a string key or array of string keys in Draggable and Droppable.
+        // It's not match if Draggable has no defined value assigned to clrGroup, but Droppable has a defined clrGroup.
+        if (!draggableGroup && this._group) {
+            return false;
+        }
+        // The same is true the other way round.
+        if (!this._group && draggableGroup) {
+            return false;
+        }
+        // It's match if both Draggable and Droppable have no assigned value for clrGroup.
+        if (!this._group && !draggableGroup) {
+            return true;
+        }
+        // It's match if both Draggable and Droppable have simple string keys that are matching.
+        // It's match if Draggable's simple clrGroup key is matching with one of the clrGroup keys of Droppable. The
+        // same is true the other way round.
+        // it's match if one of the clrGroup keys of Droppable is matching with one of the clrGroup keys of Draggable.
+        if (typeof draggableGroup === 'string') {
+            if (typeof this._group === 'string') {
+                return this._group === draggableGroup;
+            }
+            else {
+                return this._group.indexOf(draggableGroup) > -1;
+            }
+        }
+        else {
+            if (typeof this._group === 'string') {
+                return draggableGroup.indexOf(this._group) > -1;
+            }
+            else {
+                return (/** @type {?} */ (this._group)).some(groupKey => draggableGroup.indexOf(groupKey) > -1);
+            }
+        }
+    }
+    /**
+     * @param {?} point
+     * @return {?}
+     */
+    isInDropArea(point) {
+        if (!point) {
+            return false;
+        }
+        if (!this.clientRect) {
+            this.clientRect = this.domAdapter.clientRect(this.droppableEl);
+        }
+        if (point.pageX >= this.clientRect.left - this._dropTolerance.left &&
+            point.pageX <= this.clientRect.right + this._dropTolerance.right &&
+            point.pageY >= this.clientRect.top - this._dropTolerance.top &&
+            point.pageY <= this.clientRect.bottom + this._dropTolerance.bottom) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    /**
+     * @param {?} dragStartEvent
+     * @return {?}
+     */
+    onDragStart(dragStartEvent) {
+        // Check draggable and droppable have a matching group key.
+        this.isDraggableMatch = this.checkGroupMatch(dragStartEvent.group);
+        // Subscribe to dragMoved and dragEnded only if draggable and droppable have a matching group key.
+        if (this.isDraggableMatch) {
+            this.dragStartEmitter.emit(new ClrDragEvent(dragStartEvent));
+            this.dragMoveSubscription = this.eventBus.dragMoved.subscribe((dragMoveEvent) => {
+                this.onDragMove(dragMoveEvent);
+            });
+            this.dragEndSubscription = this.eventBus.dragEnded.subscribe((dragEndEvent) => {
+                this.onDragEnd(dragEndEvent);
+            });
+        }
+    }
+    /**
+     * @param {?} dragMoveEvent
+     * @return {?}
+     */
+    onDragMove(dragMoveEvent) {
+        /** @type {?} */
+        const isInDropArea = this.isInDropArea(dragMoveEvent.dropPointPosition);
+        if (!this._isDraggableOver && isInDropArea) {
+            this.isDraggableOver = true;
+            /** @type {?} */
+            const dragEnterEvent = Object.assign({}, dragMoveEvent, { type: DragEventType.DRAG_ENTER });
+            this.eventBus.broadcast(dragEnterEvent);
+            this.dragEnterEmitter.emit(new ClrDragEvent(dragEnterEvent));
+        }
+        else if (this._isDraggableOver && !isInDropArea) {
+            this.isDraggableOver = false;
+            /** @type {?} */
+            const dragLeaveEvent = Object.assign({}, dragMoveEvent, { type: DragEventType.DRAG_LEAVE });
+            this.eventBus.broadcast(dragLeaveEvent);
+            this.dragLeaveEmitter.emit(new ClrDragEvent(dragLeaveEvent));
+        }
+        this.dragMoveEmitter.emit(new ClrDragEvent(dragMoveEvent));
+    }
+    /**
+     * @param {?} dragEndEvent
+     * @return {?}
+     */
+    onDragEnd(dragEndEvent) {
+        if (this._isDraggableOver) {
+            if (dragEndEvent.ghostElement) {
+                // By this point, the draggable ghost component is destroyed,
+                // but the element would be active until its animation completes.
+                // As such, once the ghost is dropped over, we will give it "dropped" class.
+                // This process cannot be done in the ghost component
+                // because any subscription to the drop event is ineffective or invalid
+                // as the component had been already destroyed.
+                this.renderer.addClass(dragEndEvent.ghostElement, 'dropped');
+            }
+            /** @type {?} */
+            const dropEvent = Object.assign({}, dragEndEvent, { type: DragEventType.DROP });
+            this.eventBus.broadcast(dropEvent);
+            this.dropEmitter.emit(new ClrDragEvent(dropEvent));
+            this.isDraggableOver = false;
+        }
+        this.dragEndEmitter.emit(new ClrDragEvent(dragEndEvent));
+        this.unsubscribeFrom(this.dragMoveSubscription);
+        this.unsubscribeFrom(this.dragEndSubscription);
+        this.isDraggableMatch = false;
+        delete this.clientRect;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.dragStartSubscription = this.eventBus.dragStarted.subscribe((dragStartEvent) => {
+            this.onDragStart(dragStartEvent);
+        });
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.unsubscribeFrom(this.dragStartSubscription);
+        this.unsubscribeFrom(this.dragMoveSubscription);
+        this.unsubscribeFrom(this.dragEndSubscription);
+    }
+}
+ClrDroppable.decorators = [
+    { type: Directive, args: [{
+                selector: '[clrDroppable]',
+                providers: [DomAdapter],
+                host: { '[class.droppable]': 'true', '[class.draggable-match]': 'isDraggableMatch' },
+            },] },
+];
+/** @nocollapse */
+ClrDroppable.ctorParameters = () => [
+    { type: ElementRef },
+    { type: DragAndDropEventBusService },
+    { type: DomAdapter },
+    { type: Renderer2 }
+];
+ClrDroppable.propDecorators = {
+    group: [{ type: Input, args: ['clrGroup',] }],
+    dropTolerance: [{ type: Input, args: ['clrDropTolerance',] }],
+    dragStartEmitter: [{ type: Output, args: ['clrDragStart',] }],
+    dragMoveEmitter: [{ type: Output, args: ['clrDragMove',] }],
+    dragEndEmitter: [{ type: Output, args: ['clrDragEnd',] }],
+    dragLeaveEmitter: [{ type: Output, args: ['clrDragLeave',] }],
+    dragEnterEmitter: [{ type: Output, args: ['clrDragEnter',] }],
+    dropEmitter: [{ type: Output, args: ['clrDrop',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * @template T
+ */
+class ClrDragHandle {
+    /**
+     * @param {?} el
+     * @param {?} dragHandleRegistrar
+     */
+    constructor(el, dragHandleRegistrar) {
+        this.el = el;
+        this.dragHandleRegistrar = dragHandleRegistrar;
+        if (!this.dragHandleRegistrar) {
+            // ClrDragHandleRegistrar is provided in ClrDraggable so we expect it to be present here
+            // as clrDragHandle is required to be used only inside of a clrDraggable directive.
+            throw new Error('The clrDragHandle directive can only be used inside of a clrDraggable directive.');
+        }
+        this.dragHandleRegistrar.registerCustomHandle(this.el.nativeElement);
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.dragHandleRegistrar.unregisterCustomHandle();
+    }
+}
+ClrDragHandle.decorators = [
+    { type: Directive, args: [{ selector: '[clrDragHandle]', host: { '[class.drag-handle]': 'true' } },] },
+];
+/** @nocollapse */
+ClrDragHandle.ctorParameters = () => [
+    { type: ElementRef },
+    { type: DragHandleRegistrarService, decorators: [{ type: Optional }] }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const CLR_DRAG_AND_DROP_DIRECTIVES = [
+    ClrDraggable,
+    ClrDroppable,
+    ClrIfDragged,
+    ClrDragHandle,
+    ClrDraggableGhost,
+];
+class ClrDragAndDropModule {
+}
+ClrDragAndDropModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule],
+                declarations: [CLR_DRAG_AND_DROP_DIRECTIVES],
+                entryComponents: [ClrDraggableGhost],
+                providers: [DragAndDropEventBusService],
+                exports: [CLR_DRAG_AND_DROP_DIRECTIVES],
+            },] },
 ];
 
 /**
@@ -19584,6 +20701,7 @@ ClarityModule.decorators = [
                     ClrLayoutModule,
                     ClrPopoverModule,
                     ClrWizardModule,
+                    ClrDragAndDropModule,
                 ],
             },] },
 ];
@@ -20118,9 +21236,19 @@ function slide(direction) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdf, DatagridRowExpandAnimation as ɵcv, ActionableOompaLoompa as ɵcs, DatagridWillyWonka as ɵcq, ExpandableOompaLoompa as ɵcu, ClrDatagridColumnToggleButton as ɵcd, ClrDatagridColumnToggleTitle as ɵcc, DatagridDetailRegisterer as ɵcf, ClrDatagridItemsTrackBy as ɵce, ColumnToggleButtonsService as ɵbx, CustomFilter as ɵca, DragDispatcher as ɵbz, FiltersProvider as ɵbo, ExpandableRowsCount as ɵbu, HideableColumnService as ɵbv, Items as ɵbn, Page as ɵbp, RowActionService as ɵbt, Selection as ɵbm, Sort as ɵbr, StateDebouncer as ɵbq, StateProvider as ɵbw, DatagridBodyRenderer as ɵcn, DatagridCellRenderer as ɵcp, DatagridColumnResizer as ɵck, DomAdapter as ɵci, DatagridHeadRenderer as ɵcm, DatagridHeaderRenderer as ɵcj, DatagridMainRenderer as ɵch, domAdapterFactory as ɵcg, DatagridRenderOrganizer as ɵbs, DatagridRowRenderer as ɵco, DatagridTableRenderer as ɵcl, DatagridFilterRegistrar as ɵby, StackControl as ɵcx, AbstractTreeSelection as ɵcy, clrTreeSelectionProviderFactory as ɵda, TreeSelectionService as ɵcz, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵs, ControlClassService as ɵbh, ControlIdService as ɵq, FocusService as ɵbi, LayoutService as ɵr, NgControlService as ɵt, WrappedFormControl as ɵw, DateFormControlService as ɵbb, DateIOService as ɵbd, DateNavigationService as ɵba, DatepickerEnabledService as ɵbe, DatepickerFocusService as ɵbg, LocaleHelperService as ɵbc, ViewManagerService as ɵbf, ResponsiveNavigationProvider as ɵdh, ResponsiveNavigationService as ɵdg, ActiveOompaLoompa as ɵdr, TabsWillyWonka as ɵdq, AriaService as ɵdl, TabsService as ɵdp, TABS_ID as ɵdm, TABS_ID_PROVIDER as ɵdo, tokenFactory$1 as ɵdn, VerticalNavGroupRegistrationService as ɵdu, VerticalNavGroupService as ɵdv, VerticalNavIconService as ɵdt, VerticalNavService as ɵds, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵct, WillyWonka as ɵcr, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, ClrIfExpandModule as ɵcw, Expand as ɵcb, FocusTrapDirective as ɵz, ClrFocusTrapModule as ɵx, FOCUS_TRAP_DIRECTIVES as ɵy, EmptyAnchor as ɵv, ClrHostWrappingModule as ɵu, UNIQUE_ID as ɵdb, UNIQUE_ID_PROVIDER as ɵdd, uniqueIdFactory as ɵdc, OUSTIDE_CLICK_DIRECTIVES as ɵbk, OutsideClick as ɵbl, ClrOutsideClickModule as ɵbj, ScrollingService as ɵde, TEMPLATE_REF_DIRECTIVES as ɵdj, TemplateRefContainer as ɵdk, ClrTemplateRefModule as ɵdi, ButtonHubService as ɵdy, HeaderActionService as ɵdz, PageCollectionService as ɵdx, WizardNavigationService as ɵdw };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdf, DatagridRowExpandAnimation as ɵcv, ActionableOompaLoompa as ɵcs, DatagridWillyWonka as ɵcq, ExpandableOompaLoompa as ɵcu, ClrDatagridColumnToggleButton as ɵcd, ClrDatagridColumnToggleTitle as ɵcc, DatagridDetailRegisterer as ɵcf, ClrDatagridItemsTrackBy as ɵce, ColumnToggleButtonsService as ɵbx, CustomFilter as ɵca, DragDispatcher as ɵbz, FiltersProvider as ɵbo, ExpandableRowsCount as ɵbu, HideableColumnService as ɵbv, Items as ɵbn, Page as ɵbp, RowActionService as ɵbt, Selection as ɵbm, Sort as ɵbr, StateDebouncer as ɵbq, StateProvider as ɵbw, DatagridBodyRenderer as ɵcn, DatagridCellRenderer as ɵcp, DatagridColumnResizer as ɵck, DatagridHeadRenderer as ɵcm, DatagridHeaderRenderer as ɵcj, DatagridMainRenderer as ɵch, domAdapterFactory as ɵcg, DatagridRenderOrganizer as ɵbs, DatagridRowRenderer as ɵco, DatagridTableRenderer as ɵcl, DatagridFilterRegistrar as ɵby, StackControl as ɵcx, AbstractTreeSelection as ɵcy, clrTreeSelectionProviderFactory as ɵda, TreeSelectionService as ɵcz, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵs, ControlClassService as ɵbh, ControlIdService as ɵq, FocusService as ɵbi, LayoutService as ɵr, NgControlService as ɵt, WrappedFormControl as ɵw, DateFormControlService as ɵbb, DateIOService as ɵbd, DateNavigationService as ɵba, DatepickerEnabledService as ɵbe, DatepickerFocusService as ɵbg, LocaleHelperService as ɵbc, ViewManagerService as ɵbf, ResponsiveNavigationProvider as ɵdh, ResponsiveNavigationService as ɵdg, ActiveOompaLoompa as ɵdr, TabsWillyWonka as ɵdq, AriaService as ɵdl, TabsService as ɵdp, TABS_ID as ɵdm, TABS_ID_PROVIDER as ɵdo, tokenFactory$1 as ɵdn, VerticalNavGroupRegistrationService as ɵdu, VerticalNavGroupService as ɵdv, VerticalNavIconService as ɵdt, VerticalNavService as ɵds, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵct, WillyWonka as ɵcr, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, DomAdapter as ɵci, DragAndDropEventBusService as ɵeb, DragEventListenerService as ɵea, DragHandleRegistrarService as ɵec, DraggableSnapshotService as ɵed, GlobalDragModeService as ɵee, ClrIfExpandModule as ɵcw, Expand as ɵcb, FocusTrapDirective as ɵz, ClrFocusTrapModule as ɵx, FOCUS_TRAP_DIRECTIVES as ɵy, EmptyAnchor as ɵv, ClrHostWrappingModule as ɵu, UNIQUE_ID as ɵdb, UNIQUE_ID_PROVIDER as ɵdd, uniqueIdFactory as ɵdc, OUSTIDE_CLICK_DIRECTIVES as ɵbk, OutsideClick as ɵbl, ClrOutsideClickModule as ɵbj, ScrollingService as ɵde, TEMPLATE_REF_DIRECTIVES as ɵdj, TemplateRefContainer as ɵdk, ClrTemplateRefModule as ɵdi, ButtonHubService as ɵdy, HeaderActionService as ɵdz, PageCollectionService as ɵdx, WizardNavigationService as ɵdw };
 //# sourceMappingURL=clr-angular.js.map

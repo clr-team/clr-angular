@@ -1,6 +1,6 @@
 import { ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { DatagridColumnResizer } from './column-resizer';
-import { DomAdapter } from './dom-adapter';
+import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare class DatagridHeaderRenderer implements OnDestroy {
     private el;

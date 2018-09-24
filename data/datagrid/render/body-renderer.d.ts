@@ -1,5 +1,5 @@
 import { ElementRef, OnDestroy } from '@angular/core';
-import { DomAdapter } from './dom-adapter';
+import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare class DatagridBodyRenderer implements OnDestroy {
     private el;

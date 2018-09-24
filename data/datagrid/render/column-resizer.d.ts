@@ -1,6 +1,6 @@
 import { AfterViewInit, ElementRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { DragDispatcher } from '../providers/drag-dispatcher';
-import { DomAdapter } from './dom-adapter';
+import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare class DatagridColumnResizer implements AfterViewInit, OnDestroy {
     private renderer;

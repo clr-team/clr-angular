@@ -4091,14 +4091,16 @@ var DomAdapter = /** @class */ (function () {
     DomAdapter.prototype.computedHeight = function (element) {
         return parseInt(getComputedStyle(element).getPropertyValue('height'), 10);
     };
-    DomAdapter.prototype.clientRectHeight = function (element) {
-        return parseInt(element.getBoundingClientRect().height, 10);
-    };
-    DomAdapter.prototype.clientRectRight = function (element) {
-        return parseInt(element.getBoundingClientRect().right, 10);
-    };
-    DomAdapter.prototype.clientRectWidth = function (element) {
-        return parseInt(element.getBoundingClientRect().width, 10);
+    DomAdapter.prototype.clientRect = function (element) {
+        var elementClientRect = element.getBoundingClientRect();
+        return {
+            top: parseInt(elementClientRect.top, 10),
+            bottom: parseInt(elementClientRect.bottom, 10),
+            left: parseInt(elementClientRect.left, 10),
+            right: parseInt(elementClientRect.right, 10),
+            width: parseInt(elementClientRect.width, 10),
+            height: parseInt(elementClientRect.height, 10),
+        };
     };
     DomAdapter.prototype.minWidth = function (element) {
         return parseInt(getComputedStyle(element).getPropertyValue('min-width'), 10);
@@ -7081,8 +7083,8 @@ var DatagridColumnResizer = /** @class */ (function () {
         this.renderer.setStyle(this.handleTrackerEl, 'display', 'block');
         this.renderer.setStyle(document.body, 'cursor', 'col-resize');
         this.dragDistancePositionX = 0;
-        this.columnRectWidth = this.domAdapter.clientRectWidth(this.columnEl);
-        this.pageStartPositionX = this.domAdapter.clientRectRight(this.columnEl);
+        this.columnRectWidth = this.domAdapter.clientRect(this.columnEl).width;
+        this.pageStartPositionX = this.domAdapter.clientRect(this.columnEl).right;
     };
     DatagridColumnResizer.prototype.dragMoveHandler = function (moveEvent) {
         var pageMovePosition = moveEvent.pageX || moveEvent.changedTouches[0].pageX;
@@ -7238,14 +7240,15 @@ var NoopDomAdapter = /** @class */ (function () {
     NoopDomAdapter.prototype.computedHeight = function (element) {
         return 0;
     };
-    NoopDomAdapter.prototype.clientRectHeight = function (element) {
-        return 0;
-    };
-    NoopDomAdapter.prototype.clientRectRight = function (element) {
-        return 0;
-    };
-    NoopDomAdapter.prototype.clientRectWidth = function (element) {
-        return 0;
+    NoopDomAdapter.prototype.clientRect = function (element) {
+        return {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: 0,
+            height: 0,
+        };
     };
     NoopDomAdapter.prototype.minWidth = function (element) {
         return 0;
@@ -7312,7 +7315,7 @@ var DatagridMainRenderer = /** @class */ (function () {
         return false;
     };
     DatagridMainRenderer.prototype.computeDatagridHeight = function () {
-        var value = this.domAdapter.clientRectHeight(this.el.nativeElement);
+        var value = this.domAdapter.clientRect(this.el.nativeElement).height;
         this.renderer.setStyle(this.el.nativeElement, 'height', value + 'px');
         this._heightSet = true;
     };
@@ -8248,6 +8251,793 @@ var ClrDataModule = /** @class */ (function () {
 }());
 ClrDataModule.decorators = [
     { type: core.NgModule, args: [{ exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] },] },
+];
+var ClrDragEvent = /** @class */ (function () {
+    function ClrDragEvent(dragEvent) {
+        this.dragPosition = dragEvent.dragPosition;
+        this.group = dragEvent.group;
+        this.dragDataTransfer = dragEvent.dragDataTransfer;
+        this.dropPointPosition = dragEvent.dropPointPosition;
+    }
+    return ClrDragEvent;
+}());
+var DragEventType = {
+    DRAG_START: 0,
+    DRAG_MOVE: 1,
+    DRAG_END: 2,
+    DRAG_ENTER: 3,
+    DRAG_LEAVE: 4,
+    DROP: 5,
+};
+DragEventType[DragEventType.DRAG_START] = 'DRAG_START';
+DragEventType[DragEventType.DRAG_MOVE] = 'DRAG_MOVE';
+DragEventType[DragEventType.DRAG_END] = 'DRAG_END';
+DragEventType[DragEventType.DRAG_ENTER] = 'DRAG_ENTER';
+DragEventType[DragEventType.DRAG_LEAVE] = 'DRAG_LEAVE';
+DragEventType[DragEventType.DROP] = 'DROP';
+var DragAndDropEventBusService = /** @class */ (function () {
+    function DragAndDropEventBusService() {
+        this.dragStart = new rxjs.Subject();
+        this.dragMove = new rxjs.Subject();
+        this.dragEnd = new rxjs.Subject();
+        this.drop = new rxjs.Subject();
+    }
+    Object.defineProperty(DragAndDropEventBusService.prototype, "dragStarted", {
+        get: function () {
+            return this.dragStart.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragAndDropEventBusService.prototype, "dragMoved", {
+        get: function () {
+            return this.dragMove.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragAndDropEventBusService.prototype, "dragEnded", {
+        get: function () {
+            return this.dragEnd.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragAndDropEventBusService.prototype, "dropped", {
+        get: function () {
+            return this.drop.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DragAndDropEventBusService.prototype.broadcast = function (event) {
+        switch (event.type) {
+            case DragEventType.DRAG_START:
+                this.dragStart.next(event);
+                break;
+            case DragEventType.DRAG_MOVE:
+                this.dragMove.next(event);
+                break;
+            case DragEventType.DRAG_END:
+                this.dragEnd.next(event);
+                break;
+            case DragEventType.DROP:
+                this.drop.next(event);
+                break;
+            default:
+                break;
+        }
+    };
+    return DragAndDropEventBusService;
+}());
+DragAndDropEventBusService.decorators = [
+    { type: core.Injectable },
+];
+var DragEventListenerService = /** @class */ (function () {
+    function DragEventListenerService(ngZone, renderer, eventBus) {
+        this.ngZone = ngZone;
+        this.renderer = renderer;
+        this.eventBus = eventBus;
+        this.dragStart = new rxjs.Subject();
+        this.dragMove = new rxjs.Subject();
+        this.dragEnd = new rxjs.Subject();
+        this.hasDragStarted = false;
+    }
+    Object.defineProperty(DragEventListenerService.prototype, "dragStarted", {
+        get: function () {
+            return this.dragStart.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragEventListenerService.prototype, "dragMoved", {
+        get: function () {
+            return this.dragMove.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragEventListenerService.prototype, "dragEnded", {
+        get: function () {
+            return this.dragEnd.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DragEventListenerService.prototype.attachDragListeners = function (draggableEl) {
+        this.draggableEl = draggableEl;
+        this.listeners = [
+            this.customDragEvent(this.draggableEl, 'mousedown', 'mousemove', 'mouseup'),
+            this.customDragEvent(this.draggableEl, 'touchstart', 'touchmove', 'touchend'),
+        ];
+    };
+    DragEventListenerService.prototype.detachDragListeners = function () {
+        if (this.listeners) {
+            this.listeners.map(function (event) { return event(); });
+        }
+        if (this.nestedListeners) {
+            this.nestedListeners.map(function (event) { return event(); });
+        }
+    };
+    DragEventListenerService.prototype.customDragEvent = function (element, startOnEvent, moveOnEvent, endOnEvent) {
+        var _this = this;
+        return this.renderer.listen(element, startOnEvent, function () {
+            _this.nestedListeners = [];
+            _this.nestedListeners.push(_this.renderer.listen('document', 'selectstart', function (selectEvent) {
+                selectEvent.preventDefault();
+                selectEvent.stopImmediatePropagation();
+            }));
+            _this.nestedListeners.push(_this.ngZone.runOutsideAngular(function () {
+                return _this.renderer.listen('document', moveOnEvent, function (moveEvent) {
+                    moveEvent.stopImmediatePropagation();
+                    if (!_this.hasDragStarted) {
+                        _this.hasDragStarted = true;
+                        _this.broadcast(moveEvent, DragEventType.DRAG_START);
+                    }
+                    else {
+                        _this.broadcast(moveEvent, DragEventType.DRAG_MOVE);
+                    }
+                });
+            }));
+            _this.nestedListeners.push(_this.renderer.listen('document', endOnEvent, function (endEvent) {
+                if (_this.hasDragStarted) {
+                    _this.hasDragStarted = false;
+                    _this.broadcast(endEvent, DragEventType.DRAG_END);
+                }
+                if (_this.nestedListeners) {
+                    _this.nestedListeners.map(function (event) { return event(); });
+                }
+            }));
+        });
+    };
+    DragEventListenerService.prototype.broadcast = function (event, eventType) {
+        var dragEvent = this.generateDragEvent(event, eventType);
+        switch (dragEvent.type) {
+            case DragEventType.DRAG_START:
+                this.dragStart.next(dragEvent);
+                break;
+            case DragEventType.DRAG_MOVE:
+                this.dragMove.next(dragEvent);
+                break;
+            case DragEventType.DRAG_END:
+                this.dragEnd.next(dragEvent);
+                break;
+            default:
+                break;
+        }
+        dragEvent.ghostElement = this.ghostElement;
+        dragEvent.dropPointPosition = this.dropPointPosition;
+        this.eventBus.broadcast(dragEvent);
+    };
+    DragEventListenerService.prototype.generateDragEvent = function (event, eventType) {
+        var nativeEvent;
+        if (((event)).hasOwnProperty('changedTouches')) {
+            nativeEvent = ((event)).changedTouches[0];
+        }
+        else {
+            nativeEvent = event;
+        }
+        return {
+            type: eventType,
+            dragPosition: { pageX: nativeEvent.pageX, pageY: nativeEvent.pageY },
+            group: this.group,
+            dragDataTransfer: this.dragDataTransfer,
+            ghostElement: this.ghostElement,
+        };
+    };
+    return DragEventListenerService;
+}());
+DragEventListenerService.decorators = [
+    { type: core.Injectable },
+];
+DragEventListenerService.ctorParameters = function () { return [
+    { type: core.NgZone },
+    { type: core.Renderer2 },
+    { type: DragAndDropEventBusService }
+]; };
+var DraggableSnapshotService = /** @class */ (function () {
+    function DraggableSnapshotService(domAdapter) {
+        this.domAdapter = domAdapter;
+    }
+    DraggableSnapshotService.prototype.capture = function (el, event) {
+        this.draggableElClientRect = this.domAdapter.clientRect(el);
+        this.snapshotDragEvent = event;
+    };
+    DraggableSnapshotService.prototype.discard = function () {
+        delete this.draggableElClientRect;
+        delete this.snapshotDragEvent;
+    };
+    Object.defineProperty(DraggableSnapshotService.prototype, "hasDraggableState", {
+        get: function () {
+            return !!this.snapshotDragEvent && !!this.draggableElClientRect;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DraggableSnapshotService.prototype, "clientRect", {
+        get: function () {
+            return this.draggableElClientRect;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DraggableSnapshotService.prototype, "dragEvent", {
+        get: function () {
+            return this.snapshotDragEvent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return DraggableSnapshotService;
+}());
+DraggableSnapshotService.decorators = [
+    { type: core.Injectable },
+];
+DraggableSnapshotService.ctorParameters = function () { return [
+    { type: DomAdapter }
+]; };
+var ClrDraggableGhost = /** @class */ (function () {
+    function ClrDraggableGhost(el, dragEventListener, draggableSnapshot, renderer, ngZone) {
+        var _this = this;
+        this.el = el;
+        this.dragEventListener = dragEventListener;
+        this.draggableSnapshot = draggableSnapshot;
+        this.renderer = renderer;
+        this.ngZone = ngZone;
+        this.subscriptions = [];
+        this.leaveAnimConfig = { value: 0, params: { top: '0px', left: '0px' } };
+        if (!this.dragEventListener || !this.draggableSnapshot) {
+            throw new Error('The clr-draggable-ghost component can only be used inside of a clrDraggable directive.');
+        }
+        this.draggableGhostEl = this.el.nativeElement;
+        this.renderer.addClass(this.draggableGhostEl, 'draggable-ghost');
+        this.dragEventListener.ghostElement = this.draggableGhostEl;
+        this.setDefaultGhostSize(this.draggableGhostEl);
+        var offset = {
+            top: this.draggableSnapshot.hasDraggableState
+                ? this.draggableSnapshot.dragEvent.dragPosition.pageY - this.draggableSnapshot.clientRect.top
+                : 0,
+            left: this.draggableSnapshot.hasDraggableState
+                ? this.draggableSnapshot.dragEvent.dragPosition.pageX - this.draggableSnapshot.clientRect.left
+                : 0,
+        };
+        var isAnimationConfigured = false;
+        this.subscriptions.push(this.dragEventListener.dragMoved.subscribe(function (event) {
+            if (!isAnimationConfigured) {
+                if (_this.draggableSnapshot.hasDraggableState) {
+                    _this.animateToOnLeave(_this.draggableSnapshot.clientRect.top + "px", _this.draggableSnapshot.clientRect.left + "px");
+                }
+                else {
+                    _this.animateToOnLeave(event.dragPosition.pageY + "px", event.dragPosition.pageX + "px");
+                }
+                isAnimationConfigured = true;
+            }
+            var topLeftPosition = _this.findTopLeftPosition(event.dragPosition, offset);
+            _this.setPositionStyle(_this.draggableGhostEl, topLeftPosition.pageX, topLeftPosition.pageY);
+            _this.dragEventListener.dropPointPosition = _this.findDropPointPosition(topLeftPosition);
+        }));
+    }
+    ClrDraggableGhost.prototype.setDefaultGhostSize = function (el) {
+        if (this.draggableSnapshot.hasDraggableState) {
+            this.setSizeStyle(el, this.draggableSnapshot.clientRect.width, this.draggableSnapshot.clientRect.height);
+        }
+    };
+    ClrDraggableGhost.prototype.animateToOnLeave = function (top, left) {
+        var _this = this;
+        this.ngZone.run(function () {
+            _this.leaveAnimConfig = { value: 0, params: { top: top, left: left } };
+        });
+    };
+    ClrDraggableGhost.prototype.findTopLeftPosition = function (dragPosition, offset) {
+        return { pageX: dragPosition.pageX - offset.left, pageY: dragPosition.pageY - offset.top };
+    };
+    ClrDraggableGhost.prototype.findDropPointPosition = function (topLeftPosition) {
+        if (this.draggableSnapshot.hasDraggableState) {
+            return {
+                pageX: topLeftPosition.pageX + this.draggableSnapshot.clientRect.width / 2,
+                pageY: topLeftPosition.pageY + this.draggableSnapshot.clientRect.height / 2,
+            };
+        }
+        else {
+            return topLeftPosition;
+        }
+    };
+    ClrDraggableGhost.prototype.setSizeStyle = function (el, width, height) {
+        this.renderer.setStyle(el, 'width', width + "px");
+        this.renderer.setStyle(el, 'height', height + "px");
+    };
+    ClrDraggableGhost.prototype.setPositionStyle = function (el, left, top) {
+        this.renderer.setStyle(el, 'left', left + "px");
+        this.renderer.setStyle(el, 'top', top + "px");
+        this.renderer.setStyle(el, 'visibility', 'visible');
+    };
+    ClrDraggableGhost.prototype.ngOnDestroy = function () {
+        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
+    };
+    return ClrDraggableGhost;
+}());
+ClrDraggableGhost.decorators = [
+    { type: core.Component, args: [{
+                selector: 'clr-draggable-ghost',
+                template: "<ng-content></ng-content>",
+                animations: [
+                    animations.trigger('leaveAnimation', [
+                        animations.transition(':leave', [
+                            animations.style({ left: '*', top: '*' }),
+                            animations.animate('0.2s ease-in-out', animations.style({ top: '{{top}}', left: '{{left}}' })),
+                        ]),
+                    ]),
+                ],
+            },] },
+];
+ClrDraggableGhost.ctorParameters = function () { return [
+    { type: core.ElementRef },
+    { type: DragEventListenerService, decorators: [{ type: core.Optional }] },
+    { type: DraggableSnapshotService, decorators: [{ type: core.Optional }] },
+    { type: core.Renderer2 },
+    { type: core.NgZone }
+]; };
+ClrDraggableGhost.propDecorators = {
+    leaveAnimConfig: [{ type: core.HostBinding, args: ['@leaveAnimation',] }]
+};
+var ClrIfDragged = /** @class */ (function () {
+    function ClrIfDragged(template, container, dragEventListener) {
+        var _this = this;
+        this.template = template;
+        this.container = container;
+        this.dragEventListener = dragEventListener;
+        this.subscriptions = [];
+        if (!this.dragEventListener || !this.container) {
+            throw new Error('The *clrIfDragged directive can only be used inside of a clrDraggable directive.');
+        }
+        this.subscriptions.push(this.dragEventListener.dragStarted.subscribe(function (event) {
+            _this.container.createEmbeddedView(_this.template);
+        }));
+        this.subscriptions.push(this.dragEventListener.dragEnded.subscribe(function (event) {
+            _this.container.clear();
+        }));
+    }
+    ClrIfDragged.prototype.ngOnDestroy = function () {
+        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
+    };
+    return ClrIfDragged;
+}());
+ClrIfDragged.decorators = [
+    { type: core.Directive, args: [{ selector: '[clrIfDragged]' },] },
+];
+ClrIfDragged.ctorParameters = function () { return [
+    { type: core.TemplateRef },
+    { type: core.ViewContainerRef, decorators: [{ type: core.Optional }, { type: core.SkipSelf }] },
+    { type: DragEventListenerService, decorators: [{ type: core.Optional }] }
+]; };
+var DragHandleRegistrarService = /** @class */ (function () {
+    function DragHandleRegistrarService(dragEventListener, renderer) {
+        this.dragEventListener = dragEventListener;
+        this.renderer = renderer;
+    }
+    Object.defineProperty(DragHandleRegistrarService.prototype, "defaultHandleEl", {
+        get: function () {
+            return this._defaultHandleEl;
+        },
+        set: function (el) {
+            this._defaultHandleEl = el;
+            if (!this._customHandleEl) {
+                this.makeElementHandle(this._defaultHandleEl);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DragHandleRegistrarService.prototype.makeElementHandle = function (el) {
+        if (this._defaultHandleEl && this._defaultHandleEl !== el) {
+            this.renderer.removeClass(this._defaultHandleEl, 'drag-handle');
+        }
+        this.dragEventListener.attachDragListeners(el);
+        this.renderer.addClass(el, 'drag-handle');
+    };
+    Object.defineProperty(DragHandleRegistrarService.prototype, "customHandleEl", {
+        get: function () {
+            return this._customHandleEl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DragHandleRegistrarService.prototype.registerCustomHandle = function (el) {
+        this.dragEventListener.detachDragListeners();
+        this._customHandleEl = el;
+        this.makeElementHandle(this._customHandleEl);
+    };
+    DragHandleRegistrarService.prototype.unregisterCustomHandle = function () {
+        this.dragEventListener.detachDragListeners();
+        this.renderer.removeClass(this._customHandleEl, 'drag-handle');
+        delete this._customHandleEl;
+        if (this._defaultHandleEl) {
+            this.makeElementHandle(this._defaultHandleEl);
+        }
+    };
+    return DragHandleRegistrarService;
+}());
+DragHandleRegistrarService.decorators = [
+    { type: core.Injectable },
+];
+DragHandleRegistrarService.ctorParameters = function () { return [
+    { type: DragEventListenerService },
+    { type: core.Renderer2 }
+]; };
+var GlobalDragModeService = /** @class */ (function () {
+    function GlobalDragModeService(renderer) {
+        this.renderer = renderer;
+    }
+    GlobalDragModeService.prototype.enter = function () {
+        this.renderer.addClass(document.body, 'in-drag');
+    };
+    GlobalDragModeService.prototype.exit = function () {
+        this.renderer.removeClass(document.body, 'in-drag');
+    };
+    return GlobalDragModeService;
+}());
+GlobalDragModeService.decorators = [
+    { type: core.Injectable },
+];
+GlobalDragModeService.ctorParameters = function () { return [
+    { type: core.Renderer2 }
+]; };
+var ClrDraggable = /** @class */ (function () {
+    function ClrDraggable(el, dragEventListener, dragHandleRegistrar, viewContainerRef, cfr, injector, draggableSnapshot, globalDragMode) {
+        this.el = el;
+        this.dragEventListener = dragEventListener;
+        this.dragHandleRegistrar = dragHandleRegistrar;
+        this.viewContainerRef = viewContainerRef;
+        this.cfr = cfr;
+        this.injector = injector;
+        this.draggableSnapshot = draggableSnapshot;
+        this.globalDragMode = globalDragMode;
+        this.subscriptions = [];
+        this.dragOn = false;
+        this.dragStartEmitter = new core.EventEmitter();
+        this.dragMoveEmitter = new core.EventEmitter();
+        this.dragEndEmitter = new core.EventEmitter();
+        this.draggableEl = this.el.nativeElement;
+        this.componentFactory = this.cfr.resolveComponentFactory(ClrDraggableGhost);
+    }
+    Object.defineProperty(ClrDraggable.prototype, "dataTransfer", {
+        set: function (value) {
+            this.dragEventListener.dragDataTransfer = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrDraggable.prototype, "group", {
+        set: function (value) {
+            this.dragEventListener.group = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrDraggable.prototype.createDefaultGhost = function (event) {
+        this.draggableSnapshot.capture(this.draggableEl, event);
+        this.viewContainerRef.createComponent(this.componentFactory, 0, this.injector, [
+            [this.draggableEl.cloneNode(true)],
+        ]);
+    };
+    ClrDraggable.prototype.destroyDefaultGhost = function () {
+        this.viewContainerRef.clear();
+        this.draggableSnapshot.discard();
+    };
+    ClrDraggable.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.dragHandleRegistrar.defaultHandleEl = this.draggableEl;
+        this.subscriptions.push(this.dragEventListener.dragStarted.subscribe(function (event) {
+            _this.globalDragMode.enter();
+            _this.dragOn = true;
+            if (!_this.customGhost) {
+                _this.createDefaultGhost(event);
+            }
+            _this.dragStartEmitter.emit(new ClrDragEvent(event));
+        }));
+        this.subscriptions.push(this.dragEventListener.dragMoved.subscribe(function (event) {
+            _this.dragMoveEmitter.emit(new ClrDragEvent(event));
+        }));
+        this.subscriptions.push(this.dragEventListener.dragEnded.subscribe(function (event) {
+            _this.globalDragMode.exit();
+            _this.dragOn = false;
+            if (!_this.customGhost) {
+                _this.destroyDefaultGhost();
+            }
+            _this.dragEndEmitter.emit(new ClrDragEvent(event));
+        }));
+    };
+    ClrDraggable.prototype.ngOnDestroy = function () {
+        this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
+        this.dragEventListener.detachDragListeners();
+    };
+    return ClrDraggable;
+}());
+ClrDraggable.decorators = [
+    { type: core.Directive, args: [{
+                selector: '[clrDraggable]',
+                providers: [
+                    DragEventListenerService,
+                    DragHandleRegistrarService,
+                    DraggableSnapshotService,
+                    GlobalDragModeService,
+                    DomAdapter,
+                ],
+                host: { '[class.draggable]': 'true', '[class.being-dragged]': 'dragOn' },
+            },] },
+];
+ClrDraggable.ctorParameters = function () { return [
+    { type: core.ElementRef },
+    { type: DragEventListenerService },
+    { type: DragHandleRegistrarService },
+    { type: core.ViewContainerRef },
+    { type: core.ComponentFactoryResolver },
+    { type: core.Injector },
+    { type: DraggableSnapshotService },
+    { type: GlobalDragModeService }
+]; };
+ClrDraggable.propDecorators = {
+    customGhost: [{ type: core.ContentChild, args: [ClrIfDragged,] }],
+    dataTransfer: [{ type: core.Input, args: ['clrDraggable',] }],
+    group: [{ type: core.Input, args: ['clrGroup',] }],
+    dragStartEmitter: [{ type: core.Output, args: ['clrDragStart',] }],
+    dragMoveEmitter: [{ type: core.Output, args: ['clrDragMove',] }],
+    dragEndEmitter: [{ type: core.Output, args: ['clrDragEnd',] }]
+};
+var ClrDroppable = /** @class */ (function () {
+    function ClrDroppable(el, eventBus, domAdapter, renderer) {
+        this.el = el;
+        this.eventBus = eventBus;
+        this.domAdapter = domAdapter;
+        this.renderer = renderer;
+        this.isDraggableMatch = false;
+        this._isDraggableOver = false;
+        this._dropTolerance = { top: 0, right: 0, bottom: 0, left: 0 };
+        this.dragStartEmitter = new core.EventEmitter();
+        this.dragMoveEmitter = new core.EventEmitter();
+        this.dragEndEmitter = new core.EventEmitter();
+        this.dragLeaveEmitter = new core.EventEmitter();
+        this.dragEnterEmitter = new core.EventEmitter();
+        this.dropEmitter = new core.EventEmitter();
+        this.droppableEl = this.el.nativeElement;
+    }
+    Object.defineProperty(ClrDroppable.prototype, "isDraggableOver", {
+        set: function (value) {
+            if (value) {
+                this.renderer.addClass(this.droppableEl, 'draggable-over');
+            }
+            else {
+                this.renderer.removeClass(this.droppableEl, 'draggable-over');
+            }
+            this._isDraggableOver = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrDroppable.prototype, "group", {
+        set: function (value) {
+            this._group = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrDroppable.prototype.dropToleranceGenerator = function (top, right, bottom, left) {
+        if (top === void 0) { top = 0; }
+        if (right === void 0) { right = top; }
+        if (bottom === void 0) { bottom = top; }
+        if (left === void 0) { left = right; }
+        return { top: top, right: right, bottom: bottom, left: left };
+    };
+    Object.defineProperty(ClrDroppable.prototype, "dropTolerance", {
+        set: function (value) {
+            if (typeof value === 'number') {
+                this._dropTolerance = this.dropToleranceGenerator(value);
+            }
+            else if (typeof value === 'string') {
+                var toleranceValues = value
+                    .trim()
+                    .split(/\s+/)
+                    .map(function (tolerance) { return parseInt(tolerance, 10); });
+                this._dropTolerance = this.dropToleranceGenerator.apply(this, __spread(toleranceValues));
+            }
+            else if (value) {
+                this._dropTolerance = Object.assign({}, this.dropToleranceGenerator(0), value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClrDroppable.prototype.unsubscribeFrom = function (subscription) {
+        if (subscription) {
+            subscription.unsubscribe();
+        }
+    };
+    ClrDroppable.prototype.checkGroupMatch = function (draggableGroup) {
+        if (!draggableGroup && this._group) {
+            return false;
+        }
+        if (!this._group && draggableGroup) {
+            return false;
+        }
+        if (!this._group && !draggableGroup) {
+            return true;
+        }
+        if (typeof draggableGroup === 'string') {
+            if (typeof this._group === 'string') {
+                return this._group === draggableGroup;
+            }
+            else {
+                return this._group.indexOf(draggableGroup) > -1;
+            }
+        }
+        else {
+            if (typeof this._group === 'string') {
+                return draggableGroup.indexOf(this._group) > -1;
+            }
+            else {
+                return ((this._group)).some(function (groupKey) { return draggableGroup.indexOf(groupKey) > -1; });
+            }
+        }
+    };
+    ClrDroppable.prototype.isInDropArea = function (point) {
+        if (!point) {
+            return false;
+        }
+        if (!this.clientRect) {
+            this.clientRect = this.domAdapter.clientRect(this.droppableEl);
+        }
+        if (point.pageX >= this.clientRect.left - this._dropTolerance.left &&
+            point.pageX <= this.clientRect.right + this._dropTolerance.right &&
+            point.pageY >= this.clientRect.top - this._dropTolerance.top &&
+            point.pageY <= this.clientRect.bottom + this._dropTolerance.bottom) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    ClrDroppable.prototype.onDragStart = function (dragStartEvent) {
+        var _this = this;
+        this.isDraggableMatch = this.checkGroupMatch(dragStartEvent.group);
+        if (this.isDraggableMatch) {
+            this.dragStartEmitter.emit(new ClrDragEvent(dragStartEvent));
+            this.dragMoveSubscription = this.eventBus.dragMoved.subscribe(function (dragMoveEvent) {
+                _this.onDragMove(dragMoveEvent);
+            });
+            this.dragEndSubscription = this.eventBus.dragEnded.subscribe(function (dragEndEvent) {
+                _this.onDragEnd(dragEndEvent);
+            });
+        }
+    };
+    ClrDroppable.prototype.onDragMove = function (dragMoveEvent) {
+        var isInDropArea = this.isInDropArea(dragMoveEvent.dropPointPosition);
+        if (!this._isDraggableOver && isInDropArea) {
+            this.isDraggableOver = true;
+            var dragEnterEvent = Object.assign({}, dragMoveEvent, { type: DragEventType.DRAG_ENTER });
+            this.eventBus.broadcast(dragEnterEvent);
+            this.dragEnterEmitter.emit(new ClrDragEvent(dragEnterEvent));
+        }
+        else if (this._isDraggableOver && !isInDropArea) {
+            this.isDraggableOver = false;
+            var dragLeaveEvent = Object.assign({}, dragMoveEvent, { type: DragEventType.DRAG_LEAVE });
+            this.eventBus.broadcast(dragLeaveEvent);
+            this.dragLeaveEmitter.emit(new ClrDragEvent(dragLeaveEvent));
+        }
+        this.dragMoveEmitter.emit(new ClrDragEvent(dragMoveEvent));
+    };
+    ClrDroppable.prototype.onDragEnd = function (dragEndEvent) {
+        if (this._isDraggableOver) {
+            if (dragEndEvent.ghostElement) {
+                this.renderer.addClass(dragEndEvent.ghostElement, 'dropped');
+            }
+            var dropEvent = Object.assign({}, dragEndEvent, { type: DragEventType.DROP });
+            this.eventBus.broadcast(dropEvent);
+            this.dropEmitter.emit(new ClrDragEvent(dropEvent));
+            this.isDraggableOver = false;
+        }
+        this.dragEndEmitter.emit(new ClrDragEvent(dragEndEvent));
+        this.unsubscribeFrom(this.dragMoveSubscription);
+        this.unsubscribeFrom(this.dragEndSubscription);
+        this.isDraggableMatch = false;
+        delete this.clientRect;
+    };
+    ClrDroppable.prototype.ngOnInit = function () {
+        var _this = this;
+        this.dragStartSubscription = this.eventBus.dragStarted.subscribe(function (dragStartEvent) {
+            _this.onDragStart(dragStartEvent);
+        });
+    };
+    ClrDroppable.prototype.ngOnDestroy = function () {
+        this.unsubscribeFrom(this.dragStartSubscription);
+        this.unsubscribeFrom(this.dragMoveSubscription);
+        this.unsubscribeFrom(this.dragEndSubscription);
+    };
+    return ClrDroppable;
+}());
+ClrDroppable.decorators = [
+    { type: core.Directive, args: [{
+                selector: '[clrDroppable]',
+                providers: [DomAdapter],
+                host: { '[class.droppable]': 'true', '[class.draggable-match]': 'isDraggableMatch' },
+            },] },
+];
+ClrDroppable.ctorParameters = function () { return [
+    { type: core.ElementRef },
+    { type: DragAndDropEventBusService },
+    { type: DomAdapter },
+    { type: core.Renderer2 }
+]; };
+ClrDroppable.propDecorators = {
+    group: [{ type: core.Input, args: ['clrGroup',] }],
+    dropTolerance: [{ type: core.Input, args: ['clrDropTolerance',] }],
+    dragStartEmitter: [{ type: core.Output, args: ['clrDragStart',] }],
+    dragMoveEmitter: [{ type: core.Output, args: ['clrDragMove',] }],
+    dragEndEmitter: [{ type: core.Output, args: ['clrDragEnd',] }],
+    dragLeaveEmitter: [{ type: core.Output, args: ['clrDragLeave',] }],
+    dragEnterEmitter: [{ type: core.Output, args: ['clrDragEnter',] }],
+    dropEmitter: [{ type: core.Output, args: ['clrDrop',] }]
+};
+var ClrDragHandle = /** @class */ (function () {
+    function ClrDragHandle(el, dragHandleRegistrar) {
+        this.el = el;
+        this.dragHandleRegistrar = dragHandleRegistrar;
+        if (!this.dragHandleRegistrar) {
+            throw new Error('The clrDragHandle directive can only be used inside of a clrDraggable directive.');
+        }
+        this.dragHandleRegistrar.registerCustomHandle(this.el.nativeElement);
+    }
+    ClrDragHandle.prototype.ngOnDestroy = function () {
+        this.dragHandleRegistrar.unregisterCustomHandle();
+    };
+    return ClrDragHandle;
+}());
+ClrDragHandle.decorators = [
+    { type: core.Directive, args: [{ selector: '[clrDragHandle]', host: { '[class.drag-handle]': 'true' } },] },
+];
+ClrDragHandle.ctorParameters = function () { return [
+    { type: core.ElementRef },
+    { type: DragHandleRegistrarService, decorators: [{ type: core.Optional }] }
+]; };
+var CLR_DRAG_AND_DROP_DIRECTIVES = [
+    ClrDraggable,
+    ClrDroppable,
+    ClrIfDragged,
+    ClrDragHandle,
+    ClrDraggableGhost,
+];
+var ClrDragAndDropModule = /** @class */ (function () {
+    function ClrDragAndDropModule() {
+    }
+    return ClrDragAndDropModule;
+}());
+ClrDragAndDropModule.decorators = [
+    { type: core.NgModule, args: [{
+                imports: [common.CommonModule],
+                declarations: [CLR_DRAG_AND_DROP_DIRECTIVES],
+                entryComponents: [ClrDraggableGhost],
+                providers: [DragAndDropEventBusService],
+                exports: [CLR_DRAG_AND_DROP_DIRECTIVES],
+            },] },
 ];
 var RootDropdownService = /** @class */ (function () {
     function RootDropdownService() {
@@ -12119,6 +12909,7 @@ ClarityModule.decorators = [
                     ClrLayoutModule,
                     ClrPopoverModule,
                     ClrWizardModule,
+                    ClrDragAndDropModule,
                 ],
             },] },
 ];
@@ -12336,6 +13127,14 @@ exports.ClrIfOpen = ClrIfOpen;
 exports.EXPAND_DIRECTIVES = EXPAND_DIRECTIVES;
 exports.ClrIfExpanded = ClrIfExpanded;
 exports.ClrCommonStrings = ClrCommonStrings;
+exports.ClrDraggable = ClrDraggable;
+exports.ClrDroppable = ClrDroppable;
+exports.ClrIfDragged = ClrIfDragged;
+exports.ClrDragHandle = ClrDragHandle;
+exports.ClrDraggableGhost = ClrDraggableGhost;
+exports.ClrDragEvent = ClrDragEvent;
+exports.CLR_DRAG_AND_DROP_DIRECTIVES = CLR_DRAG_AND_DROP_DIRECTIVES;
+exports.ClrDragAndDropModule = ClrDragAndDropModule;
 exports.ClrWizard = ClrWizard;
 exports.ClrWizardPage = ClrWizardPage;
 exports.ClrWizardStepnav = ClrWizardStepnav;
@@ -12376,7 +13175,6 @@ exports.ɵbw = StateProvider;
 exports.ɵcn = DatagridBodyRenderer;
 exports.ɵcp = DatagridCellRenderer;
 exports.ɵck = DatagridColumnResizer;
-exports.ɵci = DomAdapter;
 exports.ɵcm = DatagridHeadRenderer;
 exports.ɵcj = DatagridHeaderRenderer;
 exports.ɵch = DatagridMainRenderer;
@@ -12434,6 +13232,12 @@ exports.ɵm = IF_ACTIVE_ID_PROVIDER;
 exports.ɵn = IfActiveService;
 exports.ɵl = tokenFactory;
 exports.ɵd = IfOpenService;
+exports.ɵci = DomAdapter;
+exports.ɵeb = DragAndDropEventBusService;
+exports.ɵea = DragEventListenerService;
+exports.ɵec = DragHandleRegistrarService;
+exports.ɵed = DraggableSnapshotService;
+exports.ɵee = GlobalDragModeService;
 exports.ɵcw = ClrIfExpandModule;
 exports.ɵcb = Expand;
 exports.ɵz = FocusTrapDirective;

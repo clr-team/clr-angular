@@ -1,8 +1,7 @@
-import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-export declare class NoopDomAdapter implements DomAdapter {
+export declare class DomAdapter {
     userDefinedWidth(element: any): number;
     scrollBarWidth(element: any): number;
-    scrollWidth(element: any): number;
+    scrollWidth(element: any): any;
     computedHeight(element: any): number;
     clientRect(element: any): ClientRect;
     minWidth(element: any): number;
