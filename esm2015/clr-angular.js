@@ -4,7 +4,6 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 import { filter, first, map } from 'rxjs/operators';
 import { NgControl, FormsModule, SelectMultipleControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isBoolean } from 'util';
 
 /**
  * @fileoverview added by tsickle
@@ -5082,18 +5081,19 @@ class ControlClassService {
     /**
      * @param {?=} invalid
      * @param {?=} grid
+     * @param {?=} additional
      * @return {?}
      */
-    controlClass(invalid = false, grid = false) {
+    controlClass(invalid = false, grid = false, additional = '') {
         /** @type {?} */
-        const controlClasses = [];
+        const controlClasses = [this.className, additional];
         if (invalid) {
             controlClasses.push('clr-error');
         }
         if (grid && this.className.indexOf('clr-col') === -1) {
             controlClasses.push('clr-col-md-10 clr-col-xs-12');
         }
-        return controlClasses.join(' ');
+        return controlClasses.join(' ').trim();
     }
     /**
      * @param {?} renderer
@@ -5721,7 +5721,7 @@ class ClrRadioContainer {
      * @return {?}
      */
     set clrInline(value) {
-        if (!isBoolean(value)) {
+        if (typeof value === 'string') {
             this.inline = value === 'false' ? false : true;
         }
         else {
@@ -5738,7 +5738,7 @@ class ClrRadioContainer {
      * @return {?}
      */
     controlClass() {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+        return this.controlClassService.controlClass(this.invalid, this.addGrid(), this.inline ? 'clr-control-inline' : '');
     }
     /**
      * @return {?}
@@ -5762,13 +5762,13 @@ ClrRadioContainer.decorators = [
                 template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
-    <div class="clr-control-container" [ngClass]="controlClass()">
-      <div [class.clr-radio-inline]="clrInline">
-        <ng-content select="clr-radio-wrapper"></ng-content>
+    <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
+      <ng-content select="clr-radio-wrapper"></ng-content>
+      <div class="clr-subtext-wrapper">
+        <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+        <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-      <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-      <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
     </div>
     `,
                 host: {

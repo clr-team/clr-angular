@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('@angular/animations'), require('rxjs/operators'), require('@angular/forms'), require('util')) :
-	typeof define === 'function' && define.amd ? define('@clr/angular', ['exports', '@angular/core', '@angular/common', 'rxjs', '@angular/animations', 'rxjs/operators', '@angular/forms', 'util'], factory) :
-	(factory((global.clr = global.clr || {}, global.clr.angular = {}),global.ng.core,global.ng.common,global.rxjs,global.ng.animations,global.Rx.Observable.prototype,global.ng.forms,global.util));
-}(this, (function (exports,core,common,rxjs,animations,operators,forms,util) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('@angular/animations'), require('rxjs/operators'), require('@angular/forms')) :
+	typeof define === 'function' && define.amd ? define('@clr/angular', ['exports', '@angular/core', '@angular/common', 'rxjs', '@angular/animations', 'rxjs/operators', '@angular/forms'], factory) :
+	(factory((global.clr = global.clr || {}, global.clr.angular = {}),global.ng.core,global.ng.common,global.rxjs,global.ng.animations,global.Rx.Observable.prototype,global.ng.forms));
+}(this, (function (exports,core,common,rxjs,animations,operators,forms) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -3188,17 +3188,18 @@ var ControlClassService = /** @class */ (function () {
     function ControlClassService() {
         this.className = '';
     }
-    ControlClassService.prototype.controlClass = function (invalid, grid) {
+    ControlClassService.prototype.controlClass = function (invalid, grid, additional) {
         if (invalid === void 0) { invalid = false; }
         if (grid === void 0) { grid = false; }
-        var controlClasses = [];
+        if (additional === void 0) { additional = ''; }
+        var controlClasses = [this.className, additional];
         if (invalid) {
             controlClasses.push('clr-error');
         }
         if (grid && this.className.indexOf('clr-col') === -1) {
             controlClasses.push('clr-col-md-10 clr-col-xs-12');
         }
-        return controlClasses.join(' ');
+        return controlClasses.join(' ').trim();
     };
     ControlClassService.prototype.initControlClass = function (renderer, element) {
         if (element && element.className) {
@@ -3595,7 +3596,7 @@ var ClrRadioContainer = /** @class */ (function () {
             return this.inline;
         },
         set: function (value) {
-            if (!util.isBoolean(value)) {
+            if (typeof value === 'string') {
                 this.inline = value === 'false' ? false : true;
             }
             else {
@@ -3606,7 +3607,7 @@ var ClrRadioContainer = /** @class */ (function () {
         configurable: true
     });
     ClrRadioContainer.prototype.controlClass = function () {
-        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+        return this.controlClassService.controlClass(this.invalid, this.addGrid(), this.inline ? 'clr-control-inline' : '');
     };
     ClrRadioContainer.prototype.addGrid = function () {
         if (this.layoutService && !this.layoutService.isVertical()) {
@@ -3622,7 +3623,7 @@ var ClrRadioContainer = /** @class */ (function () {
 ClrRadioContainer.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-radio-container',
-                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div [class.clr-radio-inline]=\"clrInline\">\n        <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
+                template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [class.clr-control-inline]=\"clrInline\" [ngClass]=\"controlClass()\">\n      <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      <div class=\"clr-subtext-wrapper\">\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
                     '[class.clr-row]': 'addGrid()',
