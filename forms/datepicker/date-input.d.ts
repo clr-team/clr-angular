@@ -1,5 +1,9 @@
 import { AfterViewInit, ElementRef, EventEmitter, OnDestroy, OnInit, Renderer2, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { IfErrorService } from '../common/if-error/if-error.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { FocusService } from '../common/providers/focus.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { WrappedFormControl } from '../common/wrapped-control';
 import { ClrDateContainer } from './date-container';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -16,6 +20,11 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private _datepickerEnabledService;
     private dateFormControlService;
     private platformId;
+    private ngControlService;
+    private focusService;
+    private ifErrorService;
+    private control;
+    newFormsLayout: boolean;
     /**
      * Subscriptions to all the services and queries changes
      */
@@ -23,7 +32,8 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private previousOutputInitializedFlag;
     private previousOutput;
     private initializePreviousOutput;
-    constructor(container: ClrDateContainer, vcr: ViewContainerRef, elRef: ElementRef, renderer: Renderer2, _ngControl: NgControl, _dateIOService: DateIOService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object);
+    clrNewLayout: boolean;
+    constructor(container: ClrDateContainer, vcr: ViewContainerRef, elRef: ElementRef, renderer: Renderer2, _ngControl: NgControl, _dateIOService: DateIOService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object, ngControlService: NgControlService, controlClassService: ControlClassService, focusService: FocusService, ifErrorService: IfErrorService, control: NgControl, newFormsLayout: boolean);
     /**
      * 1. Populate services if the date container is not present.
      * 2. Initialize Subscriptions.
@@ -74,6 +84,8 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     readonly inputType: string;
     _dateUpdated: EventEmitter<Date>;
     private emitDateOutput;
+    setFocusStates(): void;
+    setBlurStates(): void;
     /**
      * Fires this method when the user changes the input focuses out of the input field.
      */

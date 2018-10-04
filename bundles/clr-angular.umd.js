@@ -1209,6 +1209,11 @@ ClrLabel.ctorParameters = function () { return [
 ClrLabel.propDecorators = {
     forAttr: [{ type: core.HostBinding, args: ['attr.for',] }, { type: core.Input, args: ['for',] }]
 };
+var IS_NEW_FORMS_LAYOUT = new core.InjectionToken('IS_NEW_FORMS_LAYOUT');
+var IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER = {
+    provide: IS_NEW_FORMS_LAYOUT,
+    useValue: true,
+};
 var ClrForm = /** @class */ (function () {
     function ClrForm() {
     }
@@ -1217,7 +1222,7 @@ var ClrForm = /** @class */ (function () {
 ClrForm.decorators = [
     { type: core.Directive, args: [{
                 selector: '[clrForm]',
-                providers: [LayoutService],
+                providers: [LayoutService, IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER],
                 host: { '[class.clr-form]': 'true' },
             },] },
 ];
@@ -2243,6 +2248,62 @@ ClrCalendar.ctorParameters = function () { return [
 ClrCalendar.propDecorators = {
     onKeyDown: [{ type: core.HostListener, args: ['keydown', ['$event'],] }]
 };
+var ControlClassService = /** @class */ (function () {
+    function ControlClassService() {
+        this.className = '';
+    }
+    ControlClassService.prototype.controlClass = function (invalid, grid, additional) {
+        if (invalid === void 0) { invalid = false; }
+        if (grid === void 0) { grid = false; }
+        if (additional === void 0) { additional = ''; }
+        var controlClasses = [this.className, additional];
+        if (invalid) {
+            controlClasses.push('clr-error');
+        }
+        if (grid && this.className.indexOf('clr-col') === -1) {
+            controlClasses.push('clr-col-md-10 clr-col-xs-12');
+        }
+        return controlClasses.join(' ').trim();
+    };
+    ControlClassService.prototype.initControlClass = function (renderer, element) {
+        if (element && element.className) {
+            this.className = element.className;
+            var klasses = element.className.split(' ');
+            klasses.forEach(function (klass) {
+                if (klass.startsWith('clr-col')) {
+                    renderer.removeClass(element, klass);
+                }
+            });
+        }
+    };
+    return ControlClassService;
+}());
+ControlClassService.decorators = [
+    { type: core.Injectable },
+];
+var FocusService = /** @class */ (function () {
+    function FocusService() {
+        this._focused = new rxjs.BehaviorSubject(false);
+    }
+    Object.defineProperty(FocusService.prototype, "focusChange", {
+        get: function () {
+            return this._focused.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FocusService.prototype, "focused", {
+        set: function (state$$1) {
+            this._focused.next(state$$1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FocusService;
+}());
+FocusService.decorators = [
+    { type: core.Injectable },
+];
 var DateFormControlService = /** @class */ (function () {
     function DateFormControlService() {
         this._touchedChange = new rxjs.Subject();
@@ -2410,20 +2471,46 @@ DatepickerEnabledService.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
 ]; };
 var ClrDateContainer = /** @class */ (function () {
-    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings) {
+    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout) {
         var _this = this;
         this._ifOpenService = _ifOpenService;
         this._dateNavigationService = _dateNavigationService;
         this._datepickerEnabledService = _datepickerEnabledService;
         this.dateFormControlService = dateFormControlService;
         this.commonStrings = commonStrings;
+        this.ifErrorService = ifErrorService;
+        this.focusService = focusService;
+        this.controlClassService = controlClassService;
+        this.layoutService = layoutService;
+        this.newFormsLayout = newFormsLayout;
         this._dynamic = false;
-        this._sub = this._ifOpenService.openChange.subscribe(function (open) {
+        this.invalid = false;
+        this.focus = false;
+        this.subscriptions = [];
+        this.subscriptions.push(this._ifOpenService.openChange.subscribe(function (open) {
             if (open) {
                 _this.initializeCalendar();
             }
-        });
+        }));
+        this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
+            _this.focus = state$$1;
+        }));
     }
+    ClrDateContainer.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
+            _this.invalid = control.invalid;
+        }));
+    };
+    ClrDateContainer.prototype.controlClass = function () {
+        return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    };
+    ClrDateContainer.prototype.addGrid = function () {
+        if (this.layoutService && !this.layoutService.isVertical()) {
+            return true;
+        }
+        return false;
+    };
     Object.defineProperty(ClrDateContainer.prototype, "isEnabled", {
         get: function () {
             return this._datepickerEnabledService.isEnabled;
@@ -2439,24 +2526,31 @@ var ClrDateContainer = /** @class */ (function () {
         this.dateFormControlService.markAsTouched();
     };
     ClrDateContainer.prototype.ngOnDestroy = function () {
-        this._sub.unsubscribe();
+        this.subscriptions.map(function (sub) { return sub.unsubscribe(); });
     };
     return ClrDateContainer;
 }());
 ClrDateContainer.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-date-container',
-                template: "\n        <ng-content></ng-content>\n        <!--\n          Isn't this button supposed to be aria-hidden=\"true\"? \n          I thought we decided screenreaders just typed the date in.\n        -->\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    ",
+                template: "\n    <ng-template #oldLayout>\n        <ng-content></ng-content>\n        <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    </ng-template>\n    \n    <ng-template #newLayout>\n      <ng-content select=\"label\"></ng-content>\n      <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n        <div class=\"clr-input-wrapper\">\n          <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n            <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n            <button type=\"button\" class=\"datepicker-trigger\" (click)=\"toggleDatepicker($event)\" *ngIf=\"isEnabled\" [attr.title]=\"commonStrings.open\">\n              <clr-icon shape=\"calendar\" class=\"clr-input-group-icon-action\"></clr-icon>\n            </button>\n            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n          </div>\n          <clr-icon class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </ng-template>\n    \n    <ng-template #clrDate>\n      <ng-content select=\"[clrDate]\"></ng-content>\n    </ng-template>\n    \n    <ng-container *ngIf=\"newFormsLayout; then newLayout else oldLayout\"></ng-container>\n    ",
                 providers: [
                     ControlIdService,
                     IfOpenService,
                     LocaleHelperService,
+                    IfErrorService,
+                    ControlClassService,
+                    FocusService,
+                    NgControlService,
                     DateIOService,
                     DateNavigationService,
                     DatepickerEnabledService,
                     DateFormControlService,
                 ],
-                host: { '[class.date-container]': 'true' },
+                host: {
+                    '[class.date-container]': '!newFormsLayout',
+                    '[class.clr-form-control]': 'newFormsLayout',
+                },
             },] },
 ];
 ClrDateContainer.ctorParameters = function () { return [
@@ -2464,12 +2558,17 @@ ClrDateContainer.ctorParameters = function () { return [
     { type: DateNavigationService },
     { type: DatepickerEnabledService },
     { type: DateFormControlService },
-    { type: ClrCommonStrings }
+    { type: ClrCommonStrings },
+    { type: IfErrorService },
+    { type: FocusService },
+    { type: ControlClassService },
+    { type: LayoutService, decorators: [{ type: core.Optional }] },
+    { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [IS_NEW_FORMS_LAYOUT,] }] }
 ]; };
 var ClrDateInput = /** @class */ (function (_super) {
     __extends(ClrDateInput, _super);
-    function ClrDateInput(container, vcr, elRef, renderer, _ngControl, _dateIOService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, platformId) {
-        var _this = _super.call(this, ClrDateContainer, vcr) || this;
+    function ClrDateInput(container, vcr, elRef, renderer, _ngControl, _dateIOService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, platformId, ngControlService, controlClassService, focusService, ifErrorService, control, newFormsLayout) {
+        var _this = _super.call(this, ClrDateContainer, vcr, 4) || this;
         _this.container = container;
         _this.elRef = elRef;
         _this.renderer = renderer;
@@ -2479,10 +2578,18 @@ var ClrDateInput = /** @class */ (function (_super) {
         _this._datepickerEnabledService = _datepickerEnabledService;
         _this.dateFormControlService = dateFormControlService;
         _this.platformId = platformId;
+        _this.ngControlService = ngControlService;
+        _this.focusService = focusService;
+        _this.ifErrorService = ifErrorService;
+        _this.control = control;
+        _this.newFormsLayout = newFormsLayout;
         _this._subscriptions = [];
         _this.previousOutputInitializedFlag = false;
         _this.initialLoad = true;
         _this._dateUpdated = new core.EventEmitter(false);
+        if (controlClassService) {
+            controlClassService.className = _this.elRef.nativeElement.className;
+        }
         return _this;
     }
     ClrDateInput.prototype.initializePreviousOutput = function (dayModel) {
@@ -2493,11 +2600,17 @@ var ClrDateInput = /** @class */ (function (_super) {
     };
     ClrDateInput.prototype.ngOnInit = function () {
         _super.prototype.ngOnInit.call(this);
+        if (this.ngControlService && this.control) {
+            this.ngControlService.setControl(this.control);
+        }
         if (!this.container) {
             this.populateContainerServices();
         }
         this.initializeSubscriptions();
         this.processInitialInputs();
+        if (this.clrNewLayout !== undefined) {
+            this.newFormsLayout = !!this.clrNewLayout;
+        }
     };
     ClrDateInput.prototype.processInitialInputs = function () {
         this.processUserDateObject(this.dateValueOnInitialLoad);
@@ -2583,6 +2696,19 @@ var ClrDateInput = /** @class */ (function (_super) {
             this.previousOutput = null;
         }
     };
+    ClrDateInput.prototype.setFocusStates = function () {
+        if (this.focusService) {
+            this.focusService.focused = true;
+        }
+    };
+    ClrDateInput.prototype.setBlurStates = function () {
+        if (this.ifErrorService) {
+            this.ifErrorService.triggerStatusChange();
+        }
+        if (this.focusService) {
+            this.focusService.focused = false;
+        }
+    };
     ClrDateInput.prototype.onValueChange = function (target) {
         var value = target.value;
         var date = this._dateIOService.isValidInput(value);
@@ -2637,7 +2763,13 @@ var ClrDateInput = /** @class */ (function (_super) {
     return ClrDateInput;
 }(WrappedFormControl));
 ClrDateInput.decorators = [
-    { type: core.Directive, args: [{ selector: '[clrDate]', host: { '[class.date-input]': 'true' } },] },
+    { type: core.Directive, args: [{
+                selector: '[clrDate]',
+                host: {
+                    '[class.date-input]': '!newFormsLayout',
+                    '[class.clr-input]': 'newFormsLayout',
+                },
+            },] },
 ];
 ClrDateInput.ctorParameters = function () { return [
     { type: ClrDateContainer, decorators: [{ type: core.Optional }] },
@@ -2649,14 +2781,23 @@ ClrDateInput.ctorParameters = function () { return [
     { type: DateNavigationService, decorators: [{ type: core.Optional }] },
     { type: DatepickerEnabledService, decorators: [{ type: core.Optional }] },
     { type: DateFormControlService, decorators: [{ type: core.Optional }] },
-    { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
+    { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+    { type: NgControlService, decorators: [{ type: core.Optional }] },
+    { type: ControlClassService, decorators: [{ type: core.Optional }] },
+    { type: FocusService, decorators: [{ type: core.Optional }] },
+    { type: IfErrorService, decorators: [{ type: core.Optional }] },
+    { type: forms.NgControl, decorators: [{ type: core.Optional }] },
+    { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [IS_NEW_FORMS_LAYOUT,] }] }
 ]; };
 ClrDateInput.propDecorators = {
+    clrNewLayout: [{ type: core.Input }],
     date: [{ type: core.Input, args: ['clrDate',] }],
     placeholder: [{ type: core.Input }],
     placeholderText: [{ type: core.HostBinding, args: ['attr.placeholder',] }],
     inputType: [{ type: core.HostBinding, args: ['attr.type',] }],
     _dateUpdated: [{ type: core.Output, args: ['clrDateChange',] }],
+    setFocusStates: [{ type: core.HostListener, args: ['focus',] }],
+    setBlurStates: [{ type: core.HostListener, args: ['blur',] }],
     onValueChange: [{ type: core.HostListener, args: ['change', ['$event.target'],] }]
 };
 var AbstractPopover = /** @class */ (function () {
@@ -3184,39 +3325,6 @@ ClrDatepickerModule.decorators = [
                 entryComponents: [ClrDateContainer],
             },] },
 ];
-var ControlClassService = /** @class */ (function () {
-    function ControlClassService() {
-        this.className = '';
-    }
-    ControlClassService.prototype.controlClass = function (invalid, grid, additional) {
-        if (invalid === void 0) { invalid = false; }
-        if (grid === void 0) { grid = false; }
-        if (additional === void 0) { additional = ''; }
-        var controlClasses = [this.className, additional];
-        if (invalid) {
-            controlClasses.push('clr-error');
-        }
-        if (grid && this.className.indexOf('clr-col') === -1) {
-            controlClasses.push('clr-col-md-10 clr-col-xs-12');
-        }
-        return controlClasses.join(' ').trim();
-    };
-    ControlClassService.prototype.initControlClass = function (renderer, element) {
-        if (element && element.className) {
-            this.className = element.className;
-            var klasses = element.className.split(' ');
-            klasses.forEach(function (klass) {
-                if (klass.startsWith('clr-col')) {
-                    renderer.removeClass(element, klass);
-                }
-            });
-        }
-    };
-    return ControlClassService;
-}());
-ControlClassService.decorators = [
-    { type: core.Injectable },
-];
 var ClrInputContainer = /** @class */ (function () {
     function ClrInputContainer(ifErrorService, layoutService, controlClassService) {
         var _this = this;
@@ -3320,29 +3428,6 @@ ClrInputModule.decorators = [
                 exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer],
                 entryComponents: [ClrInputContainer],
             },] },
-];
-var FocusService = /** @class */ (function () {
-    function FocusService() {
-        this._focused = new rxjs.BehaviorSubject(false);
-    }
-    Object.defineProperty(FocusService.prototype, "focusChange", {
-        get: function () {
-            return this._focused.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FocusService.prototype, "focused", {
-        set: function (state$$1) {
-            this._focused.next(state$$1);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return FocusService;
-}());
-FocusService.decorators = [
-    { type: core.Injectable },
 ];
 var ToggleService = new core.InjectionToken(undefined);
 function ToggleServiceProvider() {
@@ -7905,7 +7990,10 @@ var ClrFormsModule = /** @class */ (function () {
     return ClrFormsModule;
 }());
 ClrFormsModule.decorators = [
-    { type: core.NgModule, args: [{ imports: [common.CommonModule], exports: [ClrCheckboxModule, ClrDatepickerModule] },] },
+    { type: core.NgModule, args: [{
+                imports: [common.CommonModule],
+                exports: [ClrCheckboxModule, ClrDatepickerModule],
+            },] },
 ];
 var NB_INSTANCES = 0;
 var UNIQUE_ID = new core.InjectionToken('UNIQUE_ID');
@@ -13151,72 +13239,74 @@ exports.ClrWizardPageButtons = ClrWizardPageButtons;
 exports.ClrWizardPageHeaderActions = ClrWizardPageHeaderActions;
 exports.CLR_WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
 exports.ClrWizardModule = ClrWizardModule;
-exports.ɵdf = ButtonInGroupService;
-exports.ɵcv = DatagridRowExpandAnimation;
-exports.ɵcs = ActionableOompaLoompa;
-exports.ɵcq = DatagridWillyWonka;
-exports.ɵcu = ExpandableOompaLoompa;
-exports.ɵcd = ClrDatagridColumnToggleButton;
-exports.ɵcc = ClrDatagridColumnToggleTitle;
-exports.ɵcf = DatagridDetailRegisterer;
-exports.ɵce = ClrDatagridItemsTrackBy;
-exports.ɵbx = ColumnToggleButtonsService;
-exports.ɵca = CustomFilter;
-exports.ɵbz = DragDispatcher;
-exports.ɵbo = FiltersProvider;
-exports.ɵbu = ExpandableRowsCount;
-exports.ɵbv = HideableColumnService;
-exports.ɵbn = Items;
-exports.ɵbp = Page;
-exports.ɵbt = RowActionService;
-exports.ɵbm = Selection;
-exports.ɵbr = Sort;
-exports.ɵbq = StateDebouncer;
-exports.ɵbw = StateProvider;
-exports.ɵcn = DatagridBodyRenderer;
-exports.ɵcp = DatagridCellRenderer;
-exports.ɵck = DatagridColumnResizer;
-exports.ɵcm = DatagridHeadRenderer;
-exports.ɵcj = DatagridHeaderRenderer;
-exports.ɵch = DatagridMainRenderer;
-exports.ɵcg = domAdapterFactory;
-exports.ɵbs = DatagridRenderOrganizer;
-exports.ɵco = DatagridRowRenderer;
-exports.ɵcl = DatagridTableRenderer;
-exports.ɵby = DatagridFilterRegistrar;
-exports.ɵcx = StackControl;
-exports.ɵcy = AbstractTreeSelection;
-exports.ɵda = clrTreeSelectionProviderFactory;
-exports.ɵcz = TreeSelectionService;
+exports.ɵdh = ButtonInGroupService;
+exports.ɵcx = DatagridRowExpandAnimation;
+exports.ɵcu = ActionableOompaLoompa;
+exports.ɵcs = DatagridWillyWonka;
+exports.ɵcw = ExpandableOompaLoompa;
+exports.ɵcf = ClrDatagridColumnToggleButton;
+exports.ɵce = ClrDatagridColumnToggleTitle;
+exports.ɵch = DatagridDetailRegisterer;
+exports.ɵcg = ClrDatagridItemsTrackBy;
+exports.ɵbz = ColumnToggleButtonsService;
+exports.ɵcc = CustomFilter;
+exports.ɵcb = DragDispatcher;
+exports.ɵbq = FiltersProvider;
+exports.ɵbw = ExpandableRowsCount;
+exports.ɵbx = HideableColumnService;
+exports.ɵbp = Items;
+exports.ɵbr = Page;
+exports.ɵbv = RowActionService;
+exports.ɵbo = Selection;
+exports.ɵbt = Sort;
+exports.ɵbs = StateDebouncer;
+exports.ɵby = StateProvider;
+exports.ɵcp = DatagridBodyRenderer;
+exports.ɵcr = DatagridCellRenderer;
+exports.ɵcm = DatagridColumnResizer;
+exports.ɵco = DatagridHeadRenderer;
+exports.ɵcl = DatagridHeaderRenderer;
+exports.ɵcj = DatagridMainRenderer;
+exports.ɵci = domAdapterFactory;
+exports.ɵbu = DatagridRenderOrganizer;
+exports.ɵcq = DatagridRowRenderer;
+exports.ɵcn = DatagridTableRenderer;
+exports.ɵca = DatagridFilterRegistrar;
+exports.ɵcz = StackControl;
+exports.ɵda = AbstractTreeSelection;
+exports.ɵdc = clrTreeSelectionProviderFactory;
+exports.ɵdb = TreeSelectionService;
 exports.ɵo = AlertIconAndTypesService;
 exports.ɵp = MultiAlertService;
 exports.ɵs = IfErrorService;
-exports.ɵbh = ControlClassService;
+exports.ɵbf = ControlClassService;
 exports.ɵq = ControlIdService;
-exports.ɵbi = FocusService;
+exports.ɵbg = FocusService;
 exports.ɵr = LayoutService;
+exports.ɵu = IS_NEW_FORMS_LAYOUT;
+exports.ɵv = IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER;
 exports.ɵt = NgControlService;
-exports.ɵw = WrappedFormControl;
-exports.ɵbb = DateFormControlService;
-exports.ɵbd = DateIOService;
-exports.ɵba = DateNavigationService;
-exports.ɵbe = DatepickerEnabledService;
-exports.ɵbg = DatepickerFocusService;
-exports.ɵbc = LocaleHelperService;
-exports.ɵbf = ViewManagerService;
-exports.ɵdh = ResponsiveNavigationProvider;
-exports.ɵdg = ResponsiveNavigationService;
-exports.ɵdr = ActiveOompaLoompa;
-exports.ɵdq = TabsWillyWonka;
-exports.ɵdl = AriaService;
-exports.ɵdp = TabsService;
-exports.ɵdm = TABS_ID;
-exports.ɵdo = TABS_ID_PROVIDER;
-exports.ɵdn = tokenFactory$1;
-exports.ɵdu = VerticalNavGroupRegistrationService;
-exports.ɵdv = VerticalNavGroupService;
-exports.ɵdt = VerticalNavIconService;
-exports.ɵds = VerticalNavService;
+exports.ɵy = WrappedFormControl;
+exports.ɵbd = DateFormControlService;
+exports.ɵbh = DateIOService;
+exports.ɵbc = DateNavigationService;
+exports.ɵbi = DatepickerEnabledService;
+exports.ɵbk = DatepickerFocusService;
+exports.ɵbe = LocaleHelperService;
+exports.ɵbj = ViewManagerService;
+exports.ɵdj = ResponsiveNavigationProvider;
+exports.ɵdi = ResponsiveNavigationService;
+exports.ɵdt = ActiveOompaLoompa;
+exports.ɵds = TabsWillyWonka;
+exports.ɵdn = AriaService;
+exports.ɵdr = TabsService;
+exports.ɵdo = TABS_ID;
+exports.ɵdq = TABS_ID_PROVIDER;
+exports.ɵdp = tokenFactory$1;
+exports.ɵdw = VerticalNavGroupRegistrationService;
+exports.ɵdx = VerticalNavGroupService;
+exports.ɵdv = VerticalNavIconService;
+exports.ɵdu = VerticalNavService;
 exports.ɵi = AbstractPopover;
 exports.ɵb = POPOVER_DIRECTIVES;
 exports.ɵh = POPOVER_HOST_ANCHOR;
@@ -13225,41 +13315,41 @@ exports.ɵa = ClrCommonPopoverModule;
 exports.ɵg = ROOT_DROPDOWN_PROVIDER;
 exports.ɵe = RootDropdownService;
 exports.ɵf = clrRootDropdownFactory;
-exports.ɵct = OompaLoompa;
-exports.ɵcr = WillyWonka;
+exports.ɵcv = OompaLoompa;
+exports.ɵct = WillyWonka;
 exports.ɵj = ClrConditionalModule;
 exports.ɵk = IF_ACTIVE_ID;
 exports.ɵm = IF_ACTIVE_ID_PROVIDER;
 exports.ɵn = IfActiveService;
 exports.ɵl = tokenFactory;
 exports.ɵd = IfOpenService;
-exports.ɵci = DomAdapter;
-exports.ɵeb = DragAndDropEventBusService;
-exports.ɵea = DragEventListenerService;
-exports.ɵec = DragHandleRegistrarService;
-exports.ɵed = DraggableSnapshotService;
-exports.ɵee = GlobalDragModeService;
-exports.ɵcw = ClrIfExpandModule;
-exports.ɵcb = Expand;
-exports.ɵz = FocusTrapDirective;
-exports.ɵx = ClrFocusTrapModule;
-exports.ɵy = FOCUS_TRAP_DIRECTIVES;
-exports.ɵv = EmptyAnchor;
-exports.ɵu = ClrHostWrappingModule;
-exports.ɵdb = UNIQUE_ID;
-exports.ɵdd = UNIQUE_ID_PROVIDER;
-exports.ɵdc = uniqueIdFactory;
-exports.ɵbk = OUSTIDE_CLICK_DIRECTIVES;
-exports.ɵbl = OutsideClick;
-exports.ɵbj = ClrOutsideClickModule;
-exports.ɵde = ScrollingService;
-exports.ɵdj = TEMPLATE_REF_DIRECTIVES;
-exports.ɵdk = TemplateRefContainer;
-exports.ɵdi = ClrTemplateRefModule;
-exports.ɵdy = ButtonHubService;
-exports.ɵdz = HeaderActionService;
-exports.ɵdx = PageCollectionService;
-exports.ɵdw = WizardNavigationService;
+exports.ɵck = DomAdapter;
+exports.ɵed = DragAndDropEventBusService;
+exports.ɵec = DragEventListenerService;
+exports.ɵee = DragHandleRegistrarService;
+exports.ɵef = DraggableSnapshotService;
+exports.ɵeg = GlobalDragModeService;
+exports.ɵcy = ClrIfExpandModule;
+exports.ɵcd = Expand;
+exports.ɵbb = FocusTrapDirective;
+exports.ɵz = ClrFocusTrapModule;
+exports.ɵba = FOCUS_TRAP_DIRECTIVES;
+exports.ɵx = EmptyAnchor;
+exports.ɵw = ClrHostWrappingModule;
+exports.ɵdd = UNIQUE_ID;
+exports.ɵdf = UNIQUE_ID_PROVIDER;
+exports.ɵde = uniqueIdFactory;
+exports.ɵbm = OUSTIDE_CLICK_DIRECTIVES;
+exports.ɵbn = OutsideClick;
+exports.ɵbl = ClrOutsideClickModule;
+exports.ɵdg = ScrollingService;
+exports.ɵdl = TEMPLATE_REF_DIRECTIVES;
+exports.ɵdm = TemplateRefContainer;
+exports.ɵdk = ClrTemplateRefModule;
+exports.ɵea = ButtonHubService;
+exports.ɵeb = HeaderActionService;
+exports.ɵdz = PageCollectionService;
+exports.ɵdy = WizardNavigationService;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
