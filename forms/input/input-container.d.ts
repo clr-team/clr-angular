@@ -4,8 +4,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { NgControl } from '@angular/forms';
 import { IfErrorService } from '../common/if-error/if-error.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
@@ -14,11 +15,13 @@ export declare class ClrInputContainer implements DynamicWrapper, OnDestroy {
     private ifErrorService;
     private layoutService;
     private controlClassService;
-    subscriptions: Subscription[];
+    private ngControlService;
+    private subscriptions;
     invalid: boolean;
     _dynamic: boolean;
     label: ClrLabel;
-    constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService);
+    control: NgControl;
+    constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     controlClass(): string;
     addGrid(): boolean;
     ngOnDestroy(): void;

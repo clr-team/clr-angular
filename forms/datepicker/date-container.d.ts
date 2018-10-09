@@ -1,10 +1,12 @@
 import { OnDestroy } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
@@ -26,11 +28,13 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     private controlClassService;
     private layoutService;
     newFormsLayout: boolean;
+    private ngControlService;
     _dynamic: boolean;
     invalid: boolean;
     focus: boolean;
+    control: NgControl;
     private subscriptions;
-    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings, ifErrorService: IfErrorService, focusService: FocusService, controlClassService: ControlClassService, layoutService: LayoutService, newFormsLayout: boolean);
+    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings, ifErrorService: IfErrorService, focusService: FocusService, controlClassService: ControlClassService, layoutService: LayoutService, newFormsLayout: boolean, ngControlService: NgControlService);
     ngOnInit(): void;
     /**
      * Returns the classes to apply to the control

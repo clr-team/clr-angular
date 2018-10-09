@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { OnDestroy } from '@angular/core';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { SelectMultipleControlValueAccessor, NgControl } from '@angular/forms';
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { LayoutService } from '../common/providers/layout.service';
@@ -15,12 +15,14 @@ export declare class ClrSelectContainer implements DynamicWrapper, OnDestroy {
     private ifErrorService;
     private layoutService;
     private controlClassService;
+    private ngControlService;
     private subscriptions;
     invalid: boolean;
     _dynamic: boolean;
     label: ClrLabel;
     multiple: SelectMultipleControlValueAccessor;
-    multi: boolean;
+    private multi;
+    control: NgControl;
     constructor(ifErrorService: IfErrorService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     controlClass(): string;

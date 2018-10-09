@@ -3907,8 +3907,9 @@ class ClrDateContainer {
      * @param {?} controlClassService
      * @param {?} layoutService
      * @param {?} newFormsLayout
+     * @param {?} ngControlService
      */
-    constructor(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout) {
+    constructor(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout, ngControlService) {
         this._ifOpenService = _ifOpenService;
         this._dateNavigationService = _dateNavigationService;
         this._datepickerEnabledService = _datepickerEnabledService;
@@ -3919,6 +3920,7 @@ class ClrDateContainer {
         this.controlClassService = controlClassService;
         this.layoutService = layoutService;
         this.newFormsLayout = newFormsLayout;
+        this.ngControlService = ngControlService;
         this._dynamic = false;
         this.invalid = false;
         this.focus = false;
@@ -3930,6 +3932,9 @@ class ClrDateContainer {
         }));
         this.subscriptions.push(this.focusService.focusChange.subscribe(state$$1 => {
             this.focus = state$$1;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
         }));
     }
     /**
@@ -4011,7 +4016,7 @@ ClrDateContainer.decorators = [
         <div class="clr-input-wrapper">
           <div class="clr-input-group" [class.clr-focus]="focus">
             <ng-container *ngTemplateOutlet="clrDate"></ng-container>
-            <button type="button" class="datepicker-trigger" (click)="toggleDatepicker($event)" *ngIf="isEnabled" [attr.title]="commonStrings.open">
+            <button type="button" class="datepicker-trigger" (click)="toggleDatepicker($event)" *ngIf="isEnabled" [attr.title]="commonStrings.open" [disabled]="control?.disabled">
               <clr-icon shape="calendar" class="clr-input-group-icon-action"></clr-icon>
             </button>
             <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>
@@ -4044,6 +4049,7 @@ ClrDateContainer.decorators = [
                 ],
                 host: {
                     '[class.date-container]': '!newFormsLayout',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-form-control]': 'newFormsLayout',
                 },
             },] },
@@ -4059,7 +4065,8 @@ ClrDateContainer.ctorParameters = () => [
     { type: FocusService },
     { type: ControlClassService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [IS_NEW_FORMS_LAYOUT,] }] }
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [IS_NEW_FORMS_LAYOUT,] }] },
+    { type: NgControlService }
 ];
 
 /**
@@ -5314,16 +5321,21 @@ class ClrInputContainer {
      * @param {?} ifErrorService
      * @param {?} layoutService
      * @param {?} controlClassService
+     * @param {?} ngControlService
      */
-    constructor(ifErrorService, layoutService, controlClassService) {
+    constructor(ifErrorService, layoutService, controlClassService, ngControlService) {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
             this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
         }));
     }
     /**
@@ -5367,6 +5379,7 @@ ClrInputContainer.decorators = [
     `,
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -5376,7 +5389,8 @@ ClrInputContainer.decorators = [
 ClrInputContainer.ctorParameters = () => [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ];
 ClrInputContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }]
@@ -5491,14 +5505,16 @@ class ClrPasswordContainer {
      * @param {?} layoutService
      * @param {?} controlClassService
      * @param {?} focusService
+     * @param {?} ngControlService
      * @param {?} toggleService
      * @param {?} commonStrings
      */
-    constructor(ifErrorService, layoutService, controlClassService, focusService, toggleService, commonStrings) {
+    constructor(ifErrorService, layoutService, controlClassService, focusService, ngControlService, toggleService, commonStrings) {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.focusService = focusService;
+        this.ngControlService = ngControlService;
         this.toggleService = toggleService;
         this.commonStrings = commonStrings;
         this.subscriptions = [];
@@ -5512,6 +5528,9 @@ class ClrPasswordContainer {
         }));
         this.subscriptions.push(this.focusService.focusChange.subscribe(state$$1 => {
             this.focus = state$$1;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
         }));
     }
     /**
@@ -5590,6 +5609,7 @@ ClrPasswordContainer.decorators = [
     `,
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [
@@ -5608,6 +5628,7 @@ ClrPasswordContainer.ctorParameters = () => [
     { type: LayoutService, decorators: [{ type: Optional }] },
     { type: ControlClassService },
     { type: FocusService },
+    { type: NgControlService },
     { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] },
     { type: ClrCommonStrings }
 ];
@@ -5856,16 +5877,21 @@ class ClrRadioContainer {
      * @param {?} ifErrorService
      * @param {?} layoutService
      * @param {?} controlClassService
+     * @param {?} ngControlService
      */
-    constructor(ifErrorService, layoutService, controlClassService) {
+    constructor(ifErrorService, layoutService, controlClassService, ngControlService) {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this.inline = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
             this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
         }));
     }
     /**
@@ -5925,6 +5951,7 @@ ClrRadioContainer.decorators = [
     `,
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [NgControlService, ControlClassService, IfErrorService],
@@ -5934,7 +5961,8 @@ ClrRadioContainer.decorators = [
 ClrRadioContainer.ctorParameters = () => [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ];
 ClrRadioContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }],
@@ -5981,6 +6009,7 @@ class ClrSelectContainer {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
@@ -5988,8 +6017,9 @@ class ClrSelectContainer {
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
             this.invalid = control.invalid;
         }));
-        this.subscriptions.push(ngControlService.controlChanges.subscribe(control => {
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
             this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
+            this.control = control;
         }));
     }
     /**
@@ -6039,6 +6069,7 @@ ClrSelectContainer.decorators = [
     `,
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -6156,16 +6187,21 @@ class ClrTextareaContainer {
      * @param {?} ifErrorService
      * @param {?} layoutService
      * @param {?} controlClassService
+     * @param {?} ngControlService
      */
-    constructor(ifErrorService, layoutService, controlClassService) {
+    constructor(ifErrorService, layoutService, controlClassService, ngControlService) {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(control => {
             this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(control => {
+            this.control = control;
         }));
     }
     /**
@@ -6209,6 +6245,7 @@ ClrTextareaContainer.decorators = [
     `,
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -6218,7 +6255,8 @@ ClrTextareaContainer.decorators = [
 ClrTextareaContainer.ctorParameters = () => [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ];
 ClrTextareaContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }]

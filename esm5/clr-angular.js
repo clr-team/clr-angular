@@ -2412,7 +2412,7 @@ DatepickerEnabledService.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ]; };
 var ClrDateContainer = /** @class */ (function () {
-    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout) {
+    function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout, ngControlService) {
         var _this = this;
         this._ifOpenService = _ifOpenService;
         this._dateNavigationService = _dateNavigationService;
@@ -2424,6 +2424,7 @@ var ClrDateContainer = /** @class */ (function () {
         this.controlClassService = controlClassService;
         this.layoutService = layoutService;
         this.newFormsLayout = newFormsLayout;
+        this.ngControlService = ngControlService;
         this._dynamic = false;
         this.invalid = false;
         this.focus = false;
@@ -2435,6 +2436,9 @@ var ClrDateContainer = /** @class */ (function () {
         }));
         this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
             _this.focus = state$$1;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
         }));
     }
     ClrDateContainer.prototype.ngOnInit = function () {
@@ -2474,7 +2478,7 @@ var ClrDateContainer = /** @class */ (function () {
 ClrDateContainer.decorators = [
     { type: Component, args: [{
                 selector: 'clr-date-container',
-                template: "\n    <ng-template #oldLayout>\n        <ng-content></ng-content>\n        <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    </ng-template>\n    \n    <ng-template #newLayout>\n      <ng-content select=\"label\"></ng-content>\n      <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n        <div class=\"clr-input-wrapper\">\n          <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n            <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n            <button type=\"button\" class=\"datepicker-trigger\" (click)=\"toggleDatepicker($event)\" *ngIf=\"isEnabled\" [attr.title]=\"commonStrings.open\">\n              <clr-icon shape=\"calendar\" class=\"clr-input-group-icon-action\"></clr-icon>\n            </button>\n            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n          </div>\n          <clr-icon class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </ng-template>\n    \n    <ng-template #clrDate>\n      <ng-content select=\"[clrDate]\"></ng-content>\n    </ng-template>\n    \n    <ng-container *ngIf=\"newFormsLayout; then newLayout else oldLayout\"></ng-container>\n    ",
+                template: "\n    <ng-template #oldLayout>\n        <ng-content></ng-content>\n        <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    </ng-template>\n    \n    <ng-template #newLayout>\n      <ng-content select=\"label\"></ng-content>\n      <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n        <div class=\"clr-input-wrapper\">\n          <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n            <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n            <button type=\"button\" class=\"datepicker-trigger\" (click)=\"toggleDatepicker($event)\" *ngIf=\"isEnabled\" [attr.title]=\"commonStrings.open\" [disabled]=\"control?.disabled\">\n              <clr-icon shape=\"calendar\" class=\"clr-input-group-icon-action\"></clr-icon>\n            </button>\n            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n          </div>\n          <clr-icon class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </ng-template>\n    \n    <ng-template #clrDate>\n      <ng-content select=\"[clrDate]\"></ng-content>\n    </ng-template>\n    \n    <ng-container *ngIf=\"newFormsLayout; then newLayout else oldLayout\"></ng-container>\n    ",
                 providers: [
                     ControlIdService,
                     IfOpenService,
@@ -2490,6 +2494,7 @@ ClrDateContainer.decorators = [
                 ],
                 host: {
                     '[class.date-container]': '!newFormsLayout',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-form-control]': 'newFormsLayout',
                 },
             },] },
@@ -2504,7 +2509,8 @@ ClrDateContainer.ctorParameters = function () { return [
     { type: FocusService },
     { type: ControlClassService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [IS_NEW_FORMS_LAYOUT,] }] }
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [IS_NEW_FORMS_LAYOUT,] }] },
+    { type: NgControlService }
 ]; };
 var ClrDateInput = /** @class */ (function (_super) {
     __extends(ClrDateInput, _super);
@@ -3267,16 +3273,20 @@ ClrDatepickerModule.decorators = [
             },] },
 ];
 var ClrInputContainer = /** @class */ (function () {
-    function ClrInputContainer(ifErrorService, layoutService, controlClassService) {
+    function ClrInputContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
         var _this = this;
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
         }));
     }
     ClrInputContainer.prototype.controlClass = function () {
@@ -3301,6 +3311,7 @@ ClrInputContainer.decorators = [
                 template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-input-wrapper\">\n                <ng-content select=\"[clrInput]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -3309,7 +3320,8 @@ ClrInputContainer.decorators = [
 ClrInputContainer.ctorParameters = function () { return [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ]; };
 ClrInputContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }]
@@ -3375,12 +3387,13 @@ function ToggleServiceProvider() {
     return new BehaviorSubject(false);
 }
 var ClrPasswordContainer = /** @class */ (function () {
-    function ClrPasswordContainer(ifErrorService, layoutService, controlClassService, focusService, toggleService, commonStrings) {
+    function ClrPasswordContainer(ifErrorService, layoutService, controlClassService, focusService, ngControlService, toggleService, commonStrings) {
         var _this = this;
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
         this.focusService = focusService;
+        this.ngControlService = ngControlService;
         this.toggleService = toggleService;
         this.commonStrings = commonStrings;
         this.subscriptions = [];
@@ -3394,6 +3407,9 @@ var ClrPasswordContainer = /** @class */ (function () {
         }));
         this.subscriptions.push(this.focusService.focusChange.subscribe(function (state$$1) {
             _this.focus = state$$1;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
         }));
     }
     Object.defineProperty(ClrPasswordContainer.prototype, "clrToggle", {
@@ -3435,6 +3451,7 @@ ClrPasswordContainer.decorators = [
                 template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n      <div class=\"clr-input-wrapper\">\n        <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n          <ng-content select=\"[clrPassword]\"></ng-content>\n          <clr-icon *ngIf=\"!show && clrToggle\"\n            shape=\"eye\" \n            class=\"clr-input-group-icon-action\"\n            [attr.title]=\"commonStrings.show\"\n            (click)=\"toggle()\"></clr-icon>\n          <clr-icon *ngIf=\"show && clrToggle\" \n            shape=\"eye-hide\"\n            class=\"clr-input-group-icon-action\"\n            [attr.title]=\"commonStrings.hide\"\n            (click)=\"toggle()\"></clr-icon>\n        </div>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n      </div>\n      <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n      <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n    </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [
@@ -3452,6 +3469,7 @@ ClrPasswordContainer.ctorParameters = function () { return [
     { type: LayoutService, decorators: [{ type: Optional }] },
     { type: ControlClassService },
     { type: FocusService },
+    { type: NgControlService },
     { type: BehaviorSubject, decorators: [{ type: Inject, args: [ToggleService,] }] },
     { type: ClrCommonStrings }
 ]; };
@@ -3605,16 +3623,20 @@ ClrRadio.propDecorators = {
     onBlur: [{ type: HostListener, args: ['blur',] }]
 };
 var ClrRadioContainer = /** @class */ (function () {
-    function ClrRadioContainer(ifErrorService, layoutService, controlClassService) {
+    function ClrRadioContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
         var _this = this;
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this.inline = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
         }));
     }
     Object.defineProperty(ClrRadioContainer.prototype, "clrInline", {
@@ -3652,6 +3674,7 @@ ClrRadioContainer.decorators = [
                 template: "\n    <ng-content select=\"label\"></ng-content>\n    <label *ngIf=\"!label && addGrid()\"></label>\n    <div class=\"clr-control-container\" [class.clr-control-inline]=\"clrInline\" [ngClass]=\"controlClass()\">\n      <ng-content select=\"clr-radio-wrapper\"></ng-content>\n      <div class=\"clr-subtext-wrapper\">\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [NgControlService, ControlClassService, IfErrorService],
@@ -3660,7 +3683,8 @@ ClrRadioContainer.decorators = [
 ClrRadioContainer.ctorParameters = function () { return [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ]; };
 ClrRadioContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }],
@@ -3685,6 +3709,7 @@ var ClrSelectContainer = /** @class */ (function () {
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
@@ -3692,8 +3717,9 @@ var ClrSelectContainer = /** @class */ (function () {
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
         }));
-        this.subscriptions.push(ngControlService.controlChanges.subscribe(function (control) {
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
             _this.multi = control.valueAccessor instanceof SelectMultipleControlValueAccessor;
+            _this.control = control;
         }));
     }
     ClrSelectContainer.prototype.wrapperClass = function () {
@@ -3721,6 +3747,7 @@ ClrSelectContainer.decorators = [
                 template: "    \n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div [ngClass]=\"wrapperClass()\">\n                <ng-content select=\"[clrSelect]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -3793,16 +3820,20 @@ ClrSelectModule.decorators = [
             },] },
 ];
 var ClrTextareaContainer = /** @class */ (function () {
-    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService) {
+    function ClrTextareaContainer(ifErrorService, layoutService, controlClassService, ngControlService) {
         var _this = this;
         this.ifErrorService = ifErrorService;
         this.layoutService = layoutService;
         this.controlClassService = controlClassService;
+        this.ngControlService = ngControlService;
         this.subscriptions = [];
         this.invalid = false;
         this._dynamic = false;
         this.subscriptions.push(this.ifErrorService.statusChanges.subscribe(function (control) {
             _this.invalid = control.invalid;
+        }));
+        this.subscriptions.push(this.ngControlService.controlChanges.subscribe(function (control) {
+            _this.control = control;
         }));
     }
     ClrTextareaContainer.prototype.controlClass = function () {
@@ -3827,6 +3858,7 @@ ClrTextareaContainer.decorators = [
                 template: "\n        <ng-content select=\"label\"></ng-content>\n        <label *ngIf=\"!label && addGrid()\"></label>\n        <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n            <div class=\"clr-textarea-wrapper\">\n                <ng-content select=\"[clrTextarea]\"></ng-content>\n                <clr-icon *ngIf=\"invalid\" class=\"clr-validate-icon\" shape=\"exclamation-circle\" aria-hidden=\"true\"></clr-icon>\n            </div>\n            <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n            <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n        </div>\n    ",
                 host: {
                     '[class.clr-form-control]': 'true',
+                    '[class.clr-form-control-disabled]': 'control?.disabled',
                     '[class.clr-row]': 'addGrid()',
                 },
                 providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
@@ -3835,7 +3867,8 @@ ClrTextareaContainer.decorators = [
 ClrTextareaContainer.ctorParameters = function () { return [
     { type: IfErrorService },
     { type: LayoutService, decorators: [{ type: Optional }] },
-    { type: ControlClassService }
+    { type: ControlClassService },
+    { type: NgControlService }
 ]; };
 ClrTextareaContainer.propDecorators = {
     label: [{ type: ContentChild, args: [ClrLabel,] }]
