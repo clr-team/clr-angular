@@ -1591,8 +1591,9 @@ var FocusTrapTracker = /** @class */ (function () {
     return FocusTrapTracker;
 }());
 FocusTrapTracker.decorators = [
-    { type: core.Injectable },
+    { type: core.Injectable, args: [{ providedIn: 'root' },] },
 ];
+FocusTrapTracker.ngInjectableDef = core.defineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
 var FocusTrapDirective = /** @class */ (function () {
     function FocusTrapDirective(el, injector, focusTrapsTracker, renderer, platformId) {
         this.el = el;
@@ -1673,7 +1674,6 @@ var ClrFocusTrapModule = /** @class */ (function () {
 ClrFocusTrapModule.decorators = [
     { type: core.NgModule, args: [{
                 imports: [common.CommonModule],
-                providers: [FocusTrapTracker],
                 declarations: [FOCUS_TRAP_DIRECTIVES],
                 exports: [FOCUS_TRAP_DIRECTIVES],
             },] },
@@ -8636,8 +8636,9 @@ var DragAndDropEventBusService = /** @class */ (function () {
     return DragAndDropEventBusService;
 }());
 DragAndDropEventBusService.decorators = [
-    { type: core.Injectable },
+    { type: core.Injectable, args: [{ providedIn: 'root' },] },
 ];
+DragAndDropEventBusService.ngInjectableDef = core.defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
 var DragEventListenerService = /** @class */ (function () {
     function DragEventListenerService(ngZone, renderer, eventBus) {
         this.ngZone = ngZone;
@@ -9340,7 +9341,6 @@ ClrDragAndDropModule.decorators = [
                 imports: [common.CommonModule],
                 declarations: [CLR_DRAG_AND_DROP_DIRECTIVES],
                 entryComponents: [ClrDraggableGhost],
-                providers: [DragAndDropEventBusService],
                 exports: [CLR_DRAG_AND_DROP_DIRECTIVES],
             },] },
 ];
@@ -10116,9 +10116,10 @@ var ResponsiveNavigationService = /** @class */ (function () {
     return ResponsiveNavigationService;
 }());
 ResponsiveNavigationService.decorators = [
-    { type: core.Injectable },
+    { type: core.Injectable, args: [{ providedIn: 'root' },] },
 ];
 ResponsiveNavigationService.ctorParameters = function () { return []; };
+ResponsiveNavigationService.ngInjectableDef = core.defineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
 var ClrMainContainer = /** @class */ (function () {
     function ClrMainContainer(elRef, responsiveNavService) {
         this.elRef = elRef;
@@ -10347,16 +10348,12 @@ ClrNavLevel.propDecorators = {
     _level: [{ type: core.Input, args: ['clr-nav-level',] }],
     onMouseClick: [{ type: core.HostListener, args: ['click', ['$event.target'],] }]
 };
-function ResponsiveNavigationProvider(existing) {
-    return existing || new ResponsiveNavigationService();
-}
 var CLR_NAVIGATION_DIRECTIVES = [
     ClrHeader,
     ClrNavLevel,
     NavDetectionOompaLoompa,
     MainContainerWillyWonka,
 ];
-var ɵ0$1 = ResponsiveNavigationProvider;
 var ClrNavigationModule = /** @class */ (function () {
     function ClrNavigationModule() {
     }
@@ -10366,13 +10363,6 @@ ClrNavigationModule.decorators = [
     { type: core.NgModule, args: [{
                 imports: [common.CommonModule, ClrIconModule, ClrDropdownModule],
                 declarations: [CLR_NAVIGATION_DIRECTIVES],
-                providers: [
-                    {
-                        provide: ResponsiveNavigationService,
-                        useFactory: ɵ0$1,
-                        deps: [[new core.Optional(), new core.SkipSelf(), ResponsiveNavigationService]],
-                    },
-                ],
                 exports: [CLR_NAVIGATION_DIRECTIVES],
             },] },
 ];
@@ -11410,7 +11400,6 @@ ClrSignpostModule.decorators = [
                 imports: [common.CommonModule, ClrCommonPopoverModule, ClrIconModule],
                 declarations: [CLR_SIGNPOST_DIRECTIVES],
                 exports: [CLR_SIGNPOST_DIRECTIVES, ClrConditionalModule],
-                providers: [],
             },] },
 ];
 var ClrTooltip = /** @class */ (function () {
@@ -13512,19 +13501,18 @@ exports.ɵbi = DatepickerEnabledService;
 exports.ɵbk = DatepickerFocusService;
 exports.ɵbe = LocaleHelperService;
 exports.ɵbj = ViewManagerService;
-exports.ɵdl = ResponsiveNavigationProvider;
 exports.ɵdk = ResponsiveNavigationService;
-exports.ɵdv = ActiveOompaLoompa;
-exports.ɵdu = TabsWillyWonka;
-exports.ɵdp = AriaService;
-exports.ɵdt = TabsService;
-exports.ɵdq = TABS_ID;
-exports.ɵds = TABS_ID_PROVIDER;
-exports.ɵdr = tokenFactory$1;
-exports.ɵdy = VerticalNavGroupRegistrationService;
-exports.ɵdz = VerticalNavGroupService;
-exports.ɵdx = VerticalNavIconService;
-exports.ɵdw = VerticalNavService;
+exports.ɵdu = ActiveOompaLoompa;
+exports.ɵdt = TabsWillyWonka;
+exports.ɵdo = AriaService;
+exports.ɵds = TabsService;
+exports.ɵdp = TABS_ID;
+exports.ɵdr = TABS_ID_PROVIDER;
+exports.ɵdq = tokenFactory$1;
+exports.ɵdx = VerticalNavGroupRegistrationService;
+exports.ɵdy = VerticalNavGroupService;
+exports.ɵdw = VerticalNavIconService;
+exports.ɵdv = VerticalNavService;
 exports.ɵi = AbstractPopover;
 exports.ɵb = POPOVER_DIRECTIVES;
 exports.ɵh = POPOVER_HOST_ANCHOR;
@@ -13542,11 +13530,11 @@ exports.ɵn = IfActiveService;
 exports.ɵl = tokenFactory;
 exports.ɵd = IfOpenService;
 exports.ɵcp = DomAdapter;
-exports.ɵef = DragAndDropEventBusService;
-exports.ɵee = DragEventListenerService;
-exports.ɵeg = DragHandleRegistrarService;
-exports.ɵeh = DraggableSnapshotService;
-exports.ɵei = GlobalDragModeService;
+exports.ɵee = DragAndDropEventBusService;
+exports.ɵed = DragEventListenerService;
+exports.ɵef = DragHandleRegistrarService;
+exports.ɵeg = DraggableSnapshotService;
+exports.ɵeh = GlobalDragModeService;
 exports.ɵda = ClrIfExpandModule;
 exports.ɵcf = Expand;
 exports.ɵbb = FocusTrapDirective;
@@ -13561,13 +13549,13 @@ exports.ɵbm = OUSTIDE_CLICK_DIRECTIVES;
 exports.ɵbn = OutsideClick;
 exports.ɵbl = ClrOutsideClickModule;
 exports.ɵdi = ScrollingService;
-exports.ɵdn = TEMPLATE_REF_DIRECTIVES;
-exports.ɵdo = TemplateRefContainer;
-exports.ɵdm = ClrTemplateRefModule;
-exports.ɵec = ButtonHubService;
-exports.ɵed = HeaderActionService;
-exports.ɵeb = PageCollectionService;
-exports.ɵea = WizardNavigationService;
+exports.ɵdm = TEMPLATE_REF_DIRECTIVES;
+exports.ɵdn = TemplateRefContainer;
+exports.ɵdl = ClrTemplateRefModule;
+exports.ɵeb = ButtonHubService;
+exports.ɵec = HeaderActionService;
+exports.ɵea = PageCollectionService;
+exports.ɵdz = WizardNavigationService;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
