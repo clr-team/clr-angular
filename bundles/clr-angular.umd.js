@@ -3988,12 +3988,12 @@ ClrTextareaModule.decorators = [
                 entryComponents: [ClrTextareaContainer],
             },] },
 ];
-var ClrFormsNextModule = /** @class */ (function () {
-    function ClrFormsNextModule() {
+var ClrFormsModule = /** @class */ (function () {
+    function ClrFormsModule() {
     }
-    return ClrFormsNextModule;
+    return ClrFormsModule;
 }());
-ClrFormsNextModule.decorators = [
+ClrFormsModule.decorators = [
     { type: core.NgModule, args: [{
                 imports: [common.CommonModule],
                 exports: [
@@ -7808,7 +7808,7 @@ ClrDatagridModule.decorators = [
                 imports: [
                     common.CommonModule,
                     ClrIconModule,
-                    ClrFormsNextModule,
+                    ClrFormsModule,
                     forms.FormsModule,
                     ClrCommonPopoverModule,
                     ClrLoadingModule,
@@ -8200,12 +8200,12 @@ var ClrCheckboxModule = /** @class */ (function () {
 ClrCheckboxModule.decorators = [
     { type: core.NgModule, args: [{ imports: [common.CommonModule], declarations: [CLR_CHECKBOX_DIRECTIVES], exports: [CLR_CHECKBOX_DIRECTIVES] },] },
 ];
-var ClrFormsModule = /** @class */ (function () {
-    function ClrFormsModule() {
+var ClrFormsDeprecatedModule = /** @class */ (function () {
+    function ClrFormsDeprecatedModule() {
     }
-    return ClrFormsModule;
+    return ClrFormsDeprecatedModule;
 }());
-ClrFormsModule.decorators = [
+ClrFormsDeprecatedModule.decorators = [
     { type: core.NgModule, args: [{
                 imports: [common.CommonModule],
                 exports: [ClrCheckboxModule, ClrDatepickerModule],
@@ -8544,7 +8544,7 @@ var ClrTreeViewModule = /** @class */ (function () {
 }());
 ClrTreeViewModule.decorators = [
     { type: core.NgModule, args: [{
-                imports: [common.CommonModule, ClrIconModule, forms.FormsModule, ClrFormsModule],
+                imports: [common.CommonModule, ClrIconModule, forms.FormsModule, ClrFormsDeprecatedModule],
                 declarations: [CLR_TREE_VIEW_DIRECTIVES],
                 exports: [CLR_TREE_VIEW_DIRECTIVES, ClrIfExpandModule],
             },] },
@@ -13364,11 +13364,11 @@ exports.ClrSelectModule = ClrSelectModule;
 exports.ClrTextarea = ClrTextarea;
 exports.ClrTextareaContainer = ClrTextareaContainer;
 exports.ClrTextareaModule = ClrTextareaModule;
-exports.ClrFormsNextModule = ClrFormsNextModule;
+exports.ClrFormsModule = ClrFormsModule;
 exports.ClrCheckboxDeprecated = ClrCheckboxDeprecated;
 exports.CLR_CHECKBOX_DIRECTIVES = CLR_CHECKBOX_DIRECTIVES;
 exports.ClrCheckboxModule = ClrCheckboxModule;
-exports.ClrFormsModule = ClrFormsModule;
+exports.ClrFormsDeprecatedModule = ClrFormsDeprecatedModule;
 exports.ClrIconCustomTag = ClrIconCustomTag;
 exports.CLR_ICON_DIRECTIVES = CLR_ICON_DIRECTIVES;
 exports.ClrIconModule = ClrIconModule;

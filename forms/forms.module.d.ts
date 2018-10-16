@@ -1,2 +1,2 @@
-export declare class ClrFormsNextModule {
+export declare class ClrFormsModule {
 }

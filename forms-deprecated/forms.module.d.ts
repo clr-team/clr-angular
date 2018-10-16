@@ -1,2 +1,2 @@
-export declare class ClrFormsModule {
+export declare class ClrFormsDeprecatedModule {
 }
