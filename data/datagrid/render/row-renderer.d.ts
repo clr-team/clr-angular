@@ -4,7 +4,7 @@ import { DatagridRenderOrganizer } from './render-organizer';
 export declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     private organizer;
     constructor(organizer: DatagridRenderOrganizer);
-    private subscription;
+    private subscriptions;
     ngOnDestroy(): void;
     cells: QueryList<DatagridCellRenderer>;
     private setWidths;

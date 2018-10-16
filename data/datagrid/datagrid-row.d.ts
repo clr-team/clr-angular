@@ -1,18 +1,23 @@
-import { AfterContentInit, EventEmitter, QueryList } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
 import { Expand } from '../../utils/expand/providers/expand';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
+import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { HideableColumnService } from './providers/hideable-column.service';
 import { RowActionService } from './providers/row-action-service';
 import { Selection, SelectionType } from './providers/selection';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
-export declare class ClrDatagridRow<T = any> implements AfterContentInit {
+export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     selection: Selection<T>;
     rowActionService: RowActionService;
     globalExpandable: ExpandableRowsCount;
     expand: Expand;
     hideableColumnService: HideableColumnService;
+    private displayMode;
+    private vcr;
+    private renderer;
+    private el;
     commonStrings: ClrCommonStrings;
     id: string;
     radioId: string;
@@ -21,7 +26,8 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit {
      * Model of the row, to use for selection
      */
     item: T;
-    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, hideableColumnService: HideableColumnService, commonStrings: ClrCommonStrings);
+    replaced: any;
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, hideableColumnService: HideableColumnService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
     private _selected;
     /**
      * Indicates if the row is selected
@@ -32,7 +38,6 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit {
     expanded: boolean;
     expandedChange: EventEmitter<boolean>;
     toggleExpand(): void;
-    private subscription;
     /*****
      * property dgCells
      *
@@ -42,6 +47,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit {
      */
     dgCells: QueryList<ClrDatagridCell>;
     ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
     /**********
      *
      * @description
@@ -51,5 +57,13 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit {
      *
      */
     updateCellsForColumns(columnList: DatagridHideableColumnModel[]): void;
+    private subscriptions;
     ngOnDestroy(): void;
+    displayCells: boolean;
+    _stickyCells: ViewContainerRef;
+    _scrollableCells: ViewContainerRef;
+    _calculatedCells: ViewContainerRef;
+    private wrappedInjector;
+    ngOnInit(): void;
+    readonly _view: any;
 }

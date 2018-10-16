@@ -1,5 +1,6 @@
 import { AfterViewInit, ElementRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { DragDispatcher } from '../providers/drag-dispatcher';
+import { TableSizeService } from '../providers/table-size.service';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare class DatagridColumnResizer implements AfterViewInit, OnDestroy {
@@ -7,7 +8,8 @@ export declare class DatagridColumnResizer implements AfterViewInit, OnDestroy {
     private organizer;
     private domAdapter;
     private dragDispatcher;
-    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, dragDispatcher: DragDispatcher);
+    private table;
+    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, dragDispatcher: DragDispatcher, table: TableSizeService);
     columnEl: any;
     columnRectWidth: number;
     columnResizeBy: number;

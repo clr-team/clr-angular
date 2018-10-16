@@ -26,7 +26,6 @@ export declare class DatagridHideableColumnModel {
      *
      * 1. Set values for the private variables that enable a hideable column
      * 2. Broadcast the next hidden change for anyone (already) subscribed to this DatagridHideableColumnModel
-     * TODO: Debug and verify that #2 is really necessary.
      *
      */
     constructor(_template: TemplateRef<any>, _id: string, _hidden?: boolean);
@@ -50,7 +49,6 @@ export declare class DatagridHideableColumnModel {
      *
      * @description
      * A getter that returns the hidden value of a DatagridHideableColumnModel instance.
-     * TODO: debug and make sure you really need this since we have the hiddenCHanges observable.
      *
      */
     /**

@@ -1,6 +1,6 @@
 import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ContentChildren, ElementRef, HostListener, QueryList, Renderer2, HostBinding, InjectionToken, ComponentFactoryResolver, Inject, Injector, PLATFORM_ID, NgZone, LOCALE_ID, Self, ContentChild, ChangeDetectorRef, IterableDiffers, defineInjectable } from '@angular/core';
-import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth } from '@angular/common';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
+import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 import { filter, first, map } from 'rxjs/operators';
 import { NgControl, FormsModule, SelectMultipleControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -1771,6 +1771,9 @@ ClrCommonFormsModule.decorators = [
  */
 // unsupported: template constraints.
 /**
+ * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
+ * still undefined.
+ * TODO - make sure these comment annotations do not break ng-packgr.
  * @template W
  */
 class HostWrapper {
@@ -6382,11 +6385,24 @@ ClrFormsNextModule.decorators = [
 class Expand {
     constructor() {
         this.expandable = 0;
-        this.replace = false;
+        this._replace = new BehaviorSubject(false);
         this._loading = false;
         this._expanded = false;
         this._animate = new Subject();
         this._expandChange = new Subject();
+    }
+    /**
+     * @return {?}
+     */
+    get replace() {
+        return this._replace.asObservable();
+    }
+    /**
+     * @param {?} replaceValue
+     * @return {?}
+     */
+    setReplace(replaceValue) {
+        this._replace.next(replaceValue);
     }
     /**
      * @return {?}
@@ -6723,109 +6739,18 @@ DomAdapter.decorators = [
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class DatagridRenderOrganizer {
-    constructor() {
-        this.alreadySized = false;
-        this.widths = [];
-        this._noLayout = new Subject();
-        this._clearWidths = new Subject();
-        this._detectStrictWidths = new Subject();
-        this._tableMode = new Subject();
-        this._computeWidths = new Subject();
-        this._alignColumns = new Subject();
-        this.scrollbar = new Subject();
-        this.scrollbarWidth = new Subject();
-        this._done = new Subject();
-    }
-    /**
-     * @return {?}
-     */
-    get noLayout() {
-        return this._noLayout.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get clearWidths() {
-        return this._clearWidths.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get detectStrictWidths() {
-        return this._detectStrictWidths.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get tableMode() {
-        return this._tableMode.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get computeWidths() {
-        return this._computeWidths.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get alignColumns() {
-        return this._alignColumns.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    get done() {
-        return this._done.asObservable();
-    }
-    /**
-     * @return {?}
-     */
-    resize() {
-        this.widths.length = 0;
-        this._noLayout.next(true);
-        if (this.alreadySized) {
-            this._clearWidths.next();
-        }
-        this._detectStrictWidths.next();
-        this._tableMode.next(true);
-        this._computeWidths.next();
-        this._tableMode.next(false);
-        this._alignColumns.next();
-        this._noLayout.next(false);
-        this.scrollbar.next();
-        this.alreadySized = true;
-        this._done.next();
-    }
-}
-DatagridRenderOrganizer.decorators = [
-    { type: Injectable },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class DatagridRowExpandAnimation {
     /**
      * @param {?} el
      * @param {?} domAdapter
      * @param {?} renderer
      * @param {?} expand
-     * @param {?} renderOrganizer
      */
-    constructor(el, domAdapter, renderer, expand, renderOrganizer) {
+    constructor(el, domAdapter, renderer, expand) {
         this.el = el;
         this.domAdapter = domAdapter;
         this.renderer = renderer;
         this.expand = expand;
-        this.renderOrganizer = renderOrganizer;
         if (expand && expand.animate) {
             expand.animate.subscribe(() => {
                 // We already had an animation waiting, so we just have to run in, not prepare again
@@ -6866,12 +6791,9 @@ class DatagridRowExpandAnimation {
      */
     run() {
         this.renderer.setStyle(this.el.nativeElement, 'height', null);
-        // I don't like realigning the columns before the animation, since the scrollbar could appear or disappear
-        // halfway, but that's a compromise we have to make for now. We can look into a smarter fix later.
-        this.renderOrganizer.scrollbar.next();
         /** @type {?} */
         const newHeight = this.domAdapter.computedHeight(this.el.nativeElement);
-        this.running = this.el.nativeElement.animate({ height: [this.oldHeight + 'px', newHeight + 'px'], overflowY: ['hidden', 'hidden'], easing: 'ease-in-out' }, { duration: 200 });
+        this.running = this.el.nativeElement.animate({ height: [this.oldHeight + 'px', newHeight + 'px'], easing: 'ease-in-out' }, { duration: 200 });
         this.running.onfinish = () => {
             this.renderer.setStyle(this.el.nativeElement, 'overflow-y', null);
             delete this.running;
@@ -6887,8 +6809,7 @@ DatagridRowExpandAnimation.ctorParameters = () => [
     { type: ElementRef },
     { type: DomAdapter },
     { type: Renderer2 },
-    { type: Expand },
-    { type: DatagridRenderOrganizer }
+    { type: Expand }
 ];
 
 /**
@@ -8198,6 +8119,36 @@ Sort.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+class WrappedColumn {
+    constructor() {
+        this._dynamic = false;
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        // Create the cells view in memory, not the DOM.
+        this.columnView = this.templateRef.createEmbeddedView(null);
+    }
+}
+WrappedColumn.decorators = [
+    { type: Component, args: [{
+                selector: 'dg-wrapped-column',
+                template: `        
+        <ng-template #columnPortal>
+            <ng-content></ng-content>
+        </ng-template>
+    `,
+            },] },
+];
+WrappedColumn.propDecorators = {
+    templateRef: [{ type: ViewChild, args: ['columnPortal',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 /** @type {?} */
 let nbCount = 0;
 /**
@@ -8208,11 +8159,13 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
      * @param {?} _sort
      * @param {?} filters
      * @param {?} _dragDispatcher
+     * @param {?} vcr
      */
-    constructor(_sort, filters, _dragDispatcher) {
+    constructor(_sort, filters, _dragDispatcher, vcr) {
         super(filters);
         this._sort = _sort;
         this._dragDispatcher = _dragDispatcher;
+        this.vcr = vcr;
         /**
          * Indicates if the column is currently sorted
          *
@@ -8248,7 +8201,6 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         });
         this.columnId = 'dg-col-' + nbCount.toString(); // Approximate a GUID
         nbCount++;
-        // put index here
     }
     /**
      * \@property hidden
@@ -8492,6 +8444,18 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         this.updateFilterValue = newValue;
         this.filterValueChange.emit(this.filter.value);
     }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
+    }
+    /**
+     * @return {?}
+     */
+    get _view() {
+        return this.wrappedInjector.get(WrappedColumn, this.vcr).columnView;
+    }
 }
 ClrDatagridColumn.decorators = [
     { type: Component, args: [{
@@ -8506,10 +8470,12 @@ ClrDatagridColumn.decorators = [
                     [clrDgStringFilter]="registered"
                     [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
 
-            <ng-template #columnTitle><ng-content></ng-content></ng-template>
+            <ng-template #columnTitle>
+                <ng-content></ng-content>
+            </ng-template>
 
             <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
-               <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+                <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
             </button>
 
             <span class="datagrid-column-title" *ngIf="!sortable">
@@ -8534,7 +8500,8 @@ ClrDatagridColumn.decorators = [
 ClrDatagridColumn.ctorParameters = () => [
     { type: Sort },
     { type: FiltersProvider },
-    { type: DragDispatcher }
+    { type: DragDispatcher },
+    { type: ViewContainerRef }
 ];
 ClrDatagridColumn.propDecorators = {
     handleElRef: [{ type: ViewChild, args: ['columnHandle',] }],
@@ -8772,55 +8739,60 @@ Items.ctorParameters = () => [
 class ClrDatagridItems {
     /**
      * @param {?} template
-     * @param {?} _differs
-     * @param {?} _items
+     * @param {?} differs
+     * @param {?} items
+     * @param {?} vcr
      */
-    constructor(template, _differs, _items) {
+    constructor(template, differs, items, vcr) {
         this.template = template;
-        this._differs = _differs;
-        this._items = _items;
-        _items.smartenUp();
+        this.differs = differs;
+        this.items = items;
+        this.vcr = vcr;
+        this.differ = null;
+        this.subscriptions = [];
+        items.smartenUp();
+        this.iterableProxy = new NgForOf(this.vcr, this.template, this.differs);
+        this.subscriptions.push(items.change.subscribe(newItems => {
+            this.iterableProxy.ngForOf = newItems;
+            this.iterableProxy.ngDoCheck();
+        }));
     }
     /**
      * @param {?} items
      * @return {?}
      */
     set rawItems(items) {
-        this._rawItems = items ? items : [];
-    }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if ('rawItems' in changes) {
-            /** @type {?} */
-            const currentItems = changes["rawItems"].currentValue;
-            if (!this._differ && currentItems) {
-                this._differ = this._differs.find(currentItems).create(this._items.trackBy);
-            }
-        }
+        this._rawItems = items ? items : []; // local copy for ngOnChange diffing
     }
     /**
      * @param {?} value
      * @return {?}
      */
     set trackBy(value) {
-        this._items.trackBy = value;
+        this.iterableProxy.ngForTrackBy = value;
     }
     /**
      * @return {?}
      */
     ngDoCheck() {
-        if (this._differ) {
+        if (!this.differ) {
+            this.differ = this.differs.find(this._rawItems).create(this.iterableProxy.ngForTrackBy);
+        }
+        if (this.differ) {
             /** @type {?} */
-            const changes = this._differ.diff(this._rawItems);
+            const changes = this.differ.diff(this._rawItems);
             if (changes) {
                 // TODO: not very efficient right now,
                 // but premature optimization is the root of all evil.
-                this._items.all = this._rawItems;
+                this.items.all = this._rawItems;
             }
         }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
 ClrDatagridItems.decorators = [
@@ -8832,7 +8804,8 @@ ClrDatagridItems.decorators = [
 ClrDatagridItems.ctorParameters = () => [
     { type: TemplateRef },
     { type: IterableDiffers },
-    { type: Items }
+    { type: Items },
+    { type: ViewContainerRef }
 ];
 ClrDatagridItems.propDecorators = {
     rawItems: [{ type: Input, args: ['clrDgItemsOf',] }],
@@ -9210,16 +9183,47 @@ HideableColumnService.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+class WrappedCell {
+    constructor() {
+        this._dynamic = false;
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        this.cellView = this.templateRef.createEmbeddedView(null);
+    }
+}
+WrappedCell.decorators = [
+    { type: Component, args: [{
+                selector: 'dg-wrapped-cell',
+                template: `        
+        <ng-template #cellPortal>
+            <ng-content></ng-content>
+        </ng-template>
+    `,
+            },] },
+];
+WrappedCell.propDecorators = {
+    templateRef: [{ type: ViewChild, args: ['cellPortal',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 class ClrDatagridCell {
     /**
      * @param {?} hideableColumnService
      * @param {?} _el
      * @param {?} _renderer
+     * @param {?} vcr
      */
-    constructor(hideableColumnService, _el, _renderer) {
+    constructor(hideableColumnService, _el, _renderer, vcr) {
         this.hideableColumnService = hideableColumnService;
         this._el = _el;
         this._renderer = _renderer;
+        this.vcr = vcr;
     }
     /**
      * @param {?} value
@@ -9259,10 +9263,22 @@ class ClrDatagridCell {
     /**
      * @return {?}
      */
+    ngOnInit() {
+        this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
+    }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         if (this.hiddenStateSubscription) {
             this.hiddenStateSubscription.unsubscribe();
         }
+    }
+    /**
+     * @return {?}
+     */
+    get _view() {
+        return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;
     }
 }
 ClrDatagridCell.decorators = [
@@ -9282,11 +9298,150 @@ ClrDatagridCell.decorators = [
 ClrDatagridCell.ctorParameters = () => [
     { type: HideableColumnService },
     { type: ElementRef },
-    { type: Renderer2 }
+    { type: Renderer2 },
+    { type: ViewContainerRef }
 ];
 ClrDatagridCell.propDecorators = {
     signpost: [{ type: ContentChildren, args: [ClrSignpost,] }]
 };
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @enum {number} */
+const DatagridDisplayMode = {
+    DISPLAY: 0,
+    CALCULATE: 1,
+};
+DatagridDisplayMode[DatagridDisplayMode.DISPLAY] = 'DISPLAY';
+DatagridDisplayMode[DatagridDisplayMode.CALCULATE] = 'CALCULATE';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @enum {number} */
+const DatagridRenderStep = {
+    ALIGN_COLUMNS: 0,
+    CALCULATE_MODE_ON: 1,
+    CALCULATE_MODE_OFF: 2,
+    CLEAR_WIDTHS: 3,
+    // Note this is listened to by both cells and columns
+    COMPUTE_COLUMN_WIDTHS: 4,
+    DETECT_STRICT_WIDTHS: 5,
+    UPDATE_ROW_WIDTH: 6,
+};
+DatagridRenderStep[DatagridRenderStep.ALIGN_COLUMNS] = 'ALIGN_COLUMNS';
+DatagridRenderStep[DatagridRenderStep.CALCULATE_MODE_ON] = 'CALCULATE_MODE_ON';
+DatagridRenderStep[DatagridRenderStep.CALCULATE_MODE_OFF] = 'CALCULATE_MODE_OFF';
+DatagridRenderStep[DatagridRenderStep.CLEAR_WIDTHS] = 'CLEAR_WIDTHS';
+DatagridRenderStep[DatagridRenderStep.COMPUTE_COLUMN_WIDTHS] = 'COMPUTE_COLUMN_WIDTHS';
+DatagridRenderStep[DatagridRenderStep.DETECT_STRICT_WIDTHS] = 'DETECT_STRICT_WIDTHS';
+DatagridRenderStep[DatagridRenderStep.UPDATE_ROW_WIDTH] = 'UPDATE_ROW_WIDTH';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class DatagridRenderOrganizer {
+    constructor() {
+        this._renderStep = new Subject();
+        this.alreadySized = false;
+        this.widths = [];
+    }
+    /**
+     * @return {?}
+     */
+    get renderStep() {
+        return this._renderStep.asObservable();
+    }
+    /**
+     * @param {?} step
+     * @return {?}
+     */
+    filterRenderSteps(step) {
+        return this.renderStep.pipe(filter(testStep => step === testStep));
+    }
+    /**
+     * @return {?}
+     */
+    resize() {
+        this.widths.length = 0;
+        this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_ON);
+        if (this.alreadySized) {
+            this._renderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
+        }
+        this._renderStep.next(DatagridRenderStep.DETECT_STRICT_WIDTHS);
+        this._renderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
+        this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS);
+        this.alreadySized = true;
+        this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
+        this._renderStep.next(DatagridRenderStep.UPDATE_ROW_WIDTH);
+    }
+}
+DatagridRenderOrganizer.decorators = [
+    { type: Injectable },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class DisplayModeService {
+    /**
+     * @param {?} renderOrganizer
+     */
+    constructor(renderOrganizer) {
+        this.subscriptions = [];
+        this._view = new BehaviorSubject(DatagridDisplayMode.DISPLAY);
+        this.subscriptions.push(renderOrganizer
+            .filterRenderSteps(DatagridRenderStep.CALCULATE_MODE_ON)
+            .subscribe(() => this._view.next(DatagridDisplayMode.CALCULATE)));
+        this.subscriptions.push(renderOrganizer
+            .filterRenderSteps(DatagridRenderStep.CALCULATE_MODE_OFF)
+            .subscribe(() => this._view.next(DatagridDisplayMode.DISPLAY)));
+    }
+    /**
+     * @return {?}
+     */
+    get view() {
+        return this._view.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+}
+DisplayModeService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+DisplayModeService.ctorParameters = () => [
+    { type: DatagridRenderOrganizer }
+];
 
 /**
  * @fileoverview added by tsickle
@@ -9686,6 +9841,41 @@ Selection.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+class WrappedRow {
+    constructor() {
+        this._dynamic = false;
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        // Create the cells view in memory, not the DOM.
+        this.rowView = this.templateRef.createEmbeddedView(null);
+    }
+}
+WrappedRow.decorators = [
+    { type: Component, args: [{
+                selector: 'dg-wrapped-row',
+                template: `        
+        <ng-template #rowPortal>
+            <ng-content></ng-content>
+        </ng-template>
+    `,
+            },] },
+];
+WrappedRow.propDecorators = {
+    templateRef: [{ type: ViewChild, args: ['rowPortal',] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 /** @type {?} */
 let nbRow = 0;
 /**
@@ -9698,22 +9888,45 @@ class ClrDatagridRow {
      * @param {?} globalExpandable
      * @param {?} expand
      * @param {?} hideableColumnService
+     * @param {?} displayMode
+     * @param {?} vcr
+     * @param {?} renderer
+     * @param {?} el
      * @param {?} commonStrings
      */
-    constructor(selection, rowActionService, globalExpandable, expand, hideableColumnService, commonStrings) {
+    constructor(selection, rowActionService, globalExpandable, expand, hideableColumnService, displayMode, vcr, renderer, el, commonStrings) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.globalExpandable = globalExpandable;
         this.expand = expand;
         this.hideableColumnService = hideableColumnService;
+        this.displayMode = displayMode;
+        this.vcr = vcr;
+        this.renderer = renderer;
+        this.el = el;
         this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         this._selected = false;
         this.selectedChanged = new EventEmitter(false);
         this.expandedChange = new EventEmitter(false);
+        this.subscriptions = [];
+        this.displayCells = false;
         nbRow++;
         this.id = 'clr-dg-row' + nbRow;
         this.radioId = 'clr-dg-row-rd' + nbRow;
+        this.subscriptions.push(combineLatest(this.expand.replace, this.expand.expandChange).subscribe(([expandReplaceValue, expandChangeValue]) => {
+            if (expandReplaceValue && expandChangeValue) {
+                // replaced and expanding
+                this.replaced = true;
+                this.renderer.addClass(this.el.nativeElement, 'datagrid-row-replaced');
+            }
+            else {
+                this.replaced = false;
+                // Handles these cases: not replaced and collapsing & replaced and
+                // collapsing and not replaced and expanding.
+                this.renderer.removeClass(this.el.nativeElement, 'datagrid-row-replaced');
+            }
+        }));
     }
     /**
      * Indicates if the row is selected
@@ -9787,12 +10000,40 @@ class ClrDatagridRow {
             }
         });
         // Used to set things up the first time but only after all the columns are ready.
-        this.subscription = this.hideableColumnService.columnListChange.subscribe(columnList => {
+        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe(columnList => {
             // Prevents cell updates when cols and cells array are not aligned - only seems to run on init / first time.
             if (columnList.length === this.dgCells.length) {
                 this.updateCellsForColumns(columnList);
             }
-        });
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        this.subscriptions.push(this.displayMode.view.subscribe(viewChange => {
+            // Listen for view changes and move cells around depending on the current displayType
+            // remove cell views from display view
+            for (let i = this._scrollableCells.length; i > 0; i--) {
+                this._scrollableCells.detach();
+            }
+            // remove cell views from calculated view
+            for (let i = this._calculatedCells.length; i > 0; i--) {
+                this._calculatedCells.detach();
+            }
+            if (viewChange === DatagridDisplayMode.CALCULATE) {
+                this.displayCells = false;
+                this.dgCells.forEach(cell => {
+                    this._calculatedCells.insert(cell._view);
+                });
+            }
+            else {
+                this.displayCells = true;
+                this.dgCells.forEach(cell => {
+                    this._scrollableCells.insert(cell._view);
+                });
+            }
+        }));
     }
     /**
      * *******
@@ -9819,77 +10060,97 @@ class ClrDatagridRow {
      * @return {?}
      */
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
+    }
+    /**
+     * @return {?}
+     */
+    get _view() {
+        return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
     }
 }
 ClrDatagridRow.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-row',
-                template: `
-    <!--
-      We need to wrap the #rowContent in label element if we are in rowSelectionMode.
-      Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.
-    -->
-    <label class="datagrid-row-clickable" *ngIf="selection.rowSelectionMode">
-      <ng-template [ngTemplateOutlet]="rowContent"></ng-template>
-    </label>
-    
-    <ng-template *ngIf="!selection.rowSelectionMode" [ngTemplateOutlet]="rowContent"></ng-template>
-    
-    <ng-template *ngIf="!expand.replace && expand.expanded && !expand.loading"
-                 [ngTemplateOutlet]="detail"></ng-template>
-    <!-- 
-        We need the "project into template" hack because we need this in 2 different places
-        depending on whether the details replace the row or not.
-    -->
-    <ng-template #detail>
-        <ng-content select="clr-dg-row-detail"></ng-content>
-    </ng-template>
+                template: `<!--
+  We need to wrap the #rowContent in label element if we are in rowSelectionMode.
+  Clicking of that wrapper label will equate to clicking on the whole row, which triggers the checkbox to toggle.
+-->
+<label class="datagrid-row-clickable" *ngIf="selection.rowSelectionMode">
+  <ng-template [ngTemplateOutlet]="rowContent"></ng-template>
+</label>
 
-    <ng-template #rowContent>
-      <div role="row" [id]="id" class="datagrid-row-master datagrid-row-flex">
-        <clr-dg-cell *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
-                     class="datagrid-select datagrid-fixed-column">
+<ng-template *ngIf="!selection.rowSelectionMode" [ngTemplateOutlet]="rowContent"></ng-template>
+
+<!--
+    We need the "project into template" hacks because we need this in 2 different places
+    depending on whether the details replace the row or not.
+-->
+<ng-template #detail>
+  <ng-content select="clr-dg-row-detail"></ng-content>
+</ng-template>
+
+<ng-template #rowContent>
+  <div role="row" [id]="id" class="datagrid-row-master datagrid-row-flex">
+    <div class="datagrid-row-sticky">
+      <!-- Sticky elements here -->
+      <ng-container #stickyCells></ng-container> <!-- placeholder for projecting other sticky cells as pinned-->
+    </div>
+    <div class="datagrid-row-scrollable" [ngClass]="{'is-replaced': replaced && expanded}">
+      <div class="datagrid-scrolling-cells">
+        <div *ngIf="selection.selectionType === SELECTION_TYPE.Multi"
+             class="datagrid-select datagrid-fixed-column datagrid-cell">
           <input clrCheckbox type="checkbox" [ngModel]="selected" (ngModelChange)="toggle($event)"
-            [attr.aria-label]="commonStrings.select">
-        </clr-dg-cell>
-        <clr-dg-cell *ngIf="selection.selectionType === SELECTION_TYPE.Single"
-                     class="datagrid-select datagrid-fixed-column">
+                 [attr.aria-label]="commonStrings.select">
+        </div>
+        <div *ngIf="selection.selectionType === SELECTION_TYPE.Single"
+             class="datagrid-select datagrid-fixed-column datagrid-cell">
           <div class="radio">
             <!-- TODO: it would be better if in addition to the generic "Select" label, we could add aria-labelledby
             to label the radio by the first cell in the row (typically an id or name).
-             It's pretty easy to label it with the whole row since we already have an id for it, but in most
-             cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->
+            It's pretty easy to label it with the whole row since we already have an id for it, but in most
+            cases the row is far too long to serve as a label, the screenreader reads every single cell content. -->
             <input type="radio" [id]="radioId" [name]="selection.id + '-radio'" [value]="item"
                    [(ngModel)]="selection.currentSingle" [checked]="selection.currentSingle === item"
                    [attr.aria-label]="commonStrings.select">
             <label for="{{radioId}}"></label>
           </div>
-        </clr-dg-cell>
-        <clr-dg-cell *ngIf="rowActionService.hasActionableRow"
-                     class="datagrid-row-actions datagrid-fixed-column">
+        </div>
+        <div *ngIf="rowActionService.hasActionableRow"
+             class="datagrid-row-actions datagrid-fixed-column datagrid-cell">
           <ng-content select="clr-dg-action-overflow"></ng-content>
-        </clr-dg-cell>
-        <clr-dg-cell *ngIf="globalExpandable.hasExpandableRow"
-                     class="datagrid-expandable-caret datagrid-fixed-column">
+        </div>
+        <div *ngIf="globalExpandable.hasExpandableRow"
+             class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell">
           <ng-container *ngIf="expand.expandable">
             <button (click)="toggleExpand()" *ngIf="!expand.loading" type="button" class="datagrid-expandable-caret-button">
-              <clr-icon shape="caret" 
-                class="datagrid-expandable-caret-icon"
-                [attr.dir]="expand.expanded ? 'down' : 'right'"
-                [attr.title]="expand.expanded ? commonStrings.collapse : commonStrings.expand"></clr-icon>
+              <clr-icon shape="caret"
+                        class="datagrid-expandable-caret-icon"
+                        [attr.dir]="expand.expanded ? 'down' : 'right'"
+                        [attr.title]="expand.expanded ? commonStrings.collapse : commonStrings.expand"></clr-icon>
             </button>
             <div class="spinner spinner-sm" *ngIf="expand.loading"></div>
           </ng-container>
-        </clr-dg-cell>
-        <ng-content *ngIf="!expand.replace || !expand.expanded || expand.loading"></ng-content>
-
-        <ng-template *ngIf="expand.replace && expand.expanded && !expand.loading"
-                     [ngTemplateOutlet]="detail"></ng-template>
+        </div>
+        <ng-container #scrollableCells></ng-container>
       </div>
-    </ng-template>
+      <!-- details here when replace, re-visit when sticky container is used for pinned cells -->
+      <ng-template *ngIf="replaced && !expand.loading"
+                   [ngTemplateOutlet]="detail"></ng-template>
+    </div>
+    <ng-template *ngIf="!replaced && !expand.loading"
+                 [ngTemplateOutlet]="detail"></ng-template>
+  </div>
+</ng-template>
 
-    `,
+<ng-container #calculatedCells></ng-container>
+`,
                 host: {
                     '[class.datagrid-row]': 'true',
                     '[class.datagrid-selected]': 'selected',
@@ -9906,6 +10167,10 @@ ClrDatagridRow.ctorParameters = () => [
     { type: ExpandableRowsCount },
     { type: Expand },
     { type: HideableColumnService },
+    { type: DisplayModeService },
+    { type: ViewContainerRef },
+    { type: Renderer2 },
+    { type: ElementRef },
     { type: ClrCommonStrings }
 ];
 ClrDatagridRow.propDecorators = {
@@ -9914,7 +10179,10 @@ ClrDatagridRow.propDecorators = {
     selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
     expanded: [{ type: Input, args: ['clrDgExpanded',] }],
     expandedChange: [{ type: Output, args: ['clrDgExpandedChange',] }],
-    dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }]
+    dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
+    _stickyCells: [{ type: ViewChild, args: ['stickyCells', { read: ViewContainerRef },] }],
+    _scrollableCells: [{ type: ViewChild, args: ['scrollableCells', { read: ViewContainerRef },] }],
+    _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { read: ViewContainerRef },] }]
 };
 
 /**
@@ -10035,6 +10303,94 @@ StateProvider.ctorParameters = () => [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
+ * \@description
+ * Internal datagrid service that holds a reference to the clr-dg-table element and exposes a method to get height.
+ */
+class TableSizeService {
+    /**
+     * @param {?} platformId
+     * @param {?} renderOrganizer
+     * @param {?} renderer
+     */
+    constructor(platformId, renderOrganizer, renderer) {
+        this.platformId = platformId;
+        this.renderer = renderer;
+        this.subscriptions = [];
+        this.subscriptions.push(renderOrganizer.renderStep.subscribe(step => {
+            if (step === DatagridRenderStep.UPDATE_ROW_WIDTH) {
+                this.updateRowWidth();
+            }
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    get tableRef() {
+        return this._tableRef;
+    }
+    /**
+     * @param {?} element
+     * @return {?}
+     */
+    set tableRef(element) {
+        this._tableRef = element;
+    }
+    /**
+     * @param {?} table
+     * @return {?}
+     */
+    set table(table) {
+        if (isPlatformBrowser(this.platformId) && table.nativeElement) {
+            this.tableRef = table.nativeElement.querySelector('.datagrid-table');
+        }
+    }
+    /**
+     * @return {?}
+     */
+    getColumnDragHeight() {
+        if (!this.tableRef) {
+            return;
+        }
+        return `${this.tableRef.clientHeight}px`;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+    /**
+     * @return {?}
+     */
+    updateRowWidth() {
+        if (!this.tableRef) {
+            return;
+        }
+        /** @type {?} */
+        let newWidth = 0;
+        this.renderer.removeStyle(this.tableRef, 'width');
+        this.columns = Array.from(this.tableRef.querySelectorAll('.datagrid-column'));
+        this.columns.forEach(item => {
+            newWidth += item.clientWidth;
+        });
+        this.renderer.setStyle(this.tableRef, 'width', newWidth + 'px');
+    }
+}
+TableSizeService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+TableSizeService.ctorParameters = () => [
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: DatagridRenderOrganizer },
+    { type: Renderer2 }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
  * @template T
  */
 class ClrDatagrid {
@@ -10046,9 +10402,12 @@ class ClrDatagrid {
      * @param {?} selection
      * @param {?} rowActionService
      * @param {?} stateProvider
+     * @param {?} displayMode
+     * @param {?} renderer
+     * @param {?} el
      * @param {?} commonStrings
      */
-    constructor(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider, commonStrings) {
+    constructor(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider, displayMode, renderer, el, commonStrings) {
         this.columnService = columnService;
         this.organizer = organizer;
         this.items = items;
@@ -10056,6 +10415,9 @@ class ClrDatagrid {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.stateProvider = stateProvider;
+        this.displayMode = displayMode;
+        this.renderer = renderer;
+        this.el = el;
         this.commonStrings = commonStrings;
         this.SELECTION_TYPE = SelectionType;
         /**
@@ -10162,14 +10524,17 @@ class ClrDatagrid {
      * @return {?}
      */
     ngAfterContentInit() {
+        if (!this.items.smart) {
+            this.items.all = this.rows.map((row) => row.item);
+        }
         this._subscriptions.push(this.rows.changes.subscribe(() => {
             if (!this.items.smart) {
                 this.items.all = this.rows.map((row) => row.item);
             }
+            this.rows.forEach(row => {
+                this._displayedRows.insert(row._view);
+            });
         }));
-        if (!this.items.smart) {
-            this.items.all = this.rows.map((row) => row.item);
-        }
         this._subscriptions.push(this.columns.changes.subscribe((columns) => {
             this.columnService.updateColumnList(this.columns.map(col => col.hideable));
         }));
@@ -10192,6 +10557,45 @@ class ClrDatagrid {
                 this.selectedChanged.emit(/** @type {?} */ (s));
             }
         }));
+        // A subscription that listens for displayMode changes on the datagrid
+        this.displayMode.view.subscribe(viewChange => {
+            // Remove any projected columns from the projectedDisplayColumns container
+            for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
+                this._projectedDisplayColumns.detach();
+            }
+            // Remove any projected columns from the projectedCalculationColumns container
+            for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
+                this._projectedCalculationColumns.detach();
+            }
+            // Remove any projected rows from the calculationRows container
+            for (let i = this._calculationRows.length; i > 0; i--) {
+                this._calculationRows.detach();
+            }
+            // Remove any projected rows from the displayedRows container
+            for (let i = this._displayedRows.length; i > 0; i--) {
+                this._displayedRows.detach();
+            }
+            if (viewChange === DatagridDisplayMode.DISPLAY) {
+                // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
+                this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
+                this.columns.forEach(column => {
+                    this._projectedDisplayColumns.insert(column._view);
+                });
+                this.rows.forEach(row => {
+                    this._displayedRows.insert(row._view);
+                });
+            }
+            else {
+                // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
+                this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
+                this.columns.forEach(column => {
+                    this._projectedCalculationColumns.insert(column._view);
+                });
+                this.rows.forEach(row => {
+                    this._calculationRows.insert(row._view);
+                });
+            }
+        });
     }
     /**
      * @return {?}
@@ -10216,19 +10620,22 @@ ClrDatagrid.decorators = [
   -->
 
 <ng-content select="clr-dg-action-bar"></ng-content>
-<div class="datagrid-overlay-wrapper">
-    <div class="datagrid-scroll-wrapper">
-        <div class="datagrid" #datagrid>
-            <clr-dg-table-wrapper class="datagrid-table-wrapper" role="grid">
-                <div clrDgHead class="datagrid-head" role="rowgroup">
-                    <div role="row" class="datagrid-row datagrid-row-flex">
-                        <!-- header for datagrid where you can select multiple rows -->
+<div class="datagrid" #datagrid>
+    <div role="grid" class="datagrid-table">
+        <div role="rowgroup" class="datagrid-header">
+            <div role="row" class="datagrid-row">
+                <div class="datagrid-row-master datagrid-row-flex">
+                    <div class="datagrid-row-sticky">
+                        <!-- Sticky elements here -->
+                    </div>
+                    <div class="datagrid-row-scrollable">
+                        <!--header for datagrid where you can select multiple rows -->
                         <div role="columnheader" class="datagrid-column datagrid-select datagrid-fixed-column"
                              *ngIf="selection.selectionType === SELECTION_TYPE.Multi">
-                        <span class="datagrid-column-title">
-                            <input clrCheckbox type="checkbox" [(ngModel)]="allSelected"
-                                   [attr.aria-label]="commonStrings.selectAll">
-                        </span>
+                            <span class="datagrid-column-title">
+                                <input clrCheckbox type="checkbox" [(ngModel)]="allSelected"
+                                       [attr.aria-label]="commonStrings.selectAll">
+                            </span>
                             <div class="datagrid-column-separator"></div>
                         </div>
                         <!-- header for datagrid where you can select one row only -->
@@ -10236,40 +10643,37 @@ ClrDatagrid.decorators = [
                              *ngIf="selection.selectionType === SELECTION_TYPE.Single">
                             <div class="datagrid-column-separator"></div>
                         </div>
-                        <!-- header for single row action; only display if we have at least one actionable row in datagrid -->
+                        <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->
                         <div role="columnheader" class="datagrid-column datagrid-row-actions datagrid-fixed-column"
                              *ngIf="rowActionService.hasActionableRow">
                             <div class="datagrid-column-separator"></div>
                         </div>
-                        <!-- header for carets; only display if we have at least one expandable row in datagrid -->
+                        <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->
                         <div role="columnheader" class="datagrid-column datagrid-expandable-caret datagrid-fixed-column"
                              *ngIf="expandableRows.hasExpandableRow">
                             <div class="datagrid-column-separator"></div>
                         </div>
-                        <ng-content select="clr-dg-column"></ng-content>
+                        <ng-container #projectedDisplayColumns></ng-container>
                     </div>
                 </div>
-
-                <ng-template *ngIf="iterator"
-                             ngFor [ngForOf]="items.displayed" [ngForTrackBy]="items.trackBy"
-                             [ngForTemplate]="iterator.template"></ng-template>
-                <ng-content *ngIf="!iterator"></ng-content>
-
-                <!-- Custom placeholder overrides the default empty one -->
-                <ng-content select="clr-dg-placeholder"></ng-content>
-                <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
-            </clr-dg-table-wrapper>
-
-            <!--
-                This is not inside the table because there is no good way of having a single column span
-                everything when using custom elements with display:table-cell.
-            -->
-            <ng-content select="clr-dg-footer"></ng-content>
+            </div>
         </div>
+        <ng-container #displayedRows></ng-container>
+        <!-- Custom placeholder overrides the default empty one -->
+        <ng-content select="clr-dg-placeholder"></ng-content>
+        <clr-dg-placeholder *ngIf="!placeholder"></clr-dg-placeholder>
     </div>
-    <div class="datagrid-spinner" *ngIf="loading">
-        <div class="spinner">Loading...</div>
+</div>
+<ng-content select="clr-dg-footer"></ng-content>
+<div class="datagrid-spinner" *ngIf="loading">
+    <div class="spinner spinner-md">Loading...</div>
+</div>
+
+<div class="datagrid-calculation-table">
+    <div class="datagrid-calculation-header">
+        <ng-container #projectedCalculationColumns></ng-container>
     </div>
+    <ng-container #calculationRows></ng-container>
 </div>
 `,
                 providers: [
@@ -10285,6 +10689,8 @@ ClrDatagrid.decorators = [
                     StateDebouncer,
                     StateProvider,
                     ColumnToggleButtonsService,
+                    TableSizeService,
+                    DisplayModeService,
                 ],
                 host: { '[class.datagrid-host]': 'true' },
             },] },
@@ -10298,6 +10704,9 @@ ClrDatagrid.ctorParameters = () => [
     { type: Selection },
     { type: RowActionService },
     { type: StateProvider },
+    { type: DisplayModeService },
+    { type: Renderer2 },
+    { type: ElementRef },
     { type: ClrCommonStrings }
 ];
 ClrDatagrid.propDecorators = {
@@ -10312,7 +10721,12 @@ ClrDatagrid.propDecorators = {
     rowSelectionModeDeprecated: [{ type: Input, args: ['clDgRowSelection',] }],
     placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
     columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
-    rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }]
+    rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }],
+    scrollableColumns: [{ type: ViewChild, args: ['scrollableColumns', { read: ViewContainerRef },] }],
+    _projectedDisplayColumns: [{ type: ViewChild, args: ['projectedDisplayColumns', { read: ViewContainerRef },] }],
+    _projectedCalculationColumns: [{ type: ViewChild, args: ['projectedCalculationColumns', { read: ViewContainerRef },] }],
+    _displayedRows: [{ type: ViewChild, args: ['displayedRows', { read: ViewContainerRef },] }],
+    _calculationRows: [{ type: ViewChild, args: ['calculationRows', { read: ViewContainerRef },] }]
 };
 
 /**
@@ -10723,20 +11137,20 @@ ClrDatagridFooter.decorators = [
                 template: `
         <ng-container
             *ngIf="(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)">
-            <clr-checkbox-container class="datagrid-foot-select disabled">
+            <clr-checkbox-container class="datagrid-footer-select disabled">
                 <input clrCheckbox type="checkbox" checked="checked" disabled>
                 <label>{{selection.current.length}}</label>
             </clr-checkbox-container>
         </ng-container>
         <ng-content select="clr-dg-column-toggle"></ng-content>
         <clr-dg-column-toggle *ngIf="!toggle && activeToggler"></clr-dg-column-toggle>
-        <div class="datagrid-foot-description">
+        <div class="datagrid-footer-description">
             <ng-content></ng-content>
         </div>
         <ng-content select="clr-dg-pagination"></ng-content>
     `,
                 host: {
-                    '[class.datagrid-foot]': 'true',
+                    '[class.datagrid-footer]': 'true',
                 },
             },] },
 ];
@@ -10769,7 +11183,6 @@ class DatagridHideableColumnModel {
      *
      * 1. Set values for the private variables that enable a hideable column
      * 2. Broadcast the next hidden change for anyone (already) subscribed to this DatagridHideableColumnModel
-     * TODO: Debug and verify that #2 is really necessary.
      *
      * @param {?} _template
      * @param {?} _id
@@ -10815,7 +11228,6 @@ class DatagridHideableColumnModel {
      *
      * \@description
      * A getter that returns the hidden value of a DatagridHideableColumnModel instance.
-     * TODO: debug and make sure you really need this since we have the hiddenCHanges observable.
      *
      * @return {?}
      */
@@ -10972,13 +11384,8 @@ class ClrDatagridPagination {
      */
     constructor(page) {
         this.page = page;
+        this.defaultSize = true;
         this.currentChanged = new EventEmitter(false);
-        /*
-                 * Default page size is 10.
-                 * The reason we set it in this constructor and not in the provider itself is because
-                 * we don't want pagination (page size 0) if this component isn't present in the datagrid.
-                 */
-        page.size = 10;
     }
     /**
      * *******
@@ -10987,6 +11394,14 @@ class ClrDatagridPagination {
      * @return {?}
      */
     ngOnInit() {
+        /*
+             * Default page size is 10.
+             * The reason we set it in this constructor and not in the provider itself is because
+             * we don't want pagination (page size 0) if this component isn't present in the datagrid.
+             */
+        if (this.defaultSize) {
+            this.page.size = 10;
+        }
         this._pageSubscription = this.page.change.subscribe(current => this.currentChanged.emit(current));
     }
     /**
@@ -11011,6 +11426,7 @@ class ClrDatagridPagination {
      */
     set pageSize(size) {
         if (typeof size === 'number') {
+            this.defaultSize = false;
             this.page.size = size;
         }
     }
@@ -11116,33 +11532,35 @@ ClrDatagridPagination.decorators = [
         </div>
         <ul class="pagination-list" *ngIf="page.last > 1">
             <li *ngIf="page.current > 1">
-                <button 
-                    class="pagination-previous" 
-                    (click)="page.previous()"
-                    type="button"></button>
+                <button
+                        class="pagination-previous"
+                        (click)="page.previous()"
+                        type="button"></button>
             </li>
             <li *ngIf="page.current > 2">
                 <button (click)="page.current = 1" type="button">1</button>
             </li>
             <li *ngIf="page.current > 3">...</li>
             <li *ngFor="let pageNum of middlePages" [class.pagination-current]="pageNum === page.current">
-                <button 
-                    *ngIf="pageNum !== page.current; else noButton" 
-                    (click)="page.current = pageNum"
-                    type="button">{{pageNum}}</button>
+                <button
+                        *ngIf="pageNum !== page.current; else noButton"
+                        (click)="page.current = pageNum"
+                        type="button">{{pageNum}}
+                </button>
                 <ng-template #noButton>{{pageNum}}</ng-template>
             </li>
             <li *ngIf="page.current < page.last - 2">...</li>
             <li *ngIf="page.current < page.last - 1">
-                <button 
-                    (click)="page.current = page.last"
-                    type="button">{{page.last}}</button>
+                <button
+                        (click)="page.current = page.last"
+                        type="button">{{page.last}}
+                </button>
             </li>
             <li *ngIf="page.current < page.last">
-                <button 
-                    class="pagination-next" 
-                    (click)="page.next()"
-                    type="button"></button>
+                <button
+                        class="pagination-next"
+                        (click)="page.next()"
+                        type="button"></button>
             </li>
         </ul>
     `,
@@ -11176,30 +11594,24 @@ class ClrDatagridRowDetail {
      * @param {?} rowActionService
      * @param {?} expand
      * @param {?} hideableColumnService
+     * @param {?} expandableRows
      */
-    constructor(selection, rowActionService, expand, hideableColumnService) {
+    constructor(selection, rowActionService, expand, hideableColumnService, expandableRows) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.expand = expand;
         this.hideableColumnService = hideableColumnService;
+        this.expandableRows = expandableRows;
         this.SELECTION_TYPE = SelectionType;
-        /**
-         * Subscriptions to all the services and QueryList changes
-         */
-        this._subscriptions = [];
-    }
-    /**
-     * @return {?}
-     */
-    get replace() {
-        return this.expand.replace;
+        this.subscriptions = [];
+        this.replacedRow = false;
     }
     /**
      * @param {?} value
      * @return {?}
      */
     set replace(value) {
-        this.expand.replace = !!value;
+        this.expand.setReplace(!!value);
     }
     /**
      * @return {?}
@@ -11209,7 +11621,7 @@ class ClrDatagridRowDetail {
         const columnsList = this.hideableColumnService.getColumns();
         this.updateCellsForColumns(columnsList);
         // Triggered when the Cells list changes per row-renderer
-        this._subscriptions.push(this.cells.changes.subscribe(cellList => {
+        this.subscriptions.push(this.cells.changes.subscribe(cellList => {
             /** @type {?} */
             const columnList = this.hideableColumnService.getColumns();
             if (cellList.length === columnList.length) {
@@ -11217,11 +11629,14 @@ class ClrDatagridRowDetail {
             }
         }));
         // Used to set things up the first time but only after all the columns are ready.
-        this._subscriptions.push(this.hideableColumnService.columnListChange.subscribe(columnList => {
+        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe(columnList => {
             // Prevents cell updates when cols and cells array are not aligned
             if (columnList.length === this.cells.length) {
                 this.updateCellsForColumns(columnList);
             }
+        }));
+        this.subscriptions.push(this.expand.replace.subscribe(replaceChange => {
+            this.replacedRow = replaceChange;
         }));
     }
     /**
@@ -11241,25 +11656,36 @@ class ClrDatagridRowDetail {
      * @return {?}
      */
     ngOnDestroy() {
-        this._subscriptions.forEach((sub) => sub.unsubscribe());
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
 ClrDatagridRowDetail.decorators = [
     { type: Component, args: [{
                 selector: 'clr-dg-row-detail',
                 template: `
-        <ng-container *ngIf="!replace">
-            <clr-dg-cell class="datagrid-fixed-column"
-                *ngIf="selection.selectionType === SELECTION_TYPE.Multi 
-                    || selection.selectionType === SELECTION_TYPE.Single"></clr-dg-cell>
-            <clr-dg-cell *ngIf="rowActionService.hasActionableRow" class="datagrid-fixed-column"></clr-dg-cell>
-            <clr-dg-cell class="datagrid-fixed-column"></clr-dg-cell>
+        <ng-container *ngIf="!replacedRow">
+            <!-- space for multiselection state -->
+            <div class="datagrid-cell datagrid-select datagrid-fixed-column"
+                *ngIf="selection.selectionType === SELECTION_TYPE.Multi">
+            </div>
+            <!-- space for single selection state -->
+            <div class="datagrid-cell datagrid-select datagrid-fixed-column"
+                *ngIf="selection.selectionType === SELECTION_TYPE.Single">
+            </div>
+            <!-- space for single row action; only displayType if we have at least one actionable row in datagrid -->
+            <div class="datagrid-cell datagrid-row-actions datagrid-fixed-column"
+                *ngIf="rowActionService.hasActionableRow">
+            </div>
+            <!-- space for expandable caret action; only displayType if we have at least one expandable row in datagrid -->
+            <div *ngIf="expandableRows.hasExpandableRow"
+                        class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell">
+            </div>
         </ng-container>
         <ng-content></ng-content>
     `,
                 host: {
                     '[class.datagrid-row-flex]': 'true',
-                    '[class.datagrid-row-detail]': '!replace',
+                    '[class.datagrid-row-detail]': 'true',
                     '[class.datagrid-container]': 'cells.length === 0',
                 },
             },] },
@@ -11269,51 +11695,13 @@ ClrDatagridRowDetail.ctorParameters = () => [
     { type: Selection },
     { type: RowActionService },
     { type: Expand },
-    { type: HideableColumnService }
+    { type: HideableColumnService },
+    { type: ExpandableRowsCount }
 ];
 ClrDatagridRowDetail.propDecorators = {
     cells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
     replace: [{ type: Input, args: ['clrDgReplace',] }]
 };
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-class DatagridBodyRenderer {
-    /**
-     * @param {?} el
-     * @param {?} organizer
-     * @param {?} domAdapter
-     */
-    constructor(el, organizer, domAdapter) {
-        this.el = el;
-        this.organizer = organizer;
-        this.domAdapter = domAdapter;
-        this.subscription = organizer.scrollbar.subscribe(() => this.computeScrollbarWidth());
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @return {?}
-     */
-    computeScrollbarWidth() {
-        this.organizer.scrollbarWidth.next(this.domAdapter.scrollBarWidth(this.el.nativeElement));
-    }
-}
-DatagridBodyRenderer.decorators = [
-    { type: Directive, args: [{ selector: '[clrDgBody]' },] },
-];
-/** @nocollapse */
-DatagridBodyRenderer.ctorParameters = () => [
-    { type: ElementRef },
-    { type: DatagridRenderOrganizer },
-    { type: DomAdapter }
-];
 
 /**
  * @fileoverview added by tsickle
@@ -11325,9 +11713,9 @@ DatagridBodyRenderer.ctorParameters = () => [
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 /** @type {?} */
-const NO_LAYOUT_CLASS = 'datagrid-no-layout';
+
 /** @type {?} */
-const COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
+
 /** @type {?} */
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 
@@ -11344,13 +11732,14 @@ class DatagridCellRenderer {
     constructor(el, renderer, organizer) {
         this.el = el;
         this.renderer = renderer;
-        this.subscription = organizer.clearWidths.subscribe(() => this.clearWidth());
+        this.subscriptions = [];
+        this.subscriptions.push(organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth()));
     }
     /**
      * @return {?}
      */
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     /**
      * @return {?}
@@ -11400,12 +11789,14 @@ class DatagridColumnResizer {
      * @param {?} organizer
      * @param {?} domAdapter
      * @param {?} dragDispatcher
+     * @param {?} table
      */
-    constructor(el, renderer, organizer, domAdapter, dragDispatcher) {
+    constructor(el, renderer, organizer, domAdapter, dragDispatcher, table) {
         this.renderer = renderer;
         this.organizer = organizer;
         this.domAdapter = domAdapter;
         this.dragDispatcher = dragDispatcher;
+        this.table = table;
         this.columnResizeBy = 0;
         this.dragWithinMinWidth = false;
         this.resizeEmitter = new EventEmitter();
@@ -11438,6 +11829,7 @@ class DatagridColumnResizer {
             this.columnMinWidth = this.domAdapter.minWidth(this.columnEl);
         }
         this.renderer.setStyle(this.handleTrackerEl, 'display', 'block');
+        this.renderer.setStyle(this.handleTrackerEl, 'height', this.table.getColumnDragHeight());
         this.renderer.setStyle(document.body, 'cursor', 'col-resize');
         this.dragDistancePositionX = 0;
         this.columnRectWidth = this.domAdapter.clientRect(this.columnEl).width;
@@ -11505,50 +11897,12 @@ DatagridColumnResizer.ctorParameters = () => [
     { type: Renderer2 },
     { type: DatagridRenderOrganizer },
     { type: DomAdapter },
-    { type: DragDispatcher }
+    { type: DragDispatcher },
+    { type: TableSizeService }
 ];
 DatagridColumnResizer.propDecorators = {
     resizeEmitter: [{ type: Output, args: ['clrDgColumnResize',] }]
 };
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-class DatagridHeadRenderer {
-    /**
-     * @param {?} el
-     * @param {?} renderer
-     * @param {?} organizer
-     */
-    constructor(el, renderer, organizer) {
-        this.el = el;
-        this.renderer = renderer;
-        this.subscription = organizer.scrollbarWidth.subscribe(width => this.accountForScrollbar(width));
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    /**
-     * @param {?} width
-     * @return {?}
-     */
-    accountForScrollbar(width) {
-        this.renderer.setStyle(this.el.nativeElement, 'padding-right', width + 'px');
-    }
-}
-DatagridHeadRenderer.decorators = [
-    { type: Directive, args: [{ selector: '[clrDgHead]' },] },
-];
-/** @nocollapse */
-DatagridHeadRenderer.ctorParameters = () => [
-    { type: ElementRef },
-    { type: Renderer2 },
-    { type: DatagridRenderOrganizer }
-];
 
 /**
  * @fileoverview added by tsickle
@@ -11565,12 +11919,15 @@ class DatagridHeaderRenderer {
     constructor(el, renderer, organizer, domAdapter, columnResizer) {
         this.el = el;
         this.renderer = renderer;
+        this.organizer = organizer;
         this.domAdapter = domAdapter;
         this.columnResizer = columnResizer;
-        this.subscriptions = [];
         this.widthSet = false;
-        this.subscriptions.push(organizer.clearWidths.subscribe(() => this.clearWidth()));
-        this.subscriptions.push(organizer.detectStrictWidths.subscribe(() => this.detectStrictWidth()));
+        this.subscriptions = [];
+        this.subscriptions.push(this.organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe(() => this.clearWidth()));
+        this.subscriptions.push(this.organizer
+            .filterRenderSteps(DatagridRenderStep.DETECT_STRICT_WIDTHS)
+            .subscribe(() => this.detectStrictWidth()));
     }
     /**
      * @return {?}
@@ -11620,8 +11977,8 @@ class DatagridHeaderRenderer {
                 this.columnResizer.columnResizeBy = 0;
                 this.widthSet = false;
             }
+            // Don't set width if there is a user-defined one. Just add the strict width class.
             this.renderer.addClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
-            // We don't actually set the width if there already is a user-defined one, we just add the class
             return;
         }
         this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
@@ -11734,16 +12091,18 @@ class DatagridMainRenderer {
      * @param {?} domAdapter
      * @param {?} el
      * @param {?} renderer
+     * @param {?} tableSizeService
      */
-    constructor(organizer, items, page, domAdapter, el, renderer) {
+    constructor(organizer, items, page, domAdapter, el, renderer, tableSizeService) {
         this.organizer = organizer;
         this.items = items;
         this.page = page;
         this.domAdapter = domAdapter;
         this.el = el;
         this.renderer = renderer;
+        this.tableSizeService = tableSizeService;
         this._heightSet = false;
-        this._subscriptions = [];
+        this.subscriptions = [];
         /**
          * Indicates if we want to re-compute columns width. This should only happen:
          * 1) When headers change, with columns being added or removed
@@ -11751,23 +12110,31 @@ class DatagridMainRenderer {
          */
         this.columnsSizesStable = false;
         this.shouldStabilizeColumns = true;
-        this._subscriptions.push(organizer.computeWidths.subscribe(() => this.computeHeadersWidth()));
-        this._subscriptions.push(this.page.sizeChange.subscribe(() => {
+        this.subscriptions.push(this.organizer
+            .filterRenderSteps(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS)
+            .subscribe(() => this.computeHeadersWidth()));
+        this.subscriptions.push(this.page.sizeChange.subscribe(() => {
             if (this._heightSet) {
                 this.resetDatagridHeight();
             }
         }));
-        this._subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
+        this.subscriptions.push(this.items.change.subscribe(() => (this.shouldStabilizeColumns = true)));
     }
     /**
      * @return {?}
      */
     ngAfterContentInit() {
-        this._subscriptions.push(this.headers.changes.subscribe(() => {
+        this.subscriptions.push(this.headers.changes.subscribe(() => {
             // TODO: only re-stabilize if a column was added or removed. Reordering is fine.
             this.columnsSizesStable = false;
             this.stabilizeColumns();
         }));
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        this.tableSizeService.table = this.el;
     }
     /**
      * @return {?}
@@ -11821,7 +12188,7 @@ class DatagridMainRenderer {
      * @return {?}
      */
     ngOnDestroy() {
-        this._subscriptions.forEach(sub => sub.unsubscribe());
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     /**
      * Makes each header compute its width.
@@ -11854,27 +12221,10 @@ class DatagridMainRenderer {
     stabilizeColumns() {
         this.shouldStabilizeColumns = false;
         if (this.columnsSizesStable) {
-            // change in items might have introduced/taken away the scrollbar
-            // FIXME: setTimeout is needed here because:
-            // When the user changes the page the following things happen:
-            // 1. The array which contains the items displayed is updated to contain the items on the new page.
-            // 2. An event is emitted which is subscribed to by the main renderer (this file) and this marks the
-            // shouldStabilizeColumns flag to true
-            // 3. While this is happening the datagrid is in the process of cleaning up the view. The view first
-            // renders the new displayed items and then cleans up the old items. But there is a point where the view
-            // contains the old items as well as the new items. So if the page size is 10 the view contains 20 items.
-            // This causes the datagrid body to overflow.
-            // Now since shouldStabilizeColumns was set to true, the scrollbar width is calculated
-            // and added to the datagrid header. Adding the setTimeout gives Angular time to clean up the view so that
-            // the scrollbar disappears.
-            // See this: https://github.com/angular/angular/issues/19094
-            // When the above issue is resolve, remove the setTimeout
-            setTimeout(() => {
-                this.organizer.scrollbar.next();
-            });
+            // Nothing to do.
             return;
         }
-        // No point resizing if there are no rows, we wait until they are actually loaded.
+        // Resize when the rows are loaded.
         if (this.items.displayed.length > 0) {
             this.organizer.resize();
             this.columnsSizesStable = true;
@@ -11894,10 +12244,12 @@ DatagridMainRenderer.ctorParameters = () => [
     { type: Page },
     { type: DomAdapter },
     { type: ElementRef },
-    { type: Renderer2 }
+    { type: Renderer2 },
+    { type: TableSizeService }
 ];
 DatagridMainRenderer.propDecorators = {
-    headers: [{ type: ContentChildren, args: [DatagridHeaderRenderer,] }]
+    headers: [{ type: ContentChildren, args: [DatagridHeaderRenderer,] }],
+    columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }]
 };
 
 /**
@@ -11910,13 +12262,14 @@ class DatagridRowRenderer {
      */
     constructor(organizer) {
         this.organizer = organizer;
-        this.subscription = organizer.alignColumns.subscribe(() => this.setWidths());
+        this.subscriptions = [];
+        this.subscriptions.push(organizer.filterRenderSteps(DatagridRenderStep.ALIGN_COLUMNS).subscribe(() => this.setWidths()));
     }
     /**
      * @return {?}
      */
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     /**
      * @return {?}
@@ -11961,89 +12314,6 @@ DatagridRowRenderer.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-class DatagridTableRenderer {
-    /**
-     * @param {?} el
-     * @param {?} renderer
-     * @param {?} organizer
-     */
-    constructor(el, renderer, organizer) {
-        this.el = el;
-        this.renderer = renderer;
-        this.subscriptions = [];
-        this.subscriptions.push(organizer.tableMode.subscribe(on => this.tableMode(on)));
-        this.subscriptions.push(organizer.noLayout.subscribe(on => this.noLayout(on)));
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.subscriptions.forEach(sub => sub.unsubscribe());
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewInit() {
-        this.outsideContainer.createEmbeddedView(this.projected);
-    }
-    /**
-     * @param {?} on
-     * @return {?}
-     */
-    tableMode(on) {
-        if (on) {
-            // We move stuff into the body before making it visible
-            this.insideContainer.insert(this.outsideContainer.detach(0), 0);
-            this.renderer.addClass(this.el.nativeElement, COMPUTE_WIDTH_CLASS);
-        }
-        else {
-            // We make stuff invisible before moving it out of the body
-            this.renderer.removeClass(this.el.nativeElement, COMPUTE_WIDTH_CLASS);
-            this.outsideContainer.insert(this.insideContainer.detach(0), 0);
-        }
-    }
-    /**
-     * @param {?} on
-     * @return {?}
-     */
-    noLayout(on) {
-        if (on) {
-            this.renderer.addClass(this.el.nativeElement, NO_LAYOUT_CLASS);
-        }
-        else {
-            this.renderer.removeClass(this.el.nativeElement, NO_LAYOUT_CLASS);
-        }
-    }
-}
-DatagridTableRenderer.decorators = [
-    { type: Component, args: [{
-                selector: 'clr-dg-table-wrapper',
-                template: `
-        <ng-template #head><ng-content select="[clrDgHead]"></ng-content></ng-template>
-        <ng-container #outside></ng-container>
-        <div clrDgBody class="datagrid-body" role="rowgroup">
-            <ng-container #inside></ng-container>
-            <ng-content></ng-content>
-        </div>
-    `,
-            },] },
-];
-/** @nocollapse */
-DatagridTableRenderer.ctorParameters = () => [
-    { type: ElementRef },
-    { type: Renderer2 },
-    { type: DatagridRenderOrganizer }
-];
-DatagridTableRenderer.propDecorators = {
-    projected: [{ type: ViewChild, args: ['head',] }],
-    outsideContainer: [{ type: ViewChild, args: ['outside', { read: ViewContainerRef },] }],
-    insideContainer: [{ type: ViewChild, args: ['inside', { read: ViewContainerRef },] }]
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 /*
  * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
@@ -12069,11 +12339,11 @@ const CLR_DATAGRID_DIRECTIVES = [
     ClrDatagridPlaceholder,
     ClrDatagridColumnToggleButton,
     ClrDatagridColumnToggleTitle,
+    WrappedCell,
+    WrappedColumn,
+    WrappedRow,
     DatagridMainRenderer,
-    DatagridTableRenderer,
-    DatagridHeadRenderer,
     DatagridHeaderRenderer,
-    DatagridBodyRenderer,
     DatagridColumnResizer,
     DatagridRowRenderer,
     DatagridCellRenderer,
@@ -12098,6 +12368,7 @@ ClrDatagridModule.decorators = [
                 ],
                 declarations: [CLR_DATAGRID_DIRECTIVES],
                 exports: [CLR_DATAGRID_DIRECTIVES, ClrIfExpandModule],
+                entryComponents: [WrappedCell, WrappedColumn, WrappedRow],
             },] },
 ];
 
@@ -21443,5 +21714,5 @@ function slide(direction) {
  * Generated bundle index. Do not edit.
  */
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdh, DatagridRowExpandAnimation as ɵcx, ActionableOompaLoompa as ɵcu, DatagridWillyWonka as ɵcs, ExpandableOompaLoompa as ɵcw, ClrDatagridColumnToggleButton as ɵcf, ClrDatagridColumnToggleTitle as ɵce, DatagridDetailRegisterer as ɵch, ClrDatagridItemsTrackBy as ɵcg, ColumnToggleButtonsService as ɵbz, CustomFilter as ɵcc, DragDispatcher as ɵcb, FiltersProvider as ɵbq, ExpandableRowsCount as ɵbw, HideableColumnService as ɵbx, Items as ɵbp, Page as ɵbr, RowActionService as ɵbv, Selection as ɵbo, Sort as ɵbt, StateDebouncer as ɵbs, StateProvider as ɵby, DatagridBodyRenderer as ɵcp, DatagridCellRenderer as ɵcr, DatagridColumnResizer as ɵcm, DatagridHeadRenderer as ɵco, DatagridHeaderRenderer as ɵcl, DatagridMainRenderer as ɵcj, domAdapterFactory as ɵci, DatagridRenderOrganizer as ɵbu, DatagridRowRenderer as ɵcq, DatagridTableRenderer as ɵcn, DatagridFilterRegistrar as ɵca, StackControl as ɵcz, AbstractTreeSelection as ɵda, clrTreeSelectionProviderFactory as ɵdc, TreeSelectionService as ɵdb, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵs, ControlClassService as ɵbf, ControlIdService as ɵq, FocusService as ɵbg, LayoutService as ɵr, IS_NEW_FORMS_LAYOUT as ɵu, IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER as ɵv, NgControlService as ɵt, WrappedFormControl as ɵy, DateFormControlService as ɵbd, DateIOService as ɵbh, DateNavigationService as ɵbc, DatepickerEnabledService as ɵbi, DatepickerFocusService as ɵbk, LocaleHelperService as ɵbe, ViewManagerService as ɵbj, ResponsiveNavigationProvider as ɵdj, ResponsiveNavigationService as ɵdi, ActiveOompaLoompa as ɵdt, TabsWillyWonka as ɵds, AriaService as ɵdn, TabsService as ɵdr, TABS_ID as ɵdo, TABS_ID_PROVIDER as ɵdq, tokenFactory$1 as ɵdp, VerticalNavGroupRegistrationService as ɵdw, VerticalNavGroupService as ɵdx, VerticalNavIconService as ɵdv, VerticalNavService as ɵdu, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcv, WillyWonka as ɵct, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, DomAdapter as ɵck, DragAndDropEventBusService as ɵed, DragEventListenerService as ɵec, DragHandleRegistrarService as ɵee, DraggableSnapshotService as ɵef, GlobalDragModeService as ɵeg, ClrIfExpandModule as ɵcy, Expand as ɵcd, FocusTrapDirective as ɵbb, ClrFocusTrapModule as ɵz, FOCUS_TRAP_DIRECTIVES as ɵba, EmptyAnchor as ɵx, ClrHostWrappingModule as ɵw, UNIQUE_ID as ɵdd, UNIQUE_ID_PROVIDER as ɵdf, uniqueIdFactory as ɵde, OUSTIDE_CLICK_DIRECTIVES as ɵbm, OutsideClick as ɵbn, ClrOutsideClickModule as ɵbl, ScrollingService as ɵdg, TEMPLATE_REF_DIRECTIVES as ɵdl, TemplateRefContainer as ɵdm, ClrTemplateRefModule as ɵdk, ButtonHubService as ɵea, HeaderActionService as ɵeb, PageCollectionService as ɵdz, WizardNavigationService as ɵdy };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrTreeNode, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckboxNext, ClrCheckboxContainer, ClrCheckboxNextModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceProvider, ToggleService, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsNextModule, ClrCheckboxDeprecated, CLR_CHECKBOX_DIRECTIVES, ClrCheckboxModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdj, DatagridRowExpandAnimation as ɵcz, ActionableOompaLoompa as ɵcw, DatagridWillyWonka as ɵcu, ExpandableOompaLoompa as ɵcy, ClrDatagridColumnToggleButton as ɵch, ClrDatagridColumnToggleTitle as ɵcg, DatagridDetailRegisterer as ɵcj, ClrDatagridItemsTrackBy as ɵci, ColumnToggleButtonsService as ɵbz, CustomFilter as ɵce, DisplayModeService as ɵcb, DragDispatcher as ɵcd, FiltersProvider as ɵbq, ExpandableRowsCount as ɵbw, HideableColumnService as ɵbx, Items as ɵbp, Page as ɵbr, RowActionService as ɵbv, Selection as ɵbo, Sort as ɵbt, StateDebouncer as ɵbs, StateProvider as ɵby, TableSizeService as ɵca, DatagridCellRenderer as ɵct, DatagridColumnResizer as ɵcr, DatagridHeaderRenderer as ɵcq, DatagridMainRenderer as ɵco, domAdapterFactory as ɵcn, DatagridRenderOrganizer as ɵbu, DatagridRowRenderer as ɵcs, DatagridFilterRegistrar as ɵcc, WrappedCell as ɵck, WrappedColumn as ɵcl, WrappedRow as ɵcm, StackControl as ɵdb, AbstractTreeSelection as ɵdc, clrTreeSelectionProviderFactory as ɵde, TreeSelectionService as ɵdd, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵs, ControlClassService as ɵbf, ControlIdService as ɵq, FocusService as ɵbg, LayoutService as ɵr, IS_NEW_FORMS_LAYOUT as ɵu, IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER as ɵv, NgControlService as ɵt, WrappedFormControl as ɵy, DateFormControlService as ɵbd, DateIOService as ɵbh, DateNavigationService as ɵbc, DatepickerEnabledService as ɵbi, DatepickerFocusService as ɵbk, LocaleHelperService as ɵbe, ViewManagerService as ɵbj, ResponsiveNavigationProvider as ɵdl, ResponsiveNavigationService as ɵdk, ActiveOompaLoompa as ɵdv, TabsWillyWonka as ɵdu, AriaService as ɵdp, TabsService as ɵdt, TABS_ID as ɵdq, TABS_ID_PROVIDER as ɵds, tokenFactory$1 as ɵdr, VerticalNavGroupRegistrationService as ɵdy, VerticalNavGroupService as ɵdz, VerticalNavIconService as ɵdx, VerticalNavService as ɵdw, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵcx, WillyWonka as ɵcv, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, DomAdapter as ɵcp, DragAndDropEventBusService as ɵef, DragEventListenerService as ɵee, DragHandleRegistrarService as ɵeg, DraggableSnapshotService as ɵeh, GlobalDragModeService as ɵei, ClrIfExpandModule as ɵda, Expand as ɵcf, FocusTrapDirective as ɵbb, ClrFocusTrapModule as ɵz, FOCUS_TRAP_DIRECTIVES as ɵba, EmptyAnchor as ɵx, ClrHostWrappingModule as ɵw, UNIQUE_ID as ɵdf, UNIQUE_ID_PROVIDER as ɵdh, uniqueIdFactory as ɵdg, OUSTIDE_CLICK_DIRECTIVES as ɵbm, OutsideClick as ɵbn, ClrOutsideClickModule as ɵbl, ScrollingService as ɵdi, TEMPLATE_REF_DIRECTIVES as ɵdn, TemplateRefContainer as ɵdo, ClrTemplateRefModule as ɵdm, ButtonHubService as ɵec, HeaderActionService as ɵed, PageCollectionService as ɵeb, WizardNavigationService as ɵea };
 //# sourceMappingURL=clr-angular.js.map

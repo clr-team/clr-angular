@@ -4,7 +4,7 @@ export declare class DatagridCellRenderer implements OnDestroy {
     private el;
     private renderer;
     constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer);
-    private subscription;
+    private subscriptions;
     ngOnDestroy(): void;
     private clearWidth;
     setWidth(strict: boolean, value: number): void;

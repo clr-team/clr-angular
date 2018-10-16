@@ -3,7 +3,9 @@ import { LoadingListener } from '../../../utils/loading/loading-listener';
 import { ClrLoadingState } from '../../loading/loading';
 export declare class Expand implements LoadingListener {
     expandable: number;
-    replace: boolean;
+    private _replace;
+    readonly replace: Observable<boolean>;
+    setReplace(replaceValue: boolean): void;
     private _loading;
     loading: boolean;
     private _expanded;

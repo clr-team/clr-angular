@@ -3,6 +3,7 @@ import { Page } from './providers/page';
 export declare class ClrDatagridPagination implements OnDestroy, OnInit {
     page: Page;
     constructor(page: Page);
+    private defaultSize;
     /**********
      * Subscription to the Page service for page changes.
      * Note: this only emits after the datagrid is initialized/stabalized and the page changes.

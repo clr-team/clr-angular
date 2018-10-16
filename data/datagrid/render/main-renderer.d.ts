@@ -1,21 +1,26 @@
-import { AfterContentInit, AfterViewChecked, ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, AfterViewInit, ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
+import { ClrDatagridColumn } from '../datagrid-column';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
+import { TableSizeService } from '../providers/table-size.service';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 export declare const domAdapterFactory: (platformId: Object) => DomAdapter | NoopDomAdapter;
-export declare class DatagridMainRenderer<T = any> implements AfterContentInit, AfterViewChecked, OnDestroy {
+export declare class DatagridMainRenderer<T = any> implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
     private organizer;
     private items;
     private page;
     private domAdapter;
     private el;
     private renderer;
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2);
+    private tableSizeService;
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, tableSizeService: TableSizeService);
     headers: QueryList<DatagridHeaderRenderer>;
+    columns: QueryList<ClrDatagridColumn>;
     ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
     ngAfterViewChecked(): void;
     private _heightSet;
     private shouldComputeHeight;
@@ -31,7 +36,7 @@ export declare class DatagridMainRenderer<T = any> implements AfterContentInit, 
      */
     private computeDatagridHeight;
     private resetDatagridHeight;
-    private _subscriptions;
+    private subscriptions;
     ngOnDestroy(): void;
     /**
      * Makes each header compute its width.

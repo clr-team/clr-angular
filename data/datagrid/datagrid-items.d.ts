@@ -1,15 +1,18 @@
-import { DoCheck, IterableDiffers, OnChanges, SimpleChanges, TemplateRef, TrackByFunction } from '@angular/core';
 import { NgForOfContext } from '@angular/common';
+import { DoCheck, IterableDiffers, TemplateRef, TrackByFunction, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Items } from './providers/items';
-export declare class ClrDatagridItems<T = any> implements OnChanges, DoCheck {
+export declare class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     template: TemplateRef<NgForOfContext<T>>;
-    private _differs;
-    private _items;
+    private differs;
+    private items;
+    private vcr;
+    private iterableProxy;
     private _rawItems;
+    private differ;
+    private subscriptions;
     rawItems: T[];
-    private _differ;
-    constructor(template: TemplateRef<NgForOfContext<T>>, _differs: IterableDiffers, _items: Items<T>);
-    ngOnChanges(changes: SimpleChanges): void;
     trackBy: TrackByFunction<T>;
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items, vcr: ViewContainerRef);
     ngDoCheck(): void;
+    ngOnDestroy(): void;
 }

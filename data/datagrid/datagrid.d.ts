@@ -1,9 +1,10 @@
-import { AfterContentInit, AfterViewInit, EventEmitter, OnDestroy, QueryList } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, OnDestroy, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
+import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { HideableColumnService } from './providers/hideable-column.service';
 import { Items } from './providers/items';
@@ -20,8 +21,11 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     selection: Selection<T>;
     rowActionService: RowActionService;
     private stateProvider;
+    private displayMode;
+    private renderer;
+    private el;
     commonStrings: ClrCommonStrings;
-    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, commonStrings: ClrCommonStrings);
+    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
     SELECTION_TYPE: typeof SelectionType;
     /**
      * Freezes the datagrid while data is loading
@@ -80,6 +84,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      * displayed, typically for selection.
      */
     rows: QueryList<ClrDatagridRow<T>>;
+    scrollableColumns: ViewContainerRef;
     ngAfterContentInit(): void;
     /**
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
@@ -91,4 +96,8 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     private _subscriptions;
     ngOnDestroy(): void;
     resize(): void;
+    _projectedDisplayColumns: ViewContainerRef;
+    _projectedCalculationColumns: ViewContainerRef;
+    _displayedRows: ViewContainerRef;
+    _calculationRows: ViewContainerRef;
 }

@@ -1,16 +1,17 @@
-import { ElementRef, EventEmitter } from '@angular/core';
+import { ElementRef, EventEmitter, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
+import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
-import { ClrDatagridSortOrder } from './interfaces/sort-order';
 import { DragDispatcher } from './providers/drag-dispatcher';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
-export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> {
+export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements OnDestroy, OnInit {
     private _sort;
     private _dragDispatcher;
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, _dragDispatcher: DragDispatcher);
+    private vcr;
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, _dragDispatcher: DragDispatcher, vcr: ViewContainerRef);
     /**
      * @property columnId
      *
@@ -101,4 +102,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      *
      */
     hideable: DatagridHideableColumnModel;
+    private wrappedInjector;
+    ngOnInit(): void;
+    readonly _view: any;
 }

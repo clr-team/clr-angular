@@ -1,5 +1,5 @@
 export declare class DomAdapter {
-    userDefinedWidth(element: any): number;
+    userDefinedWidth(element: HTMLElement): number;
     scrollBarWidth(element: any): number;
     scrollWidth(element: any): any;
     computedHeight(element: any): number;
