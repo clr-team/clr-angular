@@ -15262,7 +15262,8 @@ ClrAlert.decorators = [
     [ngClass]="alertClass"
     [class.alert-hidden]="isHidden"
     [class.alert-sm]="isSmall"
-    [class.alert-app-level]="isAppLevel">
+    [class.alert-app-level]="isAppLevel"
+    role="alert">
     <div class="alert-items">
         <ng-content></ng-content>
     </div>
