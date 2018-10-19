@@ -1,4 +1,4 @@
-import { TemplateRef, ViewContainerRef } from '@angular/core';
+import { TemplateRef, ViewContainerRef, EventEmitter } from '@angular/core';
 import { ClrDatagridColumn } from './datagrid-column';
 import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
 export declare class ClrDatagridHideableColumn {
@@ -29,6 +29,8 @@ export declare class ClrDatagridHideableColumn {
     clrDgHideableColumn: {
         hidden: boolean;
     };
+    clrDgHidden: boolean;
+    hiddenChange: EventEmitter<boolean>;
     /**
      *
      * @description

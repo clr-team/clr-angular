@@ -11294,12 +11294,14 @@ class ClrDatagridHideableColumn {
         this.templateRef = templateRef;
         this.viewContainerRef = viewContainerRef;
         this.dgColumn = dgColumn;
+        this.hiddenChange = new EventEmitter();
         this.columnId = dgColumn.columnId;
         // Use the templateRef to create this view
         this.viewContainerRef.createEmbeddedView(this.templateRef);
         // Create instance of the utility class DatagridHideableColumn.
         // Note this is on the parent instance of DatagridColumn.
         this.dgColumn.hideable = new DatagridHideableColumnModel(this.templateRef, this.columnId, this._hidden);
+        this.dgColumn.hideable.hiddenChangeState.subscribe(state$$1 => this.hiddenChange.emit(state$$1));
     }
     /**
      *
@@ -11318,9 +11320,16 @@ class ClrDatagridHideableColumn {
      * @return {?}
      */
     set clrDgHideableColumn(value) {
-        this._hidden = value && value.hidden ? value.hidden : false;
+        this.clrDgHidden = value && value.hidden ? value.hidden : false;
+    }
+    /**
+     * @param {?} hidden
+     * @return {?}
+     */
+    set clrDgHidden(hidden) {
+        this._hidden = hidden ? hidden : false;
         if (this.dgColumn.hideable) {
-            this.dgColumn.hideable.hidden = value && value.hidden ? value.hidden : false;
+            this.dgColumn.hideable.hidden = this._hidden;
         }
     }
 }
@@ -11334,7 +11343,9 @@ ClrDatagridHideableColumn.ctorParameters = () => [
     { type: ClrDatagridColumn }
 ];
 ClrDatagridHideableColumn.propDecorators = {
-    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }]
+    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }],
+    clrDgHidden: [{ type: Input, args: ['clrDgHidden',] }],
+    hiddenChange: [{ type: Output, args: ['clrDgHiddenChange',] }]
 };
 
 /**

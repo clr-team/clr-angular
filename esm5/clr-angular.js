@@ -7072,18 +7072,28 @@ var DatagridHideableColumnModel = /** @class */ (function () {
 }());
 var ClrDatagridHideableColumn = /** @class */ (function () {
     function ClrDatagridHideableColumn(templateRef, viewContainerRef, dgColumn) {
+        var _this = this;
         this.templateRef = templateRef;
         this.viewContainerRef = viewContainerRef;
         this.dgColumn = dgColumn;
+        this.hiddenChange = new EventEmitter();
         this.columnId = dgColumn.columnId;
         this.viewContainerRef.createEmbeddedView(this.templateRef);
         this.dgColumn.hideable = new DatagridHideableColumnModel(this.templateRef, this.columnId, this._hidden);
+        this.dgColumn.hideable.hiddenChangeState.subscribe(function (state$$1) { return _this.hiddenChange.emit(state$$1); });
     }
     Object.defineProperty(ClrDatagridHideableColumn.prototype, "clrDgHideableColumn", {
         set: function (value) {
-            this._hidden = value && value.hidden ? value.hidden : false;
+            this.clrDgHidden = value && value.hidden ? value.hidden : false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrDatagridHideableColumn.prototype, "clrDgHidden", {
+        set: function (hidden) {
+            this._hidden = hidden ? hidden : false;
             if (this.dgColumn.hideable) {
-                this.dgColumn.hideable.hidden = value && value.hidden ? value.hidden : false;
+                this.dgColumn.hideable.hidden = this._hidden;
             }
         },
         enumerable: true,
@@ -7100,7 +7110,9 @@ ClrDatagridHideableColumn.ctorParameters = function () { return [
     { type: ClrDatagridColumn }
 ]; };
 ClrDatagridHideableColumn.propDecorators = {
-    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }]
+    clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }],
+    clrDgHidden: [{ type: Input, args: ['clrDgHidden',] }],
+    hiddenChange: [{ type: Output, args: ['clrDgHiddenChange',] }]
 };
 var ClrDatagridItemsTrackBy = /** @class */ (function () {
     function ClrDatagridItemsTrackBy(_items) {
