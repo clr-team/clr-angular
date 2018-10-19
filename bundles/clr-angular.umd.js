@@ -11230,7 +11230,7 @@ var ClrModal = /** @class */ (function () {
         this._scrollingService.resumeScrolling();
     };
     ClrModal.prototype.open = function () {
-        if (this._open === true) {
+        if (this._open) {
             return;
         }
         this._open = true;
@@ -11241,7 +11241,7 @@ var ClrModal = /** @class */ (function () {
             this.altClose.emit(false);
             return;
         }
-        if (!this.closable || this._open === false) {
+        if (!this.closable || !this._open) {
             return;
         }
         this._open = false;

@@ -17388,7 +17388,7 @@ class ClrModal {
      * @return {?}
      */
     open() {
-        if (this._open === true) {
+        if (this._open) {
             return;
         }
         this._open = true;
@@ -17402,7 +17402,7 @@ class ClrModal {
             this.altClose.emit(false);
             return;
         }
-        if (!this.closable || this._open === false) {
+        if (!this.closable || !this._open) {
             return;
         }
         this._open = false;
