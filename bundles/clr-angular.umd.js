@@ -11964,9 +11964,6 @@ var WizardNavigationService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    WizardNavigationService.prototype.setCurrentPage = function (page) {
-        this.currentPage = page;
-    };
     Object.defineProperty(WizardNavigationService.prototype, "movedToNextPage", {
         get: function () {
             return this._movedToNextPage.asObservable();
@@ -12783,9 +12780,6 @@ var ClrWizard = /** @class */ (function () {
         else {
             this.close();
         }
-    };
-    ClrWizard.prototype.prev = function () {
-        this.previous();
     };
     ClrWizard.prototype.previous = function () {
         this.navService.previous();

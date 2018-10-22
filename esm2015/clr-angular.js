@@ -18674,18 +18674,6 @@ class WizardNavigationService {
         }
     }
     /**
-     * (DEPRECATED) A legacy means of setting the current page in the wizard.
-     * Deprecated in 0.9.4. Accepts a ClrWizardPage object as a parameter and then
-     * tries to set that page to be the current page in the wizard.
-     *
-     * \@memberof WizardNavigationService
-     * @param {?} page
-     * @return {?}
-     */
-    setCurrentPage(page) {
-        this.currentPage = page;
-    }
-    /**
      * An observable used internally to alert the wizard that forward navigation
      * has occurred. It is recommended that you use the Wizard.onMoveNext
      * (clrWizardOnNext) output instead of this one.
@@ -20420,18 +20408,6 @@ class ClrWizard {
         else {
             this.close();
         }
-    }
-    /**
-     * DEPRECATED. Moves the wizard to the previous page. Carried over from legacy.
-     *
-     * It is recommended that you use previous() instead.
-     *
-     * \@name prev
-     * \@memberof ClrWizard
-     * @return {?}
-     */
-    prev() {
-        this.previous();
     }
     /**
      * Moves the wizard to the previous page.

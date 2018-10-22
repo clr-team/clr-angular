@@ -163,14 +163,6 @@ export declare class WizardNavigationService implements OnDestroy {
     */
     currentPage: ClrWizardPage;
     /**
-     * (DEPRECATED) A legacy means of setting the current page in the wizard.
-     * Deprecated in 0.9.4. Accepts a ClrWizardPage object as a parameter and then
-     * tries to set that page to be the current page in the wizard.
-     *
-     * @memberof WizardNavigationService
-     */
-    setCurrentPage(page: ClrWizardPage): void;
-    /**
      * @memberof WizardNavigationService
      */
     private _movedToNextPage;

@@ -327,15 +327,6 @@ export declare class ClrWizard implements OnInit, OnDestroy, AfterContentInit, D
      */
     toggle(value: boolean): void;
     /**
-     * DEPRECATED. Moves the wizard to the previous page. Carried over from legacy.
-     *
-     * It is recommended that you use previous() instead.
-     *
-     * @name prev
-     * @memberof ClrWizard
-     */
-    prev(): void;
-    /**
      * Moves the wizard to the previous page.
      *
      * @name previous
