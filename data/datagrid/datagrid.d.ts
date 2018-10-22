@@ -58,11 +58,6 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
      */
     rowSelectionMode: boolean;
     /**
-     * stay backwards compatible , will be renamed to clrDgRowSelection
-     * @deprecated since 0.12
-     */
-    rowSelectionModeDeprecated: boolean;
-    /**
      * Indicates if all currently displayed items are selected
      */
     /**

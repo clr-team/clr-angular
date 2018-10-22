@@ -6500,10 +6500,8 @@ var ColumnToggleButtonsService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    ColumnToggleButtonsService.prototype.buttonClicked = function (type) {
-        if (type.toLowerCase() === 'selectall') {
-            this._selectAllButtonClicked.next();
-        }
+    ColumnToggleButtonsService.prototype.buttonClicked = function () {
+        this._selectAllButtonClicked.next();
     };
     return ColumnToggleButtonsService;
 }());
@@ -6704,13 +6702,6 @@ var ClrDatagrid = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClrDatagrid.prototype, "rowSelectionModeDeprecated", {
-        set: function (value) {
-            this.rowSelectionMode = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ClrDatagrid.prototype, "allSelected", {
         get: function () {
             return this.selection.isAllSelected();
@@ -6837,7 +6828,6 @@ ClrDatagrid.propDecorators = {
     singleSelected: [{ type: core.Input, args: ['clrDgSingleSelected',] }],
     singleSelectedChanged: [{ type: core.Output, args: ['clrDgSingleSelectedChange',] }],
     rowSelectionMode: [{ type: core.Input, args: ['clrDgRowSelection',] }],
-    rowSelectionModeDeprecated: [{ type: core.Input, args: ['clDgRowSelection',] }],
     placeholder: [{ type: core.ContentChild, args: [ClrDatagridPlaceholder,] }],
     columns: [{ type: core.ContentChildren, args: [ClrDatagridColumn,] }],
     rows: [{ type: core.ContentChildren, args: [ClrDatagridRow,] }],
@@ -6916,25 +6906,18 @@ ClrDatagridActionOverflow.propDecorators = {
 var ClrDatagridColumnToggleButton = /** @class */ (function () {
     function ClrDatagridColumnToggleButton(toggleButtons) {
         this.toggleButtons = toggleButtons;
-        this.clrType = 'selectAll';
     }
-    ClrDatagridColumnToggleButton.prototype.click = function () {
-        this.toggleButtons.buttonClicked(this.clrType);
-    };
     return ClrDatagridColumnToggleButton;
 }());
 ClrDatagridColumnToggleButton.decorators = [
     { type: core.Component, args: [{
                 selector: 'clr-dg-column-toggle-button',
-                template: "\n        <button class=\"btn btn-sm btn-link\"\n            (click)=\"click()\"\n            [disabled]=\"toggleButtons.selectAllDisabled\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    ",
+                template: "\n        <button class=\"btn btn-sm btn-link\"\n            (click)=\"toggleButtons.buttonClicked()\"\n            [disabled]=\"toggleButtons.selectAllDisabled\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    ",
             },] },
 ];
 ClrDatagridColumnToggleButton.ctorParameters = function () { return [
     { type: ColumnToggleButtonsService }
 ]; };
-ClrDatagridColumnToggleButton.propDecorators = {
-    clrType: [{ type: core.Input }]
-};
 var ClrDatagridColumnToggleTitle = /** @class */ (function () {
     function ClrDatagridColumnToggleTitle() {
     }

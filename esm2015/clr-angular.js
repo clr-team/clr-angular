@@ -10202,13 +10202,10 @@ class ColumnToggleButtonsService {
         return this._selectAllButtonClicked.asObservable();
     }
     /**
-     * @param {?} type
      * @return {?}
      */
-    buttonClicked(type) {
-        if (type.toLowerCase() === 'selectall') {
-            this._selectAllButtonClicked.next();
-        }
+    buttonClicked() {
+        this._selectAllButtonClicked.next();
     }
 }
 ColumnToggleButtonsService.decorators = [
@@ -10492,15 +10489,6 @@ class ClrDatagrid {
         this.selection.rowSelectionMode = value;
     }
     /**
-     * stay backwards compatible , will be renamed to clrDgRowSelection
-     * @deprecated since 0.12
-     * @param {?} value
-     * @return {?}
-     */
-    set rowSelectionModeDeprecated(value) {
-        this.rowSelectionMode = value;
-    }
-    /**
      * Indicates if all currently displayed items are selected
      * @return {?}
      */
@@ -10718,7 +10706,6 @@ ClrDatagrid.propDecorators = {
     singleSelected: [{ type: Input, args: ['clrDgSingleSelected',] }],
     singleSelectedChanged: [{ type: Output, args: ['clrDgSingleSelectedChange',] }],
     rowSelectionMode: [{ type: Input, args: ['clrDgRowSelection',] }],
-    rowSelectionModeDeprecated: [{ type: Input, args: ['clDgRowSelection',] }],
     placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
     columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
     rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }],
@@ -10852,16 +10839,6 @@ class ClrDatagridColumnToggleButton {
      */
     constructor(toggleButtons) {
         this.toggleButtons = toggleButtons;
-        /**
-         * @deprecated since 0.13
-         */
-        this.clrType = 'selectAll';
-    }
-    /**
-     * @return {?}
-     */
-    click() {
-        this.toggleButtons.buttonClicked(this.clrType);
     }
 }
 ClrDatagridColumnToggleButton.decorators = [
@@ -10869,7 +10846,7 @@ ClrDatagridColumnToggleButton.decorators = [
                 selector: 'clr-dg-column-toggle-button',
                 template: `
         <button class="btn btn-sm btn-link"
-            (click)="click()"
+            (click)="toggleButtons.buttonClicked()"
             [disabled]="toggleButtons.selectAllDisabled"
             type="button">
             <ng-content></ng-content>
@@ -10881,9 +10858,6 @@ ClrDatagridColumnToggleButton.decorators = [
 ClrDatagridColumnToggleButton.ctorParameters = () => [
     { type: ColumnToggleButtonsService }
 ];
-ClrDatagridColumnToggleButton.propDecorators = {
-    clrType: [{ type: Input }]
-};
 
 /**
  * @fileoverview added by tsickle
