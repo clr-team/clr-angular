@@ -1,0 +1,45 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ClrIconModule } from '../../icon/icon.module';
+import { ClrConditionalModule } from '../../utils/conditional/conditional.module';
+import { ClrFocusTrapModule } from '../../utils/focus-trap/focus-trap.module';
+import { ClrHostWrappingModule } from '../../utils/host-wrapping/host-wrapping.module';
+import { ClrCalendar } from './calendar';
+import { ClrDateContainer } from './date-container';
+import { ClrDateInput } from './date-input';
+import { ClrDatepickerViewManager } from './datepicker-view-manager';
+import { ClrDay } from './day';
+import { ClrDaypicker } from './daypicker';
+import { ClrMonthpicker } from './monthpicker';
+import { ClrYearpicker } from './yearpicker';
+/** @type {?} */
+export const CLR_DATEPICKER_DIRECTIVES = [
+    ClrDay,
+    ClrDateContainer,
+    ClrDateInput,
+    ClrDatepickerViewManager,
+    ClrMonthpicker,
+    ClrYearpicker,
+    ClrDaypicker,
+    ClrCalendar,
+];
+export class ClrDatepickerModule {
+}
+ClrDatepickerModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, ClrHostWrappingModule, ClrConditionalModule, ClrIconModule, ClrFocusTrapModule],
+                declarations: [CLR_DATEPICKER_DIRECTIVES],
+                exports: [CLR_DATEPICKER_DIRECTIVES],
+                entryComponents: [ClrDateContainer],
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGF0ZXBpY2tlci5tb2R1bGUuanMiLCJzb3VyY2VSb290Ijoibmc6Ly9AY2xyL2FuZ3VsYXIvIiwic291cmNlcyI6WyJmb3Jtcy9kYXRlcGlja2VyL2RhdGVwaWNrZXIubW9kdWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQU1BLE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxpQkFBaUIsQ0FBQztBQUMvQyxPQUFPLEVBQUUsUUFBUSxFQUFRLE1BQU0sZUFBZSxDQUFDO0FBRS9DLE9BQU8sRUFBRSxhQUFhLEVBQUUsTUFBTSx3QkFBd0IsQ0FBQztBQUN2RCxPQUFPLEVBQUUsb0JBQW9CLEVBQUUsTUFBTSw0Q0FBNEMsQ0FBQztBQUNsRixPQUFPLEVBQUUsa0JBQWtCLEVBQUUsTUFBTSwwQ0FBMEMsQ0FBQztBQUM5RSxPQUFPLEVBQUUscUJBQXFCLEVBQUUsTUFBTSxnREFBZ0QsQ0FBQztBQUV2RixPQUFPLEVBQUUsV0FBVyxFQUFFLE1BQU0sWUFBWSxDQUFDO0FBQ3pDLE9BQU8sRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLGtCQUFrQixDQUFDO0FBQ3BELE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxjQUFjLENBQUM7QUFDNUMsT0FBTyxFQUFFLHdCQUF3QixFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFDckUsT0FBTyxFQUFFLE1BQU0sRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUMvQixPQUFPLEVBQUUsWUFBWSxFQUFFLE1BQU0sYUFBYSxDQUFDO0FBQzNDLE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDL0MsT0FBTyxFQUFFLGFBQWEsRUFBRSxNQUFNLGNBQWMsQ0FBQzs7QUFFN0MsTUFBTSxPQUFPLHlCQUF5QixHQUFnQjtJQUNwRCxNQUFNO0lBQ04sZ0JBQWdCO0lBQ2hCLFlBQVk7SUFDWix3QkFBd0I7SUFDeEIsY0FBYztJQUNkLGFBQWE7SUFDYixZQUFZO0lBQ1osV0FBVztDQUNaO0FBUUQsTUFBTSxPQUFPLG1CQUFtQjs7O1lBTi9CLFFBQVEsU0FBQztnQkFDUixPQUFPLEVBQUUsQ0FBQyxZQUFZLEVBQUUscUJBQXFCLEVBQUUsb0JBQW9CLEVBQUUsYUFBYSxFQUFFLGtCQUFrQixDQUFDO2dCQUN2RyxZQUFZLEVBQUUsQ0FBQyx5QkFBeUIsQ0FBQztnQkFDekMsT0FBTyxFQUFFLENBQUMseUJBQXlCLENBQUM7Z0JBQ3BDLGVBQWUsRUFBRSxDQUFDLGdCQUFnQixDQUFDO2FBQ3BDIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIENvcHlyaWdodCAoYykgMjAxNi0yMDE4IFZNd2FyZSwgSW5jLiBBbGwgUmlnaHRzIFJlc2VydmVkLlxuICogVGhpcyBzb2Z0d2FyZSBpcyByZWxlYXNlZCB1bmRlciBNSVQgbGljZW5zZS5cbiAqIFRoZSBmdWxsIGxpY2Vuc2UgaW5mb3JtYXRpb24gY2FuIGJlIGZvdW5kIGluIExJQ0VOU0UgaW4gdGhlIHJvb3QgZGlyZWN0b3J5IG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuXG5pbXBvcnQgeyBDb21tb25Nb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jb21tb24nO1xuaW1wb3J0IHsgTmdNb2R1bGUsIFR5cGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuaW1wb3J0IHsgQ2xySWNvbk1vZHVsZSB9IGZyb20gJy4uLy4uL2ljb24vaWNvbi5tb2R1bGUnO1xuaW1wb3J0IHsgQ2xyQ29uZGl0aW9uYWxNb2R1bGUgfSBmcm9tICcuLi8uLi91dGlscy9jb25kaXRpb25hbC9jb25kaXRpb25hbC5tb2R1bGUnO1xuaW1wb3J0IHsgQ2xyRm9jdXNUcmFwTW9kdWxlIH0gZnJvbSAnLi4vLi4vdXRpbHMvZm9jdXMtdHJhcC9mb2N1cy10cmFwLm1vZHVsZSc7XG5pbXBvcnQgeyBDbHJIb3N0V3JhcHBpbmdNb2R1bGUgfSBmcm9tICcuLi8uLi91dGlscy9ob3N0LXdyYXBwaW5nL2hvc3Qtd3JhcHBpbmcubW9kdWxlJztcblxuaW1wb3J0IHsgQ2xyQ2FsZW5kYXIgfSBmcm9tICcuL2NhbGVuZGFyJztcbmltcG9ydCB7IENsckRhdGVDb250YWluZXIgfSBmcm9tICcuL2RhdGUtY29udGFpbmVyJztcbmltcG9ydCB7IENsckRhdGVJbnB1dCB9IGZyb20gJy4vZGF0ZS1pbnB1dCc7XG5pbXBvcnQgeyBDbHJEYXRlcGlja2VyVmlld01hbmFnZXIgfSBmcm9tICcuL2RhdGVwaWNrZXItdmlldy1tYW5hZ2VyJztcbmltcG9ydCB7IENsckRheSB9IGZyb20gJy4vZGF5JztcbmltcG9ydCB7IENsckRheXBpY2tlciB9IGZyb20gJy4vZGF5cGlja2VyJztcbmltcG9ydCB7IENsck1vbnRocGlja2VyIH0gZnJvbSAnLi9tb250aHBpY2tlcic7XG5pbXBvcnQgeyBDbHJZZWFycGlja2VyIH0gZnJvbSAnLi95ZWFycGlja2VyJztcblxuZXhwb3J0IGNvbnN0IENMUl9EQVRFUElDS0VSX0RJUkVDVElWRVM6IFR5cGU8YW55PltdID0gW1xuICBDbHJEYXksXG4gIENsckRhdGVDb250YWluZXIsXG4gIENsckRhdGVJbnB1dCxcbiAgQ2xyRGF0ZXBpY2tlclZpZXdNYW5hZ2VyLFxuICBDbHJNb250aHBpY2tlcixcbiAgQ2xyWWVhcnBpY2tlcixcbiAgQ2xyRGF5cGlja2VyLFxuICBDbHJDYWxlbmRhcixcbl07XG5cbkBOZ01vZHVsZSh7XG4gIGltcG9ydHM6IFtDb21tb25Nb2R1bGUsIENsckhvc3RXcmFwcGluZ01vZHVsZSwgQ2xyQ29uZGl0aW9uYWxNb2R1bGUsIENsckljb25Nb2R1bGUsIENsckZvY3VzVHJhcE1vZHVsZV0sXG4gIGRlY2xhcmF0aW9uczogW0NMUl9EQVRFUElDS0VSX0RJUkVDVElWRVNdLFxuICBleHBvcnRzOiBbQ0xSX0RBVEVQSUNLRVJfRElSRUNUSVZFU10sXG4gIGVudHJ5Q29tcG9uZW50czogW0NsckRhdGVDb250YWluZXJdLFxufSlcbmV4cG9ydCBjbGFzcyBDbHJEYXRlcGlja2VyTW9kdWxlIHt9XG4iXX0=
