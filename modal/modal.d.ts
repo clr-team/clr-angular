@@ -6,6 +6,7 @@ import { ClrCommonStrings } from '../utils/i18n/common-strings.interface';
 export declare class ClrModal implements OnChanges, OnDestroy {
     private _scrollingService;
     commonStrings: ClrCommonStrings;
+    modalId: string;
     focusTrap: FocusTrapDirective;
     _open: boolean;
     _openChanged: EventEmitter<boolean>;
@@ -16,7 +17,7 @@ export declare class ClrModal implements OnChanges, OnDestroy {
     bypassScrollService: boolean;
     stopClose: boolean;
     altClose: EventEmitter<boolean>;
-    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStrings);
+    constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStrings, modalId: string);
     readonly sizeClass: string;
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
