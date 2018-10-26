@@ -9,5 +9,5 @@ export declare class AlertIconAndTypesService {
     alertType: string;
     alertIconShape: string;
     readonly alertIconTitle: string;
-    iconInfoFromType(type: string, classOrShape?: string): AlertInfoObject;
+    iconInfoFromType(type: string): AlertInfoObject;
 }
