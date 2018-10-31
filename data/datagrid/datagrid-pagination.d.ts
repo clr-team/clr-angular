@@ -1,9 +1,12 @@
-import { EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { ElementRef, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Page } from './providers/page';
+import { ClrDatagridPageSize } from './datagrid-page-size';
 export declare class ClrDatagridPagination implements OnDestroy, OnInit {
     page: Page;
-    constructor(page: Page);
+    _pageSizeComponent: ClrDatagridPageSize;
+    currentPageInputRef: ElementRef;
     private defaultSize;
+    constructor(page: Page);
     /**********
      * Subscription to the Page service for page changes.
      * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
@@ -51,4 +54,9 @@ export declare class ClrDatagridPagination implements OnDestroy, OnInit {
      * Conditionally adds page numbers before and after the current page
      */
     readonly middlePages: number[];
+    /**
+     * We only update the pagination's current page on blur of the input field, or
+     * when they press enter.
+     */
+    updateCurrentPage(event: any): void;
 }
