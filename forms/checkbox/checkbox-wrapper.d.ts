@@ -5,7 +5,7 @@
  */
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
-export declare class ClrRadioWrapper implements DynamicWrapper {
+export declare class ClrCheckboxWrapper implements DynamicWrapper {
     _dynamic: boolean;
     label: ClrLabel;
 }

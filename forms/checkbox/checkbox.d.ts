@@ -3,9 +3,18 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { ViewContainerRef } from '@angular/core';
+import { Renderer2, ElementRef, OnInit, ViewContainerRef } from '@angular/core';
+import { NgControl } from '@angular/forms';
+import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { IfErrorService } from '../common/if-error/if-error.service';
+import { ControlClassService } from '../common/providers/control-class.service';
+import { NgControlService } from '../common/providers/ng-control.service';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ClrCheckboxContainer } from './checkbox-container';
-export declare class ClrCheckboxNext extends WrappedFormControl<ClrCheckboxContainer> {
-    constructor(vcr: ViewContainerRef);
+export declare class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> implements OnInit {
+    private ngControlService;
+    private ifErrorService;
+    private control;
+    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, el: ElementRef, renderer: Renderer2);
+    ngOnInit(): void;
+    onBlur(): void;
 }

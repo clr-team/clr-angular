@@ -21,6 +21,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
     commonStrings: ClrCommonStrings;
     id: string;
     radioId: string;
+    checkboxId: string;
     SELECTION_TYPE: typeof SelectionType;
     /**
      * Model of the row, to use for selection
