@@ -3,5 +3,9 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+import { MarkControlService } from './providers/mark-control.service';
 export declare class ClrForm {
+    private markControlService;
+    constructor(markControlService: MarkControlService);
+    markAsDirty(): void;
 }

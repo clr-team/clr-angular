@@ -1,14 +1,16 @@
 import { TemplateRef, ViewContainerRef } from '@angular/core';
 import { IfErrorService } from './if-error.service';
+import { NgControlService } from '../providers/ng-control.service';
 export declare class ClrIfError {
-    private service;
+    private ifErrorService;
+    private ngControlService;
     private template;
     private container;
-    constructor(service: IfErrorService, template: TemplateRef<any>, container: ViewContainerRef);
+    constructor(ifErrorService: IfErrorService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     error: string;
-    private subscription;
+    private subscriptions;
     private displayed;
-    ngOnInit(): void;
+    private control;
     ngOnDestroy(): void;
     private displayError;
 }

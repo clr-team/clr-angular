@@ -3,18 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { ViewContainerRef, Renderer2, ElementRef, OnInit } from '@angular/core';
+import { ViewContainerRef, Renderer2, ElementRef, Injector } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { IfErrorService } from '../common/if-error/if-error.service';
-import { NgControlService } from '../common/providers/ng-control.service';
-import { ClrTextareaContainer } from './textarea-container';
 import { WrappedFormControl } from '../common/wrapped-control';
-import { ControlClassService } from '../common/providers/control-class.service';
-export declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> implements OnInit {
-    private ngControlService;
-    private ifErrorService;
-    private control;
-    constructor(vcr: ViewContainerRef, ngControlService: NgControlService, ifErrorService: IfErrorService, control: NgControl, controlClassService: ControlClassService, renderer: Renderer2, el: ElementRef);
-    ngOnInit(): void;
-    onBlur(): void;
+import { ClrTextareaContainer } from './textarea-container';
+export declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
+    protected index: number;
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef);
 }
