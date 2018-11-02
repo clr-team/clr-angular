@@ -7,6 +7,8 @@ export declare class LayoutService {
     layout: Layouts;
     private layoutValues;
     isVertical(): boolean;
+    isHorizontal(): boolean;
+    isCompact(): boolean;
     readonly layoutClass: string;
     isValid(layout: string): boolean;
 }
