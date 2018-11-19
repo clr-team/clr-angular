@@ -10,6 +10,7 @@ export declare class Expand implements LoadingListener {
     loading: boolean;
     private _expanded;
     expanded: boolean;
+    toggle(): void;
     private _animate;
     readonly animate: Observable<boolean>;
     private _expandChange;
