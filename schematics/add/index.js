@@ -144,6 +144,9 @@ function default_1(options) {
             if (stylesSearch.search('node_modules/@clr/icons/clr-icons') < 0) {
                 styles.unshift(pathPrefix + 'node_modules/@clr/icons/clr-icons.min.css');
             }
+            if (scriptsSearch.search('node_modules/@clr/icons/clr-icons.min.js') < 0) {
+                scripts.push(pathPrefix + 'node_modules/@clr/icons/clr-icons.min.js');
+            }
             if (scriptsSearch.search('node_modules/@webcomponents/custom-elements/custom-elements.min.js') < 0) {
                 // Want this first
                 scripts.unshift(pathPrefix + 'node_modules/@webcomponents/custom-elements/custom-elements.min.js');
