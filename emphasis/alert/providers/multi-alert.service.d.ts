@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ClrAlert } from '../alert';
 export declare class MultiAlertService {
     private allAlerts;
+    private subscription;
     private _current;
     /**
      * The Observable that lets other classes subscribe to changes
@@ -17,4 +18,5 @@ export declare class MultiAlertService {
     next(): void;
     previous(): void;
     close(): void;
+    destroy(): void;
 }

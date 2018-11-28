@@ -1,7 +1,7 @@
-import { AfterContentInit, EventEmitter, QueryList } from '@angular/core';
+import { AfterContentInit, EventEmitter, OnDestroy, QueryList } from '@angular/core';
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
-export declare class ClrAlerts implements AfterContentInit {
+export declare class ClrAlerts implements AfterContentInit, OnDestroy {
     multiAlertService: MultiAlertService;
     allAlerts: QueryList<ClrAlert>;
     /**
@@ -22,4 +22,5 @@ export declare class ClrAlerts implements AfterContentInit {
     readonly currentAlertType: string;
     constructor(multiAlertService: MultiAlertService);
     ngAfterContentInit(): void;
+    ngOnDestroy(): void;
 }
