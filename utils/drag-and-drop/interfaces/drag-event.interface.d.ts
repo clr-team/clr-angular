@@ -6,14 +6,17 @@ export declare enum DragEventType {
     DRAG_LEAVE = 4,
     DROP = 5
 }
+export interface DragPointPosition {
+    pageX: number;
+    pageY: number;
+    moveX: number;
+    moveY: number;
+}
 export interface DragEventInterface<T> {
     type: DragEventType;
     group?: string | string[];
     ghostElement?: any;
-    dragPosition: {
-        pageX: number;
-        pageY: number;
-    };
+    dragPosition: DragPointPosition;
     dragDataTransfer?: T;
     dropPointPosition?: {
         pageX: number;

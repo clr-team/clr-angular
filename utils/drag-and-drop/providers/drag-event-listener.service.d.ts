@@ -17,6 +17,7 @@ export declare class DragEventListenerService<T> {
     readonly dragMoved: Observable<DragEventInterface<T>>;
     readonly dragEnded: Observable<DragEventInterface<T>>;
     constructor(ngZone: NgZone, renderer: Renderer2, eventBus: DragAndDropEventBusService<T>);
+    private initialPosition;
     dragDataTransfer?: T;
     group?: string | string[];
     ghostElement?: any;
@@ -26,6 +27,7 @@ export declare class DragEventListenerService<T> {
     };
     attachDragListeners(draggableEl: Node): void;
     detachDragListeners(): void;
+    private getNativeEventObject;
     private customDragEvent;
     private broadcast;
     private generateDragEvent;

@@ -1,9 +1,6 @@
-import { DragEventInterface } from './interfaces/drag-event.interface';
+import { DragEventInterface, DragPointPosition } from './interfaces/drag-event.interface';
 export declare class ClrDragEvent<T> {
-    dragPosition: {
-        pageX: number;
-        pageY: number;
-    };
+    dragPosition: DragPointPosition;
     group: string | string[];
     dragDataTransfer: T;
     dropPointPosition: {
