@@ -1,19 +1,13 @@
-import { ElementRef, OnDestroy, Renderer2 } from '@angular/core';
-import { DatagridRenderOrganizer } from './../render/render-organizer';
+import { ElementRef } from '@angular/core';
 /**
  * @description
  * Internal datagrid service that holds a reference to the clr-dg-table element and exposes a method to get height.
  */
-export declare class TableSizeService implements OnDestroy {
+export declare class TableSizeService {
     private platformId;
-    private renderer;
     private _tableRef;
-    private columns;
     tableRef: HTMLElement;
-    constructor(platformId: Object, renderOrganizer: DatagridRenderOrganizer, renderer: Renderer2);
+    constructor(platformId: Object);
     table: ElementRef;
     getColumnDragHeight(): string;
-    private subscriptions;
-    ngOnDestroy(): void;
-    updateRowWidth(): void;
 }
