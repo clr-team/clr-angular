@@ -7,6 +7,7 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
+import { ClrLabel } from '../common/label';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
@@ -33,6 +34,7 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     invalid: boolean;
     focus: boolean;
     control: NgControl;
+    label: ClrLabel;
     private subscriptions;
     constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings, ifErrorService: IfErrorService, focusService: FocusService, controlClassService: ControlClassService, layoutService: LayoutService, newFormsLayout: boolean, ngControlService: NgControlService);
     ngOnInit(): void;
