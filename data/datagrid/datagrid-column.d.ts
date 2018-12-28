@@ -1,17 +1,15 @@
-import { ElementRef, EventEmitter, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { EventEmitter, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
-import { DragDispatcher } from './providers/drag-dispatcher';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements OnDestroy, OnInit {
     private _sort;
-    private _dragDispatcher;
     private vcr;
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, _dragDispatcher: DragDispatcher, vcr: ViewContainerRef);
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef);
     /**
      * @property columnId
      *
@@ -33,8 +31,6 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      *
      */
     readonly hidden: boolean;
-    handleElRef: ElementRef;
-    handleTrackerElRef: ElementRef;
     /**
      * Subscription to the sort service changes
      */
