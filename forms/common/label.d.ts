@@ -11,6 +11,8 @@ export declare class ClrLabel implements OnInit, OnDestroy {
     constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef);
     forAttr: string;
     private subscriptions;
+    private enableGrid;
     ngOnInit(): void;
+    disableGrid(): void;
     ngOnDestroy(): void;
 }

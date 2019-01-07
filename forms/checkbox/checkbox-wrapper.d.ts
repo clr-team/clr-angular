@@ -3,9 +3,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+import { OnInit } from '@angular/core';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from '../common/label';
-export declare class ClrCheckboxWrapper implements DynamicWrapper {
+export declare class ClrCheckboxWrapper implements DynamicWrapper, OnInit {
     _dynamic: boolean;
     label: ClrLabel;
+    ngOnInit(): void;
 }
