@@ -55,9 +55,9 @@ export { DateFormControlService as ɵbf } from './forms/datepicker/providers/dat
 export { DateIOService as ɵbi } from './forms/datepicker/providers/date-io.service';
 export { DateNavigationService as ɵbe } from './forms/datepicker/providers/date-navigation.service';
 export { DatepickerEnabledService as ɵbj } from './forms/datepicker/providers/datepicker-enabled.service';
-export { DatepickerFocusService as ɵbl } from './forms/datepicker/providers/datepicker-focus.service';
+export { DatepickerFocusService as ɵbk } from './forms/datepicker/providers/datepicker-focus.service';
 export { LocaleHelperService as ɵbg } from './forms/datepicker/providers/locale-helper.service';
-export { ViewManagerService as ɵbk } from './forms/datepicker/providers/view-manager.service';
+export { ViewManagerService as ɵbl } from './forms/datepicker/providers/view-manager.service';
 export { ResponsiveNavigationService as ɵds } from './layout/nav/providers/responsive-navigation.service';
 export { ActiveOompaLoompa as ɵec } from './layout/tabs/chocolate/active-oompa-loompa';
 export { TabsWillyWonka as ɵeb } from './layout/tabs/chocolate/tabs-willy-wonka';

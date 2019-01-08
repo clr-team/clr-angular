@@ -7,6 +7,7 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
+import { DatepickerFocusService } from './providers/datepicker-focus.service';
 export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
     protected el: ElementRef;
     protected renderer: Renderer2;
@@ -19,34 +20,19 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private platformId;
     private focusService;
     newFormsLayout: boolean;
+    private datepickerFocusService;
     protected index: number;
     private previousOutputInitializedFlag;
     private previousOutput;
     private initializePreviousOutput;
     clrNewLayout: boolean;
-    constructor(vcr: ViewContainerRef, injector: Injector, el: ElementRef, renderer: Renderer2, control: NgControl, container: ClrDateContainer, _dateIOService: DateIOService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object, focusService: FocusService, newFormsLayout: boolean);
-    /**
-     * 1. Populate services if the date container is not present.
-     * 2. Initialize Subscriptions.
-     * 3. Process User Input.
-     */
+    constructor(vcr: ViewContainerRef, injector: Injector, el: ElementRef, renderer: Renderer2, control: NgControl, container: ClrDateContainer, _dateIOService: DateIOService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object, focusService: FocusService, newFormsLayout: boolean, datepickerFocusService: DatepickerFocusService);
     ngOnInit(): void;
-    /**
-     * Process the inputs initialized by the user which were missed
-     * because of late subscriptions or lifecycle method calls.
-     */
-    private processInitialInputs;
-    /**
-     * Write the initial input set by the user on to the input field.
-     */
     ngAfterViewInit(): void;
-    /**
-     * Populates the services from the container component.
-     */
-    private populateContainerServices;
-    /**
-     * Writes the date string value to the input field
-     */
+    private populateServicesFromContainerComponent;
+    private processInitialInputs;
+    private setFormLayout;
+    private writeInitialInputFromUserInputField;
     private writeDateStrToInputField;
     private initialLoad;
     private dateValueOnInitialLoad;
@@ -69,16 +55,27 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
      * when the datepicker is disabled. Datepicker is disabled on mobiles.
      */
     readonly inputType: string;
+    /**
+     * Output Management
+     * Note: For now we will not emit both clrDateChange and ngControl outputs
+     * at the same time. This requires us to listen to keydown and blur events to figure out
+     * exactly when the Output should be emitted.
+     * Our recommendation right now is to either use clrDate or use ngModel/FormControl.
+     * Do not use both of them together.
+     */
     _dateUpdated: EventEmitter<Date>;
-    private emitDateOutput;
     setFocusStates(): void;
     triggerValidation(): void;
     /**
      * Fires this method when the user changes the input focuses out of the input field.
      */
     onValueChange(target: HTMLInputElement): void;
-    /**
-     * Initialize DateIO Subscriptions
-     */
+    private emitDateOutput;
+    private setFocus;
     private initializeSubscriptions;
+    private listenForUserSelectedDayChanges;
+    private listenForValueChanges;
+    private listenForTouchChanges;
+    private listenForDirtyChanges;
+    private listenForInputRefocus;
 }
