@@ -8,5 +8,6 @@ export declare class DatepickerFocusService {
     constructor(_ngZone: NgZone, platformId: Object);
     focusCell(elRef: ElementRef): void;
     focusInput(element: HTMLInputElement): void;
+    elementIsFocused(element: HTMLInputElement): boolean;
     private ngZoneIsStableInBrowser;
 }

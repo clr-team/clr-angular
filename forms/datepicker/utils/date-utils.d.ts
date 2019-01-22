@@ -13,3 +13,4 @@ export declare function getDay(year: number, month: number, date: number): WeekD
  * Credit: https://github.com/globalizejs/globalize/blob/e1b31cd6a4f1cff75b185b68b7a32220aac5196f/src/date/parse.js
  */
 export declare function parseToFourDigitYear(year: number): number;
+export declare function datesAreEqual(date1: Date, date2: Date): boolean;

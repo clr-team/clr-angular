@@ -25,8 +25,5 @@ export declare class DateIOService {
      * NOTE: (Month here is 1 based since the user has provided that as an input)
      */
     private validateAndGetDate;
-    /**
-     * Checks if the input provided by the user is valid.
-     */
-    isValidInput(date: string): Date;
+    getDateValueFromDateString(date: string): Date;
 }
