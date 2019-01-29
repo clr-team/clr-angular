@@ -1,6 +1,6 @@
 {
   "name": "@clr/angular",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Angular components for Clarity",
   "es2015": "fesm2015/clr-angular.js",
   "homepage": "https://clarity.design",
@@ -23,7 +23,7 @@
     "@angular/forms": "^7.0.0",
     "@angular/platform-browser": "^7.0.0",
     "@angular/platform-browser-dynamic": "^7.0.0",
-    "@clr/ui": "1.0.4"
+    "@clr/ui": "1.0.5"
   },
   "author": "clarity",
   "license": "MIT",
