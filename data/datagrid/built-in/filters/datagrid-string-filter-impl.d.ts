@@ -30,4 +30,9 @@ export declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFil
      * Tests if an item matches a search text
      */
     accepts(item: T): boolean;
+    readonly state: this | {
+        property: string;
+        value: string;
+    };
+    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
 }

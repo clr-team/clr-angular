@@ -1,5 +1,4 @@
 import { ClrDatagridComparatorInterface } from './comparator.interface';
-import { ClrDatagridFilterInterface } from './filter.interface';
 export interface ClrDatagridStateInterface<T = any> {
     page?: {
         from?: number;
@@ -10,8 +9,5 @@ export interface ClrDatagridStateInterface<T = any> {
         by: string | ClrDatagridComparatorInterface<T>;
         reverse: boolean;
     };
-    filters?: ({
-        property: string;
-        value: string;
-    } | ClrDatagridFilterInterface<T>)[];
+    filters?: any[];
 }
