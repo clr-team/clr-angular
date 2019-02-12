@@ -14,8 +14,12 @@ import { FocusService } from '../common/providers/focus.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
-export declare const ToggleService: InjectionToken<any>;
-export declare function ToggleServiceProvider(): BehaviorSubject<boolean>;
+export declare const TOGGLE_SERVICE: InjectionToken<BehaviorSubject<boolean>>;
+export declare function ToggleServiceFactory(): BehaviorSubject<boolean>;
+export declare const TOGGLE_SERVICE_PROVIDER: {
+    provide: InjectionToken<BehaviorSubject<boolean>>;
+    useFactory: typeof ToggleServiceFactory;
+};
 export declare class ClrPasswordContainer implements DynamicWrapper, OnDestroy {
     private ifErrorService;
     private layoutService;
