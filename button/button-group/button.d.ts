@@ -15,6 +15,8 @@ export declare class ClrButton implements LoadingListener {
     name: string;
     private _type;
     type: string;
+    private _id;
+    id: string;
     private _disabled;
     disabled: any;
     loading: boolean;
