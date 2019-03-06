@@ -36,6 +36,8 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     readonly placeholderText: string;
     readonly inputType: string;
     onValueChange(target: HTMLInputElement): void;
+    private usingClarityDatepicker;
+    private usingNativeDatepicker;
     private setFocus;
     private populateServicesFromContainerComponent;
     private processInitialInputs;
