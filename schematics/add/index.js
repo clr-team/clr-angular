@@ -5,6 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+// @TODO REWRITE THIS
+// This is a mess, because it was written early on and could be much better.
+// Also, no real docs existed then or now, so good luck brave soldier.
 const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
 const tasks_1 = require("@angular-devkit/schematics/tasks");
@@ -66,6 +69,17 @@ function updateJsonFile(path, callback) {
     callback(json);
     fs.writeFileSync(path, JSON.stringify(json, null, 2));
 }
+// Checks if a version of Angular is compatible with current or next
+function getVersion(ngVersion, clrVersion) {
+    const diff = 6; // Number disparity between Angular and Clarity, this works as long as we stay in sync with versioning
+    const version1 = ngVersion.split('.');
+    if (Number(version1[0]) - diff > 0) {
+        return 'next';
+    }
+    else {
+        return clrVersion;
+    }
+}
 // Handles adding a module to the NgModule
 function addDeclarationToNgModule(options, imports, moduleName, packageName) {
     return (host) => {
@@ -105,21 +119,22 @@ function default_1(options) {
         options.module = findModuleFromOptions(host, options, config);
         // Add Clarity packages to package.json, if not found
         updateJsonFile('package.json', json => {
+            const version = getVersion(json.dependencies['@angular/core'], corePackage.version);
             const packages = Object.keys(json.dependencies);
             if (!packages.includes('@clr/angular')) {
-                json.dependencies['@clr/angular'] = `^${corePackage.version}`;
+                json.dependencies['@clr/angular'] = `${version}`;
             }
             if (!packages.includes('@clr/ui')) {
-                json.dependencies['@clr/ui'] = `^${corePackage.version}`;
+                json.dependencies['@clr/ui'] = `${version}`;
             }
             if (!packages.includes('@clr/icons')) {
-                json.dependencies['@clr/icons'] = `^${corePackage.version}`;
+                json.dependencies['@clr/icons'] = `${version}`;
             }
             if (!packages.includes('@webcomponents/custom-elements')) {
                 json.dependencies['@webcomponents/custom-elements'] = '^1.0.0';
             }
         });
-        // Add Clarity assets to .angular-cli.json, if not found
+        // Add Clarity assets to .angular.json, if not found
         updateJsonFile(configFile, json => {
             const projects = Object.keys(json.projects);
             const project = projects.find(key => {
