@@ -5,7 +5,6 @@ export declare class ClrDatagridPagination implements OnDestroy, OnInit {
     page: Page;
     _pageSizeComponent: ClrDatagridPageSize;
     currentPageInputRef: ElementRef;
-    private defaultSize;
     constructor(page: Page);
     /**********
      * Subscription to the Page service for page changes.

@@ -3,6 +3,7 @@ import { StateDebouncer } from './state-debouncer.provider';
 export declare class Page {
     private stateDebouncer;
     constructor(stateDebouncer: StateDebouncer);
+    activated: boolean;
     /**
      * Page size, a value of 0 means no pagination
      */
