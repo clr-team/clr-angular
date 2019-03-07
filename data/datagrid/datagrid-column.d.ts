@@ -72,14 +72,7 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
      * Sorts the datagrid based on this column
      */
     sort(reverse?: boolean): void;
-    /**
-     * Indicates if the column is currently sorted in ascending order
-     */
-    readonly asc: boolean;
-    /**
-     * Indicates if the column is currently sorted in descending order
-     */
-    readonly desc: boolean;
+    sortIcon: any;
     /**
      * A custom filter for this column that can be provided in the projected content
      */
