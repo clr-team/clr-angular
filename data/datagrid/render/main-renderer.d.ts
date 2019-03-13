@@ -1,12 +1,11 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, ElementRef, OnDestroy, QueryList, Renderer2 } from '@angular/core';
-import { ClrDatagridColumn } from '../datagrid-column';
+import { AfterContentInit, AfterViewChecked, AfterViewInit, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { Items } from '../providers/items';
 import { Page } from '../providers/page';
 import { TableSizeService } from '../providers/table-size.service';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
+import { ColumnsService } from '../providers/columns.service';
 export declare const domAdapterFactory: (platformId: Object) => DomAdapter | NoopDomAdapter;
 export declare class DatagridMainRenderer<T = any> implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
     private organizer;
@@ -16,12 +15,14 @@ export declare class DatagridMainRenderer<T = any> implements AfterContentInit, 
     private el;
     private renderer;
     private tableSizeService;
-    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, tableSizeService: TableSizeService);
-    headers: QueryList<DatagridHeaderRenderer>;
-    columns: QueryList<ClrDatagridColumn>;
+    private columnsService;
+    constructor(organizer: DatagridRenderOrganizer, items: Items, page: Page, domAdapter: DomAdapter, el: ElementRef, renderer: Renderer2, tableSizeService: TableSizeService, columnsService: ColumnsService);
+    private headers;
+    private rows;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngAfterViewChecked(): void;
+    private setupColumns;
     private _heightSet;
     private shouldComputeHeight;
     /**

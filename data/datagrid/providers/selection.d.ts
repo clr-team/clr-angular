@@ -1,11 +1,7 @@
 import { Observable } from 'rxjs';
 import { FiltersProvider } from './filters';
 import { Items } from './items';
-export declare enum SelectionType {
-    None = 0,
-    Single = 1,
-    Multi = 2
-}
+import { SelectionType } from '../enums/selection-type';
 export declare class Selection<T = any> {
     private _items;
     private _filters;

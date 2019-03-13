@@ -5,9 +5,5 @@ export declare class DatagridRenderOrganizer {
     readonly renderStep: Observable<DatagridRenderStep>;
     filterRenderSteps(step: DatagridRenderStep): Observable<DatagridRenderStep>;
     private alreadySized;
-    widths: {
-        px: number;
-        strict: boolean;
-    }[];
     resize(): void;
 }

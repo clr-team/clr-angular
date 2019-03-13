@@ -1,13 +1,10 @@
-import { AfterContentInit, OnDestroy, QueryList } from '@angular/core';
-import { DatagridCellRenderer } from './cell-renderer';
-import { DatagridRenderOrganizer } from './render-organizer';
-export declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-    private organizer;
-    constructor(organizer: DatagridRenderOrganizer);
-    private subscriptions;
-    ngOnDestroy(): void;
-    cells: QueryList<DatagridCellRenderer>;
-    private setWidths;
-    ngAfterContentInit(): void;
+import { AfterViewInit } from '@angular/core';
+import { ColumnsService } from '../providers/columns.service';
+export declare class DatagridRowRenderer implements AfterViewInit {
+    private columnsService;
+    private cells;
+    constructor(columnsService: ColumnsService);
     ngAfterViewInit(): void;
+    setupColumns(): void;
+    private setColumnStates;
 }

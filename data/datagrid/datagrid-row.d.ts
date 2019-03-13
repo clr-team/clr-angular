@@ -6,8 +6,9 @@ import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { HideableColumnService } from './providers/hideable-column.service';
 import { RowActionService } from './providers/row-action-service';
-import { Selection, SelectionType } from './providers/selection';
+import { Selection } from './providers/selection';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
+import { SelectionType } from './enums/selection-type';
 export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     selection: Selection<T>;
     rowActionService: RowActionService;

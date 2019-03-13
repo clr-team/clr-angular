@@ -1,0 +1,17 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ */
+export function DatagridColumnState() { }
+if (false) {
+    /** @type {?|undefined} */
+    DatagridColumnState.prototype.changes;
+    /** @type {?|undefined} */
+    DatagridColumnState.prototype.width;
+    /** @type {?|undefined} */
+    DatagridColumnState.prototype.strictWidth;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29sdW1uLXN0YXRlLmludGVyZmFjZS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL0BjbHIvYW5ndWxhci8iLCJzb3VyY2VzIjpbImRhdGEvZGF0YWdyaWQvaW50ZXJmYWNlcy9jb2x1bW4tc3RhdGUuaW50ZXJmYWNlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFPQSx5Q0FJQzs7O0lBSEMsc0NBQWtDOztJQUNsQyxvQ0FBZTs7SUFDZiwwQ0FBcUIiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogQ29weXJpZ2h0IChjKSAyMDE2LTIwMTggVk13YXJlLCBJbmMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXG4gKiBUaGlzIHNvZnR3YXJlIGlzIHJlbGVhc2VkIHVuZGVyIE1JVCBsaWNlbnNlLlxuICogVGhlIGZ1bGwgbGljZW5zZSBpbmZvcm1hdGlvbiBjYW4gYmUgZm91bmQgaW4gTElDRU5TRSBpbiB0aGUgcm9vdCBkaXJlY3Rvcnkgb2YgdGhpcyBwcm9qZWN0LlxuICovXG5pbXBvcnQgeyBEYXRhZ3JpZENvbHVtbkNoYW5nZXMgfSBmcm9tICcuLi9lbnVtcy9jb2x1bW4tY2hhbmdlcy5lbnVtJztcblxuZXhwb3J0IGludGVyZmFjZSBEYXRhZ3JpZENvbHVtblN0YXRlIHtcbiAgY2hhbmdlcz86IERhdGFncmlkQ29sdW1uQ2hhbmdlc1tdOyAvLyBUaGlzIGlzIGFuIGFycmF5IG9mIGNoYW5nZSB0eXBlcyB0byB1cGRhdGVcbiAgd2lkdGg/OiBudW1iZXI7IC8vIFRoaXMgaXMgdGhlIHdpZHRoIGNhbGN1bGF0ZWQgZm9yIHRoZSBjb2x1bW5cbiAgc3RyaWN0V2lkdGg/OiBudW1iZXI7IC8vIFRoaXMgaXMgdGhlIHN0cmljdCB3aWR0aCBpZiBkZWZpbmVkIGluIHN0eWxlcy9jc3Ncbn1cbiJdfQ==
