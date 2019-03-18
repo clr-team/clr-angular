@@ -5,6 +5,7 @@ export declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined);
     parent: RecursiveTreeNodeModel<T> | null;
     private childrenFetched;
+    clearChildren(): void;
     fetchChildren(): void;
     private wrapChildren;
     private _children;
