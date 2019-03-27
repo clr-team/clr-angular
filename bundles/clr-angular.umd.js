@@ -1708,7 +1708,7 @@
          * @return {?}
          */
             function () {
-                if ((this.control.touched || this.control.dirty) && this.control.invalid) {
+                if (this.control.touched && this.control.invalid) {
                     this._statusChanges.next(true);
                 }
                 else {
@@ -2062,13 +2062,13 @@
      */
     var MarkControlService = /** @class */ (function () {
         function MarkControlService() {
-            this._dirty = new rxjs.Subject();
+            this._touched = new rxjs.Subject();
         }
-        Object.defineProperty(MarkControlService.prototype, "dirtyChange", {
+        Object.defineProperty(MarkControlService.prototype, "touchedChange", {
             get: /**
              * @return {?}
              */ function () {
-                return this._dirty.asObservable();
+                return this._touched.asObservable();
             },
             enumerable: true,
             configurable: true
@@ -2076,11 +2076,11 @@
         /**
          * @return {?}
          */
-        MarkControlService.prototype.markAsDirty = /**
+        MarkControlService.prototype.markAsTouched = /**
          * @return {?}
          */
             function () {
-                this._dirty.next();
+                this._touched.next();
             };
         MarkControlService.decorators = [
             { type: i0.Injectable }
@@ -2097,14 +2097,26 @@
             this.layoutService = layoutService;
             this.markControlService = markControlService;
         }
+        /** @deprecated since 2.0 */
         /**
+         * @deprecated since 2.0
          * @return {?}
          */
         ClrForm.prototype.markAsDirty = /**
+         * @deprecated since 2.0
          * @return {?}
          */
             function () {
-                this.markControlService.markAsDirty();
+                this.markAsTouched();
+            };
+        /**
+         * @return {?}
+         */
+        ClrForm.prototype.markAsTouched = /**
+         * @return {?}
+         */
+            function () {
+                this.markControlService.markAsTouched();
             };
         ClrForm.decorators = [
             { type: i0.Directive, args: [{
@@ -2427,10 +2439,10 @@
                 this.controlClassService.initControlClass(renderer, el.nativeElement);
             }
             if (this.markControlService) {
-                this.subscriptions.push(this.markControlService.dirtyChange.subscribe(( /**
+                this.subscriptions.push(this.markControlService.touchedChange.subscribe(( /**
                  * @return {?}
                  */function () {
-                    _this.ngControl.control.markAsDirty();
+                    _this.ngControl.control.markAsTouched();
                     _this.ngControl.control.updateValueAndValidity();
                 })));
             }

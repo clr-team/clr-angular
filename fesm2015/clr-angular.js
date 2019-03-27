@@ -1424,7 +1424,7 @@ class IfErrorService {
      * @return {?}
      */
     sendValidity() {
-        if ((this.control.touched || this.control.dirty) && this.control.invalid) {
+        if (this.control.touched && this.control.invalid) {
             this._statusChanges.next(true);
         }
         else {
@@ -1735,19 +1735,19 @@ const IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER = {
  */
 class MarkControlService {
     constructor() {
-        this._dirty = new Subject();
+        this._touched = new Subject();
     }
     /**
      * @return {?}
      */
-    get dirtyChange() {
-        return this._dirty.asObservable();
+    get touchedChange() {
+        return this._touched.asObservable();
     }
     /**
      * @return {?}
      */
-    markAsDirty() {
-        this._dirty.next();
+    markAsTouched() {
+        this._touched.next();
     }
 }
 MarkControlService.decorators = [
@@ -1768,10 +1768,17 @@ class ClrForm {
         this.markControlService = markControlService;
     }
     /**
+     * @deprecated since 2.0
      * @return {?}
      */
     markAsDirty() {
-        this.markControlService.markAsDirty();
+        this.markAsTouched();
+    }
+    /**
+     * @return {?}
+     */
+    markAsTouched() {
+        this.markControlService.markAsTouched();
     }
 }
 ClrForm.decorators = [
@@ -2058,11 +2065,11 @@ class WrappedFormControl {
             this.controlClassService.initControlClass(renderer, el.nativeElement);
         }
         if (this.markControlService) {
-            this.subscriptions.push(this.markControlService.dirtyChange.subscribe((/**
+            this.subscriptions.push(this.markControlService.touchedChange.subscribe((/**
              * @return {?}
              */
             () => {
-                this.ngControl.control.markAsDirty();
+                this.ngControl.control.markAsTouched();
                 this.ngControl.control.updateValueAndValidity();
             })));
         }
