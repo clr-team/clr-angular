@@ -1,0 +1,29 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+import { InjectionToken } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+/** @type {?} */
+export var COLUMN_STATE = new InjectionToken('COLUMN_STATE');
+/** @type {?} */
+var initialColumnState = {
+    changes: [],
+};
+/**
+ * @return {?}
+ */
+export function columnStateFactory() {
+    return new BehaviorSubject(initialColumnState);
+}
+/** @type {?} */
+export var COLUMN_STATE_PROVIDER = {
+    provide: COLUMN_STATE,
+    useFactory: columnStateFactory,
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29sdW1uLXN0YXRlLnByb3ZpZGVyLmpzIiwic291cmNlUm9vdCI6Im5nOi8vQGNsci9hbmd1bGFyLyIsInNvdXJjZXMiOlsiZGF0YS9kYXRhZ3JpZC9wcm92aWRlcnMvY29sdW1uLXN0YXRlLnByb3ZpZGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQU1BLE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDL0MsT0FBTyxFQUFFLGVBQWUsRUFBRSxNQUFNLE1BQU0sQ0FBQzs7QUFHdkMsTUFBTSxLQUFPLFlBQVksR0FBRyxJQUFJLGNBQWMsQ0FBc0IsY0FBYyxDQUFDOztJQUU3RSxrQkFBa0IsR0FBd0I7SUFDOUMsT0FBTyxFQUFFLEVBQUU7Q0FDWjs7OztBQUVELE1BQU0sVUFBVSxrQkFBa0I7SUFDaEMsT0FBTyxJQUFJLGVBQWUsQ0FBc0Isa0JBQWtCLENBQUMsQ0FBQztBQUN0RSxDQUFDOztBQUVELE1BQU0sS0FBTyxxQkFBcUIsR0FBRztJQUNuQyxPQUFPLEVBQUUsWUFBWTtJQUNyQixVQUFVLEVBQUUsa0JBQWtCO0NBQy9CIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIENvcHlyaWdodCAoYykgMjAxNi0yMDE5IFZNd2FyZSwgSW5jLiBBbGwgUmlnaHRzIFJlc2VydmVkLlxuICogVGhpcyBzb2Z0d2FyZSBpcyByZWxlYXNlZCB1bmRlciBNSVQgbGljZW5zZS5cbiAqIFRoZSBmdWxsIGxpY2Vuc2UgaW5mb3JtYXRpb24gY2FuIGJlIGZvdW5kIGluIExJQ0VOU0UgaW4gdGhlIHJvb3QgZGlyZWN0b3J5IG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuXG5pbXBvcnQgeyBJbmplY3Rpb25Ub2tlbiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgQmVoYXZpb3JTdWJqZWN0IH0gZnJvbSAncnhqcyc7XG5pbXBvcnQgeyBEYXRhZ3JpZENvbHVtblN0YXRlIH0gZnJvbSAnLi4vaW50ZXJmYWNlcy9jb2x1bW4tc3RhdGUuaW50ZXJmYWNlJztcblxuZXhwb3J0IGNvbnN0IENPTFVNTl9TVEFURSA9IG5ldyBJbmplY3Rpb25Ub2tlbjxEYXRhZ3JpZENvbHVtblN0YXRlPignQ09MVU1OX1NUQVRFJyk7XG5cbmNvbnN0IGluaXRpYWxDb2x1bW5TdGF0ZTogRGF0YWdyaWRDb2x1bW5TdGF0ZSA9IHtcbiAgY2hhbmdlczogW10sXG59O1xuXG5leHBvcnQgZnVuY3Rpb24gY29sdW1uU3RhdGVGYWN0b3J5KCkge1xuICByZXR1cm4gbmV3IEJlaGF2aW9yU3ViamVjdDxEYXRhZ3JpZENvbHVtblN0YXRlPihpbml0aWFsQ29sdW1uU3RhdGUpO1xufVxuXG5leHBvcnQgY29uc3QgQ09MVU1OX1NUQVRFX1BST1ZJREVSID0ge1xuICBwcm92aWRlOiBDT0xVTU5fU1RBVEUsXG4gIHVzZUZhY3Rvcnk6IGNvbHVtblN0YXRlRmFjdG9yeSxcbn07XG4iXX0=

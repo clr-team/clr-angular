@@ -10,9 +10,8 @@ export declare class DatagridHeaderRenderer implements OnDestroy {
     private organizer;
     private domAdapter;
     private columnResizerService;
-    private stateSubscription;
     columnState: BehaviorSubject<DatagridColumnState>;
-    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService);
+    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnState: BehaviorSubject<DatagridColumnState>);
     resizeEmitter: EventEmitter<number>;
     /**
      * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.

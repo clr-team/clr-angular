@@ -10,6 +10,7 @@ export declare class ClrTreeNode<T> implements OnInit, OnDestroy {
     expandService: Expand;
     commonStrings: ClrCommonStrings;
     STATES: typeof ClrSelectedState;
+    private skipEmitChange;
     constructor(nodeId: string, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: Expand, commonStrings: ClrCommonStrings, injector: Injector);
     _model: TreeNodeModel<T>;
     isExpandable(): boolean;

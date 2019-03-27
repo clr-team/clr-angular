@@ -5,6 +5,5 @@ export declare class DatagridRowRenderer implements AfterViewInit {
     private cells;
     constructor(columnsService: ColumnsService);
     ngAfterViewInit(): void;
-    setupColumns(): void;
-    private setColumnStates;
+    setColumnStates(): void;
 }
