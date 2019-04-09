@@ -12,12 +12,6 @@ import { DateFormControlService } from './providers/date-form-control.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
-/**
- * This component contains two template for the old and new forms layouts.
- * When it is time to remove the old forms layouts support, remove the ng-templates
- * and ng-container, and just keep the inner content of the #newLayout as the template
- * and move the ng-content for clrDate.
- */
 export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     private _ifOpenService;
     private _dateNavigationService;
@@ -28,7 +22,6 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     private focusService;
     private controlClassService;
     private layoutService;
-    newFormsLayout: boolean;
     private ngControlService;
     _dynamic: boolean;
     invalid: boolean;
@@ -36,7 +29,7 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy {
     control: NgControl;
     label: ClrLabel;
     private subscriptions;
-    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings, ifErrorService: IfErrorService, focusService: FocusService, controlClassService: ControlClassService, layoutService: LayoutService, newFormsLayout: boolean, ngControlService: NgControlService);
+    constructor(_ifOpenService: IfOpenService, _dateNavigationService: DateNavigationService, _datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStrings, ifErrorService: IfErrorService, focusService: FocusService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
     ngOnInit(): void;
     /**
      * Returns the classes to apply to the control

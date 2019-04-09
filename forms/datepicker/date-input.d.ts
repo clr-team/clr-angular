@@ -19,16 +19,14 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private dateFormControlService;
     private platformId;
     private focusService;
-    newFormsLayout: boolean;
     private datepickerFocusService;
     placeholder: string;
-    clrNewLayout: boolean;
     dateChange: EventEmitter<Date>;
     date: Date;
     protected index: number;
     private initialClrDateInputValue;
     private previousDateChange;
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object, focusService: FocusService, newFormsLayout: boolean, datepickerFocusService: DatepickerFocusService);
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: Object, focusService: FocusService, datepickerFocusService: DatepickerFocusService);
     ngOnInit(): void;
     ngAfterViewInit(): void;
     setFocusStates(): void;
@@ -41,7 +39,6 @@ export declare class ClrDateInput extends WrappedFormControl<ClrDateContainer> i
     private setFocus;
     private populateServicesFromContainerComponent;
     private processInitialInputs;
-    private setFormLayout;
     private updateDate;
     private updateInput;
     private getValidDateValueFromDate;

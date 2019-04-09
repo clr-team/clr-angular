@@ -2048,18 +2048,6 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
-    /** @type {?} */
-    var IS_NEW_FORMS_LAYOUT = new i0.InjectionToken('IS_NEW_FORMS_LAYOUT');
-    /** @type {?} */
-    var IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER = {
-        provide: IS_NEW_FORMS_LAYOUT,
-        useValue: true,
-    };
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
     var MarkControlService = /** @class */ (function () {
         function MarkControlService() {
             this._touched = new rxjs.Subject();
@@ -2121,7 +2109,7 @@
         ClrForm.decorators = [
             { type: i0.Directive, args: [{
                         selector: '[clrForm]',
-                        providers: [LayoutService, MarkControlService, IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER],
+                        providers: [LayoutService, MarkControlService],
                         host: {
                             '[class.clr-form]': 'true',
                             '[class.clr-form-horizontal]': 'layoutService.isHorizontal()',
@@ -5351,14 +5339,8 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
-    /**
-     * This component contains two template for the old and new forms layouts.
-     * When it is time to remove the old forms layouts support, remove the ng-templates
-     * and ng-container, and just keep the inner content of the #newLayout as the template
-     * and move the ng-content for clrDate.
-     */
     var ClrDateContainer = /** @class */ (function () {
-        function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, newFormsLayout, ngControlService) {
+        function ClrDateContainer(_ifOpenService, _dateNavigationService, _datepickerEnabledService, dateFormControlService, commonStrings, ifErrorService, focusService, controlClassService, layoutService, ngControlService) {
             var _this = this;
             this._ifOpenService = _ifOpenService;
             this._dateNavigationService = _dateNavigationService;
@@ -5369,7 +5351,6 @@
             this.focusService = focusService;
             this.controlClassService = controlClassService;
             this.layoutService = layoutService;
-            this.newFormsLayout = newFormsLayout;
             this.ngControlService = ngControlService;
             this._dynamic = false;
             this.invalid = false;
@@ -5508,7 +5489,7 @@
         ClrDateContainer.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-date-container',
-                        template: "\n    <ng-template #oldLayout>\n        <ng-content></ng-content>\n        <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n        <button\n            type=\"button\"\n            class=\"datepicker-trigger\"\n            (click)=\"toggleDatepicker($event)\"\n            *ngIf=\"isEnabled\">\n            <clr-icon shape=\"calendar\" class=\"datepicker-trigger-icon\" [attr.title]=\"commonStrings.open\"></clr-icon>\n        </button>\n        <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n    </ng-template>\n    \n    <ng-template #newLayout>\n      <ng-content select=\"label\"></ng-content>\n      <label *ngIf=\"!label && addGrid()\"></label>\n      <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n        <div class=\"clr-input-wrapper\">\n          <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n            <ng-container *ngTemplateOutlet=\"clrDate\"></ng-container>\n            <button type=\"button\" class=\"clr-input-group-icon-action\" (click)=\"toggleDatepicker($event)\" *ngIf=\"isEnabled\" [attr.title]=\"commonStrings.open\" [disabled]=\"control?.disabled\">\n              <clr-icon shape=\"calendar\"></clr-icon>\n            </button>\n            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n          </div>\n          <clr-icon class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    </ng-template>\n    \n    <ng-template #clrDate>\n      <ng-content select=\"[clrDate]\"></ng-content>\n    </ng-template>\n    \n    <ng-container *ngIf=\"newFormsLayout; then newLayout else oldLayout\"></ng-container>\n    ",
+                        template: "\n      <ng-content select=\"label\"></ng-content>\n      <label *ngIf=\"!label && addGrid()\"></label>\n      <div class=\"clr-control-container\" [ngClass]=\"controlClass()\">\n        <div class=\"clr-input-wrapper\">\n          <div class=\"clr-input-group\" [class.clr-focus]=\"focus\">\n            <ng-content select=\"[clrDate]\"></ng-content>\n            <button type=\"button\" class=\"clr-input-group-icon-action\" (click)=\"toggleDatepicker($event)\" *ngIf=\"isEnabled\" [attr.title]=\"commonStrings.open\" [disabled]=\"control?.disabled\">\n              <clr-icon shape=\"calendar\"></clr-icon>\n            </button>\n            <clr-datepicker-view-manager *clrIfOpen clrFocusTrap></clr-datepicker-view-manager>\n          </div>\n          <clr-icon class=\"clr-validate-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <ng-content select=\"clr-control-helper\" *ngIf=\"!invalid\"></ng-content>\n        <ng-content select=\"clr-control-error\" *ngIf=\"invalid\"></ng-content>\n      </div>\n    ",
                         providers: [
                             ControlIdService,
                             IfOpenService,
@@ -5523,9 +5504,8 @@
                             DateFormControlService,
                         ],
                         host: {
-                            '[class.date-container]': '!newFormsLayout',
                             '[class.clr-form-control-disabled]': 'control?.disabled',
-                            '[class.clr-form-control]': 'newFormsLayout',
+                            '[class.clr-form-control]': 'true',
                             '[class.clr-row]': 'addGrid()',
                         }
                     }] }
@@ -5542,7 +5522,6 @@
                 { type: FocusService },
                 { type: ControlClassService },
                 { type: LayoutService, decorators: [{ type: i0.Optional }] },
-                { type: Boolean, decorators: [{ type: i0.Optional }, { type: i0.Inject, args: [IS_NEW_FORMS_LAYOUT,] }] },
                 { type: NgControlService }
             ];
         };
@@ -5563,7 +5542,7 @@
     // 4. Value set via `clrDate` input as a Date Object
     var ClrDateInput = /** @class */ (function (_super) {
         __extends(ClrDateInput, _super);
-        function ClrDateInput(viewContainerRef, injector, el, renderer, control, container, dateIOService, dateNavigationService, datepickerEnabledService, dateFormControlService, platformId, focusService, newFormsLayout, datepickerFocusService) {
+        function ClrDateInput(viewContainerRef, injector, el, renderer, control, container, dateIOService, dateNavigationService, datepickerEnabledService, dateFormControlService, platformId, focusService, datepickerFocusService) {
             var _this = _super.call(this, viewContainerRef, ClrDateContainer, injector, control, renderer, el) || this;
             _this.el = el;
             _this.renderer = renderer;
@@ -5575,10 +5554,9 @@
             _this.dateFormControlService = dateFormControlService;
             _this.platformId = platformId;
             _this.focusService = focusService;
-            _this.newFormsLayout = newFormsLayout;
             _this.datepickerFocusService = datepickerFocusService;
             _this.dateChange = new i0.EventEmitter(false);
-            _this.index = 4;
+            _this.index = 1;
             return _this;
         }
         Object.defineProperty(ClrDateInput.prototype, "date", {
@@ -5604,7 +5582,6 @@
          */
             function () {
                 _super.prototype.ngOnInit.call(this);
-                this.setFormLayout();
                 this.populateServicesFromContainerComponent();
                 this.subscriptions.push(this.listenForUserSelectedDayChanges(), this.listenForControlValueChanges(), this.listenForTouchChanges(), this.listenForDirtyChanges(), this.listenForInputRefocus());
             };
@@ -5750,19 +5727,6 @@
                 }
                 else {
                     this.updateDate(this.initialClrDateInputValue);
-                }
-            };
-        /**
-         * @private
-         * @return {?}
-         */
-        ClrDateInput.prototype.setFormLayout = /**
-         * @private
-         * @return {?}
-         */
-            function () {
-                if (this.clrNewLayout !== undefined) {
-                    this.newFormsLayout = !!this.clrNewLayout;
                 }
             };
         /**
@@ -5976,8 +5940,7 @@
             { type: i0.Directive, args: [{
                         selector: '[clrDate]',
                         host: {
-                            '[class.date-input]': '!newFormsLayout',
-                            '[class.clr-input]': 'newFormsLayout',
+                            '[class.clr-input]': 'true',
                         },
                         providers: [DatepickerFocusService],
                     },] }
@@ -5997,13 +5960,11 @@
                 { type: DateFormControlService, decorators: [{ type: i0.Optional }] },
                 { type: Object, decorators: [{ type: i0.Inject, args: [i0.PLATFORM_ID,] }] },
                 { type: FocusService, decorators: [{ type: i0.Optional }] },
-                { type: Boolean, decorators: [{ type: i0.Optional }, { type: i0.Inject, args: [IS_NEW_FORMS_LAYOUT,] }] },
                 { type: DatepickerFocusService }
             ];
         };
         ClrDateInput.propDecorators = {
             placeholder: [{ type: i0.Input }],
-            clrNewLayout: [{ type: i0.Input }],
             dateChange: [{ type: i0.Output, args: ['clrDateChange',] }],
             date: [{ type: i0.Input, args: ['clrDate',] }],
             setFocusStates: [{ type: i0.HostListener, args: ['focus',] }],
@@ -27391,82 +27352,80 @@
     exports.ClrWizardPageHeaderActions = ClrWizardPageHeaderActions;
     exports.CLR_WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
     exports.ClrWizardModule = ClrWizardModule;
-    exports.ɵdw = ButtonInGroupService;
-    exports.ɵdo = DatagridRowExpandAnimation;
-    exports.ɵdl = ActionableOompaLoompa;
-    exports.ɵdj = DatagridWillyWonka;
-    exports.ɵdn = ExpandableOompaLoompa;
-    exports.ɵcn = ClrDatagridColumnSeparator;
-    exports.ɵct = ClrDatagridColumnToggleButton;
-    exports.ɵcs = ClrDatagridColumnToggleTitle;
-    exports.ɵcv = DatagridDetailRegisterer;
-    exports.ɵcu = ClrDatagridItemsTrackBy;
-    exports.ɵcw = ClrDatagridPageSize;
-    exports.ɵcr = ColumnResizerService;
-    exports.ɵdd = COLUMN_STATE;
-    exports.ɵdf = COLUMN_STATE_PROVIDER;
-    exports.ɵde = columnStateFactory;
-    exports.ɵcg = ColumnToggleButtonsService;
-    exports.ɵci = ColumnsService;
-    exports.ɵcl = CustomFilter;
-    exports.ɵcj = DisplayModeService;
-    exports.ɵbx = FiltersProvider;
-    exports.ɵcd = ExpandableRowsCount;
-    exports.ɵce = HideableColumnService;
-    exports.ɵbw = Items;
-    exports.ɵby = Page;
-    exports.ɵcc = RowActionService;
-    exports.ɵbv = Selection;
-    exports.ɵca = Sort;
-    exports.ɵbz = StateDebouncer;
-    exports.ɵcf = StateProvider;
-    exports.ɵch = TableSizeService;
-    exports.ɵdi = DatagridCellRenderer;
-    exports.ɵdc = DatagridHeaderRenderer;
-    exports.ɵdb = DatagridMainRenderer;
-    exports.ɵda = domAdapterFactory;
-    exports.ɵcb = DatagridRenderOrganizer;
-    exports.ɵdh = DatagridRowRenderer;
-    exports.ɵck = DatagridFilterRegistrar;
-    exports.ɵcx = WrappedCell;
-    exports.ɵcy = WrappedColumn;
-    exports.ɵcz = WrappedRow;
-    exports.ɵdq = StackControl;
-    exports.ɵdu = RecursiveChildren;
-    exports.ɵdt = TREE_FEATURES_PROVIDER;
-    exports.ɵdr = TreeFeaturesService;
-    exports.ɵds = treeFeaturesFactory;
+    exports.ɵdu = ButtonInGroupService;
+    exports.ɵdm = DatagridRowExpandAnimation;
+    exports.ɵdj = ActionableOompaLoompa;
+    exports.ɵdh = DatagridWillyWonka;
+    exports.ɵdl = ExpandableOompaLoompa;
+    exports.ɵcl = ClrDatagridColumnSeparator;
+    exports.ɵcr = ClrDatagridColumnToggleButton;
+    exports.ɵcq = ClrDatagridColumnToggleTitle;
+    exports.ɵct = DatagridDetailRegisterer;
+    exports.ɵcs = ClrDatagridItemsTrackBy;
+    exports.ɵcu = ClrDatagridPageSize;
+    exports.ɵcp = ColumnResizerService;
+    exports.ɵdb = COLUMN_STATE;
+    exports.ɵdd = COLUMN_STATE_PROVIDER;
+    exports.ɵdc = columnStateFactory;
+    exports.ɵce = ColumnToggleButtonsService;
+    exports.ɵcg = ColumnsService;
+    exports.ɵcj = CustomFilter;
+    exports.ɵch = DisplayModeService;
+    exports.ɵbv = FiltersProvider;
+    exports.ɵcb = ExpandableRowsCount;
+    exports.ɵcc = HideableColumnService;
+    exports.ɵbu = Items;
+    exports.ɵbw = Page;
+    exports.ɵca = RowActionService;
+    exports.ɵbt = Selection;
+    exports.ɵby = Sort;
+    exports.ɵbx = StateDebouncer;
+    exports.ɵcd = StateProvider;
+    exports.ɵcf = TableSizeService;
+    exports.ɵdg = DatagridCellRenderer;
+    exports.ɵda = DatagridHeaderRenderer;
+    exports.ɵcz = DatagridMainRenderer;
+    exports.ɵcy = domAdapterFactory;
+    exports.ɵbz = DatagridRenderOrganizer;
+    exports.ɵdf = DatagridRowRenderer;
+    exports.ɵci = DatagridFilterRegistrar;
+    exports.ɵcv = WrappedCell;
+    exports.ɵcw = WrappedColumn;
+    exports.ɵcx = WrappedRow;
+    exports.ɵdo = StackControl;
+    exports.ɵds = RecursiveChildren;
+    exports.ɵdr = TREE_FEATURES_PROVIDER;
+    exports.ɵdp = TreeFeaturesService;
+    exports.ɵdq = treeFeaturesFactory;
     exports.ɵo = AlertIconAndTypesService;
     exports.ɵp = MultiAlertService;
     exports.ɵt = IfErrorService;
-    exports.ɵba = ControlClassService;
+    exports.ɵy = ControlClassService;
     exports.ɵq = ControlIdService;
-    exports.ɵbh = FocusService;
+    exports.ɵbf = FocusService;
     exports.ɵr = LayoutService;
     exports.ɵu = MarkControlService;
-    exports.ɵv = IS_NEW_FORMS_LAYOUT;
-    exports.ɵw = IS_NEW_FORMS_LAYOUT_TRUE_PROVIDER;
     exports.ɵs = NgControlService;
-    exports.ɵz = WrappedFormControl;
-    exports.ɵbf = DateFormControlService;
-    exports.ɵbi = DateIOService;
-    exports.ɵbe = DateNavigationService;
-    exports.ɵbj = DatepickerEnabledService;
-    exports.ɵbk = DatepickerFocusService;
-    exports.ɵbg = LocaleHelperService;
-    exports.ɵbl = ViewManagerService;
-    exports.ɵdx = ResponsiveNavigationService;
-    exports.ɵeh = ActiveOompaLoompa;
-    exports.ɵeg = TabsWillyWonka;
-    exports.ɵeb = AriaService;
-    exports.ɵef = TabsService;
-    exports.ɵec = TABS_ID;
-    exports.ɵee = TABS_ID_PROVIDER;
-    exports.ɵed = tokenFactory$1;
-    exports.ɵek = VerticalNavGroupRegistrationService;
-    exports.ɵel = VerticalNavGroupService;
-    exports.ɵej = VerticalNavIconService;
-    exports.ɵei = VerticalNavService;
+    exports.ɵx = WrappedFormControl;
+    exports.ɵbd = DateFormControlService;
+    exports.ɵbg = DateIOService;
+    exports.ɵbc = DateNavigationService;
+    exports.ɵbh = DatepickerEnabledService;
+    exports.ɵbi = DatepickerFocusService;
+    exports.ɵbe = LocaleHelperService;
+    exports.ɵbj = ViewManagerService;
+    exports.ɵdv = ResponsiveNavigationService;
+    exports.ɵef = ActiveOompaLoompa;
+    exports.ɵee = TabsWillyWonka;
+    exports.ɵdz = AriaService;
+    exports.ɵed = TabsService;
+    exports.ɵea = TABS_ID;
+    exports.ɵec = TABS_ID_PROVIDER;
+    exports.ɵeb = tokenFactory$1;
+    exports.ɵei = VerticalNavGroupRegistrationService;
+    exports.ɵej = VerticalNavGroupService;
+    exports.ɵeh = VerticalNavIconService;
+    exports.ɵeg = VerticalNavService;
     exports.ɵi = AbstractPopover;
     exports.ɵb = POPOVER_DIRECTIVES;
     exports.ɵh = POPOVER_HOST_ANCHOR;
@@ -27475,41 +27434,41 @@
     exports.ɵg = ROOT_DROPDOWN_PROVIDER;
     exports.ɵe = RootDropdownService;
     exports.ɵf = clrRootDropdownFactory;
-    exports.ɵdm = OompaLoompa;
-    exports.ɵdk = WillyWonka;
+    exports.ɵdk = OompaLoompa;
+    exports.ɵdi = WillyWonka;
     exports.ɵj = ClrConditionalModule;
     exports.ɵk = IF_ACTIVE_ID;
     exports.ɵm = IF_ACTIVE_ID_PROVIDER;
     exports.ɵn = IfActiveService;
     exports.ɵl = tokenFactory;
     exports.ɵd = IfOpenService;
-    exports.ɵbt = DomAdapter;
-    exports.ɵbq = DragAndDropEventBusService;
-    exports.ɵbp = DragEventListenerService;
-    exports.ɵbr = DragHandleRegistrarService;
-    exports.ɵbs = DraggableSnapshotService;
-    exports.ɵbu = GlobalDragModeService;
-    exports.ɵdp = ClrIfExpandModule;
-    exports.ɵcm = Expand;
-    exports.ɵbd = FocusTrapDirective;
-    exports.ɵbb = ClrFocusTrapModule;
-    exports.ɵbc = FOCUS_TRAP_DIRECTIVES;
-    exports.ɵy = EmptyAnchor;
-    exports.ɵx = ClrHostWrappingModule;
-    exports.ɵco = UNIQUE_ID;
-    exports.ɵcq = UNIQUE_ID_PROVIDER;
-    exports.ɵcp = uniqueIdFactory;
-    exports.ɵbn = OUSTIDE_CLICK_DIRECTIVES;
-    exports.ɵbo = OutsideClick;
-    exports.ɵbm = ClrOutsideClickModule;
-    exports.ɵdv = ScrollingService;
-    exports.ɵdz = TEMPLATE_REF_DIRECTIVES;
-    exports.ɵea = TemplateRefContainer;
-    exports.ɵdy = ClrTemplateRefModule;
-    exports.ɵeo = ButtonHubService;
-    exports.ɵep = HeaderActionService;
-    exports.ɵen = PageCollectionService;
-    exports.ɵem = WizardNavigationService;
+    exports.ɵbr = DomAdapter;
+    exports.ɵbo = DragAndDropEventBusService;
+    exports.ɵbn = DragEventListenerService;
+    exports.ɵbp = DragHandleRegistrarService;
+    exports.ɵbq = DraggableSnapshotService;
+    exports.ɵbs = GlobalDragModeService;
+    exports.ɵdn = ClrIfExpandModule;
+    exports.ɵck = Expand;
+    exports.ɵbb = FocusTrapDirective;
+    exports.ɵz = ClrFocusTrapModule;
+    exports.ɵba = FOCUS_TRAP_DIRECTIVES;
+    exports.ɵw = EmptyAnchor;
+    exports.ɵv = ClrHostWrappingModule;
+    exports.ɵcm = UNIQUE_ID;
+    exports.ɵco = UNIQUE_ID_PROVIDER;
+    exports.ɵcn = uniqueIdFactory;
+    exports.ɵbl = OUSTIDE_CLICK_DIRECTIVES;
+    exports.ɵbm = OutsideClick;
+    exports.ɵbk = ClrOutsideClickModule;
+    exports.ɵdt = ScrollingService;
+    exports.ɵdx = TEMPLATE_REF_DIRECTIVES;
+    exports.ɵdy = TemplateRefContainer;
+    exports.ɵdw = ClrTemplateRefModule;
+    exports.ɵem = ButtonHubService;
+    exports.ɵen = HeaderActionService;
+    exports.ɵel = PageCollectionService;
+    exports.ɵek = WizardNavigationService;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
