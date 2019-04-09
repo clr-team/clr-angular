@@ -19437,7 +19437,7 @@
     var ResponsiveNavigationService = /** @class */ (function () {
         function ResponsiveNavigationService() {
             this.responsiveNavList = [];
-            this.registerNavSubject = new rxjs.Subject();
+            this.registerNavSubject = new rxjs.ReplaySubject();
             this.controlNavSubject = new rxjs.Subject();
             this.closeAllNavs(); // We start with all navs closed
         }

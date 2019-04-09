@@ -1,6 +1,6 @@
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { __extends, __assign, __values, __spread, __read } from 'tslib';
-import { Subject, BehaviorSubject, of, combineLatest, isObservable } from 'rxjs';
+import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
 import { NgControl, FormsModule, SelectMultipleControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, InjectionToken, ContentChildren, QueryList, ElementRef, HostListener, Renderer2, HostBinding, Inject, Injector, NgZone, ComponentFactoryResolver, ContentChild, ChangeDetectorRef, IterableDiffers, PLATFORM_ID, defineInjectable, LOCALE_ID, Self, Attribute } from '@angular/core';
@@ -19609,7 +19609,7 @@ var ResponsiveNavControlMessage = /** @class */ (function () {
 var ResponsiveNavigationService = /** @class */ (function () {
     function ResponsiveNavigationService() {
         this.responsiveNavList = [];
-        this.registerNavSubject = new Subject();
+        this.registerNavSubject = new ReplaySubject();
         this.controlNavSubject = new Subject();
         this.closeAllNavs(); // We start with all navs closed
     }
