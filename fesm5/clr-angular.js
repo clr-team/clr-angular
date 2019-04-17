@@ -4239,9 +4239,6 @@ var DateNavigationService = /** @class */ (function () {
      * @return {?}
      */
     function (dayModel) {
-        if (dayModel.isEqual(this.selectedDay)) {
-            return;
-        }
         this.selectedDay = dayModel;
         this._selectedDayChange.next(dayModel);
     };

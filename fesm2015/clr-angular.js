@@ -3538,9 +3538,6 @@ class DateNavigationService {
      * @return {?}
      */
     notifySelectedDayChanged(dayModel) {
-        if (dayModel.isEqual(this.selectedDay)) {
-            return;
-        }
         this.selectedDay = dayModel;
         this._selectedDayChange.next(dayModel);
     }
