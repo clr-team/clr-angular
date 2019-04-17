@@ -20267,7 +20267,7 @@
         ClrTabContent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-tab-content',
-                        template: "\n    <ng-template #tabContentProjectedRef>\n      <section [id]=\"tabContentId\" role=\"tabpanel\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    </ng-template>\n    "
+                        template: "\n    <ng-template #tabContentProjectedRef>\n      <section [id]=\"tabContentId\" role=\"tabpanel\" class=\"tab-content\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    </ng-template>\n    "
                     }] }
         ];
         /** @nocollapse */
@@ -20541,7 +20541,14 @@
              * @param {?} layout
              * @return {?}
              */ function (layout) {
-                if (Object.values(TabsLayout).includes(layout)) {
+                if (Object.keys(TabsLayout)
+                    .map(( /**
+             * @param {?} key
+             * @return {?}
+             */function (key) {
+                    return TabsLayout[key];
+                }))
+                    .indexOf(layout) >= 0) {
                     this.tabsService.layout = layout;
                 }
             },

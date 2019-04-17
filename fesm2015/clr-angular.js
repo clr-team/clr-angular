@@ -17230,7 +17230,7 @@ ClrTabContent.decorators = [
                 selector: 'clr-tab-content',
                 template: `
     <ng-template #tabContentProjectedRef>
-      <section [id]="tabContentId" role="tabpanel" [class.active]="active"
+      <section [id]="tabContentId" role="tabpanel" class="tab-content" [class.active]="active"
                [hidden]="!active"
                [attr.aria-labelledby]="ariaLabelledBy"
                [attr.aria-expanded]="active"
@@ -17500,7 +17500,15 @@ class ClrTabs {
      * @return {?}
      */
     set layout(layout) {
-        if (Object.values(TabsLayout).includes(layout)) {
+        if (Object.keys(TabsLayout)
+            .map((/**
+         * @param {?} key
+         * @return {?}
+         */
+        key => {
+            return TabsLayout[key];
+        }))
+            .indexOf(layout) >= 0) {
             this.tabsService.layout = layout;
         }
     }
