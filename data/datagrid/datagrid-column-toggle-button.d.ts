@@ -1,5 +1,8 @@
-import { ColumnToggleButtonsService } from './providers/column-toggle-buttons.service';
+import { ColumnsService } from './providers/columns.service';
 export declare class ClrDatagridColumnToggleButton {
-    toggleButtons: ColumnToggleButtonsService;
-    constructor(toggleButtons: ColumnToggleButtonsService);
+    private columnsService;
+    constructor(columnsService: ColumnsService);
+    private hideableColumns;
+    readonly allHideablesVisible: boolean;
+    selectAll(): void;
 }

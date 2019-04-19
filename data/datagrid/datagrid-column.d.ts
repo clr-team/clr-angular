@@ -1,6 +1,5 @@
 import { EventEmitter, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
-import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { FiltersProvider } from './providers/filters';
@@ -10,27 +9,6 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
     private _sort;
     private vcr;
     constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef);
-    /**
-     * @property columnId
-     *
-     * @description
-     * A ClrDatagridColumn class variable that holds the number of ClrDatagridColumn instances for a Datagrid.
-     * It is used to generate a unique id for the ClrDatagridColumn instance.
-     *
-     */
-    columnId: string;
-    /**
-     * @property hidden
-     *
-     * @description
-     * A property that allows the column to be hidden / shown with css
-     * Note the default allows the ClrDatagridColumn to have an *ngIf on it. (EHCAIWC - will occur if its not
-     * initialized)
-     *
-     * @default false
-     *
-     */
-    readonly hidden: boolean;
     /**
      * Subscription to the sort service changes
      */
@@ -81,16 +59,6 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
     filterValue: string;
     updateFilterValue: string;
     filterValueChange: EventEmitter<{}>;
-    /***********
-     *
-     * @property hideable
-     *
-     * @description
-     * When a column is hideable this is defined with an instance of DatagridHideableColumnModel.
-     * When its not hideable should be undefined.
-     *
-     */
-    hideable: DatagridHideableColumnModel;
     private wrappedInjector;
     ngOnInit(): void;
     readonly _view: any;

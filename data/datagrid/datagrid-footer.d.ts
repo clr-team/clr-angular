@@ -1,17 +1,12 @@
-import { ChangeDetectorRef, OnInit } from '@angular/core';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
-import { HideableColumnService } from './providers/hideable-column.service';
 import { Selection } from './providers/selection';
 import { SelectionType } from './enums/selection-type';
-export declare class ClrDatagridFooter<T = any> implements OnInit {
+import { ColumnsService } from './providers/columns.service';
+export declare class ClrDatagridFooter<T = any> {
     selection: Selection<T>;
-    hideableColumnService: HideableColumnService;
-    cdr: ChangeDetectorRef;
-    constructor(selection: Selection<T>, hideableColumnService: HideableColumnService, cdr: ChangeDetectorRef);
-    activeToggler: boolean;
-    private subscriptions;
+    private columnsService;
+    constructor(selection: Selection<T>, columnsService: ColumnsService);
     SELECTION_TYPE: typeof SelectionType;
     toggle: ClrDatagridColumnToggle;
-    ngOnInit(): void;
-    ngOnDestroy(): void;
+    readonly hasHideableColumns: boolean;
 }

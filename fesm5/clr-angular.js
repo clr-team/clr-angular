@@ -3,7 +3,7 @@ import { first, filter, switchMap, map } from 'rxjs/operators';
 import { __extends, __assign, __values, __spread, __read } from 'tslib';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, InjectionToken, ContentChildren, QueryList, ElementRef, HostListener, Renderer2, HostBinding, Inject, Injector, NgZone, ComponentFactoryResolver, ContentChild, ChangeDetectorRef, IterableDiffers, PLATFORM_ID, defineInjectable, LOCALE_ID, Self, Attribute } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, InjectionToken, ElementRef, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Inject, Injector, NgZone, ComponentFactoryResolver, ContentChild, ChangeDetectorRef, IterableDiffers, PLATFORM_ID, defineInjectable, LOCALE_ID, Self, Attribute } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -11739,8 +11739,6 @@ var WrappedColumn = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** @type {?} */
-var nbCount = 0;
 /**
  * @template T
  */
@@ -11791,40 +11789,8 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
             }
             // deprecated: to be removed - END
         }));
-        _this.columnId = 'dg-col-' + nbCount.toString(); // Approximate a GUID
-        nbCount++;
         return _this;
     }
-    Object.defineProperty(ClrDatagridColumn.prototype, "hidden", {
-        /**
-         * @property hidden
-         *
-         * @description
-         * A property that allows the column to be hidden / shown with css
-         * Note the default allows the ClrDatagridColumn to have an *ngIf on it. (EHCAIWC - will occur if its not
-         * initialized)
-         *
-         * @default false
-         *
-         */
-        get: /**
-         * \@property hidden
-         *
-         * \@description
-         * A property that allows the column to be hidden / shown with css
-         * Note the default allows the ClrDatagridColumn to have an *ngIf on it. (EHCAIWC - will occur if its not
-         * initialized)
-         *
-         * \@default false
-         *
-         * @return {?}
-         */
-        function () {
-            return !!this.hideable && this.hideable.hidden;
-        },
-        enumerable: true,
-        configurable: true
-    });
     /**
      * @return {?}
      */
@@ -12090,7 +12056,6 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
                     template: "\n      <div class=\"datagrid-column-flex\">\n          <!-- I'm really not happy with that select since it's not very scalable -->\n          <ng-content select=\"clr-dg-filter, clr-dg-string-filter\"></ng-content>\n\n          <clr-dg-string-filter\n                  *ngIf=\"field && !customFilter\"\n                  [clrDgStringFilter]=\"registered\"\n                  [(clrFilterValue)]=\"filterValue\"></clr-dg-string-filter>\n\n          <ng-template #columnTitle>\n              <ng-content></ng-content>\n          </ng-template>\n\n          <button class=\"datagrid-column-title\" *ngIf=\"sortable\" (click)=\"sort()\" type=\"button\">\n              <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n              <clr-icon\n                      *ngIf=\"sortIcon\"\n                      [attr.shape]=\"sortIcon\"\n                      class=\"sort-icon\"></clr-icon>\n          </button>\n\n          <span class=\"datagrid-column-title\" *ngIf=\"!sortable\">\n               <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n            </span>\n\n          <clr-dg-column-separator></clr-dg-column-separator>\n      </div>\n  ",
                     host: {
                         '[class.datagrid-column]': 'true',
-                        '[class.datagrid-column--hidden]': 'hidden',
                         '[attr.aria-sort]': 'ariaSort',
                         role: 'columnheader',
                     }
@@ -12722,338 +12687,6 @@ var ClrSignpost = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/**
- *
- * \@description
- * An \@Injectable provider class that enables
- *
- * 1. Managing, track hideability of DatagridColumns
- *
- */
-var HideableColumnService = /** @class */ (function () {
-    function HideableColumnService() {
-        /**
-         * *******
-         * \@property dgHiddenColumnMap
-         *
-         * \@description
-         * An array of DatagridHideableColumn.
-         * NOTE: because we can have columns w/o the *clrDgHideableColumn directive
-         * this array will have empty spaces a.k.a nulls. This is needed to be able to map
-         * DatagridCells to DatagridColumns in the RowRenderer.
-         *
-         */
-        this._columnList = [];
-        /**
-         * *******
-         *
-         * \@property dgHiddenColumnMapChange
-         *
-         * \@description
-         * A behavior subject that can broadcast updates to the column list.
-         * NOTE: I am using BehaviorSubject because <clr-dg-column-toggle> is not getting the latest _columnListChange
-         * on page load.
-         *
-         */
-        this._columnListChange = new BehaviorSubject(this._columnList);
-    }
-    Object.defineProperty(HideableColumnService.prototype, "canHideNextColumn", {
-        /**********
-         *
-         * @property canHideNextColumn
-         *
-         * @description
-         * Service function that is called by clr-dg-column-toggle component. Use this if you need to ask if you can hide
-         * a column. It acts as a guard against hiding all the columns making sure there is at least one column displayed.
-         *
-         */
-        get: /**
-         * *******
-         *
-         * \@property canHideNextColumn
-         *
-         * \@description
-         * Service function that is called by clr-dg-column-toggle component. Use this if you need to ask if you can hide
-         * a column. It acts as a guard against hiding all the columns making sure there is at least one column displayed.
-         *
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
-            var hiddenColumns = this._columnList.filter((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) { return column !== undefined; })).filter((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) { return column.hidden; }));
-            return this._columnList.length - hiddenColumns.length > 1;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HideableColumnService.prototype, "checkForAllColumnsVisible", {
-        /**********
-         *
-         * @property checkForAllColumnsVisible
-         *
-         * @description
-         * For when you need to know if the datagrid's columns are all showing.
-         *
-         */
-        get: /**
-         * *******
-         *
-         * \@property checkForAllColumnsVisible
-         *
-         * \@description
-         * For when you need to know if the datagrid's columns are all showing.
-         *
-         * @return {?}
-         */
-        function () {
-            return !this._columnList.some((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) { return column && column.hidden; }));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HideableColumnService.prototype, "columnListChange", {
-        /***********
-         * @property columnListChange
-         *
-         * @description
-         * A public property that enables subscribers to hear updates to the column map.
-         * Use this if you need to do something whenever the Datagrid's column list is changed (i.e *ngIf on a column).
-         *
-         */
-        get: /**
-         * ********
-         * \@property columnListChange
-         *
-         * \@description
-         * A public property that enables subscribers to hear updates to the column map.
-         * Use this if you need to do something whenever the Datagrid's column list is changed (i.e *ngIf on a column).
-         *
-         * @return {?}
-         */
-        function () {
-            return this._columnListChange.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**********
-     *
-     * @description
-     * Public function that returns the current list of columns. I needed an array of to iterate on in the RowRenderer
-     * but subscribing to the _columnListChange changes did not seem like the correct way to get it.
-     *
-     */
-    /**
-     * *******
-     *
-     * \@description
-     * Public function that returns the current list of columns. I needed an array of to iterate on in the RowRenderer
-     * but subscribing to the _columnListChange changes did not seem like the correct way to get it.
-     *
-     * @return {?}
-     */
-    HideableColumnService.prototype.getColumns = /**
-     * *******
-     *
-     * \@description
-     * Public function that returns the current list of columns. I needed an array of to iterate on in the RowRenderer
-     * but subscribing to the _columnListChange changes did not seem like the correct way to get it.
-     *
-     * @return {?}
-     */
-    function () {
-        return this._columnList;
-    };
-    /**********
-     *
-     * @description
-     * Iterate through the current _columnList:
-     * - if it has a DatagridHideableColumn and is hidden then show it.
-     * - if it's DatagridHideableColumn was previously the last column visible, turn that flag off.
-     *
-     */
-    /**
-     * *******
-     *
-     * \@description
-     * Iterate through the current _columnList:
-     * - if it has a DatagridHideableColumn and is hidden then show it.
-     * - if it's DatagridHideableColumn was previously the last column visible, turn that flag off.
-     *
-     * @return {?}
-     */
-    HideableColumnService.prototype.showHiddenColumns = /**
-     * *******
-     *
-     * \@description
-     * Iterate through the current _columnList:
-     * - if it has a DatagridHideableColumn and is hidden then show it.
-     * - if it's DatagridHideableColumn was previously the last column visible, turn that flag off.
-     *
-     * @return {?}
-     */
-    function () {
-        this._columnList.forEach((/**
-         * @param {?} column
-         * @return {?}
-         */
-        function (column) {
-            if (column && column.hidden === true) {
-                column.hidden = false;
-            }
-            if (column && column.lastVisibleColumn) {
-                column.lastVisibleColumn = false;
-            }
-        }));
-    };
-    /**
-     *
-     * @param columns: DatagridColumn[]
-     *
-     * @description
-     * Creates an array of DatagridHideableColumn's || null based column array passed as param.
-     * Is dependent on the order in @ContentChildren in Datagrid.
-     *
-     */
-    /**
-     *
-     * \@description
-     * Creates an array of DatagridHideableColumn's || null based column array passed as param.
-     * Is dependent on the order in \@ContentChildren in Datagrid.
-     *
-     * @param {?} columns
-     * @return {?}
-     */
-    HideableColumnService.prototype.updateColumnList = /**
-     *
-     * \@description
-     * Creates an array of DatagridHideableColumn's || null based column array passed as param.
-     * Is dependent on the order in \@ContentChildren in Datagrid.
-     *
-     * @param {?} columns
-     * @return {?}
-     */
-    function (columns) {
-        this._columnList = columns; // clear the list
-        this.updateForLastVisibleColumn(); // Update our visibility state for UI
-        this._columnListChange.next(this._columnList); // Broadcast it
-    };
-    /**********
-     *
-     * @description
-     * Gets the current visible count for all columns.
-     * When it is greater than 1 it marks everything as false for the lastVisibleColumn.
-     * When visible count is not > 1 (i.e) 1. , it finds the only column that is not hidden and marks it as the
-     * lastVisibleColumn.
-     *
-     */
-    /**
-     * *******
-     *
-     * \@description
-     * Gets the current visible count for all columns.
-     * When it is greater than 1 it marks everything as false for the lastVisibleColumn.
-     * When visible count is not > 1 (i.e) 1. , it finds the only column that is not hidden and marks it as the
-     * lastVisibleColumn.
-     *
-     * @return {?}
-     */
-    HideableColumnService.prototype.updateForLastVisibleColumn = /**
-     * *******
-     *
-     * \@description
-     * Gets the current visible count for all columns.
-     * When it is greater than 1 it marks everything as false for the lastVisibleColumn.
-     * When visible count is not > 1 (i.e) 1. , it finds the only column that is not hidden and marks it as the
-     * lastVisibleColumn.
-     *
-     * @return {?}
-     */
-    function () {
-        // There is more than one column showing, make sure nothing is marked lastVisibleColumn
-        if (this.canHideNextColumn) {
-            this._columnList.map((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) {
-                if (column && column.lastVisibleColumn) {
-                    column.lastVisibleColumn = false;
-                }
-            }));
-        }
-        else {
-            // The visibleCount is down to only one column showing. Find it and flag it as the lastVisibleColumn
-            this._columnList.map((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) {
-                if (column && !column.hidden) {
-                    column.lastVisibleColumn = true;
-                }
-            }));
-        }
-    };
-    /**********
-     *
-     * @description
-     * Return a HideableColumn in this._columnList for the given id.
-     *
-     *
-     */
-    /**
-     * *******
-     *
-     * \@description
-     * Return a HideableColumn in this._columnList for the given id.
-     *
-     *
-     * @param {?} id
-     * @return {?}
-     */
-    HideableColumnService.prototype.getColumnById = /**
-     * *******
-     *
-     * \@description
-     * Return a HideableColumn in this._columnList for the given id.
-     *
-     *
-     * @param {?} id
-     * @return {?}
-     */
-    function (id) {
-        if (id) {
-            return this._columnList.find((/**
-             * @param {?} column
-             * @return {?}
-             */
-            function (column) { return column && column.id === id; }));
-        }
-        return;
-    };
-    HideableColumnService.decorators = [
-        { type: Injectable }
-    ];
-    return HideableColumnService;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 var WrappedCell = /** @class */ (function () {
     function WrappedCell() {
         this._dynamic = false;
@@ -13087,67 +12720,9 @@ var WrappedCell = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClrDatagridCell = /** @class */ (function () {
-    function ClrDatagridCell(hideableColumnService, _el, _renderer, vcr) {
-        this.hideableColumnService = hideableColumnService;
-        this._el = _el;
-        this._renderer = _renderer;
+    function ClrDatagridCell(vcr) {
         this.vcr = vcr;
     }
-    Object.defineProperty(ClrDatagridCell.prototype, "id", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            this._id = value;
-            this.mapHideableColumn(this._id);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @private
-     * @param {?} columnId
-     * @return {?}
-     */
-    ClrDatagridCell.prototype.mapHideableColumn = /**
-     * @private
-     * @param {?} columnId
-     * @return {?}
-     */
-    function (columnId) {
-        var _this = this;
-        if (!columnId) {
-            return;
-        }
-        /** @type {?} */
-        var hideableColumn = this.hideableColumnService.getColumnById(this._id);
-        this.setHiddenClass(hideableColumn.hidden);
-        this.hiddenStateSubscription = hideableColumn.hiddenChangeState.subscribe((/**
-         * @return {?}
-         */
-        function () {
-            _this.setHiddenClass(hideableColumn.hidden);
-        }));
-    };
-    /**
-     * @private
-     * @param {?} hideableColumnValue
-     * @return {?}
-     */
-    ClrDatagridCell.prototype.setHiddenClass = /**
-     * @private
-     * @param {?} hideableColumnValue
-     * @return {?}
-     */
-    function (hideableColumnValue) {
-        if (hideableColumnValue) {
-            this._renderer.addClass(this._el.nativeElement, 'datagrid-cell--hidden');
-        }
-        else {
-            this._renderer.removeClass(this._el.nativeElement, 'datagrid-cell--hidden');
-        }
-    };
     /**
      * @return {?}
      */
@@ -13156,17 +12731,6 @@ var ClrDatagridCell = /** @class */ (function () {
      */
     function () {
         this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
-    };
-    /**
-     * @return {?}
-     */
-    ClrDatagridCell.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        if (this.hiddenStateSubscription) {
-            this.hiddenStateSubscription.unsubscribe();
-        }
     };
     Object.defineProperty(ClrDatagridCell.prototype, "_view", {
         get: /**
@@ -13191,9 +12755,6 @@ var ClrDatagridCell = /** @class */ (function () {
     ];
     /** @nocollapse */
     ClrDatagridCell.ctorParameters = function () { return [
-        { type: HideableColumnService },
-        { type: ElementRef },
-        { type: Renderer2 },
         { type: ViewContainerRef }
     ]; };
     ClrDatagridCell.propDecorators = {
@@ -13235,14 +12796,12 @@ var DatagridRenderStep = {
     CALCULATE_MODE_OFF: 2,
     CLEAR_WIDTHS: 3,
     COMPUTE_COLUMN_WIDTHS: 4,
-    DETECT_STRICT_WIDTHS: 5,
 };
 DatagridRenderStep[DatagridRenderStep.ALIGN_COLUMNS] = 'ALIGN_COLUMNS';
 DatagridRenderStep[DatagridRenderStep.CALCULATE_MODE_ON] = 'CALCULATE_MODE_ON';
 DatagridRenderStep[DatagridRenderStep.CALCULATE_MODE_OFF] = 'CALCULATE_MODE_OFF';
 DatagridRenderStep[DatagridRenderStep.CLEAR_WIDTHS] = 'CLEAR_WIDTHS';
 DatagridRenderStep[DatagridRenderStep.COMPUTE_COLUMN_WIDTHS] = 'COMPUTE_COLUMN_WIDTHS';
-DatagridRenderStep[DatagridRenderStep.DETECT_STRICT_WIDTHS] = 'DETECT_STRICT_WIDTHS';
 
 /**
  * @fileoverview added by tsickle
@@ -13289,7 +12848,6 @@ var DatagridRenderOrganizer = /** @class */ (function () {
         if (this.alreadySized) {
             this._renderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
         }
-        this._renderStep.next(DatagridRenderStep.DETECT_STRICT_WIDTHS);
         this._renderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
         this._renderStep.next(DatagridRenderStep.ALIGN_COLUMNS);
         this.alreadySized = true;
@@ -13974,13 +13532,12 @@ var nbRow = 0;
  * @template T
  */
 var ClrDatagridRow = /** @class */ (function () {
-    function ClrDatagridRow(selection, rowActionService, globalExpandable, expand, hideableColumnService, displayMode, vcr, renderer, el, commonStrings) {
+    function ClrDatagridRow(selection, rowActionService, globalExpandable, expand, displayMode, vcr, renderer, el, commonStrings) {
         var _this = this;
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.globalExpandable = globalExpandable;
         this.expand = expand;
-        this.hideableColumnService = hideableColumnService;
         this.displayMode = displayMode;
         this.vcr = vcr;
         this.renderer = renderer;
@@ -14099,40 +13656,18 @@ var ClrDatagridRow = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        // Make sure things get started
-        /** @type {?} */
-        var columnsList = this.hideableColumnService.getColumns();
-        this.updateCellsForColumns(columnsList);
-        // Triggered when the Cells list changes per row-renderer
         this.dgCells.changes.subscribe((/**
-         * @param {?} cellList
          * @return {?}
          */
-        function (cellList) {
-            /** @type {?} */
-            var columnList = _this.hideableColumnService.getColumns();
-            if (cellList.length === columnList.length) {
-                _this.updateCellsForColumns(columnList);
-                _this.dgCells.forEach((/**
-                 * @param {?} cell
-                 * @return {?}
-                 */
-                function (cell) {
-                    _this._scrollableCells.insert(cell._view);
-                }));
-            }
+        function () {
+            _this.dgCells.forEach((/**
+             * @param {?} cell
+             * @return {?}
+             */
+            function (cell) {
+                _this._scrollableCells.insert(cell._view);
+            }));
         }));
-        // Used to set things up the first time but only after all the columns are ready.
-        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe((/**
-         * @param {?} columnList
-         * @return {?}
-         */
-        function (columnList) {
-            // Prevents cell updates when cols and cells array are not aligned - only seems to run on init / first time.
-            if (columnList.length === _this.dgCells.length) {
-                _this.updateCellsForColumns(columnList);
-            }
-        })));
     };
     /**
      * @return {?}
@@ -14177,51 +13712,6 @@ var ClrDatagridRow = /** @class */ (function () {
                 }));
             }
         })));
-    };
-    /**********
-     *
-     * @description
-     * 1. Maps the new columnListChange to the dgCells list by index
-     * 2. Sets the hidden state on the cell
-     * Take a Column list and use index to access the columns for hideable properties.
-     *
-     */
-    /**
-     * *******
-     *
-     * \@description
-     * 1. Maps the new columnListChange to the dgCells list by index
-     * 2. Sets the hidden state on the cell
-     * Take a Column list and use index to access the columns for hideable properties.
-     *
-     * @param {?} columnList
-     * @return {?}
-     */
-    ClrDatagridRow.prototype.updateCellsForColumns = /**
-     * *******
-     *
-     * \@description
-     * 1. Maps the new columnListChange to the dgCells list by index
-     * 2. Sets the hidden state on the cell
-     * Take a Column list and use index to access the columns for hideable properties.
-     *
-     * @param {?} columnList
-     * @return {?}
-     */
-    function (columnList) {
-        // Map cells to columns with Array.index
-        this.dgCells.forEach((/**
-         * @param {?} cell
-         * @param {?} index
-         * @return {?}
-         */
-        function (cell, index) {
-            /** @type {?} */
-            var currentColumn = columnList[index];
-            if (currentColumn) {
-                cell.id = currentColumn.id;
-            }
-        }));
     };
     /**
      * @return {?}
@@ -14274,7 +13764,6 @@ var ClrDatagridRow = /** @class */ (function () {
         { type: RowActionService },
         { type: ExpandableRowsCount },
         { type: Expand },
-        { type: HideableColumnService },
         { type: DisplayModeService },
         { type: ViewContainerRef },
         { type: Renderer2 },
@@ -14293,41 +13782,6 @@ var ClrDatagridRow = /** @class */ (function () {
         _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { read: ViewContainerRef },] }]
     };
     return ClrDatagridRow;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-var ColumnToggleButtonsService = /** @class */ (function () {
-    function ColumnToggleButtonsService() {
-        this.buttons = null;
-        this.selectAllDisabled = false;
-        this._selectAllButtonClicked = new Subject();
-    }
-    Object.defineProperty(ColumnToggleButtonsService.prototype, "selectAllButtonClicked", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._selectAllButtonClicked.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    ColumnToggleButtonsService.prototype.buttonClicked = /**
-     * @return {?}
-     */
-    function () {
-        this._selectAllButtonClicked.next();
-    };
-    ColumnToggleButtonsService.decorators = [
-        { type: Injectable }
-    ];
-    return ColumnToggleButtonsService;
 }());
 
 /**
@@ -14498,48 +13952,37 @@ var TableSizeService = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ColumnsService = /** @class */ (function () {
-    function ColumnsService(organizer) {
-        var _this = this;
-        this.organizer = organizer;
-        this.subscriptions = [];
+    function ColumnsService() {
         this.columns = [];
-        this.subscriptions.push(this.organizer.filterRenderSteps(DatagridRenderStep.CLEAR_WIDTHS).subscribe((/**
-         * @return {?}
-         */
-        function () { return _this.reset(); })));
     }
-    /**
-     * @return {?}
-     */
-    ColumnsService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this.subscriptions.forEach((/**
-         * @param {?} sub
+    Object.defineProperty(ColumnsService.prototype, "columnStates", {
+        get: /**
          * @return {?}
          */
-        function (sub) { return sub.unsubscribe(); }));
-    };
-    /**
-     * @private
-     * @return {?}
-     */
-    ColumnsService.prototype.reset = /**
-     * @private
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        this.columns.forEach((/**
-         * @param {?} column
-         * @param {?} index
+        function () {
+            return this.columns.map((/**
+             * @param {?} column
+             * @return {?}
+             */
+            function (column) { return column.value; }));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColumnsService.prototype, "hasHideableColumns", {
+        get: /**
          * @return {?}
          */
-        function (column, index) {
-            _this.emitStateChange(index, { width: 0 });
-        }));
-    };
+        function () {
+            return this.columnStates.filter((/**
+             * @param {?} state
+             * @return {?}
+             */
+            function (state$$1) { return state$$1.hideable; })).length > 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // Helper method to emit a change to a column only when there is an actual diff to process for that column
     // Helper method to emit a change to a column only when there is an actual diff to process for that column
     /**
@@ -14547,7 +13990,7 @@ var ColumnsService = /** @class */ (function () {
      * @param {?} diff
      * @return {?}
      */
-    ColumnsService.prototype.emitStateChange = 
+    ColumnsService.prototype.emitStateChangeAt = 
     // Helper method to emit a change to a column only when there is an actual diff to process for that column
     /**
      * @param {?} columnIndex
@@ -14558,25 +14001,26 @@ var ColumnsService = /** @class */ (function () {
         if (!this.columns[columnIndex]) {
             return;
         }
+        this.emitStateChange(this.columns[columnIndex], diff);
+    };
+    /**
+     * @param {?} column
+     * @param {?} diff
+     * @return {?}
+     */
+    ColumnsService.prototype.emitStateChange = /**
+     * @param {?} column
+     * @param {?} diff
+     * @return {?}
+     */
+    function (column, diff) {
         /** @type {?} */
-        var current = this.columns[columnIndex].value;
-        /** @type {?} */
-        var hasChange = Object.keys(diff).filter((/**
-         * @param {?} key
-         * @return {?}
-         */
-        function (key) { return diff[key] !== current[key]; }));
-        if (hasChange) {
-            this.columns[columnIndex].next(__assign({}, current, diff));
-        }
+        var current = column.value;
+        column.next(__assign({}, current, diff));
     };
     ColumnsService.decorators = [
         { type: Injectable }
     ];
-    /** @nocollapse */
-    ColumnsService.ctorParameters = function () { return [
-        { type: DatagridRenderOrganizer }
-    ]; };
     return ColumnsService;
 }());
 
@@ -14588,8 +14032,7 @@ var ColumnsService = /** @class */ (function () {
  * @template T
  */
 var ClrDatagrid = /** @class */ (function () {
-    function ClrDatagrid(columnService, organizer, items, expandableRows, selection, rowActionService, stateProvider, displayMode, renderer, el, commonStrings) {
-        this.columnService = columnService;
+    function ClrDatagrid(organizer, items, expandableRows, selection, rowActionService, stateProvider, displayMode, renderer, el, commonStrings) {
         this.organizer = organizer;
         this.items = items;
         this.expandableRows = expandableRows;
@@ -14773,23 +14216,6 @@ var ClrDatagrid = /** @class */ (function () {
                 _this._displayedRows.insert(row._view);
             }));
         })));
-        this._subscriptions.push(this.columns.changes.subscribe((/**
-         * @param {?} columns
-         * @return {?}
-         */
-        function (columns) {
-            _this.columnService.updateColumnList(_this.columns.map((/**
-             * @param {?} col
-             * @return {?}
-             */
-            function (col) { return col.hideable; })));
-        })));
-        // Get ColumnService ready for HideableColumns.
-        this.columnService.updateColumnList(this.columns.map((/**
-         * @param {?} col
-         * @return {?}
-         */
-        function (col) { return col.hideable; })));
     };
     /**
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
@@ -14918,10 +14344,8 @@ var ClrDatagrid = /** @class */ (function () {
                         DatagridRenderOrganizer,
                         RowActionService,
                         ExpandableRowsCount,
-                        HideableColumnService,
                         StateDebouncer,
                         StateProvider,
-                        ColumnToggleButtonsService,
                         TableSizeService,
                         ColumnsService,
                         DisplayModeService,
@@ -14931,7 +14355,6 @@ var ClrDatagrid = /** @class */ (function () {
     ];
     /** @nocollapse */
     ClrDatagrid.ctorParameters = function () { return [
-        { type: HideableColumnService },
         { type: DatagridRenderOrganizer },
         { type: Items },
         { type: ExpandableRowsCount },
@@ -15320,19 +14743,96 @@ var ClrDatagridColumnSeparator = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/*
+ * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @enum {number} */
+var DatagridColumnChanges = {
+    WIDTH: 0,
+    HIDDEN: 1,
+};
+DatagridColumnChanges[DatagridColumnChanges.WIDTH] = 'WIDTH';
+DatagridColumnChanges[DatagridColumnChanges.HIDDEN] = 'HIDDEN';
+/** @type {?} */
+var ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
+    .map((/**
+ * @param {?} key
+ * @return {?}
+ */
+function (key) { return DatagridColumnChanges[key]; }))
+    .filter((/**
+ * @param {?} key
+ * @return {?}
+ */
+function (key) { return key === parseInt(key, 10); }));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 var ClrDatagridColumnToggleButton = /** @class */ (function () {
-    function ClrDatagridColumnToggleButton(toggleButtons) {
-        this.toggleButtons = toggleButtons;
+    function ClrDatagridColumnToggleButton(columnsService) {
+        this.columnsService = columnsService;
     }
+    /**
+     * @private
+     * @return {?}
+     */
+    ClrDatagridColumnToggleButton.prototype.hideableColumns = /**
+     * @private
+     * @return {?}
+     */
+    function () {
+        return this.columnsService.columns.filter((/**
+         * @param {?} column
+         * @return {?}
+         */
+        function (column) { return column.value.hideable; }));
+    };
+    Object.defineProperty(ClrDatagridColumnToggleButton.prototype, "allHideablesVisible", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.hideableColumns().filter((/**
+             * @param {?} column
+             * @return {?}
+             */
+            function (column) { return column.value.hidden; })).length === 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    ClrDatagridColumnToggleButton.prototype.selectAll = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.hideableColumns().forEach((/**
+         * @param {?} hideableColumn
+         * @return {?}
+         */
+        function (hideableColumn) {
+            return _this.columnsService.emitStateChange(hideableColumn, {
+                hidden: false,
+                changes: [DatagridColumnChanges.HIDDEN],
+            });
+        }));
+    };
     ClrDatagridColumnToggleButton.decorators = [
         { type: Component, args: [{
                     selector: 'clr-dg-column-toggle-button',
-                    template: "\n        <button class=\"btn btn-sm btn-link\"\n            (click)=\"toggleButtons.buttonClicked()\"\n            [disabled]=\"toggleButtons.selectAllDisabled\"\n            type=\"button\">\n            <ng-content></ng-content>\n        </button>\n    "
+                    template: "\n    <button class=\"btn btn-sm btn-link switch-button\"\n            (click)=\"selectAll()\"\n            [disabled]=\"allHideablesVisible\"\n            type=\"button\">\n      <ng-content></ng-content>\n    </button>\n  "
                 }] }
     ];
     /** @nocollapse */
     ClrDatagridColumnToggleButton.ctorParameters = function () { return [
-        { type: ColumnToggleButtonsService }
+        { type: ColumnsService }
     ]; };
     return ClrDatagridColumnToggleButton;
 }());
@@ -15358,11 +14858,9 @@ var ClrDatagridColumnToggleTitle = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClrDatagridColumnToggle = /** @class */ (function () {
-    function ClrDatagridColumnToggle(hideableColumnService, columnToggleButtons, commonStrings) {
-        this.hideableColumnService = hideableColumnService;
-        this.columnToggleButtons = columnToggleButtons;
+    function ClrDatagridColumnToggle(commonStrings, columnsService) {
         this.commonStrings = commonStrings;
-        this.subscriptions = [];
+        this.columnsService = columnsService;
         /**
          *
          * Popover init
@@ -15370,109 +14868,70 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
         this.anchorPoint = Point.TOP_LEFT;
         this.popoverPoint = Point.LEFT_BOTTOM;
         this.open = false;
-        /**
-         * *
-         * DatagridHideableColumnModel init
-         */
-        this.columns = [];
     }
-    Object.defineProperty(ClrDatagridColumnToggle.prototype, "allColumnsVisible", {
+    Object.defineProperty(ClrDatagridColumnToggle.prototype, "hideableColumnStates", {
         get: /**
          * @return {?}
          */
         function () {
-            return this._allColumnsVisible;
+            /** @type {?} */
+            var hideables = this.columnsService.columns.filter((/**
+             * @param {?} column
+             * @return {?}
+             */
+            function (column) { return column.value.hideable; }));
+            return hideables.map((/**
+             * @param {?} column
+             * @return {?}
+             */
+            function (column) { return column.value; }));
         },
-        set: /**
-         * @param {?} value
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClrDatagridColumnToggle.prototype, "hasOnlyOneVisibleColumn", {
+        get: /**
          * @return {?}
          */
-        function (value) {
-            this._allColumnsVisible = value;
+        function () {
+            /** @type {?} */
+            var nbNonHideableColumns = this.columnsService.columns.length - this.hideableColumnStates.length;
+            // this should only return true when there is no non-hideable columns.
+            return (nbNonHideableColumns === 0 && this.hideableColumnStates.filter((/**
+             * @param {?} columnState
+             * @return {?}
+             */
+            function (columnState) { return !columnState.hidden; })).length === 1);
         },
         enumerable: true,
         configurable: true
     });
     /**
-     * @return {?}
-     */
-    ClrDatagridColumnToggle.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe((/**
-         * @param {?} columnList
-         * @return {?}
-         */
-        function (columnList) {
-            // Reset the list of columns
-            _this.columns.length = 0;
-            _this.hideableColumnService.updateForLastVisibleColumn();
-            _this.allColumnsVisible = _this.hideableColumnService.checkForAllColumnsVisible;
-            _this.columnToggleButtons.selectAllDisabled = _this.allColumnsVisible;
-            // Add only the hidden columns to the toggler.
-            columnList.forEach((/**
-             * @param {?} col
-             * @return {?}
-             */
-            function (col) {
-                if (col) {
-                    _this.columns.push(col);
-                }
-            }));
-        })));
-        this.subscriptions.push(this.columnToggleButtons.selectAllButtonClicked.subscribe((/**
-         * @return {?}
-         */
-        function () {
-            _this.selectAll();
-        })));
-    };
-    /**
-     * @return {?}
-     */
-    ClrDatagridColumnToggle.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this.subscriptions.forEach((/**
-         * @param {?} sub
-         * @return {?}
-         */
-        function (sub) { return sub.unsubscribe(); }));
-    };
-    /**
-     * @return {?}
-     */
-    ClrDatagridColumnToggle.prototype.selectAll = /**
-     * @return {?}
-     */
-    function () {
-        this.hideableColumnService.showHiddenColumns();
-        this.allColumnsVisible = this.hideableColumnService.checkForAllColumnsVisible;
-        this.columnToggleButtons.selectAllDisabled = this.allColumnsVisible;
-    };
-    /**
+     * @param {?} columnState
      * @param {?} event
-     * @param {?} column
      * @return {?}
      */
-    ClrDatagridColumnToggle.prototype.toggleColumn = /**
+    ClrDatagridColumnToggle.prototype.toggleColumnState = /**
+     * @param {?} columnState
      * @param {?} event
-     * @param {?} column
      * @return {?}
      */
-    function (event, column) {
-        column.hidden = !event;
-        this.allColumnsVisible = this.hideableColumnService.checkForAllColumnsVisible;
-        this.columnToggleButtons.selectAllDisabled = this.allColumnsVisible;
-        this.hideableColumnService.updateForLastVisibleColumn();
+    function (columnState, event) {
+        /** @type {?} */
+        var columnToToggle = this.columnsService.columns.filter((/**
+         * @param {?} column
+         * @return {?}
+         */
+        function (column) { return column.value === columnState; }))[0];
+        this.columnsService.emitStateChange(columnToToggle, {
+            hidden: event,
+            changes: [DatagridColumnChanges.HIDDEN],
+        });
     };
     /**
      * @return {?}
      */
-    ClrDatagridColumnToggle.prototype.toggleUI = /**
+    ClrDatagridColumnToggle.prototype.toggleSwitchPanel = /**
      * @return {?}
      */
     function () {
@@ -15481,19 +14940,18 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
     ClrDatagridColumnToggle.decorators = [
         { type: Component, args: [{
                     selector: 'clr-dg-column-toggle',
-                    template: "\n        <button\n                #anchor\n                (click)=\"toggleUI()\"\n                class=\"btn btn-sm btn-link column-toggle--action\"\n                type=\"button\">\n            <clr-icon shape=\"view-columns\" [attr.title]=\"commonStrings.pickColumns\"></clr-icon>\n        </button>\n        <div class=\"column-switch\"\n             *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n            <div class=\"switch-header\">\n                <ng-container *ngIf=\"!title\">Show Columns</ng-container>\n                <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n                <button\n                    class=\"btn btn-sm btn-link\"\n                    (click)=\"toggleUI()\"\n                    type=\"button\">\n                    <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n                </button>\n            </div>\n            <ul class=\"switch-content list-unstyled\">\n                <li *ngFor=\"let column of columns\">\n                    <clr-checkbox-wrapper>\n                        <input clrCheckbox type=\"checkbox\"\n                          [disabled]=\"column.lastVisibleColumn\"\n                          [ngModel]=\"!column.hidden\"\n                          (ngModelChange)=\"toggleColumn($event, column)\">\n                        <label><ng-template [ngTemplateOutlet]=\"column.template\"></ng-template></label>\n                    </clr-checkbox-wrapper>\n                </li>\n            </ul>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length > 0\">\n                <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n            </div>\n            <div class=\"switch-footer\" *ngIf=\"buttons.length === 0\">\n                <div>\n                    <button\n                            class=\"btn btn-sm btn-link p6 text-uppercase\"\n                            [disabled]=\"allColumnsVisible\"\n                            (click)=\"selectAll()\"\n                            type=\"button\">Select All\n                    </button>\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n    <button\n      #anchor\n      (click)=\"toggleSwitchPanel()\"\n      class=\"btn btn-sm btn-link column-toggle--action\"\n      type=\"button\">\n      <clr-icon shape=\"view-columns\" [attr.title]=\"commonStrings.pickColumns\"></clr-icon>\n    </button>\n    <div class=\"column-switch\"\n         *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n      <div class=\"switch-header\">\n        <ng-container *ngIf=\"!customToggleTitle\">Show Columns</ng-container>\n        <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n        <button\n          class=\"btn btn-sm btn-link toggle-switch-close-button\"\n          (click)=\"toggleSwitchPanel()\"\n          type=\"button\">\n          <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n        </button>\n      </div>\n      <ul class=\"switch-content list-unstyled\">\n        <li *ngFor=\"let columnState of hideableColumnStates;\">\n          <clr-checkbox-wrapper>\n            <input clrCheckbox type=\"checkbox\"\n                   [disabled]=\"hasOnlyOneVisibleColumn && !columnState.hidden\"\n                   [ngModel]=\"!columnState.hidden\"\n                   (ngModelChange)=\"toggleColumnState(columnState, !$event)\">\n            <label>\n              <ng-template [ngTemplateOutlet]=\"columnState.titleTemplateRef\"></ng-template>\n            </label>\n          </clr-checkbox-wrapper>\n        </li>\n      </ul>\n      <div class=\"switch-footer\">\n        <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n        <clr-dg-column-toggle-button *ngIf=\"!customToggleButton\">Select All</clr-dg-column-toggle-button>\n      </div>\n    </div>\n  ",
                     host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'open' }
                 }] }
     ];
     /** @nocollapse */
     ClrDatagridColumnToggle.ctorParameters = function () { return [
-        { type: HideableColumnService },
-        { type: ColumnToggleButtonsService },
-        { type: ClrCommonStrings }
+        { type: ClrCommonStrings },
+        { type: ColumnsService }
     ]; };
     ClrDatagridColumnToggle.propDecorators = {
-        title: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
-        buttons: [{ type: ContentChildren, args: [ClrDatagridColumnToggleButton,] }]
+        customToggleTitle: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
+        customToggleButton: [{ type: ContentChild, args: [ClrDatagridColumnToggleButton,] }]
     };
     return ClrDatagridColumnToggle;
 }());
@@ -15542,66 +15000,26 @@ var DatagridDetailRegisterer = /** @class */ (function () {
  * @template T
  */
 var ClrDatagridFooter = /** @class */ (function () {
-    function ClrDatagridFooter(selection, hideableColumnService, cdr) {
+    function ClrDatagridFooter(selection, columnsService) {
         this.selection = selection;
-        this.hideableColumnService = hideableColumnService;
-        this.cdr = cdr;
-        this.subscriptions = [];
+        this.columnsService = columnsService;
         /* reference to the enum so that template can access */
         this.SELECTION_TYPE = SelectionType;
     }
-    /**
-     * @return {?}
-     */
-    ClrDatagridFooter.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe((/**
-         * @param {?} change
+    Object.defineProperty(ClrDatagridFooter.prototype, "hasHideableColumns", {
+        get: /**
          * @return {?}
          */
-        function (change) {
-            /** @type {?} */
-            var hiddenColumnsInSub = change.filter((/**
-             * @param {?} col
-             * @return {?}
-             */
-            function (col) { return col; }));
-            if (hiddenColumnsInSub.length > 0) {
-                _this.activeToggler = true;
-            }
-        })));
-        /** @type {?} */
-        var hiddenColumns = this.hideableColumnService.getColumns().filter((/**
-         * @param {?} col
-         * @return {?}
-         */
-        function (col) { return col; }));
-        if (hiddenColumns.length > 0) {
-            this.activeToggler = true;
-        }
-    };
-    /**
-     * @return {?}
-     */
-    ClrDatagridFooter.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this.subscriptions.forEach((/**
-         * @param {?} sub
-         * @return {?}
-         */
-        function (sub) {
-            sub.unsubscribe();
-        }));
-    };
+        function () {
+            return this.columnsService.hasHideableColumns;
+        },
+        enumerable: true,
+        configurable: true
+    });
     ClrDatagridFooter.decorators = [
         { type: Component, args: [{
                     selector: 'clr-dg-footer',
-                    template: "\n        <ng-container\n            *ngIf=\"(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)\">\n          <div class=\"clr-form-control-disabled\">\n              <clr-checkbox-wrapper class=\"datagrid-footer-select\">\n                <input clrCheckbox type=\"checkbox\" checked=\"checked\" disabled>\n                <label>{{selection.current.length}}</label>\n            </clr-checkbox-wrapper>\n          </div>\n        </ng-container>\n        <ng-content select=\"clr-dg-column-toggle\"></ng-content>\n        <clr-dg-column-toggle *ngIf=\"!toggle && activeToggler\"></clr-dg-column-toggle>\n        <div class=\"datagrid-footer-description\">\n            <ng-content></ng-content>\n        </div>\n        <ng-content select=\"clr-dg-pagination\"></ng-content>\n    ",
+                    template: "\n        <ng-container\n            *ngIf=\"(selection.selectionType === SELECTION_TYPE.Multi) && (selection.current.length > 0)\">\n          <div class=\"clr-form-control-disabled\">\n              <clr-checkbox-wrapper class=\"datagrid-footer-select\">\n                <input clrCheckbox type=\"checkbox\" checked=\"checked\" disabled>\n                <label>{{selection.current.length}}</label>\n            </clr-checkbox-wrapper>\n          </div>\n        </ng-container>\n        <ng-content select=\"clr-dg-column-toggle\"></ng-content>\n        <clr-dg-column-toggle *ngIf=\"hasHideableColumns && !toggle\"></clr-dg-column-toggle>\n        <div class=\"datagrid-footer-description\">\n            <ng-content></ng-content>\n        </div>\n        <ng-content select=\"clr-dg-pagination\"></ng-content>\n    ",
                     host: {
                         '[class.datagrid-footer]': 'true',
                     }
@@ -15610,8 +15028,7 @@ var ClrDatagridFooter = /** @class */ (function () {
     /** @nocollapse */
     ClrDatagridFooter.ctorParameters = function () { return [
         { type: Selection },
-        { type: HideableColumnService },
-        { type: ChangeDetectorRef }
+        { type: ColumnsService }
     ]; };
     ClrDatagridFooter.propDecorators = {
         toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle,] }]
@@ -15623,183 +15040,38 @@ var ClrDatagridFooter = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/** @type {?} */
+var COLUMN_STATE = new InjectionToken('COLUMN_STATE');
 /**
- *
- * \@description
- * A utility class for that adds hide/show functionality to a column, its cells and enables a toggler in the
- * DatagridColumnToggle Component.
- *
+ * @return {?}
  */
-var /**
- *
- * \@description
- * A utility class for that adds hide/show functionality to a column, its cells and enables a toggler in the
- * DatagridColumnToggle Component.
- *
- */
-DatagridHideableColumnModel = /** @class */ (function () {
-    /**
-     *
-     * @description
-     * The init function for DatagridHideableColumnModel instances that does the following:
-     *
-     * 1. Set values for the private variables that enable a hideable column
-     * 2. Broadcast the next hidden change for anyone (already) subscribed to this DatagridHideableColumnModel
-     *
-     */
-    function DatagridHideableColumnModel(_template, _id, _hidden) {
-        if (_hidden === void 0) { _hidden = false; }
-        this._template = _template;
-        this._id = _id;
-        this._hidden = _hidden;
-        /**
-         * \@property hiddenChanges
-         *
-         * \@description
-         * A stream of state changes an instance of DatagridHideableColumnModel will broadcast to subscribers.
-         *
-         */
-        this.hiddenChangesState = new Subject();
-        // Flag this true when the service only has one visible column open.
-        this.lastVisibleColumn = false;
-    }
-    Object.defineProperty(DatagridHideableColumnModel.prototype, "template", {
-        /**
-         *
-         * @description
-         * A getter function that returns an TemplateRef of the DatagridColumn that is hideable. This is currently used to
-         * populate the DatagridColumnToggle UI with the correct Column name.
-         *
-         */
-        get: /**
-         *
-         * \@description
-         * A getter function that returns an TemplateRef of the DatagridColumn that is hideable. This is currently used to
-         * populate the DatagridColumnToggle UI with the correct Column name.
-         *
-         * @return {?}
-         */
-        function () {
-            return this._template;
-        },
-        enumerable: true,
-        configurable: true
+function columnStateFactory() {
+    return new BehaviorSubject({
+        changes: [],
     });
-    Object.defineProperty(DatagridHideableColumnModel.prototype, "id", {
-        /**
-         *
-         * @description
-         * public function that returns the id of a HideableCOlumn instance. Used by the HideableCOlumnService for passing
-         * state and actions between DateGridColumns, DataGridCells & the DatagridColumnToggle Components.
-         *
-         */
-        get: /**
-         *
-         * \@description
-         * public function that returns the id of a HideableCOlumn instance. Used by the HideableCOlumnService for passing
-         * state and actions between DateGridColumns, DataGridCells & the DatagridColumnToggle Components.
-         *
-         * @return {?}
-         */
-        function () {
-            return this._id;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(DatagridHideableColumnModel.prototype, "hidden", {
-        /**
-         *
-         * @description
-         * A getter that returns the hidden value of a DatagridHideableColumnModel instance.
-         *
-         */
-        get: /**
-         *
-         * \@description
-         * A getter that returns the hidden value of a DatagridHideableColumnModel instance.
-         *
-         * @return {?}
-         */
-        function () {
-            return this._hidden;
-        },
-        /**
-         *
-         * @description
-         * The setter for setting the hidden state of a DatagridHideableColumnModel instance.
-         * It also broadcasts the change after its set.
-         *
-         */
-        set: /**
-         *
-         * \@description
-         * The setter for setting the hidden state of a DatagridHideableColumnModel instance.
-         * It also broadcasts the change after its set.
-         *
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (this._hidden === value) {
-                return;
-            }
-            this._hidden = value;
-            this.hiddenChangesState.next(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(DatagridHideableColumnModel.prototype, "hiddenChangeState", {
-        /**
-         *
-         * @description
-         * An Observable for the HideableColumns hidden changes.
-         *
-         */
-        get: /**
-         *
-         * \@description
-         * An Observable for the HideableColumns hidden changes.
-         *
-         * @return {?}
-         */
-        function () {
-            return this.hiddenChangesState.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return DatagridHideableColumnModel;
-}());
+}
+/** @type {?} */
+var COLUMN_STATE_PROVIDER = {
+    provide: COLUMN_STATE,
+    useFactory: columnStateFactory,
+};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClrDatagridHideableColumn = /** @class */ (function () {
-    /**
-     * @description
-     * Used the DatagridColumn to get and set an id for this HiddenColumn
-     *
-     */
-    function ClrDatagridHideableColumn(templateRef, viewContainerRef, dgColumn) {
-        var _this = this;
-        this.templateRef = templateRef;
+    function ClrDatagridHideableColumn(titleTemplateRef, viewContainerRef, columnsService, columnState) {
+        this.titleTemplateRef = titleTemplateRef;
         this.viewContainerRef = viewContainerRef;
-        this.dgColumn = dgColumn;
+        this.columnsService = columnsService;
+        this.columnState = columnState;
         this.hiddenChange = new EventEmitter();
-        this.columnId = dgColumn.columnId;
-        // Use the templateRef to create this view
-        this.viewContainerRef.createEmbeddedView(this.templateRef);
-        // Create instance of the utility class DatagridHideableColumn.
-        // Note this is on the parent instance of DatagridColumn.
-        this.dgColumn.hideable = new DatagridHideableColumnModel(this.templateRef, this.columnId, this._hidden);
-        this.dgColumn.hideable.hiddenChangeState.subscribe((/**
-         * @param {?} state
-         * @return {?}
-         */
-        function (state$$1) { return _this.hiddenChange.emit(state$$1); }));
+        this.subscriptions = [];
+        this.viewContainerRef.createEmbeddedView(this.titleTemplateRef);
+        if (!this.columnState) {
+            throw new Error('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
+        }
     }
     Object.defineProperty(ClrDatagridHideableColumn.prototype, "clrDgHideableColumn", {
         /**
@@ -15845,13 +15117,47 @@ var ClrDatagridHideableColumn = /** @class */ (function () {
          */
         function (hidden) {
             this._hidden = hidden ? hidden : false;
-            if (this.dgColumn.hideable) {
-                this.dgColumn.hideable.hidden = this._hidden;
-            }
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * @return {?}
+     */
+    ClrDatagridHideableColumn.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.columnsService.emitStateChange(this.columnState, {
+            hideable: true,
+            titleTemplateRef: this.titleTemplateRef,
+            hidden: this._hidden,
+            changes: [DatagridColumnChanges.HIDDEN],
+        });
+        this.subscriptions.push(this.columnState.subscribe((/**
+         * @param {?} state
+         * @return {?}
+         */
+        function (state$$1) {
+            if (state$$1.changes && state$$1.changes.indexOf(DatagridColumnChanges.HIDDEN) > -1) {
+                _this.hiddenChange.emit(state$$1.hidden); // Can emit through @Output when desugared syntax is used
+            }
+        })));
+    };
+    /**
+     * @return {?}
+     */
+    ClrDatagridHideableColumn.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.subscriptions.forEach((/**
+         * @param {?} sub
+         * @return {?}
+         */
+        function (sub) { return sub.unsubscribe(); }));
+    };
     ClrDatagridHideableColumn.decorators = [
         { type: Directive, args: [{ selector: '[clrDgHideableColumn]' },] }
     ];
@@ -15859,7 +15165,8 @@ var ClrDatagridHideableColumn = /** @class */ (function () {
     ClrDatagridHideableColumn.ctorParameters = function () { return [
         { type: TemplateRef },
         { type: ViewContainerRef },
-        { type: ClrDatagridColumn }
+        { type: ColumnsService },
+        { type: BehaviorSubject, decorators: [{ type: Optional }, { type: Inject, args: [COLUMN_STATE,] }] }
     ]; };
     ClrDatagridHideableColumn.propDecorators = {
         clrDgHideableColumn: [{ type: Input, args: ['clrDgHideableColumn',] }],
@@ -16238,11 +15545,10 @@ var ClrDatagridPagination = /** @class */ (function () {
  * @template T
  */
 var ClrDatagridRowDetail = /** @class */ (function () {
-    function ClrDatagridRowDetail(selection, rowActionService, expand, hideableColumnService, expandableRows) {
+    function ClrDatagridRowDetail(selection, rowActionService, expand, expandableRows) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.expand = expand;
-        this.hideableColumnService = hideableColumnService;
         this.expandableRows = expandableRows;
         /* reference to the enum so that template can access it */
         this.SELECTION_TYPE = SelectionType;
@@ -16268,32 +15574,6 @@ var ClrDatagridRowDetail = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        /** @type {?} */
-        var columnsList = this.hideableColumnService.getColumns();
-        this.updateCellsForColumns(columnsList);
-        // Triggered when the Cells list changes per row-renderer
-        this.subscriptions.push(this.cells.changes.subscribe((/**
-         * @param {?} cellList
-         * @return {?}
-         */
-        function (cellList) {
-            /** @type {?} */
-            var columnList = _this.hideableColumnService.getColumns();
-            if (cellList.length === columnList.length) {
-                _this.updateCellsForColumns(columnList);
-            }
-        })));
-        // Used to set things up the first time but only after all the columns are ready.
-        this.subscriptions.push(this.hideableColumnService.columnListChange.subscribe((/**
-         * @param {?} columnList
-         * @return {?}
-         */
-        function (columnList) {
-            // Prevents cell updates when cols and cells array are not aligned
-            if (columnList.length === _this.cells.length) {
-                _this.updateCellsForColumns(columnList);
-            }
-        })));
         this.subscriptions.push(this.expand.replace.subscribe((/**
          * @param {?} replaceChange
          * @return {?}
@@ -16301,28 +15581,6 @@ var ClrDatagridRowDetail = /** @class */ (function () {
         function (replaceChange) {
             _this.replacedRow = replaceChange;
         })));
-    };
-    /**
-     * @param {?} columnList
-     * @return {?}
-     */
-    ClrDatagridRowDetail.prototype.updateCellsForColumns = /**
-     * @param {?} columnList
-     * @return {?}
-     */
-    function (columnList) {
-        this.cells.forEach((/**
-         * @param {?} cell
-         * @param {?} index
-         * @return {?}
-         */
-        function (cell, index) {
-            /** @type {?} */
-            var currentColumn = columnList[index];
-            if (currentColumn) {
-                cell.id = currentColumn.id;
-            }
-        }));
     };
     /**
      * @return {?}
@@ -16353,7 +15611,6 @@ var ClrDatagridRowDetail = /** @class */ (function () {
         { type: Selection },
         { type: RowActionService },
         { type: Expand },
-        { type: HideableColumnService },
         { type: ExpandableRowsCount }
     ]; };
     ClrDatagridRowDetail.propDecorators = {
@@ -16369,21 +15626,8 @@ var ClrDatagridRowDetail = /** @class */ (function () {
  */
 /** @type {?} */
 var STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-/** @enum {number} */
-var DatagridColumnChanges = {
-    WIDTH: 0,
-};
-DatagridColumnChanges[DatagridColumnChanges.WIDTH] = 'WIDTH';
+/** @type {?} */
+var HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
 
 /**
  * @fileoverview added by tsickle
@@ -16413,6 +15657,7 @@ var DatagridCellRenderer = /** @class */ (function () {
             if (this.stateSubscription) {
                 this.stateSubscription.unsubscribe();
             }
+            this.runAllChanges = ALL_COLUMN_CHANGES;
             this.stateSubscription = columnState.subscribe((/**
              * @param {?} state
              * @return {?}
@@ -16450,6 +15695,10 @@ var DatagridCellRenderer = /** @class */ (function () {
      */
     function (state$$1) {
         var _this = this;
+        if (this.runAllChanges) {
+            state$$1.changes = this.runAllChanges;
+            delete this.runAllChanges;
+        }
         if (state$$1.changes && state$$1.changes.length) {
             state$$1.changes.forEach((/**
              * @param {?} change
@@ -16459,6 +15708,9 @@ var DatagridCellRenderer = /** @class */ (function () {
                 switch (change) {
                     case DatagridColumnChanges.WIDTH:
                         _this.setWidth(state$$1);
+                        break;
+                    case DatagridColumnChanges.HIDDEN:
+                        _this.setHidden(state$$1);
                         break;
                     default:
                         break;
@@ -16497,6 +15749,24 @@ var DatagridCellRenderer = /** @class */ (function () {
         }
         this.renderer.setStyle(this.el.nativeElement, 'width', state$$1.width + 'px');
     };
+    /**
+     * @private
+     * @param {?} state
+     * @return {?}
+     */
+    DatagridCellRenderer.prototype.setHidden = /**
+     * @private
+     * @param {?} state
+     * @return {?}
+     */
+    function (state$$1) {
+        if (state$$1.hidden) {
+            this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+        }
+        else {
+            this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+        }
+    };
     DatagridCellRenderer.decorators = [
         { type: Directive, args: [{ selector: 'clr-dg-cell' },] }
     ];
@@ -16513,36 +15783,15 @@ var DatagridCellRenderer = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** @type {?} */
-var COLUMN_STATE = new InjectionToken('COLUMN_STATE');
-/** @type {?} */
-var initialColumnState = {
-    changes: [],
-};
-/**
- * @return {?}
- */
-function columnStateFactory() {
-    return new BehaviorSubject(initialColumnState);
-}
-/** @type {?} */
-var COLUMN_STATE_PROVIDER = {
-    provide: COLUMN_STATE,
-    useFactory: columnStateFactory,
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 var DatagridHeaderRenderer = /** @class */ (function () {
-    function DatagridHeaderRenderer(el, renderer, organizer, domAdapter, columnResizerService, columnState) {
+    function DatagridHeaderRenderer(el, renderer, organizer, domAdapter, columnResizerService, columnsService, columnState) {
         var _this = this;
         this.el = el;
         this.renderer = renderer;
         this.organizer = organizer;
         this.domAdapter = domAdapter;
         this.columnResizerService = columnResizerService;
+        this.columnsService = columnsService;
         this.columnState = columnState;
         this.resizeEmitter = new EventEmitter();
         /**
@@ -16555,12 +15804,6 @@ var DatagridHeaderRenderer = /** @class */ (function () {
          * @return {?}
          */
         function () { return _this.clearWidth(); })));
-        this.subscriptions.push(this.organizer
-            .filterRenderSteps(DatagridRenderStep.DETECT_STRICT_WIDTHS)
-            .subscribe((/**
-         * @return {?}
-         */
-        function () { return _this.detectStrictWidth(); })));
         this.subscriptions.push(columnState.subscribe((/**
          * @param {?} state
          * @return {?}
@@ -16601,6 +15844,9 @@ var DatagridHeaderRenderer = /** @class */ (function () {
                 switch (change) {
                     case DatagridColumnChanges.WIDTH:
                         _this.setWidth(state$$1);
+                        break;
+                    case DatagridColumnChanges.HIDDEN:
+                        _this.setHidden(state$$1);
                         break;
                     default:
                         break;
@@ -16677,6 +15923,17 @@ var DatagridHeaderRenderer = /** @class */ (function () {
         };
     };
     /**
+     * @param {?} index
+     * @return {?}
+     */
+    DatagridHeaderRenderer.prototype.setColumnState = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        this.columnsService.columns[index] = this.columnState;
+    };
+    /**
      * @private
      * @param {?} state
      * @return {?}
@@ -16704,6 +15961,24 @@ var DatagridHeaderRenderer = /** @class */ (function () {
             this.autoSet = true;
         }
     };
+    /**
+     * @private
+     * @param {?} state
+     * @return {?}
+     */
+    DatagridHeaderRenderer.prototype.setHidden = /**
+     * @private
+     * @param {?} state
+     * @return {?}
+     */
+    function (state$$1) {
+        if (state$$1.hidden) {
+            this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+        }
+        else {
+            this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+        }
+    };
     DatagridHeaderRenderer.decorators = [
         { type: Directive, args: [{ selector: 'clr-dg-column', providers: [ColumnResizerService, COLUMN_STATE_PROVIDER] },] }
     ];
@@ -16714,6 +15989,7 @@ var DatagridHeaderRenderer = /** @class */ (function () {
         { type: DatagridRenderOrganizer },
         { type: DomAdapter },
         { type: ColumnResizerService },
+        { type: ColumnsService },
         { type: BehaviorSubject, decorators: [{ type: Inject, args: [COLUMN_STATE,] }] }
     ]; };
     DatagridHeaderRenderer.propDecorators = {
@@ -16824,41 +16100,72 @@ var NoopDomAdapter = /** @class */ (function () {
 var DatagridRowRenderer = /** @class */ (function () {
     function DatagridRowRenderer(columnsService) {
         this.columnsService = columnsService;
+        this.subscriptions = [];
     }
     /**
      * @return {?}
      */
-    DatagridRowRenderer.prototype.ngAfterViewInit = /**
+    DatagridRowRenderer.prototype.ngAfterContentInit = /**
      * @return {?}
      */
     function () {
         var _this = this;
-        this.setColumnStates();
-        this.cells.changes.subscribe((/**
+        this.setColumnState(); // case #3 and #4
+        this.subscriptions.push(this.cells.changes.subscribe((/**
          * @return {?}
          */
         function () {
-            _this.setColumnStates();
-        }));
+            _this.setColumnState(); // case #2
+            // Note on case #2: In the case of dynamic columns, when one column (header/cell together) gets deleted,
+            // this.cells.changes emits before this.columnsService.columns gets updated in MainRenderer
+            // when this.headers.changes emits as well. So that means there will be n+1 column state providers
+            // when this.cells.changes emits. Hence, we should quit earlier there. But this method will be called
+            // right after again when this.headers.changes emits. By then, there will be the same number of column state
+            // providers as column headers.
+        })));
     };
     /**
      * @return {?}
      */
-    DatagridRowRenderer.prototype.setColumnStates = /**
+    DatagridRowRenderer.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.subscriptions.forEach((/**
+         * @param {?} sub
+         * @return {?}
+         */
+        function (sub) { return sub.unsubscribe(); }));
+    };
+    /**
+     * @return {?}
+     */
+    DatagridRowRenderer.prototype.setColumnState = /**
      * @return {?}
      */
     function () {
         var _this = this;
-        this.cells.forEach((/**
-         * @param {?} cell
-         * @param {?} index
-         * @return {?}
-         */
-        function (cell, index) {
-            if (_this.columnsService.columns[index]) {
-                cell.columnState = _this.columnsService.columns[index];
-            }
-        }));
+        // This method runs in four cases:
+        // 1. When the initial rows appear on the first page.
+        //    In this case, the method will be called in DatagridMainRenderer.
+        // 2. When columns (corresponding header/cells) get added and deleted.
+        //    In this case, the method will be called in DatagridMainRenderer. (Read the note on this case above).
+        // 3. When rows load asynchronously.
+        //    In this case, the method will be called in this class.
+        // 4. When rows load after switching pages.
+        //    In this case, the method will be called in this class (Basically, same as the case 3).
+        if (this.cells.length === this.columnsService.columns.length) {
+            this.cells.forEach((/**
+             * @param {?} cell
+             * @param {?} index
+             * @return {?}
+             */
+            function (cell, index) {
+                if (_this.columnsService.columns[index]) {
+                    cell.columnState = _this.columnsService.columns[index];
+                }
+            }));
+        }
     };
     DatagridRowRenderer.decorators = [
         { type: Directive, args: [{ selector: 'clr-dg-row, clr-dg-row-detail' },] }
@@ -16936,10 +16243,13 @@ var DatagridMainRenderer = /** @class */ (function () {
          */
         function () { return (_this.shouldStabilizeColumns = true); })));
     }
+    // if expandable row is expanded initially, query its cells too.
     /**
      * @return {?}
      */
-    DatagridMainRenderer.prototype.ngAfterContentInit = /**
+    DatagridMainRenderer.prototype.ngAfterContentInit = 
+    // if expandable row is expanded initially, query its cells too.
+    /**
      * @return {?}
      */
     function () {
@@ -16998,21 +16308,18 @@ var DatagridMainRenderer = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var _this = this;
         this.headers.forEach((/**
          * @param {?} header
          * @param {?} index
          * @return {?}
          */
-        function (header, index) {
-            _this.columnsService.columns[index] = header.columnState;
-        }));
+        function (header, index) { return header.setColumnState(index); }));
         this.columnsService.columns.splice(this.headers.length); // Trim any old columns
         this.rows.forEach((/**
          * @param {?} row
          * @return {?}
          */
-        function (row) { return row.setColumnStates(); }));
+        function (row) { return row.setColumnState(); }));
     };
     /**
      * @private
@@ -17133,7 +16440,7 @@ var DatagridMainRenderer = /** @class */ (function () {
             if (nbColumns === index + 1 && allStrict) {
                 state$$1.strictWidth = 0;
             }
-            _this.columnsService.emitStateChange(index, state$$1);
+            _this.columnsService.emitStateChangeAt(index, state$$1);
         }));
     };
     /**
@@ -17180,7 +16487,7 @@ var DatagridMainRenderer = /** @class */ (function () {
     ]; };
     DatagridMainRenderer.propDecorators = {
         headers: [{ type: ContentChildren, args: [DatagridHeaderRenderer,] }],
-        rows: [{ type: ContentChildren, args: [DatagridRowRenderer,] }]
+        rows: [{ type: ContentChildren, args: [DatagridRowRenderer, { descendants: true },] }]
     };
     return DatagridMainRenderer;
 }());
@@ -27257,6 +26564,6 @@ function slide(direction) {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrSelectedState, ClrTree, ClrTreeNode, ClrRecursiveForOf, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, isToggleFactory, IS_TOGGLE, IS_TOGGLE_PROVIDER, ClrCheckboxWrapper, ClrCheckboxModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceFactory, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵdu, DatagridRowExpandAnimation as ɵdm, ActionableOompaLoompa as ɵdj, DatagridWillyWonka as ɵdh, ExpandableOompaLoompa as ɵdl, ClrDatagridColumnSeparator as ɵcl, ClrDatagridColumnToggleButton as ɵcr, ClrDatagridColumnToggleTitle as ɵcq, DatagridDetailRegisterer as ɵct, ClrDatagridItemsTrackBy as ɵcs, ClrDatagridPageSize as ɵcu, ColumnResizerService as ɵcp, COLUMN_STATE as ɵdb, COLUMN_STATE_PROVIDER as ɵdd, columnStateFactory as ɵdc, ColumnToggleButtonsService as ɵce, ColumnsService as ɵcg, CustomFilter as ɵcj, DisplayModeService as ɵch, FiltersProvider as ɵbv, ExpandableRowsCount as ɵcb, HideableColumnService as ɵcc, Items as ɵbu, Page as ɵbw, RowActionService as ɵca, Selection as ɵbt, Sort as ɵby, StateDebouncer as ɵbx, StateProvider as ɵcd, TableSizeService as ɵcf, DatagridCellRenderer as ɵdg, DatagridHeaderRenderer as ɵda, DatagridMainRenderer as ɵcz, domAdapterFactory as ɵcy, DatagridRenderOrganizer as ɵbz, DatagridRowRenderer as ɵdf, DatagridFilterRegistrar as ɵci, WrappedCell as ɵcv, WrappedColumn as ɵcw, WrappedRow as ɵcx, StackControl as ɵdo, RecursiveChildren as ɵds, TREE_FEATURES_PROVIDER as ɵdr, TreeFeaturesService as ɵdp, treeFeaturesFactory as ɵdq, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵt, ControlClassService as ɵy, ControlIdService as ɵq, FocusService as ɵbf, LayoutService as ɵr, MarkControlService as ɵu, NgControlService as ɵs, WrappedFormControl as ɵx, DateFormControlService as ɵbd, DateIOService as ɵbg, DateNavigationService as ɵbc, DatepickerEnabledService as ɵbh, DatepickerFocusService as ɵbi, LocaleHelperService as ɵbe, ViewManagerService as ɵbj, ResponsiveNavigationService as ɵdv, ActiveOompaLoompa as ɵef, TabsWillyWonka as ɵee, AriaService as ɵdz, TabsService as ɵed, TABS_ID as ɵea, TABS_ID_PROVIDER as ɵec, tokenFactory$1 as ɵeb, VerticalNavGroupRegistrationService as ɵei, VerticalNavGroupService as ɵej, VerticalNavIconService as ɵeh, VerticalNavService as ɵeg, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵdk, WillyWonka as ɵdi, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, DomAdapter as ɵbr, DragAndDropEventBusService as ɵbo, DragEventListenerService as ɵbn, DragHandleRegistrarService as ɵbp, DraggableSnapshotService as ɵbq, GlobalDragModeService as ɵbs, ClrIfExpandModule as ɵdn, Expand as ɵck, FocusTrapDirective as ɵbb, ClrFocusTrapModule as ɵz, FOCUS_TRAP_DIRECTIVES as ɵba, EmptyAnchor as ɵw, ClrHostWrappingModule as ɵv, UNIQUE_ID as ɵcm, UNIQUE_ID_PROVIDER as ɵco, uniqueIdFactory as ɵcn, OUSTIDE_CLICK_DIRECTIVES as ɵbl, OutsideClick as ɵbm, ClrOutsideClickModule as ɵbk, ScrollingService as ɵdt, TEMPLATE_REF_DIRECTIVES as ɵdx, TemplateRefContainer as ɵdy, ClrTemplateRefModule as ɵdw, ButtonHubService as ɵem, HeaderActionService as ɵen, PageCollectionService as ɵel, WizardNavigationService as ɵek };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrSelectedState, ClrTree, ClrTreeNode, ClrRecursiveForOf, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, isToggleFactory, IS_TOGGLE, IS_TOGGLE_PROVIDER, ClrCheckboxWrapper, ClrCheckboxModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceFactory, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, EXPAND_DIRECTIVES, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵds, DatagridRowExpandAnimation as ɵdk, ActionableOompaLoompa as ɵdh, DatagridWillyWonka as ɵdf, ExpandableOompaLoompa as ɵdj, ClrDatagridColumnSeparator as ɵcj, ClrDatagridColumnToggleButton as ɵcp, ClrDatagridColumnToggleTitle as ɵco, DatagridDetailRegisterer as ɵcv, ClrDatagridItemsTrackBy as ɵcu, ClrDatagridPageSize as ɵcw, ColumnResizerService as ɵcn, COLUMN_STATE as ɵcq, COLUMN_STATE_PROVIDER as ɵcs, columnStateFactory as ɵcr, ColumnsService as ɵce, CustomFilter as ɵch, DisplayModeService as ɵcf, FiltersProvider as ɵbv, ExpandableRowsCount as ɵcb, Items as ɵbu, Page as ɵbw, RowActionService as ɵca, Selection as ɵbt, Sort as ɵby, StateDebouncer as ɵbx, StateProvider as ɵcc, TableSizeService as ɵcd, DatagridCellRenderer as ɵde, DatagridHeaderRenderer as ɵdc, DatagridMainRenderer as ɵdb, domAdapterFactory as ɵda, DatagridRenderOrganizer as ɵbz, DatagridRowRenderer as ɵdd, DatagridFilterRegistrar as ɵcg, WrappedCell as ɵcx, WrappedColumn as ɵcy, WrappedRow as ɵcz, StackControl as ɵdm, RecursiveChildren as ɵdq, TREE_FEATURES_PROVIDER as ɵdp, TreeFeaturesService as ɵdn, treeFeaturesFactory as ɵdo, AlertIconAndTypesService as ɵo, MultiAlertService as ɵp, IfErrorService as ɵt, ControlClassService as ɵy, ControlIdService as ɵq, FocusService as ɵbf, LayoutService as ɵr, MarkControlService as ɵu, NgControlService as ɵs, WrappedFormControl as ɵx, DateFormControlService as ɵbd, DateIOService as ɵbg, DateNavigationService as ɵbc, DatepickerEnabledService as ɵbh, DatepickerFocusService as ɵbi, LocaleHelperService as ɵbe, ViewManagerService as ɵbj, ResponsiveNavigationService as ɵdt, ActiveOompaLoompa as ɵed, TabsWillyWonka as ɵec, AriaService as ɵdx, TabsService as ɵeb, TABS_ID as ɵdy, TABS_ID_PROVIDER as ɵea, tokenFactory$1 as ɵdz, VerticalNavGroupRegistrationService as ɵeg, VerticalNavGroupService as ɵeh, VerticalNavIconService as ɵef, VerticalNavService as ɵee, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵdi, WillyWonka as ɵdg, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfOpenService as ɵd, DomAdapter as ɵbr, DragAndDropEventBusService as ɵbo, DragEventListenerService as ɵbn, DragHandleRegistrarService as ɵbp, DraggableSnapshotService as ɵbq, GlobalDragModeService as ɵbs, ClrIfExpandModule as ɵdl, Expand as ɵci, FocusTrapDirective as ɵbb, ClrFocusTrapModule as ɵz, FOCUS_TRAP_DIRECTIVES as ɵba, EmptyAnchor as ɵw, ClrHostWrappingModule as ɵv, UNIQUE_ID as ɵck, UNIQUE_ID_PROVIDER as ɵcm, uniqueIdFactory as ɵcl, OUSTIDE_CLICK_DIRECTIVES as ɵbl, OutsideClick as ɵbm, ClrOutsideClickModule as ɵbk, ScrollingService as ɵdr, TEMPLATE_REF_DIRECTIVES as ɵdv, TemplateRefContainer as ɵdw, ClrTemplateRefModule as ɵdu, ButtonHubService as ɵek, HeaderActionService as ɵel, PageCollectionService as ɵej, WizardNavigationService as ɵei };
 
 //# sourceMappingURL=clr-angular.js.map

@@ -3,15 +3,17 @@ import { BehaviorSubject } from 'rxjs';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
 import { ColumnResizerService } from '../providers/column-resizer.service';
 import { DatagridRenderOrganizer } from './render-organizer';
-import { DatagridColumnState } from '../interfaces/column-state.interface';
+import { ColumnState } from '../interfaces/column-state.interface';
+import { ColumnsService } from '../providers/columns.service';
 export declare class DatagridHeaderRenderer implements OnDestroy {
     private el;
     private renderer;
     private organizer;
     private domAdapter;
     private columnResizerService;
-    columnState: BehaviorSubject<DatagridColumnState>;
-    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnState: BehaviorSubject<DatagridColumnState>);
+    private columnsService;
+    private columnState;
+    constructor(el: ElementRef, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     resizeEmitter: EventEmitter<number>;
     /**
      * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
@@ -24,6 +26,8 @@ export declare class DatagridHeaderRenderer implements OnDestroy {
     private clearWidth;
     private detectStrictWidth;
     private computeWidth;
-    getColumnWidthState(): Partial<DatagridColumnState>;
+    getColumnWidthState(): Partial<ColumnState>;
+    setColumnState(index: number): void;
     private setWidth;
+    private setHidden;
 }

@@ -1,10 +1,12 @@
-import { TemplateRef, ViewContainerRef, EventEmitter } from '@angular/core';
-import { ClrDatagridColumn } from './datagrid-column';
-import { DatagridHideableColumnModel } from './datagrid-hideable-column.model';
-export declare class ClrDatagridHideableColumn {
-    private templateRef;
+import { EventEmitter, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { ColumnsService } from './providers/columns.service';
+import { ColumnState } from './interfaces/column-state.interface';
+export declare class ClrDatagridHideableColumn implements OnDestroy {
+    private titleTemplateRef;
     private viewContainerRef;
-    private dgColumn;
+    private columnsService;
+    private columnState;
     /**
      *
      * @description
@@ -31,26 +33,8 @@ export declare class ClrDatagridHideableColumn {
     };
     clrDgHidden: boolean;
     hiddenChange: EventEmitter<boolean>;
-    /**
-     *
-     * @description
-     * A unique identifier passed into the directive from the parent (A DatagridColumn).
-     *
-     */
-    columnId: string;
-    /**
-     *
-     * @description
-     * An instance of the DatagridHideableColumn Utility class that is used to:
-     * 1. Create an instance of HideableColumn that will manage the TemplateRef, state and communication
-     * 2. Manage the hidden/shown state for the column to which this directive is applied
-     * 3. track the id of the hidden column so it can be used in cells as well as on the column
-     */
-    column: DatagridHideableColumnModel;
-    /**
-     * @description
-     * Used the DatagridColumn to get and set an id for this HiddenColumn
-     *
-     */
-    constructor(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, dgColumn: ClrDatagridColumn<any>);
+    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    private subscriptions;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
 }

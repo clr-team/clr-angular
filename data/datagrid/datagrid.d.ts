@@ -6,7 +6,6 @@ import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
-import { HideableColumnService } from './providers/hideable-column.service';
 import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
@@ -15,7 +14,6 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 import { SelectionType } from './enums/selection-type';
 export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
-    private columnService;
     private organizer;
     items: Items<T>;
     expandableRows: ExpandableRowsCount;
@@ -26,7 +24,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     private renderer;
     private el;
     commonStrings: ClrCommonStrings;
-    constructor(columnService: HideableColumnService, organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
     SELECTION_TYPE: typeof SelectionType;
     /**
      * Freezes the datagrid while data is loading
