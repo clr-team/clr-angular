@@ -1319,7 +1319,73 @@ ClrHostWrappingModule.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/** @type {?} */
+let counter = 0;
+class ControlIdService {
+    constructor() {
+        this._id = 'clr-form-control-' + ++counter;
+        this._idChange = new BehaviorSubject(this._id);
+    }
+    /**
+     * @return {?}
+     */
+    get id() {
+        return this._id;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set id(value) {
+        this._id = value;
+        this._idChange.next(value);
+    }
+    /**
+     * @return {?}
+     */
+    get idChange() {
+        return this._idChange.asObservable();
+    }
+}
+ControlIdService.decorators = [
+    { type: Injectable }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 class ClrControlError {
+    /**
+     * @param {?} controlIdService
+     */
+    constructor(controlIdService) {
+        this.controlIdService = controlIdService;
+        this.describedByAttr = null;
+        this.subscriptions = [];
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (this.controlIdService && !this.describedByAttr) {
+            this.subscriptions.push(this.controlIdService.idChange.subscribe((/**
+             * @param {?} id
+             * @return {?}
+             */
+            id => (this.describedByAttr = id))));
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.subscriptions.forEach((/**
+         * @param {?} sub
+         * @return {?}
+         */
+        sub => sub.unsubscribe()));
+    }
 }
 ClrControlError.decorators = [
     { type: Component, args: [{
@@ -1327,9 +1393,19 @@ ClrControlError.decorators = [
                 template: `
     <ng-content></ng-content>
     `,
-                host: { '[class.clr-subtext]': 'true' }
+                host: {
+                    '[class.clr-subtext]': 'true',
+                    '[attr.aria-live]': '"polite"',
+                }
             }] }
 ];
+/** @nocollapse */
+ClrControlError.ctorParameters = () => [
+    { type: ControlIdService, decorators: [{ type: Optional }] }
+];
+ClrControlError.propDecorators = {
+    describedByAttr: [{ type: Input, args: ['aria-describedby',] }, { type: HostBinding, args: ['attr.aria-describedby',] }]
+};
 
 /**
  * @fileoverview added by tsickle
@@ -1544,42 +1620,6 @@ ClrIfError.ctorParameters = () => [
 ClrIfError.propDecorators = {
     error: [{ type: Input, args: ['clrIfError',] }]
 };
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/** @type {?} */
-let counter = 0;
-class ControlIdService {
-    constructor() {
-        this._id = 'clr-form-control-' + ++counter;
-        this._idChange = new BehaviorSubject(this._id);
-    }
-    /**
-     * @return {?}
-     */
-    get id() {
-        return this._id;
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set id(value) {
-        this._id = value;
-        this._idChange.next(value);
-    }
-    /**
-     * @return {?}
-     */
-    get idChange() {
-        return this._idChange.asObservable();
-    }
-}
-ControlIdService.decorators = [
-    { type: Injectable }
-];
 
 /**
  * @fileoverview added by tsickle

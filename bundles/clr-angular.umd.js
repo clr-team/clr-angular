@@ -1582,16 +1582,100 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
-    var ClrControlError = /** @class */ (function () {
-        function ClrControlError() {
+    /** @type {?} */
+    var counter = 0;
+    var ControlIdService = /** @class */ (function () {
+        function ControlIdService() {
+            this._id = 'clr-form-control-' + ++counter;
+            this._idChange = new rxjs.BehaviorSubject(this._id);
         }
+        Object.defineProperty(ControlIdService.prototype, "id", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._id;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                this._id = value;
+                this._idChange.next(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ControlIdService.prototype, "idChange", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._idChange.asObservable();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ControlIdService.decorators = [
+            { type: i0.Injectable }
+        ];
+        return ControlIdService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var ClrControlError = /** @class */ (function () {
+        function ClrControlError(controlIdService) {
+            this.controlIdService = controlIdService;
+            this.describedByAttr = null;
+            this.subscriptions = [];
+        }
+        /**
+         * @return {?}
+         */
+        ClrControlError.prototype.ngOnInit = /**
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                if (this.controlIdService && !this.describedByAttr) {
+                    this.subscriptions.push(this.controlIdService.idChange.subscribe(( /**
+                     * @param {?} id
+                     * @return {?}
+                     */function (id) { return (_this.describedByAttr = id); })));
+                }
+            };
+        /**
+         * @return {?}
+         */
+        ClrControlError.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.subscriptions.forEach(( /**
+                 * @param {?} sub
+                 * @return {?}
+                 */function (sub) { return sub.unsubscribe(); }));
+            };
         ClrControlError.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-control-error',
                         template: "\n    <ng-content></ng-content>\n    ",
-                        host: { '[class.clr-subtext]': 'true' }
+                        host: {
+                            '[class.clr-subtext]': 'true',
+                            '[attr.aria-live]': '"polite"',
+                        }
                     }] }
         ];
+        /** @nocollapse */
+        ClrControlError.ctorParameters = function () {
+            return [
+                { type: ControlIdService, decorators: [{ type: i0.Optional }] }
+            ];
+        };
+        ClrControlError.propDecorators = {
+            describedByAttr: [{ type: i0.Input, args: ['aria-describedby',] }, { type: i0.HostBinding, args: ['attr.aria-describedby',] }]
+        };
         return ClrControlError;
     }());
 
@@ -1844,48 +1928,6 @@
             error: [{ type: i0.Input, args: ['clrIfError',] }]
         };
         return ClrIfError;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /** @type {?} */
-    var counter = 0;
-    var ControlIdService = /** @class */ (function () {
-        function ControlIdService() {
-            this._id = 'clr-form-control-' + ++counter;
-            this._idChange = new rxjs.BehaviorSubject(this._id);
-        }
-        Object.defineProperty(ControlIdService.prototype, "id", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._id;
-            },
-            set: /**
-             * @param {?} value
-             * @return {?}
-             */ function (value) {
-                this._id = value;
-                this._idChange.next(value);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(ControlIdService.prototype, "idChange", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._idChange.asObservable();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        ControlIdService.decorators = [
-            { type: i0.Injectable }
-        ];
-        return ControlIdService;
     }());
 
     /**
