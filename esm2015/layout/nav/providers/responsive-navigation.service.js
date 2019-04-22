@@ -89,7 +89,7 @@ ResponsiveNavigationService.decorators = [
 ];
 /** @nocollapse */
 ResponsiveNavigationService.ctorParameters = () => [];
-/** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = i0.defineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
+/** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
 if (false) {
     /** @type {?} */
     ResponsiveNavigationService.prototype.responsiveNavList;

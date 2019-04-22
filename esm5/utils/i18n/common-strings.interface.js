@@ -20,7 +20,7 @@ var ClrCommonStrings = /** @class */ (function () {
     ClrCommonStrings.decorators = [
         { type: Injectable, args: [tslib_1.__assign({ providedIn: 'root' }, COMMON_STRINGS_PROVIDER),] }
     ];
-    /** @nocollapse */ ClrCommonStrings.ngInjectableDef = i0.defineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
+    /** @nocollapse */ ClrCommonStrings.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
     return ClrCommonStrings;
 }());
 export { ClrCommonStrings };

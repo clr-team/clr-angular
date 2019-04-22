@@ -71,7 +71,7 @@ export class DragAndDropEventBusService {
 DragAndDropEventBusService.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
+/** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
 if (false) {
     /**
      * @type {?}

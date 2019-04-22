@@ -2,7 +2,7 @@ import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@ang
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, InjectionToken, ElementRef, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, defineInjectable, LOCALE_ID } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -873,7 +873,7 @@ class ClrCommonStrings {
 ClrCommonStrings.decorators = [
     { type: Injectable, args: [Object.assign({ providedIn: 'root' }, COMMON_STRINGS_PROVIDER),] }
 ];
-/** @nocollapse */ ClrCommonStrings.ngInjectableDef = defineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
+/** @nocollapse */ ClrCommonStrings.ngInjectableDef = ɵɵdefineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -2848,7 +2848,7 @@ class FocusTrapTracker {
 FocusTrapTracker.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ FocusTrapTracker.ngInjectableDef = defineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
+/** @nocollapse */ FocusTrapTracker.ngInjectableDef = ɵɵdefineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -7157,7 +7157,7 @@ class DragAndDropEventBusService {
 DragAndDropEventBusService.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
+/** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = ɵɵdefineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -16151,7 +16151,7 @@ ResponsiveNavigationService.decorators = [
 ];
 /** @nocollapse */
 ResponsiveNavigationService.ctorParameters = () => [];
-/** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = defineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
+/** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle

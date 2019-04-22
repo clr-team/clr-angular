@@ -90,7 +90,7 @@ var DragAndDropEventBusService = /** @class */ (function () {
     DragAndDropEventBusService.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
+    /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
     return DragAndDropEventBusService;
 }());
 export { DragAndDropEventBusService };

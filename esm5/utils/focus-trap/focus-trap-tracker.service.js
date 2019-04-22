@@ -53,7 +53,7 @@ var FocusTrapTracker = /** @class */ (function () {
     FocusTrapTracker.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FocusTrapTracker.ngInjectableDef = i0.defineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
+    /** @nocollapse */ FocusTrapTracker.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
     return FocusTrapTracker;
 }());
 export { FocusTrapTracker };

@@ -3,7 +3,7 @@ import { first, filter, switchMap, map } from 'rxjs/operators';
 import { __extends, __assign, __values, __spread, __read } from 'tslib';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, InjectionToken, ElementRef, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Inject, Injector, NgZone, ComponentFactoryResolver, ContentChild, ChangeDetectorRef, IterableDiffers, PLATFORM_ID, defineInjectable, LOCALE_ID, Self, Attribute } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, InjectionToken, ElementRef, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Inject, Injector, NgZone, ComponentFactoryResolver, ContentChild, ChangeDetectorRef, IterableDiffers, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID, Self, Attribute } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -988,7 +988,7 @@ var ClrCommonStrings = /** @class */ (function () {
     ClrCommonStrings.decorators = [
         { type: Injectable, args: [__assign({ providedIn: 'root' }, COMMON_STRINGS_PROVIDER),] }
     ];
-    /** @nocollapse */ ClrCommonStrings.ngInjectableDef = defineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
+    /** @nocollapse */ ClrCommonStrings.ngInjectableDef = ɵɵdefineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
     return ClrCommonStrings;
 }());
 
@@ -3317,7 +3317,7 @@ var FocusTrapTracker = /** @class */ (function () {
     FocusTrapTracker.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FocusTrapTracker.ngInjectableDef = defineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
+    /** @nocollapse */ FocusTrapTracker.ngInjectableDef = ɵɵdefineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
     return FocusTrapTracker;
 }());
 
@@ -8609,7 +8609,7 @@ var DragAndDropEventBusService = /** @class */ (function () {
     DragAndDropEventBusService.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
+    /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = ɵɵdefineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
     return DragAndDropEventBusService;
 }());
 
@@ -19056,7 +19056,7 @@ var ResponsiveNavigationService = /** @class */ (function () {
     ];
     /** @nocollapse */
     ResponsiveNavigationService.ctorParameters = function () { return []; };
-    /** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = defineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
+    /** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
     return ResponsiveNavigationService;
 }());
 

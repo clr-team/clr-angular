@@ -1054,7 +1054,7 @@
         ClrCommonStrings.decorators = [
             { type: i0.Injectable, args: [__assign({ providedIn: 'root' }, COMMON_STRINGS_PROVIDER),] }
         ];
-        /** @nocollapse */ ClrCommonStrings.ngInjectableDef = i0.defineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
+        /** @nocollapse */ ClrCommonStrings.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function ClrCommonStrings_Factory() { return new ClrCommonStrings(); }, token: ClrCommonStrings, providedIn: "root" });
         return ClrCommonStrings;
     }());
 
@@ -3363,7 +3363,7 @@
         FocusTrapTracker.decorators = [
             { type: i0.Injectable, args: [{ providedIn: 'root' },] }
         ];
-        /** @nocollapse */ FocusTrapTracker.ngInjectableDef = i0.defineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
+        /** @nocollapse */ FocusTrapTracker.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function FocusTrapTracker_Factory() { return new FocusTrapTracker(); }, token: FocusTrapTracker, providedIn: "root" });
         return FocusTrapTracker;
     }());
 
@@ -8609,7 +8609,7 @@
         DragAndDropEventBusService.decorators = [
             { type: i0.Injectable, args: [{ providedIn: 'root' },] }
         ];
-        /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.defineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
+        /** @nocollapse */ DragAndDropEventBusService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function DragAndDropEventBusService_Factory() { return new DragAndDropEventBusService(); }, token: DragAndDropEventBusService, providedIn: "root" });
         return DragAndDropEventBusService;
     }());
 
@@ -18902,7 +18902,7 @@
         ];
         /** @nocollapse */
         ResponsiveNavigationService.ctorParameters = function () { return []; };
-        /** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = i0.defineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
+        /** @nocollapse */ ResponsiveNavigationService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function ResponsiveNavigationService_Factory() { return new ResponsiveNavigationService(); }, token: ResponsiveNavigationService, providedIn: "root" });
         return ResponsiveNavigationService;
     }());
 
