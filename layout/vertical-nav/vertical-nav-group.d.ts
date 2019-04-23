@@ -1,6 +1,6 @@
 import { AnimationEvent } from '@angular/animations';
 import { AfterContentInit, EventEmitter, OnDestroy } from '@angular/core';
-import { Expand } from '../../utils/expand/providers/expand';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
@@ -11,7 +11,7 @@ export declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy 
     private _navGroupService;
     private _navService;
     commonStrings: ClrCommonStrings;
-    constructor(_itemExpand: Expand, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStrings);
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, _navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStrings);
     private wasExpanded;
     expanded: boolean;
     userExpandedInput: boolean;

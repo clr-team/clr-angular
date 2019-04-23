@@ -1,12 +1,12 @@
 import { Subscription } from 'rxjs';
-import { Expand } from '../../utils/expand/providers/expand';
+import { IfExpandService } from '../../utils/conditional/if-expanded.service';
 import { TreeFeaturesService } from './tree-features.service';
 import { TreeNodeModel } from './models/tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 export declare class RecursiveChildren<T> {
     featuresService: TreeFeaturesService<T>;
     private expandService;
-    constructor(featuresService: TreeFeaturesService<T>, expandService: Expand);
+    constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
     shouldRender(): boolean;
     parent: TreeNodeModel<T>;
     children: TreeNodeModel<T>[];

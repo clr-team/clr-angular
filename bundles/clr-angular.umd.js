@@ -3302,8 +3302,225 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
+    var IfExpandService = /** @class */ (function () {
+        function IfExpandService() {
+            this.expandable = 0;
+            this._loading = false;
+            this._expanded = false;
+            this._expandChange = new rxjs.Subject();
+        }
+        Object.defineProperty(IfExpandService.prototype, "loading", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._loading;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                value = !!value;
+                if (value !== this._loading) {
+                    this._loading = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(IfExpandService.prototype, "expanded", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._expanded;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                value = !!value;
+                if (value !== this._expanded) {
+                    this._expanded = value;
+                    this._expandChange.next(value);
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @return {?}
+         */
+        IfExpandService.prototype.toggle = /**
+         * @return {?}
+         */
+            function () {
+                this.expanded = !this._expanded;
+            };
+        Object.defineProperty(IfExpandService.prototype, "expandChange", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._expandChange.asObservable();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} state
+         * @return {?}
+         */
+        IfExpandService.prototype.loadingStateChange = /**
+         * @param {?} state
+         * @return {?}
+         */
+            function (state) {
+                switch (state) {
+                    case ClrLoadingState.LOADING:
+                        this.loading = true;
+                        break;
+                    default:
+                        this.loading = false;
+                        break;
+                }
+            };
+        IfExpandService.decorators = [
+            { type: i0.Injectable }
+        ];
+        return IfExpandService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var ClrIfExpanded = /** @class */ (function () {
+        function ClrIfExpanded(template, container, el, renderer, expand) {
+            var _this = this;
+            this.template = template;
+            this.container = container;
+            this.el = el;
+            this.renderer = renderer;
+            this.expand = expand;
+            this._expanded = false;
+            this.expandedChange = new i0.EventEmitter(true);
+            /**
+             * Subscriptions to all the services and queries changes
+             */
+            this._subscriptions = [];
+            expand.expandable++;
+            this._subscriptions.push(expand.expandChange.subscribe(( /**
+             * @return {?}
+             */function () {
+                _this.updateView();
+                _this.expandedChange.emit(_this.expand.expanded);
+            })));
+        }
+        Object.defineProperty(ClrIfExpanded.prototype, "expanded", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._expanded;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                if (typeof value === 'boolean') {
+                    this.expand.expanded = value;
+                    this._expanded = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @private
+         * @return {?}
+         */
+        ClrIfExpanded.prototype.updateView = /**
+         * @private
+         * @return {?}
+         */
+            function () {
+                if (this.expand.expanded && this.container.length !== 0) {
+                    return;
+                }
+                if (this.template) {
+                    if (this.expand.expanded) {
+                        // Should we pass a context? I don't see anything useful to pass right now,
+                        // but we can come back to it in the future as a solution for additional features.
+                        this.container.createEmbeddedView(this.template);
+                    }
+                    else {
+                        // TODO: Move when we move the animation logic to Datagrid Row Expand
+                        // We clear before the animation is over. Not ideal, but doing better would involve a much heavier
+                        // process for very little gain. Once Angular animations are dynamic enough, we should be able to
+                        // get the optimal behavior.
+                        this.container.clear();
+                    }
+                }
+                else {
+                    try {
+                        // If we don't have a template ref, we fallback to a crude display: none for now.
+                        if (this.expand.expanded) {
+                            this.renderer.setStyle(this.el.nativeElement, 'display', null);
+                        }
+                        else {
+                            this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
+                        }
+                    }
+                    catch (e) {
+                        // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
+                    }
+                }
+            };
+        /**
+         * @return {?}
+         */
+        ClrIfExpanded.prototype.ngOnInit = /**
+         * @return {?}
+         */
+            function () {
+                this.updateView();
+            };
+        /**
+         * @return {?}
+         */
+        ClrIfExpanded.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.expand.expandable--;
+                this._subscriptions.forEach(( /**
+                 * @param {?} sub
+                 * @return {?}
+                 */function (sub) { return sub.unsubscribe(); }));
+            };
+        ClrIfExpanded.decorators = [
+            { type: i0.Directive, args: [{ selector: '[clrIfExpanded]' },] }
+        ];
+        /** @nocollapse */
+        ClrIfExpanded.ctorParameters = function () {
+            return [
+                { type: i0.TemplateRef, decorators: [{ type: i0.Optional }] },
+                { type: i0.ViewContainerRef },
+                { type: i0.ElementRef },
+                { type: i0.Renderer2 },
+                { type: IfExpandService }
+            ];
+        };
+        ClrIfExpanded.propDecorators = {
+            expanded: [{ type: i0.Input, args: ['clrIfExpanded',] }],
+            expandedChange: [{ type: i0.Output, args: ['clrIfExpandedChange',] }]
+        };
+        return ClrIfExpanded;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
     /** @type {?} */
-    var CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen];
+    var CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
 
     /**
      * @fileoverview added by tsickle
@@ -8025,283 +8242,6 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
-    var Expand = /** @class */ (function () {
-        function Expand() {
-            this.expandable = 0;
-            // private _replace: boolean = false;
-            this._replace = new rxjs.BehaviorSubject(false);
-            this._loading = false;
-            this._expanded = false;
-            // TODO: Move this to the datagrid RowExpand.
-            // I spent some time doing this but ran into a couple of issues
-            // Will take care of this later.
-            this._animate = new rxjs.Subject();
-            this._expandChange = new rxjs.Subject();
-        }
-        Object.defineProperty(Expand.prototype, "replace", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._replace.asObservable();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-         * @param {?} replaceValue
-         * @return {?}
-         */
-        Expand.prototype.setReplace = /**
-         * @param {?} replaceValue
-         * @return {?}
-         */
-            function (replaceValue) {
-                this._replace.next(replaceValue);
-            };
-        Object.defineProperty(Expand.prototype, "loading", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._loading;
-            },
-            set: /**
-             * @param {?} value
-             * @return {?}
-             */ function (value) {
-                value = !!value;
-                if (value !== this._loading) {
-                    this._loading = value;
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Expand.prototype, "expanded", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._expanded;
-            },
-            set: /**
-             * @param {?} value
-             * @return {?}
-             */ function (value) {
-                value = !!value;
-                if (value !== this._expanded) {
-                    this._expanded = value;
-                    this._animate.next();
-                    this._expandChange.next(value);
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-         * @return {?}
-         */
-        Expand.prototype.toggle = /**
-         * @return {?}
-         */
-            function () {
-                this.expanded = !this._expanded;
-            };
-        Object.defineProperty(Expand.prototype, "animate", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._animate.asObservable();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Expand.prototype, "expandChange", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._expandChange.asObservable();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-         * @param {?} state
-         * @return {?}
-         */
-        Expand.prototype.loadingStateChange = /**
-         * @param {?} state
-         * @return {?}
-         */
-            function (state) {
-                switch (state) {
-                    case ClrLoadingState.LOADING:
-                        this.loading = true;
-                        break;
-                    default:
-                        this.loading = false;
-                        this._animate.next();
-                        break;
-                }
-            };
-        Expand.decorators = [
-            { type: i0.Injectable }
-        ];
-        return Expand;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /**
-     * TODO: make this a reusable directive outside of Datagrid, like [clrLoading].
-     */
-    var ClrIfExpanded = /** @class */ (function () {
-        function ClrIfExpanded(template, container, el, renderer, expand) {
-            var _this = this;
-            this.template = template;
-            this.container = container;
-            this.el = el;
-            this.renderer = renderer;
-            this.expand = expand;
-            this._expanded = false;
-            this.expandedChange = new i0.EventEmitter(true);
-            /**
-             * Subscriptions to all the services and queries changes
-             */
-            this._subscriptions = [];
-            expand.expandable++;
-            this._subscriptions.push(expand.expandChange.subscribe(( /**
-             * @return {?}
-             */function () {
-                _this.updateView();
-                _this.expandedChange.emit(_this.expand.expanded);
-            })));
-        }
-        Object.defineProperty(ClrIfExpanded.prototype, "expanded", {
-            get: /**
-             * @return {?}
-             */ function () {
-                return this._expanded;
-            },
-            set: /**
-             * @param {?} value
-             * @return {?}
-             */ function (value) {
-                if (typeof value === 'boolean') {
-                    this.expand.expanded = value;
-                    this._expanded = value;
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-         * @private
-         * @return {?}
-         */
-        ClrIfExpanded.prototype.updateView = /**
-         * @private
-         * @return {?}
-         */
-            function () {
-                if (this.expand.expanded && this.container.length !== 0) {
-                    return;
-                }
-                if (this.template) {
-                    if (this.expand.expanded) {
-                        // Should we pass a context? I don't see anything useful to pass right now,
-                        // but we can come back to it in the future as a solution for additional features.
-                        this.container.createEmbeddedView(this.template);
-                    }
-                    else {
-                        // TODO: Move when we move the animation logic to Datagrid Row Expand
-                        // We clear before the animation is over. Not ideal, but doing better would involve a much heavier
-                        // process for very little gain. Once Angular animations are dynamic enough, we should be able to
-                        // get the optimal behavior.
-                        this.container.clear();
-                    }
-                }
-                else {
-                    try {
-                        // If we don't have a template ref, we fallback to a crude display: none for now.
-                        if (this.expand.expanded) {
-                            this.renderer.setStyle(this.el.nativeElement, 'display', null);
-                        }
-                        else {
-                            this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
-                        }
-                    }
-                    catch (e) {
-                        // We catch the case where clrIfExpanded was put on a non-DOM element, and we just do nothing
-                    }
-                }
-            };
-        /**
-         * @return {?}
-         */
-        ClrIfExpanded.prototype.ngOnInit = /**
-         * @return {?}
-         */
-            function () {
-                this.updateView();
-            };
-        /**
-         * @return {?}
-         */
-        ClrIfExpanded.prototype.ngOnDestroy = /**
-         * @return {?}
-         */
-            function () {
-                this.expand.expandable--;
-                this._subscriptions.forEach(( /**
-                 * @param {?} sub
-                 * @return {?}
-                 */function (sub) { return sub.unsubscribe(); }));
-            };
-        ClrIfExpanded.decorators = [
-            { type: i0.Directive, args: [{ selector: '[clrIfExpanded]' },] }
-        ];
-        /** @nocollapse */
-        ClrIfExpanded.ctorParameters = function () {
-            return [
-                { type: i0.TemplateRef, decorators: [{ type: i0.Optional }] },
-                { type: i0.ViewContainerRef },
-                { type: i0.ElementRef },
-                { type: i0.Renderer2 },
-                { type: Expand }
-            ];
-        };
-        ClrIfExpanded.propDecorators = {
-            expanded: [{ type: i0.Input, args: ['clrIfExpanded',] }],
-            expandedChange: [{ type: i0.Output, args: ['clrIfExpandedChange',] }]
-        };
-        return ClrIfExpanded;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /** @type {?} */
-    var EXPAND_DIRECTIVES = [ClrIfExpanded];
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    var ClrIfExpandModule = /** @class */ (function () {
-        function ClrIfExpandModule() {
-        }
-        ClrIfExpandModule.decorators = [
-            { type: i0.NgModule, args: [{ imports: [common.CommonModule], declarations: [EXPAND_DIRECTIVES], exports: [EXPAND_DIRECTIVES] },] }
-        ];
-        return ClrIfExpandModule;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
     /** @type {?} */
     var CLR_LOADING_DIRECTIVES = [ClrLoading];
     var ClrLoadingModule = /** @class */ (function () {
@@ -9950,6 +9890,91 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
+    var DatagridIfExpandService = /** @class */ (function (_super) {
+        __extends(DatagridIfExpandService, _super);
+        function DatagridIfExpandService() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this._replace = new rxjs.BehaviorSubject(false);
+            _this._animate = new rxjs.Subject();
+            return _this;
+        }
+        Object.defineProperty(DatagridIfExpandService.prototype, "expanded", {
+            // due to the es5 spec if the set is overridden on base class the getter must also be overridden
+            get: 
+            // due to the es5 spec if the set is overridden on base class the getter must also be overridden
+            /**
+             * @return {?}
+             */
+            function () {
+                return this._expanded;
+            },
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                value = !!value;
+                if (value !== this._expanded) {
+                    this._expanded = value;
+                    this._animate.next();
+                    this._expandChange.next(value);
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} state
+         * @return {?}
+         */
+        DatagridIfExpandService.prototype.loadingStateChange = /**
+         * @param {?} state
+         * @return {?}
+         */
+            function (state) {
+                _super.prototype.loadingStateChange.call(this, state);
+                if (state !== ClrLoadingState.LOADING) {
+                    this._animate.next();
+                }
+            };
+        Object.defineProperty(DatagridIfExpandService.prototype, "replace", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._replace.asObservable();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} replaceValue
+         * @return {?}
+         */
+        DatagridIfExpandService.prototype.setReplace = /**
+         * @param {?} replaceValue
+         * @return {?}
+         */
+            function (replaceValue) {
+                this._replace.next(replaceValue);
+            };
+        Object.defineProperty(DatagridIfExpandService.prototype, "animate", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._animate.asObservable();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        DatagridIfExpandService.decorators = [
+            { type: i0.Injectable }
+        ];
+        return DatagridIfExpandService;
+    }(IfExpandService));
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
     var DatagridRowExpandAnimation = /** @class */ (function () {
         function DatagridRowExpandAnimation(el, domAdapter, renderer, expand) {
             var _this = this;
@@ -9957,8 +9982,9 @@
             this.domAdapter = domAdapter;
             this.renderer = renderer;
             this.expand = expand;
+            this.subscriptions = [];
             if (expand && expand.animate) {
-                expand.animate.subscribe(( /**
+                this.subscriptions.push(expand.animate.subscribe(( /**
                  * @return {?}
                  */function () {
                     // We already had an animation waiting, so we just have to run in, not prepare again
@@ -9970,9 +9996,21 @@
                     else {
                         _this.animate();
                     }
-                }));
+                })));
             }
         }
+        /**
+         * @return {?}
+         */
+        DatagridRowExpandAnimation.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.subscriptions.forEach(( /**
+                 * @param {?} s
+                 * @return {?}
+                 */function (s) { return s.unsubscribe(); }));
+            };
         /*
            * Dirty manual animation handling, but we have no way to use dynamic heights in Angular's current API.
            * They're working on it, but have no ETA.
@@ -10052,7 +10090,7 @@
                 { type: i0.ElementRef },
                 { type: DomAdapter },
                 { type: i0.Renderer2 },
-                { type: Expand }
+                { type: DatagridIfExpandService }
             ];
         };
         return DatagridRowExpandAnimation;
@@ -13678,7 +13716,11 @@
                             '[attr.aria-owns]': 'id',
                             role: 'rowgroup',
                         },
-                        providers: [Expand, { provide: LoadingListener, useExisting: Expand }]
+                        providers: [
+                            DatagridIfExpandService,
+                            { provide: IfExpandService, useExisting: DatagridIfExpandService },
+                            { provide: LoadingListener, useExisting: DatagridIfExpandService },
+                        ]
                     }] }
         ];
         /** @nocollapse */
@@ -13687,7 +13729,7 @@
                 { type: Selection },
                 { type: RowActionService },
                 { type: ExpandableRowsCount },
-                { type: Expand },
+                { type: DatagridIfExpandService },
                 { type: DisplayModeService },
                 { type: i0.ViewContainerRef },
                 { type: i0.Renderer2 },
@@ -15504,7 +15546,7 @@
             return [
                 { type: Selection },
                 { type: RowActionService },
-                { type: Expand },
+                { type: DatagridIfExpandService },
                 { type: ExpandableRowsCount }
             ];
         };
@@ -16434,7 +16476,7 @@
                             ClrDragAndDropModule,
                         ],
                         declarations: [CLR_DATAGRID_DIRECTIVES],
-                        exports: [CLR_DATAGRID_DIRECTIVES, ClrIfExpandModule],
+                        exports: [CLR_DATAGRID_DIRECTIVES],
                         entryComponents: [WrappedCell, WrappedColumn, WrappedRow],
                     },] }
         ];
@@ -17273,7 +17315,12 @@
             { type: i0.Component, args: [{
                         selector: 'clr-tree-node',
                         template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"clr-tree-node-content-container\">\n  <button\n    *ngIf=\"isExpandable() && !_model.loading && !expandService.loading\"\n    type=\"button\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle()\"\n    [attr.aria-expanded]=\"expandService.expanded\">\n    <clr-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"caret\"\n      [attr.dir]=\"expandService.expanded ? 'down' : 'right'\"\n      [attr.title]=\"expandService.expanded ? commonStrings.collapse : commonStrings.expand\"></clr-icon>\n  </button>\n  <div class=\"clr-treenode-spinner-container\" *ngIf=\"expandService.loading || _model.loading\">\n        <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\" *ngIf=\"featuresService.selectable\">\n    <input type=\"checkbox\" id=\"{{nodeId}}-check\" class=\"clr-checkbox\" [attr.aria-labelledby]=\"nodeId\"\n           [checked]=\"_model.selected.value === STATES.SELECTED\"\n           [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n           (change)=\"_model.toggleSelection(featuresService.eager)\">\n    <label for=\"{{nodeId}}-check\" class=\"clr-control-label\"></label>\n  </div>\n  <div class=\"clr-treenode-content\" [id]=\"nodeId\">\n    <ng-content></ng-content>\n  </div>\n</div>\n<div class=\"clr-treenode-children\"\n     [@childNodesState]=\"expandService.expanded ? 'expanded' : 'collapsed'\"\n     [attr.role]=\"isExpandable() ? 'group' : null\">\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n",
-                        providers: [UNIQUE_ID_PROVIDER, TREE_FEATURES_PROVIDER, Expand, { provide: LoadingListener, useExisting: Expand }],
+                        providers: [
+                            UNIQUE_ID_PROVIDER,
+                            TREE_FEATURES_PROVIDER,
+                            IfExpandService,
+                            { provide: LoadingListener, useExisting: IfExpandService },
+                        ],
                         animations: [
                             animations.trigger('childNodesState', [
                                 animations.state('expanded', animations.style({ height: '*', 'overflow-y': 'hidden' })),
@@ -17290,7 +17337,7 @@
                 { type: String, decorators: [{ type: i0.Inject, args: [UNIQUE_ID,] }] },
                 { type: ClrTreeNode, decorators: [{ type: i0.Optional }, { type: i0.SkipSelf }] },
                 { type: TreeFeaturesService },
-                { type: Expand },
+                { type: IfExpandService },
                 { type: ClrCommonStrings },
                 { type: i0.Injector }
             ];
@@ -17632,7 +17679,7 @@
         RecursiveChildren.ctorParameters = function () {
             return [
                 { type: TreeFeaturesService },
-                { type: Expand, decorators: [{ type: i0.Optional }] }
+                { type: IfExpandService, decorators: [{ type: i0.Optional }] }
             ];
         };
         RecursiveChildren.propDecorators = {
@@ -17655,7 +17702,7 @@
             { type: i0.NgModule, args: [{
                         imports: [common.CommonModule, ClrIconModule, ClrLoadingModule],
                         declarations: [CLR_TREE_VIEW_DIRECTIVES, RecursiveChildren],
-                        exports: [CLR_TREE_VIEW_DIRECTIVES, ClrIfExpandModule],
+                        exports: [CLR_TREE_VIEW_DIRECTIVES],
                     },] }
         ];
         return ClrTreeViewModule;
@@ -20591,7 +20638,7 @@
             { type: i0.Component, args: [{
                         selector: 'clr-vertical-nav-group',
                         template: "<!--\n  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n    <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n    <button\n        class=\"nav-group-trigger\"\n        type=\"button\"\n        (click)=\"toggleExpand()\">\n        <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n        <div class=\"nav-group-text\">\n            <ng-content></ng-content>\n        </div>\n        <clr-icon shape=\"caret\"\n                  class=\"nav-group-trigger-icon\"\n                  [attr.dir]=\"(this.expanded) ? 'down' : 'right'\"\n                  [attr.title]=\"(this.expanded) ? commonStrings.collapse : commonStrings.expand\">\n        </clr-icon>\n    </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\"\n     [@clrExpand]=\"expandAnimationState\"\n     (@clrExpand.done)=\"expandAnimationDone($event)\">\n    <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n",
-                        providers: [Expand, VerticalNavGroupService],
+                        providers: [IfExpandService, VerticalNavGroupService],
                         animations: [
                             animations.trigger('clrExpand', [
                                 animations.state(EXPANDED_STATE, animations.style({ height: '*' })),
@@ -20605,7 +20652,7 @@
         /** @nocollapse */
         ClrVerticalNavGroup.ctorParameters = function () {
             return [
-                { type: Expand },
+                { type: IfExpandService },
                 { type: VerticalNavGroupRegistrationService },
                 { type: VerticalNavGroupService },
                 { type: VerticalNavService },
@@ -20721,9 +20768,9 @@
         }
         ClrVerticalNavModule.decorators = [
             { type: i0.NgModule, args: [{
-                        imports: [common.CommonModule, ClrIconModule, ClrIfExpandModule],
+                        imports: [common.CommonModule, ClrIconModule, ClrConditionalModule],
                         declarations: [CLR_VERTICAL_NAV_DIRECTIVES],
-                        exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrIfExpandModule, ClrIconModule],
+                        exports: [CLR_VERTICAL_NAV_DIRECTIVES, ClrConditionalModule, ClrIconModule],
                     },] }
         ];
         return ClrVerticalNavModule;
@@ -25956,7 +26003,6 @@
                             ClrIconModule,
                             ClrModalModule,
                             ClrLoadingModule,
-                            ClrIfExpandModule,
                             ClrConditionalModule,
                             ClrFocusTrapModule,
                             ClrButtonModule,
@@ -26439,7 +26485,6 @@
     exports.CONDITIONAL_DIRECTIVES = CONDITIONAL_DIRECTIVES;
     exports.ClrIfActive = ClrIfActive;
     exports.ClrIfOpen = ClrIfOpen;
-    exports.EXPAND_DIRECTIVES = EXPAND_DIRECTIVES;
     exports.ClrIfExpanded = ClrIfExpanded;
     exports.ClrCommonStrings = ClrCommonStrings;
     exports.ClrDraggable = ClrDraggable;
@@ -26466,65 +26511,66 @@
     exports.CLR_WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
     exports.ClrWizardModule = ClrWizardModule;
     exports.ɵds = ButtonInGroupService;
-    exports.ɵdk = DatagridRowExpandAnimation;
-    exports.ɵdh = ActionableOompaLoompa;
-    exports.ɵdf = DatagridWillyWonka;
-    exports.ɵdj = ExpandableOompaLoompa;
-    exports.ɵcj = ClrDatagridColumnSeparator;
-    exports.ɵcp = ClrDatagridColumnToggleButton;
-    exports.ɵco = ClrDatagridColumnToggleTitle;
-    exports.ɵcv = DatagridDetailRegisterer;
-    exports.ɵcu = ClrDatagridItemsTrackBy;
-    exports.ɵcw = ClrDatagridPageSize;
-    exports.ɵcn = ColumnResizerService;
-    exports.ɵcq = COLUMN_STATE;
-    exports.ɵcs = COLUMN_STATE_PROVIDER;
-    exports.ɵcr = columnStateFactory;
-    exports.ɵce = ColumnsService;
-    exports.ɵch = CustomFilter;
-    exports.ɵcf = DisplayModeService;
-    exports.ɵbv = FiltersProvider;
-    exports.ɵcb = ExpandableRowsCount;
-    exports.ɵbu = Items;
-    exports.ɵbw = Page;
-    exports.ɵca = RowActionService;
-    exports.ɵbt = Selection;
-    exports.ɵby = Sort;
-    exports.ɵbx = StateDebouncer;
-    exports.ɵcc = StateProvider;
-    exports.ɵcd = TableSizeService;
-    exports.ɵde = DatagridCellRenderer;
-    exports.ɵdc = DatagridHeaderRenderer;
-    exports.ɵdb = DatagridMainRenderer;
-    exports.ɵda = domAdapterFactory;
-    exports.ɵbz = DatagridRenderOrganizer;
-    exports.ɵdd = DatagridRowRenderer;
-    exports.ɵcg = DatagridFilterRegistrar;
-    exports.ɵcx = WrappedCell;
-    exports.ɵcy = WrappedColumn;
-    exports.ɵcz = WrappedRow;
+    exports.ɵdl = DatagridRowExpandAnimation;
+    exports.ɵdi = ActionableOompaLoompa;
+    exports.ɵdg = DatagridWillyWonka;
+    exports.ɵdk = ExpandableOompaLoompa;
+    exports.ɵck = ClrDatagridColumnSeparator;
+    exports.ɵcq = ClrDatagridColumnToggleButton;
+    exports.ɵcp = ClrDatagridColumnToggleTitle;
+    exports.ɵcw = DatagridDetailRegisterer;
+    exports.ɵcj = DatagridIfExpandService;
+    exports.ɵcv = ClrDatagridItemsTrackBy;
+    exports.ɵcx = ClrDatagridPageSize;
+    exports.ɵco = ColumnResizerService;
+    exports.ɵcr = COLUMN_STATE;
+    exports.ɵct = COLUMN_STATE_PROVIDER;
+    exports.ɵcs = columnStateFactory;
+    exports.ɵcf = ColumnsService;
+    exports.ɵci = CustomFilter;
+    exports.ɵcg = DisplayModeService;
+    exports.ɵbw = FiltersProvider;
+    exports.ɵcc = ExpandableRowsCount;
+    exports.ɵbv = Items;
+    exports.ɵbx = Page;
+    exports.ɵcb = RowActionService;
+    exports.ɵbu = Selection;
+    exports.ɵbz = Sort;
+    exports.ɵby = StateDebouncer;
+    exports.ɵcd = StateProvider;
+    exports.ɵce = TableSizeService;
+    exports.ɵdf = DatagridCellRenderer;
+    exports.ɵdd = DatagridHeaderRenderer;
+    exports.ɵdc = DatagridMainRenderer;
+    exports.ɵdb = domAdapterFactory;
+    exports.ɵca = DatagridRenderOrganizer;
+    exports.ɵde = DatagridRowRenderer;
+    exports.ɵch = DatagridFilterRegistrar;
+    exports.ɵcy = WrappedCell;
+    exports.ɵcz = WrappedColumn;
+    exports.ɵda = WrappedRow;
     exports.ɵdm = StackControl;
     exports.ɵdq = RecursiveChildren;
     exports.ɵdp = TREE_FEATURES_PROVIDER;
     exports.ɵdn = TreeFeaturesService;
     exports.ɵdo = treeFeaturesFactory;
-    exports.ɵo = AlertIconAndTypesService;
-    exports.ɵp = MultiAlertService;
-    exports.ɵt = IfErrorService;
-    exports.ɵy = ControlClassService;
-    exports.ɵq = ControlIdService;
-    exports.ɵbf = FocusService;
-    exports.ɵr = LayoutService;
-    exports.ɵu = MarkControlService;
-    exports.ɵs = NgControlService;
-    exports.ɵx = WrappedFormControl;
-    exports.ɵbd = DateFormControlService;
-    exports.ɵbg = DateIOService;
-    exports.ɵbc = DateNavigationService;
-    exports.ɵbh = DatepickerEnabledService;
-    exports.ɵbi = DatepickerFocusService;
-    exports.ɵbe = LocaleHelperService;
-    exports.ɵbj = ViewManagerService;
+    exports.ɵp = AlertIconAndTypesService;
+    exports.ɵq = MultiAlertService;
+    exports.ɵu = IfErrorService;
+    exports.ɵz = ControlClassService;
+    exports.ɵr = ControlIdService;
+    exports.ɵbg = FocusService;
+    exports.ɵs = LayoutService;
+    exports.ɵv = MarkControlService;
+    exports.ɵt = NgControlService;
+    exports.ɵy = WrappedFormControl;
+    exports.ɵbe = DateFormControlService;
+    exports.ɵbh = DateIOService;
+    exports.ɵbd = DateNavigationService;
+    exports.ɵbi = DatepickerEnabledService;
+    exports.ɵbj = DatepickerFocusService;
+    exports.ɵbf = LocaleHelperService;
+    exports.ɵbk = ViewManagerService;
     exports.ɵdt = ResponsiveNavigationService;
     exports.ɵed = ActiveOompaLoompa;
     exports.ɵec = TabsWillyWonka;
@@ -26545,33 +26591,32 @@
     exports.ɵg = ROOT_DROPDOWN_PROVIDER;
     exports.ɵe = RootDropdownService;
     exports.ɵf = clrRootDropdownFactory;
-    exports.ɵdi = OompaLoompa;
-    exports.ɵdg = WillyWonka;
+    exports.ɵdj = OompaLoompa;
+    exports.ɵdh = WillyWonka;
     exports.ɵj = ClrConditionalModule;
     exports.ɵk = IF_ACTIVE_ID;
     exports.ɵm = IF_ACTIVE_ID_PROVIDER;
     exports.ɵn = IfActiveService;
     exports.ɵl = tokenFactory;
+    exports.ɵo = IfExpandService;
     exports.ɵd = IfOpenService;
-    exports.ɵbr = DomAdapter;
-    exports.ɵbo = DragAndDropEventBusService;
-    exports.ɵbn = DragEventListenerService;
-    exports.ɵbp = DragHandleRegistrarService;
-    exports.ɵbq = DraggableSnapshotService;
-    exports.ɵbs = GlobalDragModeService;
-    exports.ɵdl = ClrIfExpandModule;
-    exports.ɵci = Expand;
-    exports.ɵbb = FocusTrapDirective;
-    exports.ɵz = ClrFocusTrapModule;
-    exports.ɵba = FOCUS_TRAP_DIRECTIVES;
-    exports.ɵw = EmptyAnchor;
-    exports.ɵv = ClrHostWrappingModule;
-    exports.ɵck = UNIQUE_ID;
-    exports.ɵcm = UNIQUE_ID_PROVIDER;
-    exports.ɵcl = uniqueIdFactory;
-    exports.ɵbl = OUSTIDE_CLICK_DIRECTIVES;
-    exports.ɵbm = OutsideClick;
-    exports.ɵbk = ClrOutsideClickModule;
+    exports.ɵbs = DomAdapter;
+    exports.ɵbp = DragAndDropEventBusService;
+    exports.ɵbo = DragEventListenerService;
+    exports.ɵbq = DragHandleRegistrarService;
+    exports.ɵbr = DraggableSnapshotService;
+    exports.ɵbt = GlobalDragModeService;
+    exports.ɵbc = FocusTrapDirective;
+    exports.ɵba = ClrFocusTrapModule;
+    exports.ɵbb = FOCUS_TRAP_DIRECTIVES;
+    exports.ɵx = EmptyAnchor;
+    exports.ɵw = ClrHostWrappingModule;
+    exports.ɵcl = UNIQUE_ID;
+    exports.ɵcn = UNIQUE_ID_PROVIDER;
+    exports.ɵcm = uniqueIdFactory;
+    exports.ɵbm = OUSTIDE_CLICK_DIRECTIVES;
+    exports.ɵbn = OutsideClick;
+    exports.ɵbl = ClrOutsideClickModule;
     exports.ɵdr = ScrollingService;
     exports.ɵdv = TEMPLATE_REF_DIRECTIVES;
     exports.ɵdw = TemplateRefContainer;

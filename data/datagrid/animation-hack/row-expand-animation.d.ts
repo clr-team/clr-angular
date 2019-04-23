@@ -1,12 +1,14 @@
-import { ElementRef, Renderer2 } from '@angular/core';
-import { Expand } from '../../../utils/expand/providers/expand';
+import { ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { DomAdapter } from '../../../utils/dom-adapter/dom-adapter';
-export declare class DatagridRowExpandAnimation {
+import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
+export declare class DatagridRowExpandAnimation implements OnDestroy {
     private el;
     private domAdapter;
     private renderer;
     private expand;
-    constructor(el: ElementRef, domAdapter: DomAdapter, renderer: Renderer2, expand: Expand);
+    private subscriptions;
+    constructor(el: ElementRef, domAdapter: DomAdapter, renderer: Renderer2, expand: DatagridIfExpandService);
+    ngOnDestroy(): void;
     private running;
     private oldHeight;
     private animate;

@@ -1,5 +1,4 @@
 import { AfterContentInit, AfterViewInit, ElementRef, EventEmitter, QueryList, Renderer2, ViewContainerRef } from '@angular/core';
-import { Expand } from '../../utils/expand/providers/expand';
 import { ClrDatagridCell } from './datagrid-cell';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -7,11 +6,12 @@ import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
 import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 import { SelectionType } from './enums/selection-type';
+import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     selection: Selection<T>;
     rowActionService: RowActionService;
     globalExpandable: ExpandableRowsCount;
-    expand: Expand;
+    expand: DatagridIfExpandService;
     private displayMode;
     private vcr;
     private renderer;
@@ -26,7 +26,7 @@ export declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterV
      */
     item: T;
     replaced: any;
-    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: Expand, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef, commonStrings: ClrCommonStrings);
     private _selected;
     /**
      * Indicates if the row is selected
