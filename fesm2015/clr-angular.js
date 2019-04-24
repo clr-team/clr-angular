@@ -2,7 +2,7 @@ import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@ang
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -9277,7 +9277,7 @@ DatagridStringFilter.decorators = [
                 mid-change detection when the input is destroyed.
             -->
             <input #input type="text" name="search" [(ngModel)]="value" *ngIf="open"
-                (keyup.enter)="close()" (keyup.escape)="close()"/>
+                (keyup.enter)="close()" (keyup.escape)="close()" class="clr-input" />
         </clr-dg-filter>
     `
             }] }
