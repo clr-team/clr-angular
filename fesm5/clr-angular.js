@@ -17939,8 +17939,9 @@ var ClrDropdown = /** @class */ (function () {
                     template: '<ng-content></ng-content>',
                     host: {
                         '[class.dropdown]': 'true',
-                        // FIXME: remove this as soon as we stop supporting this old <div class="dropdown-menu"> syntax
-                        '[class.open]': 'ifOpenService.open',
+                        // the open class, also used in static version, is always present in the Angular version
+                        // Angular takes care of hiding it, regardless of whether you use *clrIfOpen or not
+                        '[class.open]': 'true',
                     },
                     providers: [IfOpenService, ROOT_DROPDOWN_PROVIDER, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }]
                 }] }
