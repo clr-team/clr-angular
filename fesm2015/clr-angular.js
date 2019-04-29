@@ -12359,18 +12359,19 @@ const DatagridColumnChanges = {
 };
 DatagridColumnChanges[DatagridColumnChanges.WIDTH] = 'WIDTH';
 DatagridColumnChanges[DatagridColumnChanges.HIDDEN] = 'HIDDEN';
+const ɵ1 = /**
+ * @param {?} key
+ * @return {?}
+ */
+key => DatagridColumnChanges[key], ɵ0 = /**
+ * @param {?} key
+ * @return {?}
+ */
+key => key === parseInt(key, 10);
 /** @type {?} */
 const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
-    .map((/**
- * @param {?} key
- * @return {?}
- */
-key => DatagridColumnChanges[key]))
-    .filter((/**
- * @param {?} key
- * @return {?}
- */
-key => key === parseInt(key, 10)));
+    .map((ɵ1))
+    .filter((ɵ0));
 
 /**
  * @fileoverview added by tsickle

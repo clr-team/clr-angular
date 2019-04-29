@@ -14799,18 +14799,19 @@ var DatagridColumnChanges = {
 };
 DatagridColumnChanges[DatagridColumnChanges.WIDTH] = 'WIDTH';
 DatagridColumnChanges[DatagridColumnChanges.HIDDEN] = 'HIDDEN';
+var ɵ1 = /**
+ * @param {?} key
+ * @return {?}
+ */
+function (key) { return DatagridColumnChanges[key]; }, ɵ0 = /**
+ * @param {?} key
+ * @return {?}
+ */
+function (key) { return key === parseInt(key, 10); };
 /** @type {?} */
 var ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
-    .map((/**
- * @param {?} key
- * @return {?}
- */
-function (key) { return DatagridColumnChanges[key]; }))
-    .filter((/**
- * @param {?} key
- * @return {?}
- */
-function (key) { return key === parseInt(key, 10); }));
+    .map((ɵ1))
+    .filter((ɵ0));
 
 /**
  * @fileoverview added by tsickle
