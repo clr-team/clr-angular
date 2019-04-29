@@ -8516,10 +8516,6 @@ class Page {
          */
         this._size = 0;
         /**
-         * Total items (needed to guess the last page)
-         */
-        this._totalItems = 0;
-        /**
          * The Observable that lets other classes subscribe to page changes
          */
         this._change = new Subject();
@@ -8564,7 +8560,7 @@ class Page {
      * @return {?}
      */
     get totalItems() {
-        return this._totalItems;
+        return this._totalItems || 0; // remains 0 if not set to avoid breaking change
     }
     /**
      * @param {?} total
@@ -8647,20 +8643,26 @@ class Page {
         }
     }
     /**
-     * Index of the first item displayed on the current page, starting at 0
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
      * @return {?}
      */
     get firstItem() {
+        if (this._totalItems === 0) {
+            return -1;
+        }
         if (this.size === 0) {
             return 0;
         }
         return (this.current - 1) * this.size;
     }
     /**
-     * Index of the last item displayed on the current page, starting at 0
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
      * @return {?}
      */
     get lastItem() {
+        if (this._totalItems === 0) {
+            return -1;
+        }
         if (this.size === 0) {
             return this.totalItems - 1;
         }
@@ -13003,14 +13005,14 @@ class ClrDatagridPagination {
         this.page.next();
     }
     /**
-     * Index of the first item displayed on the current page, starting at 0
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
      * @return {?}
      */
     get firstItem() {
         return this.page.firstItem;
     }
     /**
-     * Index of the last item displayed on the current page, starting at 0
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
      * @return {?}
      */
     get lastItem() {

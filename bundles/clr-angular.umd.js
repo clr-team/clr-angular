@@ -10193,10 +10193,6 @@
              */
             this._size = 0;
             /**
-             * Total items (needed to guess the last page)
-             */
-            this._totalItems = 0;
-            /**
              * The Observable that lets other classes subscribe to page changes
              */
             this._change = new rxjs.Subject();
@@ -10243,7 +10239,7 @@
             get: /**
              * @return {?}
              */ function () {
-                return this._totalItems;
+                return this._totalItems || 0; // remains 0 if not set to avoid breaking change
             },
             set: /**
              * @param {?} total
@@ -10356,12 +10352,15 @@
             };
         Object.defineProperty(Page.prototype, "firstItem", {
             /**
-             * Index of the first item displayed on the current page, starting at 0
+             * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
              */
             get: /**
-             * Index of the first item displayed on the current page, starting at 0
+             * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
              * @return {?}
              */ function () {
+                if (this._totalItems === 0) {
+                    return -1;
+                }
                 if (this.size === 0) {
                     return 0;
                 }
@@ -10372,12 +10371,15 @@
         });
         Object.defineProperty(Page.prototype, "lastItem", {
             /**
-             * Index of the last item displayed on the current page, starting at 0
+             * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
              */
             get: /**
-             * Index of the last item displayed on the current page, starting at 0
+             * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
              * @return {?}
              */ function () {
+                if (this._totalItems === 0) {
+                    return -1;
+                }
                 if (this.size === 0) {
                     return this.totalItems - 1;
                 }
@@ -15366,10 +15368,10 @@
             };
         Object.defineProperty(ClrDatagridPagination.prototype, "firstItem", {
             /**
-             * Index of the first item displayed on the current page, starting at 0
+             * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
              */
             get: /**
-             * Index of the first item displayed on the current page, starting at 0
+             * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
              * @return {?}
              */ function () {
                 return this.page.firstItem;
@@ -15379,10 +15381,10 @@
         });
         Object.defineProperty(ClrDatagridPagination.prototype, "lastItem", {
             /**
-             * Index of the last item displayed on the current page, starting at 0
+             * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
              */
             get: /**
-             * Index of the last item displayed on the current page, starting at 0
+             * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
              * @return {?}
              */ function () {
                 return this.page.lastItem;

@@ -12,7 +12,7 @@ export declare class Page {
     /**
      * Total items (needed to guess the last page)
      */
-    private _totalItems;
+    private _totalItems?;
     totalItems: number;
     /**
      * Last page
@@ -40,11 +40,11 @@ export declare class Page {
      */
     next(): void;
     /**
-     * Index of the first item displayed on the current page, starting at 0
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
      */
     readonly firstItem: number;
     /**
-     * Index of the last item displayed on the current page, starting at 0
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
      */
     readonly lastItem: number;
     /**
