@@ -53,6 +53,8 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
     singleSelected: T;
     singleSelectedChanged: EventEmitter<T>;
     /**
+     * @deprecated since 2.0, remove in 3.0
+     *
      * Selection/Deselection on row click mode
      */
     rowSelectionMode: boolean;

@@ -12,6 +12,7 @@ export declare class Selection<T = any> {
     clearSelection(): void;
     private _selectionType;
     selectionType: SelectionType;
+    /** @deprecated since 2.0, remove in 3.0 */
     rowSelectionMode: boolean;
     private readonly _selectable;
     /**

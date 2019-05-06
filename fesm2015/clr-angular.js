@@ -836,6 +836,7 @@ class ClrCommonStringsService {
         this.danger = 'Error';
         this.rowActions = 'Available actions';
         this.pickColumns = 'Show or hide columns';
+        this.showColumns = 'Show Columns';
     }
 }
 /**
@@ -10812,6 +10813,9 @@ class Selection {
         this._filters = _filters;
         this.prevSelectionRefs = []; // Refs of selected items
         this._selectionType = SelectionType.None;
+        /**
+         * @deprecated since 2.0, remove in 3.0
+         */
         this.rowSelectionMode = false;
         /**
          * Ignore items changes in the same change detection cycle.
@@ -11813,6 +11817,8 @@ class ClrDatagrid {
         }
     }
     /**
+     * @deprecated since 2.0, remove in 3.0
+     *
      * Selection/Deselection on row click mode
      * @param {?} value
      * @return {?}
@@ -12379,6 +12385,7 @@ const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/** @deprecated since 2.0, remove in 3.0 */
 class ClrDatagridColumnToggleButton {
     /**
      * @param {?} columnsService
@@ -12443,6 +12450,7 @@ ClrDatagridColumnToggleButton.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/** @deprecated since 2.0, remove in 3.0 */
 class ClrDatagridColumnToggleTitle {
 }
 ClrDatagridColumnToggleTitle.decorators = [
@@ -12456,6 +12464,7 @@ ClrDatagridColumnToggleTitle.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/** @deprecated since 2.0, remove in 3.0 */
 class ClrDatagridColumnToggle {
     /**
      * @param {?} commonStrings
@@ -12539,7 +12548,7 @@ ClrDatagridColumnToggle.decorators = [
     <div class="column-switch"
          *clrPopoverOld="open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint">
       <div class="switch-header">
-        <ng-container *ngIf="!customToggleTitle">Show Columns</ng-container>
+        <ng-container *ngIf="!customToggleTitle">{{commonStrings.showColumns}}</ng-container>
         <ng-content select="clr-dg-column-toggle-title"></ng-content>
         <button
           class="btn btn-sm btn-link toggle-switch-close-button"
@@ -12563,7 +12572,7 @@ ClrDatagridColumnToggle.decorators = [
       </ul>
       <div class="switch-footer">
         <ng-content select="clr-dg-column-toggle-button"></ng-content>
-        <clr-dg-column-toggle-button *ngIf="!customToggleButton">Select All</clr-dg-column-toggle-button>
+        <clr-dg-column-toggle-button *ngIf="!customToggleButton">{{commonStrings.selectAll}}</clr-dg-column-toggle-button>
       </div>
     </div>
   `,
@@ -16812,7 +16821,6 @@ ClrTabContent.decorators = [
     { type: Component, args: [{
                 selector: 'clr-tab-content',
                 template: `
-    <ng-template #tabContentProjectedRef>
       <section [id]="tabContentId" role="tabpanel" class="tab-content" [class.active]="active"
                [hidden]="!active"
                [attr.aria-labelledby]="ariaLabelledBy"
@@ -16820,7 +16828,6 @@ ClrTabContent.decorators = [
                [attr.aria-hidden]="!active">
         <ng-content></ng-content>
       </section>
-    </ng-template>
     `
             }] }
 ];
@@ -16831,7 +16838,6 @@ ClrTabContent.ctorParameters = () => [
     { type: AriaService }
 ];
 ClrTabContent.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
     tabContentId: [{ type: Input, args: ['id',] }]
 };
 
@@ -17110,20 +17116,6 @@ class ClrTabs {
     /**
      * @return {?}
      */
-    get tabContents() {
-        return this.tabs.filter((/**
-         * @param {?} tab
-         * @return {?}
-         */
-        tab => !!tab.tabContent)).map((/**
-         * @param {?} tab
-         * @return {?}
-         */
-        tab => tab.tabContent));
-    }
-    /**
-     * @return {?}
-     */
     get activeTabInOverflow() {
         return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab) > -1;
     }
@@ -17220,10 +17212,7 @@ ClrTabs.decorators = [
                 </div>
             </ng-container>
         </ul>
-        <!--tab content-->
-        <ng-container *ngFor="let content of tabContents">
-            <ng-container [ngTemplateOutlet]="content.templateRef"></ng-container>
-        </ng-container>
+        <ng-content></ng-content>
     `,
                 providers: [IfActiveService, IfOpenService, TabsService, TABS_ID_PROVIDER]
             }] }

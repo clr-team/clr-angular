@@ -949,6 +949,7 @@ ClrCommonStringsService = /** @class */ (function () {
         this.danger = 'Error';
         this.rowActions = 'Available actions';
         this.pickColumns = 'Show or hide columns';
+        this.showColumns = 'Show Columns';
     }
     return ClrCommonStringsService;
 }());
@@ -12991,6 +12992,9 @@ var Selection = /** @class */ (function () {
         this._filters = _filters;
         this.prevSelectionRefs = []; // Refs of selected items
         this._selectionType = SelectionType.None;
+        /**
+         * @deprecated since 2.0, remove in 3.0
+         */
         this.rowSelectionMode = false;
         /**
          * Ignore items changes in the same change detection cycle.
@@ -14184,9 +14188,13 @@ var ClrDatagrid = /** @class */ (function () {
     });
     Object.defineProperty(ClrDatagrid.prototype, "rowSelectionMode", {
         /**
+         * @deprecated since 2.0, remove in 3.0
+         *
          * Selection/Deselection on row click mode
          */
         set: /**
+         * @deprecated since 2.0, remove in 3.0
+         *
          * Selection/Deselection on row click mode
          * @param {?} value
          * @return {?}
@@ -14987,7 +14995,7 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
     ClrDatagridColumnToggle.decorators = [
         { type: Component, args: [{
                     selector: 'clr-dg-column-toggle',
-                    template: "\n    <button\n      #anchor\n      (click)=\"toggleSwitchPanel()\"\n      class=\"btn btn-sm btn-link column-toggle--action\"\n      type=\"button\">\n      <clr-icon shape=\"view-columns\" [attr.title]=\"commonStrings.pickColumns\"></clr-icon>\n    </button>\n    <div class=\"column-switch\"\n         *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n      <div class=\"switch-header\">\n        <ng-container *ngIf=\"!customToggleTitle\">Show Columns</ng-container>\n        <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n        <button\n          class=\"btn btn-sm btn-link toggle-switch-close-button\"\n          (click)=\"toggleSwitchPanel()\"\n          type=\"button\">\n          <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n        </button>\n      </div>\n      <ul class=\"switch-content list-unstyled\">\n        <li *ngFor=\"let columnState of hideableColumnStates;\">\n          <clr-checkbox-wrapper>\n            <input clrCheckbox type=\"checkbox\"\n                   [disabled]=\"hasOnlyOneVisibleColumn && !columnState.hidden\"\n                   [ngModel]=\"!columnState.hidden\"\n                   (ngModelChange)=\"toggleColumnState(columnState, !$event)\">\n            <label>\n              <ng-template [ngTemplateOutlet]=\"columnState.titleTemplateRef\"></ng-template>\n            </label>\n          </clr-checkbox-wrapper>\n        </li>\n      </ul>\n      <div class=\"switch-footer\">\n        <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n        <clr-dg-column-toggle-button *ngIf=\"!customToggleButton\">Select All</clr-dg-column-toggle-button>\n      </div>\n    </div>\n  ",
+                    template: "\n    <button\n      #anchor\n      (click)=\"toggleSwitchPanel()\"\n      class=\"btn btn-sm btn-link column-toggle--action\"\n      type=\"button\">\n      <clr-icon shape=\"view-columns\" [attr.title]=\"commonStrings.pickColumns\"></clr-icon>\n    </button>\n    <div class=\"column-switch\"\n         *clrPopoverOld=\"open; anchor: anchor; anchorPoint: anchorPoint; popoverPoint: popoverPoint\">\n      <div class=\"switch-header\">\n        <ng-container *ngIf=\"!customToggleTitle\">{{commonStrings.showColumns}}</ng-container>\n        <ng-content select=\"clr-dg-column-toggle-title\"></ng-content>\n        <button\n          class=\"btn btn-sm btn-link toggle-switch-close-button\"\n          (click)=\"toggleSwitchPanel()\"\n          type=\"button\">\n          <clr-icon shape=\"close\" [attr.title]=\"commonStrings.close\"></clr-icon>\n        </button>\n      </div>\n      <ul class=\"switch-content list-unstyled\">\n        <li *ngFor=\"let columnState of hideableColumnStates;\">\n          <clr-checkbox-wrapper>\n            <input clrCheckbox type=\"checkbox\"\n                   [disabled]=\"hasOnlyOneVisibleColumn && !columnState.hidden\"\n                   [ngModel]=\"!columnState.hidden\"\n                   (ngModelChange)=\"toggleColumnState(columnState, !$event)\">\n            <label>\n              <ng-template [ngTemplateOutlet]=\"columnState.titleTemplateRef\"></ng-template>\n            </label>\n          </clr-checkbox-wrapper>\n        </li>\n      </ul>\n      <div class=\"switch-footer\">\n        <ng-content select=\"clr-dg-column-toggle-button\"></ng-content>\n        <clr-dg-column-toggle-button *ngIf=\"!customToggleButton\">{{commonStrings.selectAll}}</clr-dg-column-toggle-button>\n      </div>\n    </div>\n  ",
                     host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'open' }
                 }] }
     ];
@@ -19845,7 +19853,7 @@ var ClrTabContent = /** @class */ (function () {
     ClrTabContent.decorators = [
         { type: Component, args: [{
                     selector: 'clr-tab-content',
-                    template: "\n    <ng-template #tabContentProjectedRef>\n      <section [id]=\"tabContentId\" role=\"tabpanel\" class=\"tab-content\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    </ng-template>\n    "
+                    template: "\n      <section [id]=\"tabContentId\" role=\"tabpanel\" class=\"tab-content\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    "
                 }] }
     ];
     /** @nocollapse */
@@ -19855,7 +19863,6 @@ var ClrTabContent = /** @class */ (function () {
         { type: AriaService }
     ]; };
     ClrTabContent.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
         tabContentId: [{ type: Input, args: ['id',] }]
     };
     return ClrTabContent;
@@ -20146,24 +20153,6 @@ var ClrTabs = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClrTabs.prototype, "tabContents", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this.tabs.filter((/**
-             * @param {?} tab
-             * @return {?}
-             */
-            function (tab) { return !!tab.tabContent; })).map((/**
-             * @param {?} tab
-             * @return {?}
-             */
-            function (tab) { return tab.tabContent; }));
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ClrTabs.prototype, "activeTabInOverflow", {
         get: /**
          * @return {?}
@@ -20254,7 +20243,7 @@ var ClrTabs = /** @class */ (function () {
     ClrTabs.decorators = [
         { type: Component, args: [{
                     selector: 'clr-tabs',
-                    template: "\n        <ul class=\"nav\" role=\"tablist\" [attr.aria-owns]=\"tabIds\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <ng-container [ngTemplateOutlet]=\"link.templateRefContainer.template\"></ng-container>\n                    </li>\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <!--tab content-->\n        <ng-container *ngFor=\"let content of tabContents\">\n            <ng-container [ngTemplateOutlet]=\"content.templateRef\"></ng-container>\n        </ng-container>\n    ",
+                    template: "\n        <ul class=\"nav\" role=\"tablist\" [attr.aria-owns]=\"tabIds\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <ng-container [ngTemplateOutlet]=\"link.templateRefContainer.template\"></ng-container>\n                    </li>\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <ng-content></ng-content>\n    ",
                     providers: [IfActiveService, IfOpenService, TabsService, TABS_ID_PROVIDER]
                 }] }
     ];

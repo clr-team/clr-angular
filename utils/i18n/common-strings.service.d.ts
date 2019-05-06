@@ -19,6 +19,7 @@ export declare class ClrCommonStringsService implements ClrCommonStrings {
     danger: string;
     rowActions: string;
     pickColumns: string;
+    showColumns: string;
 }
 export declare function commonStringsFactory(existing?: ClrCommonStrings): ClrCommonStrings;
 export declare const COMMON_STRINGS_PROVIDER: InjectableProvider;
