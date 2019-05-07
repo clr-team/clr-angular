@@ -63,8 +63,8 @@ export { ResponsiveNavigationService as ɵdt } from './layout/nav/providers/resp
 export { ActiveOompaLoompa as ɵed } from './layout/tabs/chocolate/active-oompa-loompa';
 export { TabsWillyWonka as ɵec } from './layout/tabs/chocolate/tabs-willy-wonka';
 export { AriaService as ɵdx } from './layout/tabs/providers/aria.service';
-export { TabsService as ɵeb } from './layout/tabs/providers/tabs.service';
-export { TABS_ID as ɵdy, TABS_ID_PROVIDER as ɵea, tokenFactory as ɵdz } from './layout/tabs/tabs-id.provider';
+export { TabsService as ɵdy } from './layout/tabs/providers/tabs.service';
+export { TABS_ID as ɵdz, TABS_ID_PROVIDER as ɵeb, tokenFactory as ɵea } from './layout/tabs/tabs-id.provider';
 export { VerticalNavGroupRegistrationService as ɵeg } from './layout/vertical-nav/providers/vertical-nav-group-registration.service';
 export { VerticalNavGroupService as ɵeh } from './layout/vertical-nav/providers/vertical-nav-group.service';
 export { VerticalNavIconService as ɵef } from './layout/vertical-nav/providers/vertical-nav-icon.service';

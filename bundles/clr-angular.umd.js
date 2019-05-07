@@ -19648,18 +19648,43 @@
     /** @type {?} */
     var nbTabContentComponents = 0;
     var ClrTabContent = /** @class */ (function () {
-        function ClrTabContent(ifActiveService, id, ariaService) {
+        function ClrTabContent(ifActiveService, id, ariaService, tabsService) {
             this.ifActiveService = ifActiveService;
             this.id = id;
             this.ariaService = ariaService;
+            this.tabsService = tabsService;
             if (!this.tabContentId) {
                 this.tabContentId = 'clr-tab-content-' + nbTabContentComponents++;
             }
         }
-        Object.defineProperty(ClrTabContent.prototype, "ariaLabelledBy", {
-            get: /**
+        Object.defineProperty(ClrTabContent.prototype, "templateRef", {
+            // The template must be applied on the top-down phase of view-child initialization to prevent
+            // components in the content from initializing before a content container exists.
+            // Some child components need their container for sizing calculations.
+            /* tslint:disable:no-unused-variable */
+            set: 
+            // The template must be applied on the top-down phase of view-child initialization to prevent
+            // components in the content from initializing before a content container exists.
+            // Some child components need their container for sizing calculations.
+            /* tslint:disable:no-unused-variable */
+            /**
+             * @private
+             * @param {?} value
              * @return {?}
-             */ function () {
+             */
+            function (value) {
+                this.viewRef = this.tabsService.tabContentViewContainer.createEmbeddedView(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClrTabContent.prototype, "ariaLabelledBy", {
+            /* tslint:enable:no-unused-variable */
+            get: /* tslint:enable:no-unused-variable */ 
+            /**
+             * @return {?}
+             */
+            function () {
                 return this.ariaService.ariaLabelledBy;
             },
             enumerable: true,
@@ -19689,10 +19714,23 @@
             enumerable: true,
             configurable: true
         });
+        /**
+         * @return {?}
+         */
+        ClrTabContent.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                /** @type {?} */
+                var index = this.tabsService.tabContentViewContainer.indexOf(this.viewRef);
+                if (index > -1) {
+                    this.tabsService.tabContentViewContainer.remove(index);
+                }
+            };
         ClrTabContent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-tab-content',
-                        template: "\n      <section [id]=\"tabContentId\" role=\"tabpanel\" class=\"tab-content\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    "
+                        template: "\n    <ng-template #tabContentProjectedRef>\n      <section [id]=\"tabContentId\" role=\"tabpanel\" class=\"tab-content\" [class.active]=\"active\"\n               [hidden]=\"!active\"\n               [attr.aria-labelledby]=\"ariaLabelledBy\"\n               [attr.aria-expanded]=\"active\"\n               [attr.aria-hidden]=\"!active\">\n        <ng-content></ng-content>\n      </section>\n    </ng-template>\n    "
                     }] }
         ];
         /** @nocollapse */
@@ -19700,10 +19738,12 @@
             return [
                 { type: IfActiveService },
                 { type: Number, decorators: [{ type: i0.Inject, args: [IF_ACTIVE_ID,] }] },
-                { type: AriaService }
+                { type: AriaService },
+                { type: TabsService }
             ];
         };
         ClrTabContent.propDecorators = {
+            templateRef: [{ type: i0.ViewChild, args: ['tabContentProjectedRef',] }],
             tabContentId: [{ type: i0.Input, args: ['id',] }]
         };
         return ClrTabContent;
@@ -19955,16 +19995,33 @@
             this.subscriptions = [];
             this._tabLinkDirectives = [];
         }
+        Object.defineProperty(ClrTabs.prototype, "tabContentViewContainer", {
+            /* tslint:disable:no-unused-variable */
+            set: /* tslint:disable:no-unused-variable */ 
+            /**
+             * @private
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                this.tabsService.tabContentViewContainer = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(ClrTabs.prototype, "layout", {
             get: /**
              * @return {?}
              */ function () {
                 return this.tabsService.layout;
             },
-            set: /**
+            /* tslint:enable:no-unused-variable */
+            set: /* tslint:enable:no-unused-variable */ 
+            /**
              * @param {?} layout
              * @return {?}
-             */ function (layout) {
+             */
+            function (layout) {
                 if (Object.keys(TabsLayout)
                     .map(( /**
              * @param {?} key
@@ -20070,7 +20127,7 @@
         ClrTabs.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-tabs',
-                        template: "\n        <ul class=\"nav\" role=\"tablist\" [attr.aria-owns]=\"tabIds\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <ng-container [ngTemplateOutlet]=\"link.templateRefContainer.template\"></ng-container>\n                    </li>\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <ng-content></ng-content>\n    ",
+                        template: "\n        <ul class=\"nav\" role=\"tablist\" [attr.aria-owns]=\"tabIds\">\n            <!--tab links-->\n            <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                <ng-container *ngIf=\"link.tabsId === tabsId && !link.inOverflow\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <ng-container [ngTemplateOutlet]=\"link.templateRefContainer.template\"></ng-container>\n                    </li>\n                </ng-container>\n            </ng-container>\n            <ng-container *ngIf=\"tabsService.overflowTabs.length > 0\">\n                <div class=\"tabs-overflow bottom-right\" [class.open]=\"ifOpenService.open\"\n                     (click)=\"toggleOverflow($event)\">\n                    <li role=\"presentation\" class=\"nav-item\">\n                        <button class=\"btn btn-link nav-link dropdown-toggle\" type=\"button\" [class.active]=\"activeTabInOverflow\">\n                            <clr-icon shape=\"ellipsis-horizontal\"\n                              [class.is-info]=\"ifOpenService.open\"\n                              [attr.title]=\"commonStrings.more\"></clr-icon>\n                        </button>\n                    </li>\n                    <!--tab links in overflow menu-->\n                    <clr-tab-overflow-content>\n                        <ng-container *ngFor=\"let link of tabLinkDirectives\">\n                            <ng-container *ngIf=\"link.tabsId === tabsId && link.inOverflow\"\n                                          [ngTemplateOutlet]=\"link.templateRefContainer.template\">\n                            </ng-container>\n                        </ng-container>\n                    </clr-tab-overflow-content>\n                </div>\n            </ng-container>\n        </ul>\n        <ng-container #tabContentViewContainer></ng-container>\n    ",
                         providers: [IfActiveService, IfOpenService, TabsService, TABS_ID_PROVIDER]
                     }] }
         ];
@@ -20085,6 +20142,7 @@
             ];
         };
         ClrTabs.propDecorators = {
+            tabContentViewContainer: [{ type: i0.ViewChild, args: ['tabContentViewContainer', { read: i0.ViewContainerRef },] }],
             layout: [{ type: i0.Input, args: ['clrLayout',] }],
             tabs: [{ type: i0.ContentChildren, args: [ClrTab,] }],
             isVertical: [{ type: i0.HostBinding, args: ['class.tabs-vertical',] }]
@@ -26571,10 +26629,10 @@
     exports.ɵed = ActiveOompaLoompa;
     exports.ɵec = TabsWillyWonka;
     exports.ɵdx = AriaService;
-    exports.ɵeb = TabsService;
-    exports.ɵdy = TABS_ID;
-    exports.ɵea = TABS_ID_PROVIDER;
-    exports.ɵdz = tokenFactory$1;
+    exports.ɵdy = TabsService;
+    exports.ɵdz = TABS_ID;
+    exports.ɵeb = TABS_ID_PROVIDER;
+    exports.ɵea = tokenFactory$1;
     exports.ɵeg = VerticalNavGroupRegistrationService;
     exports.ɵeh = VerticalNavGroupService;
     exports.ɵef = VerticalNavIconService;

@@ -12,6 +12,7 @@ export declare class ClrTabs implements AfterContentInit, OnDestroy {
     tabsId: number;
     commonStrings: ClrCommonStrings;
     private subscriptions;
+    private tabContentViewContainer;
     layout: TabsLayout;
     private tabs;
     private _tabLinkDirectives;
