@@ -2,7 +2,7 @@ import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@ang
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -8961,9 +8961,14 @@ ClrDatagridFilter.decorators = [
                 // We register this component as a CustomFilter, for the parent column to detect it.
                 providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }],
                 template: `
-        <button #anchor class="datagrid-filter-toggle" (click)="toggle()"
-            [class.datagrid-filter-open]="open" [class.datagrid-filtered]="active"
-            type="button"></button>
+        <button #anchor 
+                (click)="toggle()"
+                class="datagrid-filter-toggle"
+                [class.datagrid-filter-open]="open" 
+                [class.datagrid-filtered]="active"
+                type="button">
+            <clr-icon [attr.shape]="active ? 'filter-grid-circle': 'filter-grid'" class="is-solid"></clr-icon>
+        </button>
 
         <ng-template [(clrPopoverOld)]="open" [clrPopoverOldAnchor]="anchor" [clrPopoverOldAnchorPoint]="anchorPoint"
              [clrPopoverOldPopoverPoint]="popoverPoint" [clrPopoverOldOptions]="popoverOptions">
