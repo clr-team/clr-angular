@@ -1,8 +1,8 @@
 import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@angular/forms';
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
-import { Subject, BehaviorSubject, of, combineLatest, isObservable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
+import { Subject, BehaviorSubject, of, combineLatest, isObservable, Observable, ReplaySubject } from 'rxjs';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -15135,6 +15135,533 @@ ClrDataModule.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/*
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * @abstract
+ */
+class FocusableItem {
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ * @param {?} implementation
+ * @return {?}
+ */
+function customFocusableItemProvider(implementation) {
+    return [
+        UNIQUE_ID_PROVIDER,
+        implementation,
+        {
+            provide: FocusableItem,
+            useExisting: implementation,
+        },
+    ];
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @enum {string} */
+const ArrowKeyDirection = {
+    UP: 'up',
+    DOWN: 'down',
+    LEFT: 'left',
+    RIGHT: 'right',
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FocusService$1 {
+    /**
+     * @param {?} renderer
+     */
+    constructor(renderer) {
+        this.renderer = renderer;
+    }
+    /**
+     * @return {?}
+     */
+    get current() {
+        return this._current;
+    }
+    /**
+     * @param {?} first
+     * @return {?}
+     */
+    reset(first$$1) {
+        this._current = first$$1;
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    listenToArrowKeys(el) {
+        // The following listeners return false when there was an action to take for the key pressed,
+        // in order to prevent the default behavior of that key.
+        this.renderer.listen(el, 'keydown.arrowup', (/**
+         * @return {?}
+         */
+        () => !this.move(ArrowKeyDirection.UP)));
+        this.renderer.listen(el, 'keydown.arrowdown', (/**
+         * @return {?}
+         */
+        () => !this.move(ArrowKeyDirection.DOWN)));
+        this.renderer.listen(el, 'keydown.arrowleft', (/**
+         * @return {?}
+         */
+        () => !this.move(ArrowKeyDirection.LEFT)));
+        this.renderer.listen(el, 'keydown.arrowright', (/**
+         * @return {?}
+         */
+        () => !this.move(ArrowKeyDirection.RIGHT)));
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    registerContainer(el) {
+        this.container = el;
+        this.renderer.setAttribute(el, 'tabindex', '0');
+        this.listenToArrowKeys(el);
+        // The following listeners return false when there was an action to take for the key pressed,
+        // in order to prevent the default behavior of that key.
+        this.renderer.listen(el, 'keydown.space', (/**
+         * @return {?}
+         */
+        () => !this.activateCurrent()));
+        this.renderer.listen(el, 'keydown.enter', (/**
+         * @return {?}
+         */
+        () => !this.activateCurrent()));
+    }
+    /**
+     * @param {?} item
+     * @return {?}
+     */
+    moveTo(item) {
+        this.renderer.setAttribute(this.container, 'aria-activedescendant', item.id);
+        if (this.current) {
+            this.current.blur();
+        }
+        item.focus();
+        this._current = item;
+    }
+    /**
+     * The second parameter, optional, is here to allow recursion to skip disabled items.
+     * @param {?} direction
+     * @param {?=} current
+     * @return {?}
+     */
+    move(direction, current = this.current) {
+        /** @type {?} */
+        const next = current[direction];
+        if (next) {
+            // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
+            // If performance ever matters for this, we can refactor using additional private methods.
+            /** @type {?} */
+            const nextObs = isObservable(next) ? next : of(next);
+            nextObs.subscribe((/**
+             * @param {?} item
+             * @return {?}
+             */
+            item => {
+                if (item.disabled) {
+                    return this.move(direction, item);
+                }
+                else {
+                    this.moveTo(item);
+                    return true;
+                }
+            }));
+        }
+        return false;
+    }
+    /**
+     * @return {?}
+     */
+    activateCurrent() {
+        if (this.current && this.current.activate) {
+            this.current.activate();
+            return true;
+        }
+        return false;
+    }
+}
+FocusService$1.decorators = [
+    { type: Injectable }
+];
+/** @nocollapse */
+FocusService$1.ctorParameters = () => [
+    { type: Renderer2 }
+];
+/**
+ * @param {?} existing
+ * @param {?} renderer
+ * @return {?}
+ */
+function clrFocusServiceFactory(existing, renderer) {
+    return existing || new FocusService$1(renderer);
+}
+/** @type {?} */
+const FOCUS_SERVICE_PROVIDER = {
+    provide: FocusService$1,
+    useFactory: clrFocusServiceFactory,
+    deps: [[new Optional(), new SkipSelf(), FocusService$1], Renderer2],
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * Links a set of focusable items to a parent along one direction
+ * @param {?} items
+ * @param {?} parent
+ * @param {?} direction
+ * @return {?}
+ */
+function linkParent(items, parent, direction) {
+    items.forEach((/**
+     * @param {?} item
+     * @return {?}
+     */
+    item => (item[direction] = parent)));
+}
+/**
+ * Double-links a set of focusable items vertically, possibly looping
+ * @param {?} items
+ * @param {?=} loop
+ * @return {?}
+ */
+function linkVertical(items, loop = true) {
+    items.forEach((/**
+     * @param {?} item
+     * @param {?} index
+     * @return {?}
+     */
+    (item, index) => {
+        if (index > 0) {
+            item.up = items[index - 1];
+        }
+        if (index < items.length - 1) {
+            item.down = items[index + 1];
+        }
+    }));
+    if (loop && items.length > 1) {
+        items[0].up = items[items.length - 1];
+        items[items.length - 1].down = items[0];
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @template T
+ * @param {?} observable
+ * @param {?=} onSubscribe
+ * @param {?=} onUnsubscribe
+ * @return {?}
+ */
+function wrapObservable(observable, onSubscribe, onUnsubscribe) {
+    return Observable.create((/**
+     * @param {?} observer
+     * @return {?}
+     */
+    (observer) => {
+        onSubscribe(observer);
+        /** @type {?} */
+        const subscription = observable.subscribe(observer);
+        return (/**
+         * @return {?}
+         */
+        () => {
+            subscription.unsubscribe();
+            if (onUnsubscribe) {
+                onUnsubscribe(observer);
+            }
+        });
+    }));
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class DropdownFocusHandler {
+    /**
+     * @param {?} id
+     * @param {?} renderer
+     * @param {?} parent
+     * @param {?} ifOpenService
+     * @param {?} focusService
+     * @param {?} platformId
+     */
+    constructor(id, renderer, parent, ifOpenService, focusService, platformId) {
+        this.id = id;
+        this.renderer = renderer;
+        this.parent = parent;
+        this.ifOpenService = ifOpenService;
+        this.focusService = focusService;
+        this.platformId = platformId;
+        this.focusBackOnTrigger = false;
+        this.resetChildren();
+        this.moveToFirstItemWhenOpen();
+        if (!this.parent) {
+            this.handleRootFocus();
+        }
+    }
+    /**
+     * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+     * @return {?}
+     */
+    moveToFirstItemWhenOpen() {
+        this.ifOpenService.openChange.subscribe((/**
+         * @param {?} open
+         * @return {?}
+         */
+        open => {
+            if (open && this.ifOpenService.originalEvent) {
+                // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
+                // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
+                setTimeout((/**
+                 * @return {?}
+                 */
+                () => {
+                    this.focusService.moveTo(this);
+                    if (this.parent) {
+                        this.focusService.move(ArrowKeyDirection.RIGHT);
+                    }
+                    else {
+                        this.focusService.move(ArrowKeyDirection.DOWN);
+                    }
+                }));
+            }
+        }));
+    }
+    /**
+     * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
+     * @return {?}
+     */
+    handleRootFocus() {
+        this.ifOpenService.openChange.subscribe((/**
+         * @param {?} open
+         * @return {?}
+         */
+        open => {
+            if (open) {
+                // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
+                // So setTimeout is the only way to wait for the container to be ready to focus it.
+                setTimeout((/**
+                 * @return {?}
+                 */
+                () => {
+                    if (this.container && isPlatformBrowser(this.platformId)) {
+                        this.container.focus();
+                    }
+                }));
+            }
+            if (!open) {
+                // We reset the state of the focus service both on initialization and when closing.
+                this.focusService.reset(this);
+                // But we only actively focus the trigger when closing, not on initialization.
+                if (this.focusBackOnTrigger) {
+                    this.focus();
+                }
+            }
+            this.focusBackOnTrigger = open;
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    get trigger() {
+        return this._trigger;
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    set trigger(el) {
+        this._trigger = el;
+        this.renderer.setAttribute(el, 'id', this.id);
+        if (this.parent) {
+            // The root trigger needs to be in the tab flow, but nested ones are removed like any other dropdown item.
+            this.renderer.setAttribute(el, 'tabindex', '-1');
+        }
+        else {
+            // The root trigger is the only one outside of the menu, so it needs to its own key listeners.
+            this.focusService.listenToArrowKeys(el);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    get container() {
+        return this._container;
+    }
+    /**
+     * @param {?} el
+     * @return {?}
+     */
+    set container(el) {
+        this._container = el;
+        if (!this.parent) {
+            // The root container is the only one we register to the focus service, others do not need focus
+            this.focusService.registerContainer(el);
+            // For dropdowns, the menu shouldn't actually be in the tab order. We manually focus it when opening.
+            this.renderer.setAttribute(el, 'tabindex', '-1');
+            // When the user moves focus outside of the menu, we close the dropdown
+            this.renderer.listen(el, 'focusout', (/**
+             * @param {?} event
+             * @return {?}
+             */
+            event => {
+                // focusout + relatedTarget because a simple blur event would trigger
+                // when the user clicks an item inside of the menu, closing the dropdown.
+                if (event.relatedTarget && isPlatformBrowser(this.platformId)) {
+                    if (el.contains(event.relatedTarget) || event.relatedTarget === this.trigger) {
+                        return;
+                    }
+                }
+                // We let the user move focus to where the want, we don't force the focus back on the trigger
+                this.focusBackOnTrigger = false;
+                this.ifOpenService.open = false;
+            }));
+        }
+    }
+    /**
+     * @return {?}
+     */
+    focus() {
+        if (this.trigger) {
+            if (this.parent) {
+                this.renderer.addClass(this.trigger, 'clr-focus');
+            }
+            else if (isPlatformBrowser(this.platformId)) {
+                this.trigger.focus();
+            }
+        }
+    }
+    /**
+     * @return {?}
+     */
+    blur() {
+        if (this.trigger) {
+            if (this.parent) {
+                this.renderer.removeClass(this.trigger, 'clr-focus');
+            }
+            else if (isPlatformBrowser(this.platformId)) {
+                this.trigger.blur();
+            }
+        }
+    }
+    /**
+     * @return {?}
+     */
+    activate() {
+        if (isPlatformBrowser(this.platformId)) {
+            this.trigger.click();
+        }
+    }
+    /**
+     * @private
+     * @return {?}
+     */
+    openAndGetChildren() {
+        return wrapObservable(this.children, (/**
+         * @return {?}
+         */
+        () => (this.ifOpenService.open = true)));
+    }
+    /**
+     * @private
+     * @return {?}
+     */
+    closeAndGetThis() {
+        return wrapObservable(of(this), (/**
+         * @return {?}
+         */
+        () => (this.ifOpenService.open = false)));
+    }
+    /**
+     * @return {?}
+     */
+    resetChildren() {
+        this.children = new ReplaySubject(1);
+        if (this.parent) {
+            this.right = this.openAndGetChildren().pipe(map((/**
+             * @param {?} all
+             * @return {?}
+             */
+            all => all[0])));
+        }
+        else {
+            this.down = this.openAndGetChildren().pipe(map((/**
+             * @param {?} all
+             * @return {?}
+             */
+            all => all[0])));
+            this.up = this.openAndGetChildren().pipe(map((/**
+             * @param {?} all
+             * @return {?}
+             */
+            all => all[all.length - 1])));
+        }
+    }
+    /**
+     * @param {?} children
+     * @return {?}
+     */
+    addChildren(children) {
+        linkVertical(children);
+        if (this.parent) {
+            linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
+        }
+        this.children.next(children);
+    }
+}
+DropdownFocusHandler.decorators = [
+    { type: Injectable }
+];
+/** @nocollapse */
+DropdownFocusHandler.ctorParameters = () => [
+    { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] },
+    { type: Renderer2 },
+    { type: DropdownFocusHandler, decorators: [{ type: SkipSelf }, { type: Optional }] },
+    { type: IfOpenService },
+    { type: FocusService$1 },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
+];
+/** @type {?} */
+const DROPDOWN_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(DropdownFocusHandler);
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 class RootDropdownService {
     constructor() {
         this._changes = new Subject();
@@ -15218,7 +15745,13 @@ ClrDropdown.decorators = [
                     // Angular takes care of hiding it, regardless of whether you use *clrIfOpen or not
                     '[class.open]': 'true',
                 },
-                providers: [IfOpenService, ROOT_DROPDOWN_PROVIDER, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }]
+                providers: [
+                    IfOpenService,
+                    ROOT_DROPDOWN_PROVIDER,
+                    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
+                    FOCUS_SERVICE_PROVIDER,
+                    DROPDOWN_FOCUS_HANDLER_PROVIDER,
+                ]
             }] }
 ];
 /** @nocollapse */
@@ -15236,24 +15769,94 @@ ClrDropdown.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+class BasicFocusableItem {
+    /**
+     * @param {?} id
+     * @param {?} el
+     * @param {?} renderer
+     * @param {?} platformId
+     */
+    constructor(id, el, renderer, platformId) {
+        this.id = id;
+        this.el = el;
+        this.renderer = renderer;
+        this.platformId = platformId;
+        this.disabled = false;
+        renderer.setAttribute(el.nativeElement, 'id', id);
+        renderer.setAttribute(el.nativeElement, 'tabindex', '-1');
+    }
+    /**
+     * @return {?}
+     */
+    focus() {
+        this.renderer.addClass(this.el.nativeElement, 'clr-focus');
+    }
+    /**
+     * @return {?}
+     */
+    blur() {
+        this.renderer.removeClass(this.el.nativeElement, 'clr-focus');
+    }
+    /**
+     * @return {?}
+     */
+    activate() {
+        if (isPlatformBrowser(this.platformId)) {
+            this.el.nativeElement.click();
+        }
+    }
+}
+BasicFocusableItem.decorators = [
+    { type: Injectable }
+];
+/** @nocollapse */
+BasicFocusableItem.ctorParameters = () => [
+    { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
+];
+/** @type {?} */
+const BASIC_FOCUSABLE_ITEM_PROVIDER = [
+    UNIQUE_ID_PROVIDER,
+    {
+        provide: FocusableItem,
+        useClass: BasicFocusableItem,
+    },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 class ClrDropdownItem {
     /**
      * @param {?} dropdown
      * @param {?} el
      * @param {?} _dropdownService
      * @param {?} renderer
+     * @param {?} focusableItem
      */
-    constructor(dropdown, el, _dropdownService, renderer) {
+    constructor(dropdown, el, _dropdownService, renderer, focusableItem) {
         this.dropdown = dropdown;
         this.el = el;
         this._dropdownService = _dropdownService;
         this.renderer = renderer;
+        this.focusableItem = focusableItem;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set disabled(value) {
+        // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
+        this.focusableItem.disabled = !!value || value === '';
     }
     /**
      * @return {?}
      */
     ngAfterViewInit() {
-        this.renderer.listen(this.el.nativeElement, 'click', (/**
+        this.unlisten = this.renderer.listen(this.el.nativeElement, 'click', (/**
          * @return {?}
          */
         () => this.onDropdownItemClick()));
@@ -15266,17 +15869,34 @@ class ClrDropdownItem {
             this._dropdownService.closeMenus();
         }
     }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.unlisten();
+    }
 }
 ClrDropdownItem.decorators = [
-    { type: Directive, args: [{ selector: '[clrDropdownItem]', host: { '[class.dropdown-item]': 'true' } },] }
+    { type: Directive, args: [{
+                selector: '[clrDropdownItem]',
+                host: {
+                    '[class.dropdown-item]': 'true',
+                    '[attr.role]': '"menuitem"',
+                },
+                providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
+            },] }
 ];
 /** @nocollapse */
 ClrDropdownItem.ctorParameters = () => [
     { type: ClrDropdown },
     { type: ElementRef },
     { type: RootDropdownService },
-    { type: Renderer2 }
+    { type: Renderer2 },
+    { type: FocusableItem }
 ];
+ClrDropdownItem.propDecorators = {
+    disabled: [{ type: Input }]
+};
 
 /**
  * @fileoverview added by tsickle
@@ -15287,8 +15907,9 @@ class ClrDropdownMenu extends AbstractPopover {
      * @param {?} injector
      * @param {?} parentHost
      * @param {?} nested
+     * @param {?} focusHandler
      */
-    constructor(injector, parentHost, nested) {
+    constructor(injector, parentHost, nested, focusHandler) {
         if (!parentHost) {
             throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
         }
@@ -15305,6 +15926,7 @@ class ClrDropdownMenu extends AbstractPopover {
         }
         this.popoverOptions.allowMultipleOpen = true;
         this.closeOnOutsideClick = true;
+        this.focusHandler = focusHandler;
     }
     /**
      * @param {?} position
@@ -15351,6 +15973,25 @@ class ClrDropdownMenu extends AbstractPopover {
                 break;
         }
     }
+    /**
+     * @return {?}
+     */
+    ngAfterContentInit() {
+        this.focusHandler.container = this.el.nativeElement;
+        this.items.changes.subscribe((/**
+         * @return {?}
+         */
+        () => this.focusHandler.addChildren(this.items.toArray())));
+        // I saw this on GitHub as a solution to avoid code duplication because of missed QueryList changes
+        this.items.notifyOnChanges();
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        this.focusHandler.resetChildren();
+    }
 }
 ClrDropdownMenu.decorators = [
     { type: Component, args: [{
@@ -15360,6 +16001,7 @@ ClrDropdownMenu.decorators = [
     `,
                 host: {
                     '[class.dropdown-menu]': 'true',
+                    '[attr.role]': '"menu"',
                 }
             }] }
 ];
@@ -15367,10 +16009,12 @@ ClrDropdownMenu.decorators = [
 ClrDropdownMenu.ctorParameters = () => [
     { type: Injector },
     { type: ElementRef, decorators: [{ type: Optional }, { type: Inject, args: [POPOVER_HOST_ANCHOR,] }] },
-    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf }] }
+    { type: ClrDropdownMenu, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: DropdownFocusHandler }
 ];
 ClrDropdownMenu.propDecorators = {
-    position: [{ type: Input, args: ['clrPosition',] }]
+    position: [{ type: Input, args: ['clrPosition',] }],
+    items: [{ type: ContentChildren, args: [FocusableItem,] }]
 };
 
 /**
@@ -15381,14 +16025,17 @@ class ClrDropdownTrigger {
     /**
      * @param {?} dropdown
      * @param {?} ifOpenService
+     * @param {?} el
+     * @param {?} focusHandler
      */
-    constructor(dropdown, ifOpenService) {
+    constructor(dropdown, ifOpenService, el, focusHandler) {
         this.ifOpenService = ifOpenService;
         this.isRootLevelToggle = true;
         // if the containing dropdown has a parent, then this is not the root level one
         if (dropdown.parent) {
             this.isRootLevelToggle = false;
         }
+        focusHandler.trigger = el.nativeElement;
     }
     /**
      * @return {?}
@@ -15413,13 +16060,17 @@ ClrDropdownTrigger.decorators = [
                     '[class.dropdown-item]': '!isRootLevelToggle',
                     '[class.expandable]': '!isRootLevelToggle',
                     '[class.active]': 'active',
+                    '[attr.aria-haspopup]': '"menu"',
+                    '[attr.aria-expanded]': 'ifOpenService.open',
                 },
             },] }
 ];
 /** @nocollapse */
 ClrDropdownTrigger.ctorParameters = () => [
     { type: ClrDropdown },
-    { type: IfOpenService }
+    { type: IfOpenService },
+    { type: ElementRef },
+    { type: DropdownFocusHandler }
 ];
 ClrDropdownTrigger.propDecorators = {
     onDropdownTriggerClick: [{ type: HostListener, args: ['click', ['$event'],] }]
@@ -21948,6 +22599,6 @@ function slide(direction) {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrSelectedState, ClrTree, ClrTreeNode, ClrRecursiveForOf, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, isToggleFactory, IS_TOGGLE, IS_TOGGLE_PROVIDER, ClrCheckboxWrapper, ClrCheckboxModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceFactory, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵds, DatagridRowExpandAnimation as ɵdl, ActionableOompaLoompa as ɵdi, DatagridWillyWonka as ɵdg, ExpandableOompaLoompa as ɵdk, ClrDatagridColumnSeparator as ɵck, ClrDatagridColumnToggleButton as ɵcq, ClrDatagridColumnToggleTitle as ɵcp, DatagridDetailRegisterer as ɵcw, DatagridIfExpandService as ɵcj, ClrDatagridItemsTrackBy as ɵcv, ClrDatagridPageSize as ɵcx, ColumnResizerService as ɵco, COLUMN_STATE as ɵcr, COLUMN_STATE_PROVIDER as ɵct, columnStateFactory as ɵcs, ColumnsService as ɵcf, CustomFilter as ɵci, DisplayModeService as ɵcg, FiltersProvider as ɵbw, ExpandableRowsCount as ɵcc, Items as ɵbv, Page as ɵbx, RowActionService as ɵcb, Selection as ɵbu, Sort as ɵbz, StateDebouncer as ɵby, StateProvider as ɵcd, TableSizeService as ɵce, DatagridCellRenderer as ɵdf, DatagridHeaderRenderer as ɵdd, DatagridMainRenderer as ɵdc, domAdapterFactory as ɵdb, DatagridRenderOrganizer as ɵca, DatagridRowRenderer as ɵde, DatagridFilterRegistrar as ɵch, WrappedCell as ɵcy, WrappedColumn as ɵcz, WrappedRow as ɵda, StackControl as ɵdm, RecursiveChildren as ɵdq, TREE_FEATURES_PROVIDER as ɵdp, TreeFeaturesService as ɵdn, treeFeaturesFactory as ɵdo, AlertIconAndTypesService as ɵp, MultiAlertService as ɵq, IfErrorService as ɵu, ControlClassService as ɵz, ControlIdService as ɵr, FocusService as ɵbg, LayoutService as ɵs, MarkControlService as ɵv, NgControlService as ɵt, WrappedFormControl as ɵy, DateFormControlService as ɵbe, DateIOService as ɵbh, DateNavigationService as ɵbd, DatepickerEnabledService as ɵbi, DatepickerFocusService as ɵbj, LocaleHelperService as ɵbf, ViewManagerService as ɵbk, ResponsiveNavigationService as ɵdt, ActiveOompaLoompa as ɵed, TabsWillyWonka as ɵec, AriaService as ɵdx, TabsService as ɵdy, TABS_ID as ɵdz, TABS_ID_PROVIDER as ɵeb, tokenFactory$1 as ɵea, VerticalNavGroupRegistrationService as ɵeg, VerticalNavGroupService as ɵeh, VerticalNavIconService as ɵef, VerticalNavService as ɵee, AbstractPopover as ɵi, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵdj, WillyWonka as ɵdh, ClrConditionalModule as ɵj, IF_ACTIVE_ID as ɵk, IF_ACTIVE_ID_PROVIDER as ɵm, IfActiveService as ɵn, tokenFactory as ɵl, IfExpandService as ɵo, IfOpenService as ɵd, DomAdapter as ɵbs, DragAndDropEventBusService as ɵbp, DragEventListenerService as ɵbo, DragHandleRegistrarService as ɵbq, DraggableSnapshotService as ɵbr, GlobalDragModeService as ɵbt, FocusTrapDirective as ɵbc, ClrFocusTrapModule as ɵba, FOCUS_TRAP_DIRECTIVES as ɵbb, EmptyAnchor as ɵx, ClrHostWrappingModule as ɵw, UNIQUE_ID as ɵcl, UNIQUE_ID_PROVIDER as ɵcn, uniqueIdFactory as ɵcm, OUSTIDE_CLICK_DIRECTIVES as ɵbm, OutsideClick as ɵbn, ClrOutsideClickModule as ɵbl, ScrollingService as ɵdr, TEMPLATE_REF_DIRECTIVES as ɵdv, TemplateRefContainer as ɵdw, ClrTemplateRefModule as ɵdu, ButtonHubService as ɵek, HeaderActionService as ɵel, PageCollectionService as ɵej, WizardNavigationService as ɵei };
+export { FocusTrapTracker as ÇlrFocusTrapTracker, ClarityModule, ClrButtonModule, ClrButton, ClrButtonGroup, CLR_BUTTON_GROUP_DIRECTIVES, ClrButtonGroupModule, ClrLoadingButton, CLR_LOADING_BUTTON_DIRECTIVES, ClrLoadingButtonModule, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridColumn, ClrDatagridColumnToggle, ClrDatagridHideableColumn, ClrDatagridFilter, ClrDatagridItems, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridCell, ClrDatagridFooter, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridSortOrder, DatagridStringFilter, DatagridPropertyStringFilter, DatagridPropertyComparator, CLR_DATAGRID_DIRECTIVES, ClrDatagridModule, ClrSelectedState, ClrTree, ClrTreeNode, ClrRecursiveForOf, CLR_TREE_VIEW_DIRECTIVES, ClrTreeViewModule, ClrStackView, ClrStackHeader, ClrStackBlock, ClrStackInput, ClrStackSelect, CLR_STACK_VIEW_DIRECTIVES, ClrStackViewModule, ClrStackViewCustomTags, ClrEmphasisModule, ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, CLR_ALERT_DIRECTIVES, ClrAlertModule, ClrIfError, ClrControlError, ClrForm, ClrControlHelper, ClrLabel, ClrLayout, ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, isToggleFactory, IS_TOGGLE, IS_TOGGLE_PROVIDER, ClrCheckboxWrapper, ClrCheckboxModule, ClrDateContainer, ClrDateInput, ClrDatepickerViewManager, ClrDaypicker, ClrMonthpicker, ClrYearpicker, ClrCalendar, ClrDay, CLR_DATEPICKER_DIRECTIVES, ClrDatepickerModule, ClrInput, ClrInputContainer, ClrInputModule, ClrPassword, ToggleServiceFactory, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper, ClrRadioModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrFormsModule, ClrIconCustomTag, CLR_ICON_DIRECTIVES, ClrIconModule, ClrLayoutModule, ClrMainContainer, CLR_LAYOUT_DIRECTIVES, ClrMainContainerModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ClrHeader, ClrNavLevel, CLR_NAVIGATION_DIRECTIVES, ClrNavigationModule, ClrTabs, ClrTab, ClrTabContent, ClrTabOverflowContent, ClrTabLink, CLR_TABS_DIRECTIVES, ClrTabsModule, ClrVerticalNavGroupChildren, ClrVerticalNavGroup, ClrVerticalNav, ClrVerticalNavLink, ClrVerticalNavIcon, CLR_VERTICAL_NAV_DIRECTIVES, ClrVerticalNavModule, ClrModal, CLR_MODAL_DIRECTIVES, ClrModalModule, ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, CLR_MENU_POSITIONS, CLR_DROPDOWN_DIRECTIVES, ClrDropdownModule, ClrPopoverModule, ClrSignpost, ClrSignpostContent, ClrSignpostTrigger, CLR_SIGNPOST_DIRECTIVES, ClrSignpostModule, ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, CLR_TOOLTIP_DIRECTIVES, ClrTooltipModule, collapse, fade, fadeSlide, slide, ClrLoadingState, ClrLoading, LoadingListener, CLR_LOADING_DIRECTIVES, ClrLoadingModule, CONDITIONAL_DIRECTIVES, ClrIfActive, ClrIfOpen, ClrIfExpanded, ClrCommonStrings, ClrDraggable, ClrDroppable, ClrIfDragged, ClrDragHandle, ClrDraggableGhost, ClrDragEvent, CLR_DRAG_AND_DROP_DIRECTIVES, ClrDragAndDropModule, ClrWizard, ClrWizardPage, ClrWizardStepnav, ClrWizardStepnavItem, DEFAULT_BUTTON_TYPES, CUSTOM_BUTTON_TYPES, ClrWizardButton, ClrWizardHeaderAction, ClrWizardCustomTags, ClrWizardPageTitle, ClrWizardPageNavTitle, ClrWizardPageButtons, ClrWizardPageHeaderActions, CLR_WIZARD_DIRECTIVES, ClrWizardModule, ButtonInGroupService as ɵeb, DatagridRowExpandAnimation as ɵdu, ActionableOompaLoompa as ɵdr, DatagridWillyWonka as ɵdp, ExpandableOompaLoompa as ɵdt, ClrDatagridColumnSeparator as ɵcw, ClrDatagridColumnToggleButton as ɵcz, ClrDatagridColumnToggleTitle as ɵcy, DatagridDetailRegisterer as ɵdf, DatagridIfExpandService as ɵcv, ClrDatagridItemsTrackBy as ɵde, ClrDatagridPageSize as ɵdg, ColumnResizerService as ɵcx, COLUMN_STATE as ɵda, COLUMN_STATE_PROVIDER as ɵdc, columnStateFactory as ɵdb, ColumnsService as ɵcr, CustomFilter as ɵcu, DisplayModeService as ɵcs, FiltersProvider as ɵci, ExpandableRowsCount as ɵco, Items as ɵch, Page as ɵcj, RowActionService as ɵcn, Selection as ɵcg, Sort as ɵcl, StateDebouncer as ɵck, StateProvider as ɵcp, TableSizeService as ɵcq, DatagridCellRenderer as ɵdo, DatagridHeaderRenderer as ɵdm, DatagridMainRenderer as ɵdl, domAdapterFactory as ɵdk, DatagridRenderOrganizer as ɵcm, DatagridRowRenderer as ɵdn, DatagridFilterRegistrar as ɵct, WrappedCell as ɵdh, WrappedColumn as ɵdi, WrappedRow as ɵdj, StackControl as ɵdv, RecursiveChildren as ɵdz, TREE_FEATURES_PROVIDER as ɵdy, TreeFeaturesService as ɵdw, treeFeaturesFactory as ɵdx, AlertIconAndTypesService as ɵbb, MultiAlertService as ɵbc, IfErrorService as ɵbg, ControlClassService as ɵbl, ControlIdService as ɵbd, FocusService as ɵbs, LayoutService as ɵbe, MarkControlService as ɵbh, NgControlService as ɵbf, WrappedFormControl as ɵbk, DateFormControlService as ɵbq, DateIOService as ɵbt, DateNavigationService as ɵbp, DatepickerEnabledService as ɵbu, DatepickerFocusService as ɵbv, LocaleHelperService as ɵbr, ViewManagerService as ɵbw, ResponsiveNavigationService as ɵec, ActiveOompaLoompa as ɵem, TabsWillyWonka as ɵel, AriaService as ɵeg, TabsService as ɵeh, TABS_ID as ɵei, TABS_ID_PROVIDER as ɵek, tokenFactory$1 as ɵej, VerticalNavGroupRegistrationService as ɵep, VerticalNavGroupService as ɵeq, VerticalNavIconService as ɵeo, VerticalNavService as ɵen, AbstractPopover as ɵs, POPOVER_DIRECTIVES as ɵb, POPOVER_HOST_ANCHOR as ɵh, PopoverDirectiveOld as ɵc, ClrCommonPopoverModule as ɵa, DROPDOWN_FOCUS_HANDLER_PROVIDER as ɵm, DropdownFocusHandler as ɵl, ROOT_DROPDOWN_PROVIDER as ɵg, RootDropdownService as ɵe, clrRootDropdownFactory as ɵf, OompaLoompa as ɵds, WillyWonka as ɵdq, ClrConditionalModule as ɵv, IF_ACTIVE_ID as ɵw, IF_ACTIVE_ID_PROVIDER as ɵy, IfActiveService as ɵz, tokenFactory as ɵx, IfExpandService as ɵba, IfOpenService as ɵd, DomAdapter as ɵce, DragAndDropEventBusService as ɵcb, DragEventListenerService as ɵca, DragHandleRegistrarService as ɵcc, DraggableSnapshotService as ɵcd, GlobalDragModeService as ɵcf, FocusTrapDirective as ɵbo, ClrFocusTrapModule as ɵbm, FOCUS_TRAP_DIRECTIVES as ɵbn, FOCUS_SERVICE_PROVIDER as ɵk, FocusService$1 as ɵi, clrFocusServiceFactory as ɵj, BASIC_FOCUSABLE_ITEM_PROVIDER as ɵu, BasicFocusableItem as ɵt, customFocusableItemProvider as ɵn, FocusableItem as ɵr, EmptyAnchor as ɵbj, ClrHostWrappingModule as ɵbi, UNIQUE_ID as ɵo, UNIQUE_ID_PROVIDER as ɵq, uniqueIdFactory as ɵp, OUSTIDE_CLICK_DIRECTIVES as ɵby, OutsideClick as ɵbz, ClrOutsideClickModule as ɵbx, ScrollingService as ɵea, TEMPLATE_REF_DIRECTIVES as ɵee, TemplateRefContainer as ɵef, ClrTemplateRefModule as ɵed, ButtonHubService as ɵet, HeaderActionService as ɵeu, PageCollectionService as ɵes, WizardNavigationService as ɵer };
 
 //# sourceMappingURL=clr-angular.js.map

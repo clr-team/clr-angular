@@ -17736,6 +17736,599 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
+    /*
+     * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+     * This software is released under MIT license.
+     * The full license information can be found in LICENSE in the root directory of this project.
+     */
+    /**
+     * @abstract
+     */
+    var /**
+     * @abstract
+     */ FocusableItem = /** @class */ (function () {
+        function FocusableItem() {
+        }
+        return FocusableItem;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @template T
+     * @param {?} implementation
+     * @return {?}
+     */
+    function customFocusableItemProvider(implementation) {
+        return [
+            UNIQUE_ID_PROVIDER,
+            implementation,
+            {
+                provide: FocusableItem,
+                useExisting: implementation,
+            },
+        ];
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /*
+     * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+     * This software is released under MIT license.
+     * The full license information can be found in LICENSE in the root directory of this project.
+     */
+    /** @enum {string} */
+    var ArrowKeyDirection = {
+        UP: 'up',
+        DOWN: 'down',
+        LEFT: 'left',
+        RIGHT: 'right',
+    };
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var FocusService$1 = /** @class */ (function () {
+        function FocusService(renderer) {
+            this.renderer = renderer;
+        }
+        Object.defineProperty(FocusService.prototype, "current", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._current;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} first
+         * @return {?}
+         */
+        FocusService.prototype.reset = /**
+         * @param {?} first
+         * @return {?}
+         */
+            function (first) {
+                this._current = first;
+            };
+        /**
+         * @param {?} el
+         * @return {?}
+         */
+        FocusService.prototype.listenToArrowKeys = /**
+         * @param {?} el
+         * @return {?}
+         */
+            function (el) {
+                var _this = this;
+                // The following listeners return false when there was an action to take for the key pressed,
+                // in order to prevent the default behavior of that key.
+                this.renderer.listen(el, 'keydown.arrowup', ( /**
+                 * @return {?}
+                 */function () { return !_this.move(ArrowKeyDirection.UP); }));
+                this.renderer.listen(el, 'keydown.arrowdown', ( /**
+                 * @return {?}
+                 */function () { return !_this.move(ArrowKeyDirection.DOWN); }));
+                this.renderer.listen(el, 'keydown.arrowleft', ( /**
+                 * @return {?}
+                 */function () { return !_this.move(ArrowKeyDirection.LEFT); }));
+                this.renderer.listen(el, 'keydown.arrowright', ( /**
+                 * @return {?}
+                 */function () { return !_this.move(ArrowKeyDirection.RIGHT); }));
+            };
+        /**
+         * @param {?} el
+         * @return {?}
+         */
+        FocusService.prototype.registerContainer = /**
+         * @param {?} el
+         * @return {?}
+         */
+            function (el) {
+                var _this = this;
+                this.container = el;
+                this.renderer.setAttribute(el, 'tabindex', '0');
+                this.listenToArrowKeys(el);
+                // The following listeners return false when there was an action to take for the key pressed,
+                // in order to prevent the default behavior of that key.
+                this.renderer.listen(el, 'keydown.space', ( /**
+                 * @return {?}
+                 */function () { return !_this.activateCurrent(); }));
+                this.renderer.listen(el, 'keydown.enter', ( /**
+                 * @return {?}
+                 */function () { return !_this.activateCurrent(); }));
+            };
+        /**
+         * @param {?} item
+         * @return {?}
+         */
+        FocusService.prototype.moveTo = /**
+         * @param {?} item
+         * @return {?}
+         */
+            function (item) {
+                this.renderer.setAttribute(this.container, 'aria-activedescendant', item.id);
+                if (this.current) {
+                    this.current.blur();
+                }
+                item.focus();
+                this._current = item;
+            };
+        /**
+         * The second parameter, optional, is here to allow recursion to skip disabled items.
+         */
+        /**
+         * The second parameter, optional, is here to allow recursion to skip disabled items.
+         * @param {?} direction
+         * @param {?=} current
+         * @return {?}
+         */
+        FocusService.prototype.move = /**
+         * The second parameter, optional, is here to allow recursion to skip disabled items.
+         * @param {?} direction
+         * @param {?=} current
+         * @return {?}
+         */
+            function (direction, current) {
+                var _this = this;
+                if (current === void 0) {
+                    current = this.current;
+                }
+                /** @type {?} */
+                var next = current[direction];
+                if (next) {
+                    // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
+                    // If performance ever matters for this, we can refactor using additional private methods.
+                    /** @type {?} */
+                    var nextObs = rxjs.isObservable(next) ? next : rxjs.of(next);
+                    nextObs.subscribe(( /**
+                     * @param {?} item
+                     * @return {?}
+                     */function (item) {
+                        if (item.disabled) {
+                            return _this.move(direction, item);
+                        }
+                        else {
+                            _this.moveTo(item);
+                            return true;
+                        }
+                    }));
+                }
+                return false;
+            };
+        /**
+         * @return {?}
+         */
+        FocusService.prototype.activateCurrent = /**
+         * @return {?}
+         */
+            function () {
+                if (this.current && this.current.activate) {
+                    this.current.activate();
+                    return true;
+                }
+                return false;
+            };
+        FocusService.decorators = [
+            { type: i0.Injectable }
+        ];
+        /** @nocollapse */
+        FocusService.ctorParameters = function () {
+            return [
+                { type: i0.Renderer2 }
+            ];
+        };
+        return FocusService;
+    }());
+    /**
+     * @param {?} existing
+     * @param {?} renderer
+     * @return {?}
+     */
+    function clrFocusServiceFactory(existing, renderer) {
+        return existing || new FocusService$1(renderer);
+    }
+    /** @type {?} */
+    var FOCUS_SERVICE_PROVIDER = {
+        provide: FocusService$1,
+        useFactory: clrFocusServiceFactory,
+        deps: [[new i0.Optional(), new i0.SkipSelf(), FocusService$1], i0.Renderer2],
+    };
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /*
+     * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+     * This software is released under MIT license.
+     * The full license information can be found in LICENSE in the root directory of this project.
+     */
+    /**
+     * Links a set of focusable items to a parent along one direction
+     * @param {?} items
+     * @param {?} parent
+     * @param {?} direction
+     * @return {?}
+     */
+    function linkParent(items, parent, direction) {
+        items.forEach(( /**
+         * @param {?} item
+         * @return {?}
+         */function (item) { return (item[direction] = parent); }));
+    }
+    /**
+     * Double-links a set of focusable items vertically, possibly looping
+     * @param {?} items
+     * @param {?=} loop
+     * @return {?}
+     */
+    function linkVertical(items, loop) {
+        if (loop === void 0) {
+            loop = true;
+        }
+        items.forEach(( /**
+         * @param {?} item
+         * @param {?} index
+         * @return {?}
+         */function (item, index) {
+            if (index > 0) {
+                item.up = items[index - 1];
+            }
+            if (index < items.length - 1) {
+                item.down = items[index + 1];
+            }
+        }));
+        if (loop && items.length > 1) {
+            items[0].up = items[items.length - 1];
+            items[items.length - 1].down = items[0];
+        }
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @template T
+     * @param {?} observable
+     * @param {?=} onSubscribe
+     * @param {?=} onUnsubscribe
+     * @return {?}
+     */
+    function wrapObservable(observable, onSubscribe, onUnsubscribe) {
+        return rxjs.Observable.create(( /**
+         * @param {?} observer
+         * @return {?}
+         */function (observer) {
+            onSubscribe(observer);
+            /** @type {?} */
+            var subscription = observable.subscribe(observer);
+            return ( /**
+             * @return {?}
+             */function () {
+                subscription.unsubscribe();
+                if (onUnsubscribe) {
+                    onUnsubscribe(observer);
+                }
+            });
+        }));
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var DropdownFocusHandler = /** @class */ (function () {
+        function DropdownFocusHandler(id, renderer, parent, ifOpenService, focusService, platformId) {
+            this.id = id;
+            this.renderer = renderer;
+            this.parent = parent;
+            this.ifOpenService = ifOpenService;
+            this.focusService = focusService;
+            this.platformId = platformId;
+            this.focusBackOnTrigger = false;
+            this.resetChildren();
+            this.moveToFirstItemWhenOpen();
+            if (!this.parent) {
+                this.handleRootFocus();
+            }
+        }
+        /**
+         * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+         */
+        /**
+         * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.moveToFirstItemWhenOpen = /**
+         * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                this.ifOpenService.openChange.subscribe(( /**
+                 * @param {?} open
+                 * @return {?}
+                 */function (open) {
+                    if (open && _this.ifOpenService.originalEvent) {
+                        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
+                        // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
+                        setTimeout(( /**
+                         * @return {?}
+                         */function () {
+                            _this.focusService.moveTo(_this);
+                            if (_this.parent) {
+                                _this.focusService.move(ArrowKeyDirection.RIGHT);
+                            }
+                            else {
+                                _this.focusService.move(ArrowKeyDirection.DOWN);
+                            }
+                        }));
+                    }
+                }));
+            };
+        /**
+         * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
+         */
+        /**
+         * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.handleRootFocus = /**
+         * Focus on the menu when it opens, and focus back on the root trigger when the whole dropdown becomes closed
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                this.ifOpenService.openChange.subscribe(( /**
+                 * @param {?} open
+                 * @return {?}
+                 */function (open) {
+                    if (open) {
+                        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
+                        // So setTimeout is the only way to wait for the container to be ready to focus it.
+                        setTimeout(( /**
+                         * @return {?}
+                         */function () {
+                            if (_this.container && common.isPlatformBrowser(_this.platformId)) {
+                                _this.container.focus();
+                            }
+                        }));
+                    }
+                    if (!open) {
+                        // We reset the state of the focus service both on initialization and when closing.
+                        _this.focusService.reset(_this);
+                        // But we only actively focus the trigger when closing, not on initialization.
+                        if (_this.focusBackOnTrigger) {
+                            _this.focus();
+                        }
+                    }
+                    _this.focusBackOnTrigger = open;
+                }));
+            };
+        Object.defineProperty(DropdownFocusHandler.prototype, "trigger", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._trigger;
+            },
+            set: /**
+             * @param {?} el
+             * @return {?}
+             */ function (el) {
+                this._trigger = el;
+                this.renderer.setAttribute(el, 'id', this.id);
+                if (this.parent) {
+                    // The root trigger needs to be in the tab flow, but nested ones are removed like any other dropdown item.
+                    this.renderer.setAttribute(el, 'tabindex', '-1');
+                }
+                else {
+                    // The root trigger is the only one outside of the menu, so it needs to its own key listeners.
+                    this.focusService.listenToArrowKeys(el);
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DropdownFocusHandler.prototype, "container", {
+            get: /**
+             * @return {?}
+             */ function () {
+                return this._container;
+            },
+            set: /**
+             * @param {?} el
+             * @return {?}
+             */ function (el) {
+                var _this = this;
+                this._container = el;
+                if (!this.parent) {
+                    // The root container is the only one we register to the focus service, others do not need focus
+                    this.focusService.registerContainer(el);
+                    // For dropdowns, the menu shouldn't actually be in the tab order. We manually focus it when opening.
+                    this.renderer.setAttribute(el, 'tabindex', '-1');
+                    // When the user moves focus outside of the menu, we close the dropdown
+                    this.renderer.listen(el, 'focusout', ( /**
+                     * @param {?} event
+                     * @return {?}
+                     */function (event) {
+                        // focusout + relatedTarget because a simple blur event would trigger
+                        // when the user clicks an item inside of the menu, closing the dropdown.
+                        if (event.relatedTarget && common.isPlatformBrowser(_this.platformId)) {
+                            if (el.contains(event.relatedTarget) || event.relatedTarget === _this.trigger) {
+                                return;
+                            }
+                        }
+                        // We let the user move focus to where the want, we don't force the focus back on the trigger
+                        _this.focusBackOnTrigger = false;
+                        _this.ifOpenService.open = false;
+                    }));
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.focus = /**
+         * @return {?}
+         */
+            function () {
+                if (this.trigger) {
+                    if (this.parent) {
+                        this.renderer.addClass(this.trigger, 'clr-focus');
+                    }
+                    else if (common.isPlatformBrowser(this.platformId)) {
+                        this.trigger.focus();
+                    }
+                }
+            };
+        /**
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.blur = /**
+         * @return {?}
+         */
+            function () {
+                if (this.trigger) {
+                    if (this.parent) {
+                        this.renderer.removeClass(this.trigger, 'clr-focus');
+                    }
+                    else if (common.isPlatformBrowser(this.platformId)) {
+                        this.trigger.blur();
+                    }
+                }
+            };
+        /**
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.activate = /**
+         * @return {?}
+         */
+            function () {
+                if (common.isPlatformBrowser(this.platformId)) {
+                    this.trigger.click();
+                }
+            };
+        /**
+         * @private
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.openAndGetChildren = /**
+         * @private
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                return wrapObservable(this.children, ( /**
+                 * @return {?}
+                 */function () { return (_this.ifOpenService.open = true); }));
+            };
+        /**
+         * @private
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.closeAndGetThis = /**
+         * @private
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                return wrapObservable(rxjs.of(this), ( /**
+                 * @return {?}
+                 */function () { return (_this.ifOpenService.open = false); }));
+            };
+        /**
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.resetChildren = /**
+         * @return {?}
+         */
+            function () {
+                this.children = new rxjs.ReplaySubject(1);
+                if (this.parent) {
+                    this.right = this.openAndGetChildren().pipe(operators.map(( /**
+                     * @param {?} all
+                     * @return {?}
+                     */function (all) { return all[0]; })));
+                }
+                else {
+                    this.down = this.openAndGetChildren().pipe(operators.map(( /**
+                     * @param {?} all
+                     * @return {?}
+                     */function (all) { return all[0]; })));
+                    this.up = this.openAndGetChildren().pipe(operators.map(( /**
+                     * @param {?} all
+                     * @return {?}
+                     */function (all) { return all[all.length - 1]; })));
+                }
+            };
+        /**
+         * @param {?} children
+         * @return {?}
+         */
+        DropdownFocusHandler.prototype.addChildren = /**
+         * @param {?} children
+         * @return {?}
+         */
+            function (children) {
+                linkVertical(children);
+                if (this.parent) {
+                    linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
+                }
+                this.children.next(children);
+            };
+        DropdownFocusHandler.decorators = [
+            { type: i0.Injectable }
+        ];
+        /** @nocollapse */
+        DropdownFocusHandler.ctorParameters = function () {
+            return [
+                { type: String, decorators: [{ type: i0.Inject, args: [UNIQUE_ID,] }] },
+                { type: i0.Renderer2 },
+                { type: DropdownFocusHandler, decorators: [{ type: i0.SkipSelf }, { type: i0.Optional }] },
+                { type: IfOpenService },
+                { type: FocusService$1 },
+                { type: Object, decorators: [{ type: i0.Inject, args: [i0.PLATFORM_ID,] }] }
+            ];
+        };
+        return DropdownFocusHandler;
+    }());
+    /** @type {?} */
+    var DROPDOWN_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(DropdownFocusHandler);
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
     var RootDropdownService = /** @class */ (function () {
         function RootDropdownService() {
             this._changes = new rxjs.Subject();
@@ -17820,7 +18413,13 @@
                             // Angular takes care of hiding it, regardless of whether you use *clrIfOpen or not
                             '[class.open]': 'true',
                         },
-                        providers: [IfOpenService, ROOT_DROPDOWN_PROVIDER, { provide: POPOVER_HOST_ANCHOR, useExisting: i0.ElementRef }]
+                        providers: [
+                            IfOpenService,
+                            ROOT_DROPDOWN_PROVIDER,
+                            { provide: POPOVER_HOST_ANCHOR, useExisting: i0.ElementRef },
+                            FOCUS_SERVICE_PROVIDER,
+                            DROPDOWN_FOCUS_HANDLER_PROVIDER,
+                        ]
                     }] }
         ];
         /** @nocollapse */
@@ -17842,13 +18441,91 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
+    var BasicFocusableItem = /** @class */ (function () {
+        function BasicFocusableItem(id, el, renderer, platformId) {
+            this.id = id;
+            this.el = el;
+            this.renderer = renderer;
+            this.platformId = platformId;
+            this.disabled = false;
+            renderer.setAttribute(el.nativeElement, 'id', id);
+            renderer.setAttribute(el.nativeElement, 'tabindex', '-1');
+        }
+        /**
+         * @return {?}
+         */
+        BasicFocusableItem.prototype.focus = /**
+         * @return {?}
+         */
+            function () {
+                this.renderer.addClass(this.el.nativeElement, 'clr-focus');
+            };
+        /**
+         * @return {?}
+         */
+        BasicFocusableItem.prototype.blur = /**
+         * @return {?}
+         */
+            function () {
+                this.renderer.removeClass(this.el.nativeElement, 'clr-focus');
+            };
+        /**
+         * @return {?}
+         */
+        BasicFocusableItem.prototype.activate = /**
+         * @return {?}
+         */
+            function () {
+                if (common.isPlatformBrowser(this.platformId)) {
+                    this.el.nativeElement.click();
+                }
+            };
+        BasicFocusableItem.decorators = [
+            { type: i0.Injectable }
+        ];
+        /** @nocollapse */
+        BasicFocusableItem.ctorParameters = function () {
+            return [
+                { type: String, decorators: [{ type: i0.Inject, args: [UNIQUE_ID,] }] },
+                { type: i0.ElementRef },
+                { type: i0.Renderer2 },
+                { type: Object, decorators: [{ type: i0.Inject, args: [i0.PLATFORM_ID,] }] }
+            ];
+        };
+        return BasicFocusableItem;
+    }());
+    /** @type {?} */
+    var BASIC_FOCUSABLE_ITEM_PROVIDER = [
+        UNIQUE_ID_PROVIDER,
+        {
+            provide: FocusableItem,
+            useClass: BasicFocusableItem,
+        },
+    ];
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
     var ClrDropdownItem = /** @class */ (function () {
-        function ClrDropdownItem(dropdown, el, _dropdownService, renderer) {
+        function ClrDropdownItem(dropdown, el, _dropdownService, renderer, focusableItem) {
             this.dropdown = dropdown;
             this.el = el;
             this._dropdownService = _dropdownService;
             this.renderer = renderer;
+            this.focusableItem = focusableItem;
         }
+        Object.defineProperty(ClrDropdownItem.prototype, "disabled", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */ function (value) {
+                // Empty string attribute evaluates to false but should disable the item, so we need to add a special case for it.
+                this.focusableItem.disabled = !!value || value === '';
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * @return {?}
          */
@@ -17857,7 +18534,7 @@
          */
             function () {
                 var _this = this;
-                this.renderer.listen(this.el.nativeElement, 'click', ( /**
+                this.unlisten = this.renderer.listen(this.el.nativeElement, 'click', ( /**
                  * @return {?}
                  */function () { return _this.onDropdownItemClick(); }));
             };
@@ -17872,8 +18549,24 @@
                     this._dropdownService.closeMenus();
                 }
             };
+        /**
+         * @return {?}
+         */
+        ClrDropdownItem.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.unlisten();
+            };
         ClrDropdownItem.decorators = [
-            { type: i0.Directive, args: [{ selector: '[clrDropdownItem]', host: { '[class.dropdown-item]': 'true' } },] }
+            { type: i0.Directive, args: [{
+                        selector: '[clrDropdownItem]',
+                        host: {
+                            '[class.dropdown-item]': 'true',
+                            '[attr.role]': '"menuitem"',
+                        },
+                        providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
+                    },] }
         ];
         /** @nocollapse */
         ClrDropdownItem.ctorParameters = function () {
@@ -17881,8 +18574,12 @@
                 { type: ClrDropdown },
                 { type: i0.ElementRef },
                 { type: RootDropdownService },
-                { type: i0.Renderer2 }
+                { type: i0.Renderer2 },
+                { type: FocusableItem }
             ];
+        };
+        ClrDropdownItem.propDecorators = {
+            disabled: [{ type: i0.Input }]
         };
         return ClrDropdownItem;
     }());
@@ -17893,7 +18590,7 @@
      */
     var ClrDropdownMenu = /** @class */ (function (_super) {
         __extends(ClrDropdownMenu, _super);
-        function ClrDropdownMenu(injector, parentHost, nested) {
+        function ClrDropdownMenu(injector, parentHost, nested, focusHandler) {
             var _this = this;
             if (!parentHost) {
                 throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
@@ -17911,6 +18608,7 @@
             }
             _this.popoverOptions.allowMultipleOpen = true;
             _this.closeOnOutsideClick = true;
+            _this.focusHandler = focusHandler;
             return _this;
         }
         Object.defineProperty(ClrDropdownMenu.prototype, "position", {
@@ -17961,12 +18659,38 @@
             enumerable: true,
             configurable: true
         });
+        /**
+         * @return {?}
+         */
+        ClrDropdownMenu.prototype.ngAfterContentInit = /**
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                this.focusHandler.container = this.el.nativeElement;
+                this.items.changes.subscribe(( /**
+                 * @return {?}
+                 */function () { return _this.focusHandler.addChildren(_this.items.toArray()); }));
+                // I saw this on GitHub as a solution to avoid code duplication because of missed QueryList changes
+                this.items.notifyOnChanges();
+            };
+        /**
+         * @return {?}
+         */
+        ClrDropdownMenu.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                _super.prototype.ngOnDestroy.call(this);
+                this.focusHandler.resetChildren();
+            };
         ClrDropdownMenu.decorators = [
             { type: i0.Component, args: [{
                         selector: 'clr-dropdown-menu',
                         template: "\n        <ng-content></ng-content>\n    ",
                         host: {
                             '[class.dropdown-menu]': 'true',
+                            '[attr.role]': '"menu"',
                         }
                     }] }
         ];
@@ -17975,11 +18699,13 @@
             return [
                 { type: i0.Injector },
                 { type: i0.ElementRef, decorators: [{ type: i0.Optional }, { type: i0.Inject, args: [POPOVER_HOST_ANCHOR,] }] },
-                { type: ClrDropdownMenu, decorators: [{ type: i0.Optional }, { type: i0.SkipSelf }] }
+                { type: ClrDropdownMenu, decorators: [{ type: i0.Optional }, { type: i0.SkipSelf }] },
+                { type: DropdownFocusHandler }
             ];
         };
         ClrDropdownMenu.propDecorators = {
-            position: [{ type: i0.Input, args: ['clrPosition',] }]
+            position: [{ type: i0.Input, args: ['clrPosition',] }],
+            items: [{ type: i0.ContentChildren, args: [FocusableItem,] }]
         };
         return ClrDropdownMenu;
     }(AbstractPopover));
@@ -17989,13 +18715,14 @@
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ClrDropdownTrigger = /** @class */ (function () {
-        function ClrDropdownTrigger(dropdown, ifOpenService) {
+        function ClrDropdownTrigger(dropdown, ifOpenService, el, focusHandler) {
             this.ifOpenService = ifOpenService;
             this.isRootLevelToggle = true;
             // if the containing dropdown has a parent, then this is not the root level one
             if (dropdown.parent) {
                 this.isRootLevelToggle = false;
             }
+            focusHandler.trigger = el.nativeElement;
         }
         Object.defineProperty(ClrDropdownTrigger.prototype, "active", {
             get: /**
@@ -18026,6 +18753,8 @@
                             '[class.dropdown-item]': '!isRootLevelToggle',
                             '[class.expandable]': '!isRootLevelToggle',
                             '[class.active]': 'active',
+                            '[attr.aria-haspopup]': '"menu"',
+                            '[attr.aria-expanded]': 'ifOpenService.open',
                         },
                     },] }
         ];
@@ -18033,7 +18762,9 @@
         ClrDropdownTrigger.ctorParameters = function () {
             return [
                 { type: ClrDropdown },
-                { type: IfOpenService }
+                { type: IfOpenService },
+                { type: i0.ElementRef },
+                { type: DropdownFocusHandler }
             ];
         };
         ClrDropdownTrigger.propDecorators = {
@@ -26564,121 +27295,130 @@
     exports.ClrWizardPageHeaderActions = ClrWizardPageHeaderActions;
     exports.CLR_WIZARD_DIRECTIVES = CLR_WIZARD_DIRECTIVES;
     exports.ClrWizardModule = ClrWizardModule;
-    exports.ɵds = ButtonInGroupService;
-    exports.ɵdl = DatagridRowExpandAnimation;
-    exports.ɵdi = ActionableOompaLoompa;
-    exports.ɵdg = DatagridWillyWonka;
-    exports.ɵdk = ExpandableOompaLoompa;
-    exports.ɵck = ClrDatagridColumnSeparator;
-    exports.ɵcq = ClrDatagridColumnToggleButton;
-    exports.ɵcp = ClrDatagridColumnToggleTitle;
-    exports.ɵcw = DatagridDetailRegisterer;
-    exports.ɵcj = DatagridIfExpandService;
-    exports.ɵcv = ClrDatagridItemsTrackBy;
-    exports.ɵcx = ClrDatagridPageSize;
-    exports.ɵco = ColumnResizerService;
-    exports.ɵcr = COLUMN_STATE;
-    exports.ɵct = COLUMN_STATE_PROVIDER;
-    exports.ɵcs = columnStateFactory;
-    exports.ɵcf = ColumnsService;
-    exports.ɵci = CustomFilter;
-    exports.ɵcg = DisplayModeService;
-    exports.ɵbw = FiltersProvider;
-    exports.ɵcc = ExpandableRowsCount;
-    exports.ɵbv = Items;
-    exports.ɵbx = Page;
-    exports.ɵcb = RowActionService;
-    exports.ɵbu = Selection;
-    exports.ɵbz = Sort;
-    exports.ɵby = StateDebouncer;
-    exports.ɵcd = StateProvider;
-    exports.ɵce = TableSizeService;
-    exports.ɵdf = DatagridCellRenderer;
-    exports.ɵdd = DatagridHeaderRenderer;
-    exports.ɵdc = DatagridMainRenderer;
-    exports.ɵdb = domAdapterFactory;
-    exports.ɵca = DatagridRenderOrganizer;
-    exports.ɵde = DatagridRowRenderer;
-    exports.ɵch = DatagridFilterRegistrar;
-    exports.ɵcy = WrappedCell;
-    exports.ɵcz = WrappedColumn;
-    exports.ɵda = WrappedRow;
-    exports.ɵdm = StackControl;
-    exports.ɵdq = RecursiveChildren;
-    exports.ɵdp = TREE_FEATURES_PROVIDER;
-    exports.ɵdn = TreeFeaturesService;
-    exports.ɵdo = treeFeaturesFactory;
-    exports.ɵp = AlertIconAndTypesService;
-    exports.ɵq = MultiAlertService;
-    exports.ɵu = IfErrorService;
-    exports.ɵz = ControlClassService;
-    exports.ɵr = ControlIdService;
-    exports.ɵbg = FocusService;
-    exports.ɵs = LayoutService;
-    exports.ɵv = MarkControlService;
-    exports.ɵt = NgControlService;
-    exports.ɵy = WrappedFormControl;
-    exports.ɵbe = DateFormControlService;
-    exports.ɵbh = DateIOService;
-    exports.ɵbd = DateNavigationService;
-    exports.ɵbi = DatepickerEnabledService;
-    exports.ɵbj = DatepickerFocusService;
-    exports.ɵbf = LocaleHelperService;
-    exports.ɵbk = ViewManagerService;
-    exports.ɵdt = ResponsiveNavigationService;
-    exports.ɵed = ActiveOompaLoompa;
-    exports.ɵec = TabsWillyWonka;
-    exports.ɵdx = AriaService;
-    exports.ɵdy = TabsService;
-    exports.ɵdz = TABS_ID;
-    exports.ɵeb = TABS_ID_PROVIDER;
-    exports.ɵea = tokenFactory$1;
-    exports.ɵeg = VerticalNavGroupRegistrationService;
-    exports.ɵeh = VerticalNavGroupService;
-    exports.ɵef = VerticalNavIconService;
-    exports.ɵee = VerticalNavService;
-    exports.ɵi = AbstractPopover;
+    exports.ɵeb = ButtonInGroupService;
+    exports.ɵdu = DatagridRowExpandAnimation;
+    exports.ɵdr = ActionableOompaLoompa;
+    exports.ɵdp = DatagridWillyWonka;
+    exports.ɵdt = ExpandableOompaLoompa;
+    exports.ɵcw = ClrDatagridColumnSeparator;
+    exports.ɵcz = ClrDatagridColumnToggleButton;
+    exports.ɵcy = ClrDatagridColumnToggleTitle;
+    exports.ɵdf = DatagridDetailRegisterer;
+    exports.ɵcv = DatagridIfExpandService;
+    exports.ɵde = ClrDatagridItemsTrackBy;
+    exports.ɵdg = ClrDatagridPageSize;
+    exports.ɵcx = ColumnResizerService;
+    exports.ɵda = COLUMN_STATE;
+    exports.ɵdc = COLUMN_STATE_PROVIDER;
+    exports.ɵdb = columnStateFactory;
+    exports.ɵcr = ColumnsService;
+    exports.ɵcu = CustomFilter;
+    exports.ɵcs = DisplayModeService;
+    exports.ɵci = FiltersProvider;
+    exports.ɵco = ExpandableRowsCount;
+    exports.ɵch = Items;
+    exports.ɵcj = Page;
+    exports.ɵcn = RowActionService;
+    exports.ɵcg = Selection;
+    exports.ɵcl = Sort;
+    exports.ɵck = StateDebouncer;
+    exports.ɵcp = StateProvider;
+    exports.ɵcq = TableSizeService;
+    exports.ɵdo = DatagridCellRenderer;
+    exports.ɵdm = DatagridHeaderRenderer;
+    exports.ɵdl = DatagridMainRenderer;
+    exports.ɵdk = domAdapterFactory;
+    exports.ɵcm = DatagridRenderOrganizer;
+    exports.ɵdn = DatagridRowRenderer;
+    exports.ɵct = DatagridFilterRegistrar;
+    exports.ɵdh = WrappedCell;
+    exports.ɵdi = WrappedColumn;
+    exports.ɵdj = WrappedRow;
+    exports.ɵdv = StackControl;
+    exports.ɵdz = RecursiveChildren;
+    exports.ɵdy = TREE_FEATURES_PROVIDER;
+    exports.ɵdw = TreeFeaturesService;
+    exports.ɵdx = treeFeaturesFactory;
+    exports.ɵbb = AlertIconAndTypesService;
+    exports.ɵbc = MultiAlertService;
+    exports.ɵbg = IfErrorService;
+    exports.ɵbl = ControlClassService;
+    exports.ɵbd = ControlIdService;
+    exports.ɵbs = FocusService;
+    exports.ɵbe = LayoutService;
+    exports.ɵbh = MarkControlService;
+    exports.ɵbf = NgControlService;
+    exports.ɵbk = WrappedFormControl;
+    exports.ɵbq = DateFormControlService;
+    exports.ɵbt = DateIOService;
+    exports.ɵbp = DateNavigationService;
+    exports.ɵbu = DatepickerEnabledService;
+    exports.ɵbv = DatepickerFocusService;
+    exports.ɵbr = LocaleHelperService;
+    exports.ɵbw = ViewManagerService;
+    exports.ɵec = ResponsiveNavigationService;
+    exports.ɵem = ActiveOompaLoompa;
+    exports.ɵel = TabsWillyWonka;
+    exports.ɵeg = AriaService;
+    exports.ɵeh = TabsService;
+    exports.ɵei = TABS_ID;
+    exports.ɵek = TABS_ID_PROVIDER;
+    exports.ɵej = tokenFactory$1;
+    exports.ɵep = VerticalNavGroupRegistrationService;
+    exports.ɵeq = VerticalNavGroupService;
+    exports.ɵeo = VerticalNavIconService;
+    exports.ɵen = VerticalNavService;
+    exports.ɵs = AbstractPopover;
     exports.ɵb = POPOVER_DIRECTIVES;
     exports.ɵh = POPOVER_HOST_ANCHOR;
     exports.ɵc = PopoverDirectiveOld;
     exports.ɵa = ClrCommonPopoverModule;
+    exports.ɵm = DROPDOWN_FOCUS_HANDLER_PROVIDER;
+    exports.ɵl = DropdownFocusHandler;
     exports.ɵg = ROOT_DROPDOWN_PROVIDER;
     exports.ɵe = RootDropdownService;
     exports.ɵf = clrRootDropdownFactory;
-    exports.ɵdj = OompaLoompa;
-    exports.ɵdh = WillyWonka;
-    exports.ɵj = ClrConditionalModule;
-    exports.ɵk = IF_ACTIVE_ID;
-    exports.ɵm = IF_ACTIVE_ID_PROVIDER;
-    exports.ɵn = IfActiveService;
-    exports.ɵl = tokenFactory;
-    exports.ɵo = IfExpandService;
+    exports.ɵds = OompaLoompa;
+    exports.ɵdq = WillyWonka;
+    exports.ɵv = ClrConditionalModule;
+    exports.ɵw = IF_ACTIVE_ID;
+    exports.ɵy = IF_ACTIVE_ID_PROVIDER;
+    exports.ɵz = IfActiveService;
+    exports.ɵx = tokenFactory;
+    exports.ɵba = IfExpandService;
     exports.ɵd = IfOpenService;
-    exports.ɵbs = DomAdapter;
-    exports.ɵbp = DragAndDropEventBusService;
-    exports.ɵbo = DragEventListenerService;
-    exports.ɵbq = DragHandleRegistrarService;
-    exports.ɵbr = DraggableSnapshotService;
-    exports.ɵbt = GlobalDragModeService;
-    exports.ɵbc = FocusTrapDirective;
-    exports.ɵba = ClrFocusTrapModule;
-    exports.ɵbb = FOCUS_TRAP_DIRECTIVES;
-    exports.ɵx = EmptyAnchor;
-    exports.ɵw = ClrHostWrappingModule;
-    exports.ɵcl = UNIQUE_ID;
-    exports.ɵcn = UNIQUE_ID_PROVIDER;
-    exports.ɵcm = uniqueIdFactory;
-    exports.ɵbm = OUSTIDE_CLICK_DIRECTIVES;
-    exports.ɵbn = OutsideClick;
-    exports.ɵbl = ClrOutsideClickModule;
-    exports.ɵdr = ScrollingService;
-    exports.ɵdv = TEMPLATE_REF_DIRECTIVES;
-    exports.ɵdw = TemplateRefContainer;
-    exports.ɵdu = ClrTemplateRefModule;
-    exports.ɵek = ButtonHubService;
-    exports.ɵel = HeaderActionService;
-    exports.ɵej = PageCollectionService;
-    exports.ɵei = WizardNavigationService;
+    exports.ɵce = DomAdapter;
+    exports.ɵcb = DragAndDropEventBusService;
+    exports.ɵca = DragEventListenerService;
+    exports.ɵcc = DragHandleRegistrarService;
+    exports.ɵcd = DraggableSnapshotService;
+    exports.ɵcf = GlobalDragModeService;
+    exports.ɵbo = FocusTrapDirective;
+    exports.ɵbm = ClrFocusTrapModule;
+    exports.ɵbn = FOCUS_TRAP_DIRECTIVES;
+    exports.ɵk = FOCUS_SERVICE_PROVIDER;
+    exports.ɵi = FocusService$1;
+    exports.ɵj = clrFocusServiceFactory;
+    exports.ɵu = BASIC_FOCUSABLE_ITEM_PROVIDER;
+    exports.ɵt = BasicFocusableItem;
+    exports.ɵn = customFocusableItemProvider;
+    exports.ɵr = FocusableItem;
+    exports.ɵbj = EmptyAnchor;
+    exports.ɵbi = ClrHostWrappingModule;
+    exports.ɵo = UNIQUE_ID;
+    exports.ɵq = UNIQUE_ID_PROVIDER;
+    exports.ɵp = uniqueIdFactory;
+    exports.ɵby = OUSTIDE_CLICK_DIRECTIVES;
+    exports.ɵbz = OutsideClick;
+    exports.ɵbx = ClrOutsideClickModule;
+    exports.ɵea = ScrollingService;
+    exports.ɵee = TEMPLATE_REF_DIRECTIVES;
+    exports.ɵef = TemplateRefContainer;
+    exports.ɵed = ClrTemplateRefModule;
+    exports.ɵet = ButtonHubService;
+    exports.ɵeu = HeaderActionService;
+    exports.ɵes = PageCollectionService;
+    exports.ɵer = WizardNavigationService;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
