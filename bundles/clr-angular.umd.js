@@ -952,7 +952,7 @@
             ];
         };
         ClrButton.propDecorators = {
-            templateRef: [{ type: i0.ViewChild, args: ['buttonProjectedRef',] }],
+            templateRef: [{ type: i0.ViewChild, args: ['buttonProjectedRef', { static: true },] }],
             inMenu: [{ type: i0.Input, args: ['clrInMenu',] }],
             classNames: [{ type: i0.Input, args: ['class',] }],
             name: [{ type: i0.Input, args: ['name',] }],
@@ -2295,7 +2295,7 @@
             ];
         };
         ClrCheckboxWrapper.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: true },] }]
         };
         return ClrCheckboxWrapper;
     }());
@@ -2777,7 +2777,7 @@
             ];
         };
         ClrCheckboxContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }],
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }],
             clrInline: [{ type: i0.Input }]
         };
         return ClrCheckboxContainer;
@@ -5783,7 +5783,7 @@
             ];
         };
         ClrDateContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }]
         };
         return ClrDateContainer;
     }());
@@ -7445,7 +7445,7 @@
             ];
         };
         ClrInputContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }]
         };
         return ClrInputContainer;
     }());
@@ -7640,7 +7640,7 @@
         };
         ClrPasswordContainer.propDecorators = {
             clrToggle: [{ type: i0.Input, args: ['clrToggle',] }],
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }]
         };
         return ClrPasswordContainer;
     }());
@@ -7763,7 +7763,7 @@
                     }] }
         ];
         ClrRadioWrapper.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: true },] }]
         };
         return ClrRadioWrapper;
     }());
@@ -7908,7 +7908,7 @@
             ];
         };
         ClrRadioContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }],
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }],
             clrInline: [{ type: i0.Input }]
         };
         return ClrRadioContainer;
@@ -8029,8 +8029,8 @@
             ];
         };
         ClrSelectContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }],
-            multiple: [{ type: i0.ContentChild, args: [forms.SelectMultipleControlValueAccessor,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }],
+            multiple: [{ type: i0.ContentChild, args: [forms.SelectMultipleControlValueAccessor, { static: false },] }]
         };
         return ClrSelectContainer;
     }());
@@ -8164,7 +8164,7 @@
             ];
         };
         ClrTextareaContainer.propDecorators = {
-            label: [{ type: i0.ContentChild, args: [ClrLabel,] }]
+            label: [{ type: i0.ContentChild, args: [ClrLabel, { static: false },] }]
         };
         return ClrTextareaContainer;
     }());
@@ -9458,7 +9458,7 @@
             ];
         };
         ClrDraggable.propDecorators = {
-            customGhost: [{ type: i0.ContentChild, args: [ClrIfDragged,] }],
+            customGhost: [{ type: i0.ContentChild, args: [ClrIfDragged, { static: false },] }],
             dataTransfer: [{ type: i0.Input, args: ['clrDraggable',] }],
             group: [{ type: i0.Input, args: ['clrGroup',] }],
             dragStartEmitter: [{ type: i0.Output, args: ['clrDragStart',] }],
@@ -11208,8 +11208,8 @@
         };
         DatagridStringFilter.propDecorators = {
             customStringFilter: [{ type: i0.Input, args: ['clrDgStringFilter',] }],
-            input: [{ type: i0.ViewChild, args: ['input',] }],
-            filterContainer: [{ type: i0.ViewChild, args: [ClrDatagridFilter,] }],
+            input: [{ type: i0.ViewChild, args: ['input', { static: false },] }],
+            filterContainer: [{ type: i0.ViewChild, args: [ClrDatagridFilter, { static: false },] }],
             value: [{ type: i0.Input, args: ['clrFilterValue',] }],
             filterValueChange: [{ type: i0.Output, args: ['clrFilterValueChange',] }]
         };
@@ -11754,7 +11754,7 @@
                     }] }
         ];
         WrappedColumn.propDecorators = {
-            templateRef: [{ type: i0.ViewChild, args: ['columnPortal',] }]
+            templateRef: [{ type: i0.ViewChild, args: ['columnPortal', { static: false },] }]
         };
         return WrappedColumn;
     }());
@@ -12084,7 +12084,7 @@
             sortedChange: [{ type: i0.Output, args: ['clrDgSortedChange',] }],
             sortOrder: [{ type: i0.Input, args: ['clrDgSortOrder',] }],
             sortOrderChange: [{ type: i0.Output, args: ['clrDgSortOrderChange',] }],
-            projectedFilter: [{ type: i0.ContentChild, args: [CustomFilter,] }],
+            projectedFilter: [{ type: i0.ContentChild, args: [CustomFilter, { static: false },] }],
             updateFilterValue: [{ type: i0.Input, args: ['clrFilterValue',] }],
             filterValueChange: [{ type: i0.Output, args: ['clrFilterValueChange',] }]
         };
@@ -12678,7 +12678,7 @@
             ];
         };
         ClrSignpost.propDecorators = {
-            customTrigger: [{ type: i0.ContentChild, args: [ClrSignpostTrigger,] }]
+            customTrigger: [{ type: i0.ContentChild, args: [ClrSignpostTrigger, { static: false },] }]
         };
         return ClrSignpost;
     }());
@@ -12710,7 +12710,7 @@
                     }] }
         ];
         WrappedCell.propDecorators = {
-            templateRef: [{ type: i0.ViewChild, args: ['cellPortal',] }]
+            templateRef: [{ type: i0.ViewChild, args: ['cellPortal', { static: false },] }]
         };
         return WrappedCell;
     }());
@@ -13494,7 +13494,7 @@
                     }] }
         ];
         WrappedRow.propDecorators = {
-            templateRef: [{ type: i0.ViewChild, args: ['rowPortal',] }]
+            templateRef: [{ type: i0.ViewChild, args: ['rowPortal', { static: false },] }]
         };
         return WrappedRow;
     }());
@@ -13750,9 +13750,9 @@
             expanded: [{ type: i0.Input, args: ['clrDgExpanded',] }],
             expandedChange: [{ type: i0.Output, args: ['clrDgExpandedChange',] }],
             dgCells: [{ type: i0.ContentChildren, args: [ClrDatagridCell,] }],
-            _stickyCells: [{ type: i0.ViewChild, args: ['stickyCells', { read: i0.ViewContainerRef },] }],
-            _scrollableCells: [{ type: i0.ViewChild, args: ['scrollableCells', { read: i0.ViewContainerRef },] }],
-            _calculatedCells: [{ type: i0.ViewChild, args: ['calculatedCells', { read: i0.ViewContainerRef },] }]
+            _stickyCells: [{ type: i0.ViewChild, args: ['stickyCells', { static: false, read: i0.ViewContainerRef },] }],
+            _scrollableCells: [{ type: i0.ViewChild, args: ['scrollableCells', { static: false, read: i0.ViewContainerRef },] }],
+            _calculatedCells: [{ type: i0.ViewChild, args: ['calculatedCells', { static: false, read: i0.ViewContainerRef },] }]
         };
         return ClrDatagridRow;
     }());
@@ -14331,20 +14331,20 @@
         ClrDatagrid.propDecorators = {
             loading: [{ type: i0.Input, args: ['clrDgLoading',] }],
             refresh: [{ type: i0.Output, args: ['clrDgRefresh',] }],
-            iterator: [{ type: i0.ContentChild, args: [ClrDatagridItems,] }],
+            iterator: [{ type: i0.ContentChild, args: [ClrDatagridItems, { static: false },] }],
             selected: [{ type: i0.Input, args: ['clrDgSelected',] }],
             selectedChanged: [{ type: i0.Output, args: ['clrDgSelectedChange',] }],
             singleSelected: [{ type: i0.Input, args: ['clrDgSingleSelected',] }],
             singleSelectedChanged: [{ type: i0.Output, args: ['clrDgSingleSelectedChange',] }],
             rowSelectionMode: [{ type: i0.Input, args: ['clrDgRowSelection',] }],
-            placeholder: [{ type: i0.ContentChild, args: [ClrDatagridPlaceholder,] }],
+            placeholder: [{ type: i0.ContentChild, args: [ClrDatagridPlaceholder, { static: false },] }],
             columns: [{ type: i0.ContentChildren, args: [ClrDatagridColumn,] }],
             rows: [{ type: i0.ContentChildren, args: [ClrDatagridRow,] }],
-            scrollableColumns: [{ type: i0.ViewChild, args: ['scrollableColumns', { read: i0.ViewContainerRef },] }],
-            _projectedDisplayColumns: [{ type: i0.ViewChild, args: ['projectedDisplayColumns', { read: i0.ViewContainerRef },] }],
-            _projectedCalculationColumns: [{ type: i0.ViewChild, args: ['projectedCalculationColumns', { read: i0.ViewContainerRef },] }],
-            _displayedRows: [{ type: i0.ViewChild, args: ['displayedRows', { read: i0.ViewContainerRef },] }],
-            _calculationRows: [{ type: i0.ViewChild, args: ['calculationRows', { read: i0.ViewContainerRef },] }]
+            scrollableColumns: [{ type: i0.ViewChild, args: ['scrollableColumns', { static: false, read: i0.ViewContainerRef },] }],
+            _projectedDisplayColumns: [{ type: i0.ViewChild, args: ['projectedDisplayColumns', { static: false, read: i0.ViewContainerRef },] }],
+            _projectedCalculationColumns: [{ type: i0.ViewChild, args: ['projectedCalculationColumns', { static: false, read: i0.ViewContainerRef },] }],
+            _displayedRows: [{ type: i0.ViewChild, args: ['displayedRows', { static: false, read: i0.ViewContainerRef },] }],
+            _calculationRows: [{ type: i0.ViewChild, args: ['calculationRows', { static: false, read: i0.ViewContainerRef },] }]
         };
         return ClrDatagrid;
     }());
@@ -14905,8 +14905,8 @@
             ];
         };
         ClrDatagridColumnToggle.propDecorators = {
-            customToggleTitle: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
-            customToggleButton: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggleButton,] }]
+            customToggleTitle: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggleTitle, { static: false },] }],
+            customToggleButton: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggleButton, { static: false },] }]
         };
         return ClrDatagridColumnToggle;
     }());
@@ -14989,7 +14989,7 @@
             ];
         };
         ClrDatagridFooter.propDecorators = {
-            toggle: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggle,] }]
+            toggle: [{ type: i0.ContentChild, args: [ClrDatagridColumnToggle, { static: false },] }]
         };
         return ClrDatagridFooter;
     }());
@@ -15473,8 +15473,8 @@
             ];
         };
         ClrDatagridPagination.propDecorators = {
-            _pageSizeComponent: [{ type: i0.ContentChild, args: [ClrDatagridPageSize,] }],
-            currentPageInputRef: [{ type: i0.ViewChild, args: ['currentPageInput',] }],
+            _pageSizeComponent: [{ type: i0.ContentChild, args: [ClrDatagridPageSize, { static: false },] }],
+            currentPageInputRef: [{ type: i0.ViewChild, args: ['currentPageInput', { static: false },] }],
             pageSize: [{ type: i0.Input, args: ['clrDgPageSize',] }],
             totalItems: [{ type: i0.Input, args: ['clrDgTotalItems',] }],
             lastPage: [{ type: i0.Input, args: ['clrDgLastPage',] }],
@@ -20177,7 +20177,7 @@
                     }] }
         ];
         TemplateRefContainer.propDecorators = {
-            template: [{ type: i0.ViewChild, args: [i0.TemplateRef,] }]
+            template: [{ type: i0.ViewChild, args: [i0.TemplateRef, { static: false },] }]
         };
         return TemplateRefContainer;
     }());
@@ -20474,7 +20474,7 @@
             ];
         };
         ClrTabContent.propDecorators = {
-            templateRef: [{ type: i0.ViewChild, args: ['tabContentProjectedRef',] }],
+            templateRef: [{ type: i0.ViewChild, args: ['tabContentProjectedRef', { static: true },] }],
             tabContentId: [{ type: i0.Input, args: ['id',] }]
         };
         return ClrTabContent;
@@ -20674,8 +20674,8 @@
             ];
         };
         ClrTab.propDecorators = {
-            tabLink: [{ type: i0.ContentChild, args: [ClrTabLink,] }],
-            tabContent: [{ type: i0.ContentChild, args: [ClrTabContent,] }]
+            tabLink: [{ type: i0.ContentChild, args: [ClrTabLink, { static: true },] }],
+            tabContent: [{ type: i0.ContentChild, args: [ClrTabContent, { static: true },] }]
         };
         return ClrTab;
     }());
@@ -20873,7 +20873,7 @@
             ];
         };
         ClrTabs.propDecorators = {
-            tabContentViewContainer: [{ type: i0.ViewChild, args: ['tabContentViewContainer', { read: i0.ViewContainerRef },] }],
+            tabContentViewContainer: [{ type: i0.ViewChild, args: ['tabContentViewContainer', { static: true, read: i0.ViewContainerRef },] }],
             layout: [{ type: i0.Input, args: ['clrLayout',] }],
             tabs: [{ type: i0.ContentChildren, args: [ClrTab,] }],
             isVertical: [{ type: i0.HostBinding, args: ['class.tabs-vertical',] }]
@@ -21753,7 +21753,7 @@
             ];
         };
         ClrModal.propDecorators = {
-            focusTrap: [{ type: i0.ViewChild, args: [FocusTrapDirective,] }],
+            focusTrap: [{ type: i0.ViewChild, args: [FocusTrapDirective, { static: false },] }],
             _open: [{ type: i0.HostBinding, args: ['class.open',] }, { type: i0.Input, args: ['clrModalOpen',] }],
             _openChanged: [{ type: i0.Output, args: ['clrModalOpenChange',] }],
             closable: [{ type: i0.Input, args: ['clrModalClosable',] }],
@@ -25107,10 +25107,10 @@
             ];
         };
         ClrWizardPage.propDecorators = {
-            pageTitle: [{ type: i0.ContentChild, args: [ClrWizardPageTitle,] }],
-            pageNavTitle: [{ type: i0.ContentChild, args: [ClrWizardPageNavTitle,] }],
-            _buttons: [{ type: i0.ContentChild, args: [ClrWizardPageButtons,] }],
-            _headerActions: [{ type: i0.ContentChild, args: [ClrWizardPageHeaderActions,] }],
+            pageTitle: [{ type: i0.ContentChild, args: [ClrWizardPageTitle, { static: true },] }],
+            pageNavTitle: [{ type: i0.ContentChild, args: [ClrWizardPageNavTitle, { static: true },] }],
+            _buttons: [{ type: i0.ContentChild, args: [ClrWizardPageButtons, { static: true },] }],
+            _headerActions: [{ type: i0.ContentChild, args: [ClrWizardPageHeaderActions, { static: true },] }],
             nextStepDisabled: [{ type: i0.Input, args: ['clrWizardPageNextDisabled',] }],
             nextStepDisabledChange: [{ type: i0.Output, args: ['clrWizardPageNextDisabledChange',] }],
             previousStepDisabled: [{ type: i0.Input, args: ['clrWizardPagePreviousDisabled',] }],

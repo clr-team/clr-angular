@@ -2,7 +2,7 @@ import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@ang
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, Observable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, InjectionToken, ElementRef, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -778,7 +778,7 @@ ClrButton.ctorParameters = () => [
     { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional }] }
 ];
 ClrButton.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['buttonProjectedRef',] }],
+    templateRef: [{ type: ViewChild, args: ['buttonProjectedRef', { static: true },] }],
     inMenu: [{ type: Input, args: ['clrInMenu',] }],
     classNames: [{ type: Input, args: ['class',] }],
     name: [{ type: Input, args: ['name',] }],
@@ -1947,7 +1947,7 @@ ClrCheckboxWrapper.ctorParameters = () => [
     { type: BehaviorSubject, decorators: [{ type: Inject, args: [IS_TOGGLE,] }] }
 ];
 ClrCheckboxWrapper.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: true },] }]
 };
 
 /**
@@ -2369,7 +2369,7 @@ ClrCheckboxContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrCheckboxContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
     clrInline: [{ type: Input }]
 };
 
@@ -4714,7 +4714,7 @@ ClrDateContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrDateContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
 };
 
 /**
@@ -6051,7 +6051,7 @@ ClrInputContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrInputContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
 };
 
 /**
@@ -6263,7 +6263,7 @@ ClrPasswordContainer.ctorParameters = () => [
 ];
 ClrPasswordContainer.propDecorators = {
     clrToggle: [{ type: Input, args: ['clrToggle',] }],
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
 };
 
 /**
@@ -6382,7 +6382,7 @@ ClrRadioWrapper.decorators = [
             }] }
 ];
 ClrRadioWrapper.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: true },] }]
 };
 
 /**
@@ -6528,7 +6528,7 @@ ClrRadioContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrRadioContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }],
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
     clrInline: [{ type: Input }]
 };
 
@@ -6650,8 +6650,8 @@ ClrSelectContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrSelectContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }],
-    multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
+    multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor, { static: false },] }]
 };
 
 /**
@@ -6791,7 +6791,7 @@ ClrTextareaContainer.ctorParameters = () => [
     { type: NgControlService }
 ];
 ClrTextareaContainer.propDecorators = {
-    label: [{ type: ContentChild, args: [ClrLabel,] }]
+    label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
 };
 
 /**
@@ -7904,7 +7904,7 @@ ClrDraggable.ctorParameters = () => [
     { type: GlobalDragModeService }
 ];
 ClrDraggable.propDecorators = {
-    customGhost: [{ type: ContentChild, args: [ClrIfDragged,] }],
+    customGhost: [{ type: ContentChild, args: [ClrIfDragged, { static: false },] }],
     dataTransfer: [{ type: Input, args: ['clrDraggable',] }],
     group: [{ type: Input, args: ['clrGroup',] }],
     dragStartEmitter: [{ type: Output, args: ['clrDragStart',] }],
@@ -9297,8 +9297,8 @@ DatagridStringFilter.ctorParameters = () => [
 ];
 DatagridStringFilter.propDecorators = {
     customStringFilter: [{ type: Input, args: ['clrDgStringFilter',] }],
-    input: [{ type: ViewChild, args: ['input',] }],
-    filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter,] }],
+    input: [{ type: ViewChild, args: ['input', { static: false },] }],
+    filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter, { static: false },] }],
     value: [{ type: Input, args: ['clrFilterValue',] }],
     filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
@@ -9731,7 +9731,7 @@ WrappedColumn.decorators = [
             }] }
 ];
 WrappedColumn.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['columnPortal',] }]
+    templateRef: [{ type: ViewChild, args: ['columnPortal', { static: false },] }]
 };
 
 /**
@@ -10045,7 +10045,7 @@ ClrDatagridColumn.propDecorators = {
     sortedChange: [{ type: Output, args: ['clrDgSortedChange',] }],
     sortOrder: [{ type: Input, args: ['clrDgSortOrder',] }],
     sortOrderChange: [{ type: Output, args: ['clrDgSortOrderChange',] }],
-    projectedFilter: [{ type: ContentChild, args: [CustomFilter,] }],
+    projectedFilter: [{ type: ContentChild, args: [CustomFilter, { static: false },] }],
     updateFilterValue: [{ type: Input, args: ['clrFilterValue',] }],
     filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
 };
@@ -10568,7 +10568,7 @@ ClrSignpost.ctorParameters = () => [
     { type: ClrCommonStrings }
 ];
 ClrSignpost.propDecorators = {
-    customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger,] }]
+    customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger, { static: false },] }]
 };
 
 /**
@@ -10598,7 +10598,7 @@ WrappedCell.decorators = [
             }] }
 ];
 WrappedCell.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['cellPortal',] }]
+    templateRef: [{ type: ViewChild, args: ['cellPortal', { static: false },] }]
 };
 
 /**
@@ -11294,7 +11294,7 @@ WrappedRow.decorators = [
             }] }
 ];
 WrappedRow.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['rowPortal',] }]
+    templateRef: [{ type: ViewChild, args: ['rowPortal', { static: false },] }]
 };
 
 /**
@@ -11529,9 +11529,9 @@ ClrDatagridRow.propDecorators = {
     expanded: [{ type: Input, args: ['clrDgExpanded',] }],
     expandedChange: [{ type: Output, args: ['clrDgExpandedChange',] }],
     dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
-    _stickyCells: [{ type: ViewChild, args: ['stickyCells', { read: ViewContainerRef },] }],
-    _scrollableCells: [{ type: ViewChild, args: ['scrollableCells', { read: ViewContainerRef },] }],
-    _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { read: ViewContainerRef },] }]
+    _stickyCells: [{ type: ViewChild, args: ['stickyCells', { static: false, read: ViewContainerRef },] }],
+    _scrollableCells: [{ type: ViewChild, args: ['scrollableCells', { static: false, read: ViewContainerRef },] }],
+    _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { static: false, read: ViewContainerRef },] }]
 };
 
 /**
@@ -12021,20 +12021,20 @@ ClrDatagrid.ctorParameters = () => [
 ClrDatagrid.propDecorators = {
     loading: [{ type: Input, args: ['clrDgLoading',] }],
     refresh: [{ type: Output, args: ['clrDgRefresh',] }],
-    iterator: [{ type: ContentChild, args: [ClrDatagridItems,] }],
+    iterator: [{ type: ContentChild, args: [ClrDatagridItems, { static: false },] }],
     selected: [{ type: Input, args: ['clrDgSelected',] }],
     selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
     singleSelected: [{ type: Input, args: ['clrDgSingleSelected',] }],
     singleSelectedChanged: [{ type: Output, args: ['clrDgSingleSelectedChange',] }],
     rowSelectionMode: [{ type: Input, args: ['clrDgRowSelection',] }],
-    placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
+    placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder, { static: false },] }],
     columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
     rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }],
-    scrollableColumns: [{ type: ViewChild, args: ['scrollableColumns', { read: ViewContainerRef },] }],
-    _projectedDisplayColumns: [{ type: ViewChild, args: ['projectedDisplayColumns', { read: ViewContainerRef },] }],
-    _projectedCalculationColumns: [{ type: ViewChild, args: ['projectedCalculationColumns', { read: ViewContainerRef },] }],
-    _displayedRows: [{ type: ViewChild, args: ['displayedRows', { read: ViewContainerRef },] }],
-    _calculationRows: [{ type: ViewChild, args: ['calculationRows', { read: ViewContainerRef },] }]
+    scrollableColumns: [{ type: ViewChild, args: ['scrollableColumns', { static: false, read: ViewContainerRef },] }],
+    _projectedDisplayColumns: [{ type: ViewChild, args: ['projectedDisplayColumns', { static: false, read: ViewContainerRef },] }],
+    _projectedCalculationColumns: [{ type: ViewChild, args: ['projectedCalculationColumns', { static: false, read: ViewContainerRef },] }],
+    _displayedRows: [{ type: ViewChild, args: ['displayedRows', { static: false, read: ViewContainerRef },] }],
+    _calculationRows: [{ type: ViewChild, args: ['calculationRows', { static: false, read: ViewContainerRef },] }]
 };
 
 /**
@@ -12590,8 +12590,8 @@ ClrDatagridColumnToggle.ctorParameters = () => [
     { type: ColumnsService }
 ];
 ClrDatagridColumnToggle.propDecorators = {
-    customToggleTitle: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
-    customToggleButton: [{ type: ContentChild, args: [ClrDatagridColumnToggleButton,] }]
+    customToggleTitle: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle, { static: false },] }],
+    customToggleButton: [{ type: ContentChild, args: [ClrDatagridColumnToggleButton, { static: false },] }]
 };
 
 /**
@@ -12685,7 +12685,7 @@ ClrDatagridFooter.ctorParameters = () => [
     { type: ColumnsService }
 ];
 ClrDatagridFooter.propDecorators = {
-    toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle,] }]
+    toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle, { static: false },] }]
 };
 
 /**
@@ -13111,8 +13111,8 @@ ClrDatagridPagination.ctorParameters = () => [
     { type: Page }
 ];
 ClrDatagridPagination.propDecorators = {
-    _pageSizeComponent: [{ type: ContentChild, args: [ClrDatagridPageSize,] }],
-    currentPageInputRef: [{ type: ViewChild, args: ['currentPageInput',] }],
+    _pageSizeComponent: [{ type: ContentChild, args: [ClrDatagridPageSize, { static: false },] }],
+    currentPageInputRef: [{ type: ViewChild, args: ['currentPageInput', { static: false },] }],
     pageSize: [{ type: Input, args: ['clrDgPageSize',] }],
     totalItems: [{ type: Input, args: ['clrDgTotalItems',] }],
     lastPage: [{ type: Input, args: ['clrDgLastPage',] }],
@@ -17264,7 +17264,7 @@ TemplateRefContainer.decorators = [
             }] }
 ];
 TemplateRefContainer.propDecorators = {
-    template: [{ type: ViewChild, args: [TemplateRef,] }]
+    template: [{ type: ViewChild, args: [TemplateRef, { static: false },] }]
 };
 
 /**
@@ -17522,7 +17522,7 @@ ClrTabContent.ctorParameters = () => [
     { type: TabsService }
 ];
 ClrTabContent.propDecorators = {
-    templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
+    templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef', { static: true },] }],
     tabContentId: [{ type: Input, args: ['id',] }]
 };
 
@@ -17711,8 +17711,8 @@ ClrTab.ctorParameters = () => [
     { type: TabsService }
 ];
 ClrTab.propDecorators = {
-    tabLink: [{ type: ContentChild, args: [ClrTabLink,] }],
-    tabContent: [{ type: ContentChild, args: [ClrTabContent,] }]
+    tabLink: [{ type: ContentChild, args: [ClrTabLink, { static: true },] }],
+    tabContent: [{ type: ContentChild, args: [ClrTabContent, { static: true },] }]
 };
 
 /**
@@ -17921,7 +17921,7 @@ ClrTabs.ctorParameters = () => [
     { type: ClrCommonStrings }
 ];
 ClrTabs.propDecorators = {
-    tabContentViewContainer: [{ type: ViewChild, args: ['tabContentViewContainer', { read: ViewContainerRef },] }],
+    tabContentViewContainer: [{ type: ViewChild, args: ['tabContentViewContainer', { static: true, read: ViewContainerRef },] }],
     layout: [{ type: Input, args: ['clrLayout',] }],
     tabs: [{ type: ContentChildren, args: [ClrTab,] }],
     isVertical: [{ type: HostBinding, args: ['class.tabs-vertical',] }]
@@ -18691,7 +18691,7 @@ ClrModal.ctorParameters = () => [
     { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] }
 ];
 ClrModal.propDecorators = {
-    focusTrap: [{ type: ViewChild, args: [FocusTrapDirective,] }],
+    focusTrap: [{ type: ViewChild, args: [FocusTrapDirective, { static: false },] }],
     _open: [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] }],
     _openChanged: [{ type: Output, args: ['clrModalOpenChange',] }],
     closable: [{ type: Input, args: ['clrModalClosable',] }],
@@ -21098,10 +21098,10 @@ ClrWizardPage.ctorParameters = () => [
     { type: ButtonHubService }
 ];
 ClrWizardPage.propDecorators = {
-    pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle,] }],
-    pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle,] }],
-    _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons,] }],
-    _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] }],
+    pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle, { static: true },] }],
+    pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle, { static: true },] }],
+    _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons, { static: true },] }],
+    _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions, { static: true },] }],
     nextStepDisabled: [{ type: Input, args: ['clrWizardPageNextDisabled',] }],
     nextStepDisabledChange: [{ type: Output, args: ['clrWizardPageNextDisabledChange',] }],
     previousStepDisabled: [{ type: Input, args: ['clrWizardPagePreviousDisabled',] }],

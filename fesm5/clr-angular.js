@@ -885,7 +885,7 @@ var ClrButton = /** @class */ (function () {
         { type: ButtonInGroupService, decorators: [{ type: SkipSelf }, { type: Optional }] }
     ]; };
     ClrButton.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['buttonProjectedRef',] }],
+        templateRef: [{ type: ViewChild, args: ['buttonProjectedRef', { static: true },] }],
         inMenu: [{ type: Input, args: ['clrInMenu',] }],
         classNames: [{ type: Input, args: ['class',] }],
         name: [{ type: Input, args: ['name',] }],
@@ -2239,7 +2239,7 @@ var ClrCheckboxWrapper = /** @class */ (function () {
         { type: BehaviorSubject, decorators: [{ type: Inject, args: [IS_TOGGLE,] }] }
     ]; };
     ClrCheckboxWrapper.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: true },] }]
     };
     return ClrCheckboxWrapper;
 }());
@@ -2719,7 +2719,7 @@ var ClrCheckboxContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrCheckboxContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }],
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
         clrInline: [{ type: Input }]
     };
     return ClrCheckboxContainer;
@@ -5762,7 +5762,7 @@ var ClrDateContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrDateContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
     };
     return ClrDateContainer;
 }());
@@ -7442,7 +7442,7 @@ var ClrInputContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrInputContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
     };
     return ClrInputContainer;
 }());
@@ -7639,7 +7639,7 @@ var ClrPasswordContainer = /** @class */ (function () {
     ]; };
     ClrPasswordContainer.propDecorators = {
         clrToggle: [{ type: Input, args: ['clrToggle',] }],
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
     };
     return ClrPasswordContainer;
 }());
@@ -7761,7 +7761,7 @@ var ClrRadioWrapper = /** @class */ (function () {
                 }] }
     ];
     ClrRadioWrapper.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: true },] }]
     };
     return ClrRadioWrapper;
 }());
@@ -7906,7 +7906,7 @@ var ClrRadioContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrRadioContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }],
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
         clrInline: [{ type: Input }]
     };
     return ClrRadioContainer;
@@ -8028,8 +8028,8 @@ var ClrSelectContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrSelectContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }],
-        multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }],
+        multiple: [{ type: ContentChild, args: [SelectMultipleControlValueAccessor, { static: false },] }]
     };
     return ClrSelectContainer;
 }());
@@ -8162,7 +8162,7 @@ var ClrTextareaContainer = /** @class */ (function () {
         { type: NgControlService }
     ]; };
     ClrTextareaContainer.propDecorators = {
-        label: [{ type: ContentChild, args: [ClrLabel,] }]
+        label: [{ type: ContentChild, args: [ClrLabel, { static: false },] }]
     };
     return ClrTextareaContainer;
 }());
@@ -9471,7 +9471,7 @@ var ClrDraggable = /** @class */ (function () {
         { type: GlobalDragModeService }
     ]; };
     ClrDraggable.propDecorators = {
-        customGhost: [{ type: ContentChild, args: [ClrIfDragged,] }],
+        customGhost: [{ type: ContentChild, args: [ClrIfDragged, { static: false },] }],
         dataTransfer: [{ type: Input, args: ['clrDraggable',] }],
         group: [{ type: Input, args: ['clrGroup',] }],
         dragStartEmitter: [{ type: Output, args: ['clrDragStart',] }],
@@ -11220,8 +11220,8 @@ var DatagridStringFilter = /** @class */ (function (_super) {
     ]; };
     DatagridStringFilter.propDecorators = {
         customStringFilter: [{ type: Input, args: ['clrDgStringFilter',] }],
-        input: [{ type: ViewChild, args: ['input',] }],
-        filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter,] }],
+        input: [{ type: ViewChild, args: ['input', { static: false },] }],
+        filterContainer: [{ type: ViewChild, args: [ClrDatagridFilter, { static: false },] }],
         value: [{ type: Input, args: ['clrFilterValue',] }],
         filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
     };
@@ -11773,7 +11773,7 @@ var WrappedColumn = /** @class */ (function () {
                 }] }
     ];
     WrappedColumn.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['columnPortal',] }]
+        templateRef: [{ type: ViewChild, args: ['columnPortal', { static: false },] }]
     };
     return WrappedColumn;
 }());
@@ -12117,7 +12117,7 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
         sortedChange: [{ type: Output, args: ['clrDgSortedChange',] }],
         sortOrder: [{ type: Input, args: ['clrDgSortOrder',] }],
         sortOrderChange: [{ type: Output, args: ['clrDgSortOrderChange',] }],
-        projectedFilter: [{ type: ContentChild, args: [CustomFilter,] }],
+        projectedFilter: [{ type: ContentChild, args: [CustomFilter, { static: false },] }],
         updateFilterValue: [{ type: Input, args: ['clrFilterValue',] }],
         filterValueChange: [{ type: Output, args: ['clrFilterValueChange',] }]
     };
@@ -12721,7 +12721,7 @@ var ClrSignpost = /** @class */ (function () {
         { type: ClrCommonStrings }
     ]; };
     ClrSignpost.propDecorators = {
-        customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger,] }]
+        customTrigger: [{ type: ContentChild, args: [ClrSignpostTrigger, { static: false },] }]
     };
     return ClrSignpost;
 }());
@@ -12753,7 +12753,7 @@ var WrappedCell = /** @class */ (function () {
                 }] }
     ];
     WrappedCell.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['cellPortal',] }]
+        templateRef: [{ type: ViewChild, args: ['cellPortal', { static: false },] }]
     };
     return WrappedCell;
 }());
@@ -13563,7 +13563,7 @@ var WrappedRow = /** @class */ (function () {
                 }] }
     ];
     WrappedRow.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['rowPortal',] }]
+        templateRef: [{ type: ViewChild, args: ['rowPortal', { static: false },] }]
     };
     return WrappedRow;
 }());
@@ -13827,9 +13827,9 @@ var ClrDatagridRow = /** @class */ (function () {
         expanded: [{ type: Input, args: ['clrDgExpanded',] }],
         expandedChange: [{ type: Output, args: ['clrDgExpandedChange',] }],
         dgCells: [{ type: ContentChildren, args: [ClrDatagridCell,] }],
-        _stickyCells: [{ type: ViewChild, args: ['stickyCells', { read: ViewContainerRef },] }],
-        _scrollableCells: [{ type: ViewChild, args: ['scrollableCells', { read: ViewContainerRef },] }],
-        _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { read: ViewContainerRef },] }]
+        _stickyCells: [{ type: ViewChild, args: ['stickyCells', { static: false, read: ViewContainerRef },] }],
+        _scrollableCells: [{ type: ViewChild, args: ['scrollableCells', { static: false, read: ViewContainerRef },] }],
+        _calculatedCells: [{ type: ViewChild, args: ['calculatedCells', { static: false, read: ViewContainerRef },] }]
     };
     return ClrDatagridRow;
 }());
@@ -14423,20 +14423,20 @@ var ClrDatagrid = /** @class */ (function () {
     ClrDatagrid.propDecorators = {
         loading: [{ type: Input, args: ['clrDgLoading',] }],
         refresh: [{ type: Output, args: ['clrDgRefresh',] }],
-        iterator: [{ type: ContentChild, args: [ClrDatagridItems,] }],
+        iterator: [{ type: ContentChild, args: [ClrDatagridItems, { static: false },] }],
         selected: [{ type: Input, args: ['clrDgSelected',] }],
         selectedChanged: [{ type: Output, args: ['clrDgSelectedChange',] }],
         singleSelected: [{ type: Input, args: ['clrDgSingleSelected',] }],
         singleSelectedChanged: [{ type: Output, args: ['clrDgSingleSelectedChange',] }],
         rowSelectionMode: [{ type: Input, args: ['clrDgRowSelection',] }],
-        placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder,] }],
+        placeholder: [{ type: ContentChild, args: [ClrDatagridPlaceholder, { static: false },] }],
         columns: [{ type: ContentChildren, args: [ClrDatagridColumn,] }],
         rows: [{ type: ContentChildren, args: [ClrDatagridRow,] }],
-        scrollableColumns: [{ type: ViewChild, args: ['scrollableColumns', { read: ViewContainerRef },] }],
-        _projectedDisplayColumns: [{ type: ViewChild, args: ['projectedDisplayColumns', { read: ViewContainerRef },] }],
-        _projectedCalculationColumns: [{ type: ViewChild, args: ['projectedCalculationColumns', { read: ViewContainerRef },] }],
-        _displayedRows: [{ type: ViewChild, args: ['displayedRows', { read: ViewContainerRef },] }],
-        _calculationRows: [{ type: ViewChild, args: ['calculationRows', { read: ViewContainerRef },] }]
+        scrollableColumns: [{ type: ViewChild, args: ['scrollableColumns', { static: false, read: ViewContainerRef },] }],
+        _projectedDisplayColumns: [{ type: ViewChild, args: ['projectedDisplayColumns', { static: false, read: ViewContainerRef },] }],
+        _projectedCalculationColumns: [{ type: ViewChild, args: ['projectedCalculationColumns', { static: false, read: ViewContainerRef },] }],
+        _displayedRows: [{ type: ViewChild, args: ['displayedRows', { static: false, read: ViewContainerRef },] }],
+        _calculationRows: [{ type: ViewChild, args: ['calculationRows', { static: false, read: ViewContainerRef },] }]
     };
     return ClrDatagrid;
 }());
@@ -15005,8 +15005,8 @@ var ClrDatagridColumnToggle = /** @class */ (function () {
         { type: ColumnsService }
     ]; };
     ClrDatagridColumnToggle.propDecorators = {
-        customToggleTitle: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle,] }],
-        customToggleButton: [{ type: ContentChild, args: [ClrDatagridColumnToggleButton,] }]
+        customToggleTitle: [{ type: ContentChild, args: [ClrDatagridColumnToggleTitle, { static: false },] }],
+        customToggleButton: [{ type: ContentChild, args: [ClrDatagridColumnToggleButton, { static: false },] }]
     };
     return ClrDatagridColumnToggle;
 }());
@@ -15086,7 +15086,7 @@ var ClrDatagridFooter = /** @class */ (function () {
         { type: ColumnsService }
     ]; };
     ClrDatagridFooter.propDecorators = {
-        toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle,] }]
+        toggle: [{ type: ContentChild, args: [ClrDatagridColumnToggle, { static: false },] }]
     };
     return ClrDatagridFooter;
 }());
@@ -15579,8 +15579,8 @@ var ClrDatagridPagination = /** @class */ (function () {
         { type: Page }
     ]; };
     ClrDatagridPagination.propDecorators = {
-        _pageSizeComponent: [{ type: ContentChild, args: [ClrDatagridPageSize,] }],
-        currentPageInputRef: [{ type: ViewChild, args: ['currentPageInput',] }],
+        _pageSizeComponent: [{ type: ContentChild, args: [ClrDatagridPageSize, { static: false },] }],
+        currentPageInputRef: [{ type: ViewChild, args: ['currentPageInput', { static: false },] }],
         pageSize: [{ type: Input, args: ['clrDgPageSize',] }],
         totalItems: [{ type: Input, args: ['clrDgTotalItems',] }],
         lastPage: [{ type: Input, args: ['clrDgLastPage',] }],
@@ -20349,7 +20349,7 @@ var TemplateRefContainer = /** @class */ (function () {
                 }] }
     ];
     TemplateRefContainer.propDecorators = {
-        template: [{ type: ViewChild, args: [TemplateRef,] }]
+        template: [{ type: ViewChild, args: [TemplateRef, { static: false },] }]
     };
     return TemplateRefContainer;
 }());
@@ -20651,7 +20651,7 @@ var ClrTabContent = /** @class */ (function () {
         { type: TabsService }
     ]; };
     ClrTabContent.propDecorators = {
-        templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef',] }],
+        templateRef: [{ type: ViewChild, args: ['tabContentProjectedRef', { static: true },] }],
         tabContentId: [{ type: Input, args: ['id',] }]
     };
     return ClrTabContent;
@@ -20855,8 +20855,8 @@ var ClrTab = /** @class */ (function () {
         { type: TabsService }
     ]; };
     ClrTab.propDecorators = {
-        tabLink: [{ type: ContentChild, args: [ClrTabLink,] }],
-        tabContent: [{ type: ContentChild, args: [ClrTabContent,] }]
+        tabLink: [{ type: ContentChild, args: [ClrTabLink, { static: true },] }],
+        tabContent: [{ type: ContentChild, args: [ClrTabContent, { static: true },] }]
     };
     return ClrTab;
 }());
@@ -21061,7 +21061,7 @@ var ClrTabs = /** @class */ (function () {
         { type: ClrCommonStrings }
     ]; };
     ClrTabs.propDecorators = {
-        tabContentViewContainer: [{ type: ViewChild, args: ['tabContentViewContainer', { read: ViewContainerRef },] }],
+        tabContentViewContainer: [{ type: ViewChild, args: ['tabContentViewContainer', { static: true, read: ViewContainerRef },] }],
         layout: [{ type: Input, args: ['clrLayout',] }],
         tabs: [{ type: ContentChildren, args: [ClrTab,] }],
         isVertical: [{ type: HostBinding, args: ['class.tabs-vertical',] }]
@@ -21954,7 +21954,7 @@ var ClrModal = /** @class */ (function () {
         { type: String, decorators: [{ type: Inject, args: [UNIQUE_ID,] }] }
     ]; };
     ClrModal.propDecorators = {
-        focusTrap: [{ type: ViewChild, args: [FocusTrapDirective,] }],
+        focusTrap: [{ type: ViewChild, args: [FocusTrapDirective, { static: false },] }],
         _open: [{ type: HostBinding, args: ['class.open',] }, { type: Input, args: ['clrModalOpen',] }],
         _openChanged: [{ type: Output, args: ['clrModalOpenChange',] }],
         closable: [{ type: Input, args: ['clrModalClosable',] }],
@@ -25357,10 +25357,10 @@ var ClrWizardPage = /** @class */ (function () {
         { type: ButtonHubService }
     ]; };
     ClrWizardPage.propDecorators = {
-        pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle,] }],
-        pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle,] }],
-        _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons,] }],
-        _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions,] }],
+        pageTitle: [{ type: ContentChild, args: [ClrWizardPageTitle, { static: true },] }],
+        pageNavTitle: [{ type: ContentChild, args: [ClrWizardPageNavTitle, { static: true },] }],
+        _buttons: [{ type: ContentChild, args: [ClrWizardPageButtons, { static: true },] }],
+        _headerActions: [{ type: ContentChild, args: [ClrWizardPageHeaderActions, { static: true },] }],
         nextStepDisabled: [{ type: Input, args: ['clrWizardPageNextDisabled',] }],
         nextStepDisabledChange: [{ type: Output, args: ['clrWizardPageNextDisabledChange',] }],
         previousStepDisabled: [{ type: Input, args: ['clrWizardPagePreviousDisabled',] }],
