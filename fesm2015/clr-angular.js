@@ -2,7 +2,7 @@ import { NgControl, FormsModule, SelectMultipleControlValueAccessor } from '@ang
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { CommonModule, DOCUMENT, isPlatformBrowser, FormatWidth, FormStyle, getLocaleDateFormat, getLocaleDayNames, getLocaleFirstDayOfWeek, getLocaleMonthNames, TranslationWidth, NgForOf } from '@angular/common';
 import { Subject, BehaviorSubject, of, combineLatest, isObservable, Observable, ReplaySubject } from 'rxjs';
-import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, InjectionToken, ElementRef, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, ContentChild, IterableDiffers, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
+import { Directive, NgModule, EventEmitter, Input, Output, TemplateRef, ViewContainerRef, Optional, Injectable, Component, SkipSelf, ViewChild, forwardRef, ChangeDetectorRef, ElementRef, InjectionToken, Inject, HostListener, Renderer2, ContentChildren, QueryList, HostBinding, Injector, NgZone, ComponentFactoryResolver, IterableDiffers, ContentChild, Self, Attribute, PLATFORM_ID, ɵɵdefineInjectable, LOCALE_ID } from '@angular/core';
 import { animate, keyframes, style, transition, trigger, state } from '@angular/animations';
 
 /**
@@ -14583,6 +14583,7 @@ class TreeFeaturesService {
     constructor() {
         this.selectable = false;
         this.eager = true;
+        this.childrenFetched = new Subject();
     }
 }
 TreeFeaturesService.decorators = [
@@ -14655,7 +14656,7 @@ class ClrTreeNode {
         if (typeof this.expandable !== 'undefined') {
             return this.expandable;
         }
-        return !!this.expandService.expandable || this._model.children.length > 0;
+        return !!this.expandService.expandable || (this._model.children && this._model.children.length > 0);
     }
     /**
      * @return {?}
@@ -14870,10 +14871,12 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
      * @param {?} model
      * @param {?} parent
      * @param {?} getChildren
+     * @param {?} featuresService
      */
-    constructor(model, parent, getChildren) {
+    constructor(model, parent, getChildren, featuresService) {
         super();
         this.getChildren = getChildren;
+        this.featuresService = featuresService;
         this.childrenFetched = false;
         this._children = [];
         this.model = model;
@@ -14930,6 +14933,9 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
             this._children = [];
         }
         this.childrenFetched = true;
+        if (this.featuresService) {
+            this.featuresService.childrenFetched.next();
+        }
     }
     /**
      * @private
@@ -14941,7 +14947,7 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
          * @param {?} m
          * @return {?}
          */
-        m => new RecursiveTreeNodeModel(m, this, this.getChildren)));
+        m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService)));
     }
     /**
      * @return {?}
@@ -14979,10 +14985,12 @@ class ClrRecursiveForOf {
     /**
      * @param {?} template
      * @param {?} featuresService
+     * @param {?} cdr
      */
-    constructor(template, featuresService) {
+    constructor(template, featuresService, cdr) {
         this.template = template;
         this.featuresService = featuresService;
+        this.cdr = cdr;
     }
     // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
     /**
@@ -14996,15 +15004,31 @@ class ClrRecursiveForOf {
              * @param {?} node
              * @return {?}
              */
-            node => new RecursiveTreeNodeModel(node, null, this.getChildren)));
+            node => new RecursiveTreeNodeModel(node, null, this.getChildren, this.featuresService)));
         }
         else {
-            wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren)];
+            wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
+        }
+        if (!this.childrenFetchSubscription) {
+            this.childrenFetchSubscription = this.featuresService.childrenFetched.subscribe((/**
+             * @return {?}
+             */
+            () => {
+                this.cdr.detectChanges();
+            }));
         }
         this.featuresService.recursion = {
             template: this.template,
             root: wrapped,
         };
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.childrenFetchSubscription) {
+            this.childrenFetchSubscription.unsubscribe();
+        }
     }
 }
 ClrRecursiveForOf.decorators = [
@@ -15013,7 +15037,8 @@ ClrRecursiveForOf.decorators = [
 /** @nocollapse */
 ClrRecursiveForOf.ctorParameters = () => [
     { type: TemplateRef },
-    { type: TreeFeaturesService }
+    { type: TreeFeaturesService },
+    { type: ChangeDetectorRef }
 ];
 ClrRecursiveForOf.propDecorators = {
     nodes: [{ type: Input, args: ['clrRecursiveForOf',] }],

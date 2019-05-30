@@ -17255,6 +17255,7 @@ var TreeFeaturesService = /** @class */ (function () {
     function TreeFeaturesService() {
         this.selectable = false;
         this.eager = true;
+        this.childrenFetched = new Subject();
     }
     TreeFeaturesService.decorators = [
         { type: Injectable }
@@ -17323,7 +17324,7 @@ var ClrTreeNode = /** @class */ (function () {
         if (typeof this.expandable !== 'undefined') {
             return this.expandable;
         }
-        return !!this.expandService.expandable || this._model.children.length > 0;
+        return !!this.expandService.expandable || (this._model.children && this._model.children.length > 0);
     };
     Object.defineProperty(ClrTreeNode.prototype, "selected", {
         get: /**
@@ -17572,9 +17573,10 @@ var /*
  */
 RecursiveTreeNodeModel = /** @class */ (function (_super) {
     __extends(RecursiveTreeNodeModel, _super);
-    function RecursiveTreeNodeModel(model, parent, getChildren) {
+    function RecursiveTreeNodeModel(model, parent, getChildren, featuresService) {
         var _this = _super.call(this) || this;
         _this.getChildren = getChildren;
+        _this.featuresService = featuresService;
         _this.childrenFetched = false;
         _this._children = [];
         _this.model = model;
@@ -17639,6 +17641,9 @@ RecursiveTreeNodeModel = /** @class */ (function (_super) {
             this._children = [];
         }
         this.childrenFetched = true;
+        if (this.featuresService) {
+            this.featuresService.childrenFetched.next();
+        }
     };
     /**
      * @private
@@ -17656,7 +17661,7 @@ RecursiveTreeNodeModel = /** @class */ (function (_super) {
          * @param {?} m
          * @return {?}
          */
-        function (m) { return new RecursiveTreeNodeModel(m, _this, _this.getChildren); }));
+        function (m) { return new RecursiveTreeNodeModel(m, _this, _this.getChildren, _this.featuresService); }));
     };
     Object.defineProperty(RecursiveTreeNodeModel.prototype, "children", {
         get: /**
@@ -17699,9 +17704,10 @@ RecursiveTreeNodeModel = /** @class */ (function (_super) {
  * @template T
  */
 var ClrRecursiveForOf = /** @class */ (function () {
-    function ClrRecursiveForOf(template, featuresService) {
+    function ClrRecursiveForOf(template, featuresService, cdr) {
         this.template = template;
         this.featuresService = featuresService;
+        this.cdr = cdr;
     }
     // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
     // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
@@ -17722,15 +17728,34 @@ var ClrRecursiveForOf = /** @class */ (function () {
              * @param {?} node
              * @return {?}
              */
-            function (node) { return new RecursiveTreeNodeModel(node, null, _this.getChildren); }));
+            function (node) { return new RecursiveTreeNodeModel(node, null, _this.getChildren, _this.featuresService); }));
         }
         else {
-            wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren)];
+            wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
+        }
+        if (!this.childrenFetchSubscription) {
+            this.childrenFetchSubscription = this.featuresService.childrenFetched.subscribe((/**
+             * @return {?}
+             */
+            function () {
+                _this.cdr.detectChanges();
+            }));
         }
         this.featuresService.recursion = {
             template: this.template,
             root: wrapped,
         };
+    };
+    /**
+     * @return {?}
+     */
+    ClrRecursiveForOf.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this.childrenFetchSubscription) {
+            this.childrenFetchSubscription.unsubscribe();
+        }
     };
     ClrRecursiveForOf.decorators = [
         { type: Directive, args: [{ selector: '[clrRecursiveFor][clrRecursiveForOf]' },] }
@@ -17738,7 +17763,8 @@ var ClrRecursiveForOf = /** @class */ (function () {
     /** @nocollapse */
     ClrRecursiveForOf.ctorParameters = function () { return [
         { type: TemplateRef },
-        { type: TreeFeaturesService }
+        { type: TreeFeaturesService },
+        { type: ChangeDetectorRef }
     ]; };
     ClrRecursiveForOf.propDecorators = {
         nodes: [{ type: Input, args: ['clrRecursiveForOf',] }],
