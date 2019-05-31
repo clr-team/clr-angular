@@ -5,10 +5,12 @@ import { ClrDatagridComparatorInterface } from './interfaces/comparator.interfac
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
+import { ClrCommonStrings } from '../../utils/i18n/common-strings.interface';
 export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements OnDestroy, OnInit {
     private _sort;
     private vcr;
-    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef);
+    commonStrings: ClrCommonStrings;
+    constructor(_sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, commonStrings: ClrCommonStrings);
     /**
      * Subscription to the sort service changes
      */

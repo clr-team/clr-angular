@@ -950,6 +950,7 @@ ClrCommonStringsService = /** @class */ (function () {
         this.rowActions = 'Available actions';
         this.pickColumns = 'Show or hide columns';
         this.showColumns = 'Show Columns';
+        this.sortColumn = 'Sort Column';
     }
     return ClrCommonStringsService;
 }());
@@ -11787,10 +11788,11 @@ var WrappedColumn = /** @class */ (function () {
  */
 var ClrDatagridColumn = /** @class */ (function (_super) {
     __extends(ClrDatagridColumn, _super);
-    function ClrDatagridColumn(_sort, filters, vcr) {
+    function ClrDatagridColumn(_sort, filters, vcr, commonStrings) {
         var _this = _super.call(this, filters) || this;
         _this._sort = _sort;
         _this.vcr = vcr;
+        _this.commonStrings = commonStrings;
         // deprecated: to be removed - START
         /**
          * Indicates if the column is currently sorted
@@ -12096,7 +12098,7 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
     ClrDatagridColumn.decorators = [
         { type: Component, args: [{
                     selector: 'clr-dg-column',
-                    template: "\n      <div class=\"datagrid-column-flex\">\n          <!-- I'm really not happy with that select since it's not very scalable -->\n          <ng-content select=\"clr-dg-filter, clr-dg-string-filter\"></ng-content>\n\n          <clr-dg-string-filter\n                  *ngIf=\"field && !customFilter\"\n                  [clrDgStringFilter]=\"registered\"\n                  [(clrFilterValue)]=\"filterValue\"></clr-dg-string-filter>\n\n          <ng-template #columnTitle>\n              <ng-content></ng-content>\n          </ng-template>\n\n          <button class=\"datagrid-column-title\" *ngIf=\"sortable\" (click)=\"sort()\" type=\"button\">\n              <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n              <clr-icon\n                      *ngIf=\"sortIcon\"\n                      [attr.shape]=\"sortIcon\"\n                      class=\"sort-icon\"></clr-icon>\n          </button>\n\n          <span class=\"datagrid-column-title\" *ngIf=\"!sortable\">\n               <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n            </span>\n\n          <clr-dg-column-separator></clr-dg-column-separator>\n      </div>\n  ",
+                    template: "\n      <div class=\"datagrid-column-flex\">\n          <!-- I'm really not happy with that select since it's not very scalable -->\n          <ng-content select=\"clr-dg-filter, clr-dg-string-filter\"></ng-content>\n\n          <clr-dg-string-filter\n                  *ngIf=\"field && !customFilter\"\n                  [clrDgStringFilter]=\"registered\"\n                  [(clrFilterValue)]=\"filterValue\"></clr-dg-string-filter>\n\n          <ng-template #columnTitle>\n              <ng-content></ng-content>\n          </ng-template>\n\n          <button \n            class=\"datagrid-column-title\" \n            [attr.aria-label]=\"commonStrings.sortColumn\"\n            *ngIf=\"sortable\" \n            (click)=\"sort()\" \n            type=\"button\">\n              <ng-container  *ngTemplateOutlet=\"columnTitle\"></ng-container>\n              <clr-icon\n                      *ngIf=\"sortIcon\"\n                      [attr.shape]=\"sortIcon\"\n                      class=\"sort-icon\"></clr-icon>\n          </button>\n\n          <span class=\"datagrid-column-title\" *ngIf=\"!sortable\">\n              <ng-container *ngTemplateOutlet=\"columnTitle\"></ng-container>\n          </span>\n\n          <clr-dg-column-separator></clr-dg-column-separator>\n      </div>\n  ",
                     host: {
                         '[class.datagrid-column]': 'true',
                         '[attr.aria-sort]': 'ariaSort',
@@ -12108,7 +12110,8 @@ var ClrDatagridColumn = /** @class */ (function (_super) {
     ClrDatagridColumn.ctorParameters = function () { return [
         { type: Sort },
         { type: FiltersProvider },
-        { type: ViewContainerRef }
+        { type: ViewContainerRef },
+        { type: ClrCommonStrings }
     ]; };
     ClrDatagridColumn.propDecorators = {
         field: [{ type: Input, args: ['clrDgField',] }],

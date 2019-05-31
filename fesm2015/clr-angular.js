@@ -837,6 +837,7 @@ class ClrCommonStringsService {
         this.rowActions = 'Available actions';
         this.pickColumns = 'Show or hide columns';
         this.showColumns = 'Show Columns';
+        this.sortColumn = 'Sort Column';
     }
 }
 /**
@@ -9746,11 +9747,13 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
      * @param {?} _sort
      * @param {?} filters
      * @param {?} vcr
+     * @param {?} commonStrings
      */
-    constructor(_sort, filters, vcr) {
+    constructor(_sort, filters, vcr, commonStrings) {
         super(filters);
         this._sort = _sort;
         this.vcr = vcr;
+        this.commonStrings = commonStrings;
         // deprecated: to be removed - START
         /**
          * Indicates if the column is currently sorted
@@ -10010,8 +10013,13 @@ ClrDatagridColumn.decorators = [
               <ng-content></ng-content>
           </ng-template>
 
-          <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button">
-              <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+          <button 
+            class="datagrid-column-title" 
+            [attr.aria-label]="commonStrings.sortColumn"
+            *ngIf="sortable" 
+            (click)="sort()" 
+            type="button">
+              <ng-container  *ngTemplateOutlet="columnTitle"></ng-container>
               <clr-icon
                       *ngIf="sortIcon"
                       [attr.shape]="sortIcon"
@@ -10019,8 +10027,8 @@ ClrDatagridColumn.decorators = [
           </button>
 
           <span class="datagrid-column-title" *ngIf="!sortable">
-               <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-            </span>
+              <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
+          </span>
 
           <clr-dg-column-separator></clr-dg-column-separator>
       </div>
@@ -10036,7 +10044,8 @@ ClrDatagridColumn.decorators = [
 ClrDatagridColumn.ctorParameters = () => [
     { type: Sort },
     { type: FiltersProvider },
-    { type: ViewContainerRef }
+    { type: ViewContainerRef },
+    { type: ClrCommonStrings }
 ];
 ClrDatagridColumn.propDecorators = {
     field: [{ type: Input, args: ['clrDgField',] }],

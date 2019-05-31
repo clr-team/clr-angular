@@ -75,4 +75,8 @@ export declare abstract class ClrCommonStrings {
      * Datagrid: show columns
      */
     showColumns?: string;
+    /**
+     * Datagrid: sort of columns
+     */
+    sortColumn?: string;
 }
